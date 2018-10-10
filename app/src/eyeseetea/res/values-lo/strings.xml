@@ -281,4 +281,5 @@
 <string name="scheduled">ກໍານົດເວລາ</string>
 <string name="reschedule_title_multiple_survey">"ຈໍານວນການສໍາຫຼວດຈໍານວນ %1$d ຖືກກໍານົດໄວ້ສໍາລັບ OU %2$s"</string>
 <string name="other">ອື່ນໆ</string>
+<string name="feedback_not_sent">"URL ຄວາມຄິດເຫັນບໍ່ສາມາດໃຊ້ໄດ້ເນື່ອງຈາກການສໍາຫຼວດ. ລອງແບ່ງປັນຄວາມຄິດເຫັນຕໍ່ອີກເທື່ອຫນຶ່ງ."</string>
 </resources>

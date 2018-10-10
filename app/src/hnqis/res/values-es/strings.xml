@@ -293,4 +293,5 @@ clínica"</string>
 <string name="login_error_unsupported_server_version">La versión del servidor no esta soportada</string>
 
 <string name="other">Otro</string>
+<string name="feedback_not_sent">"La URL de feedback no está disponible porque la encuesta aún no se ha enviado al servidor. Intenta compartir los comentarios de nuevo más tarde"</string>
 </resources>

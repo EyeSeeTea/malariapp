@@ -428,13 +428,12 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
         String data = extractTextData(obsActionPlan, survey, criticalQuestions,
                 compositeScoresTree);
 
-        Intent sendIntent = new Intent();
-        sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT, data);
-        sendIntent.setType("text/plain");
-        getActivity().startActivity(sendIntent);
+        shareData(data);
+    }
 
-        System.out.println("data:" + data);
+    @Override
+    public void shareNotSent(String surveyNoSentMessage) {
+        shareData(surveyNoSentMessage);
     }
 
     @Override
@@ -525,5 +524,15 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
         }
         System.out.println("data:" + data);
         return data;
+    }
+
+    private void shareData(String data) {
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, data);
+        sendIntent.setType("text/plain");
+        getActivity().startActivity(sendIntent);
+
+        System.out.println("data:" + data);
     }
 }

@@ -15,6 +15,7 @@ import org.eyeseetea.malariacare.data.database.model.QuestionDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.observables.ObservablePush;
+import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -225,9 +226,13 @@ public class ObsActionPlanPresenter {
                 mSurvey.getId_survey());
 
         List<CompositeScoreDB> compositeScoresTree = getValidTreeOfCompositeScores();
-
         if (mView != null) {
-            mView.shareByText(mObsActionPlan, mSurvey, criticalQuestions, compositeScoresTree);
+
+            if(mSurvey.getStatus() != Constants.SURVEY_SENT){
+                mView.shareNotSent(mContext.getString(R.string.feedback_not_sent));
+            }else {
+                mView.shareByText(mObsActionPlan, mSurvey, criticalQuestions, compositeScoresTree);
+            }
         }
     }
 
@@ -307,6 +312,8 @@ public class ObsActionPlanPresenter {
 
         void shareByText(ObsActionPlanDB obsActionPlan,SurveyDB survey, List<QuestionDB> criticalQuestions,
                 List<CompositeScoreDB> compositeScoresTree);
+
+        void shareNotSent(String surveyNoSentMessage);
 
         void enableShareButton();
 

@@ -299,4 +299,5 @@
 <string name="feedback_progress_bar_text">ກໍາລັງໂຫລດຄະແນນສໍາຫຼວດ ... ກະລຸນາລໍຖ້າ</string>
 <string name="other">ອື່ນໆ</string>
 <string name="login_error_unsupported_server_version">ເວີຊັນຂອງເຄື່ອງແມ່ຂ່າຍບໍ່ສະຫນັບສະຫນູນ</string>
+<string name="feedback_not_sent">"URL ຄວາມຄິດເຫັນບໍ່ສາມາດໃຊ້ໄດ້ເນື່ອງຈາກການສໍາຫຼວດ. ລອງແບ່ງປັນຄວາມຄິດເຫັນຕໍ່ອີກເທື່ອຫນຶ່ງ."</string>
 </resources>
