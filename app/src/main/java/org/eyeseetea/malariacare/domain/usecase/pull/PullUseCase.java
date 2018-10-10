@@ -53,7 +53,7 @@ public class PullUseCase implements UseCase {
     private final IMetadataValidator mMetadataValidator;
     private final IConnectivityManager mConnectivityManager;
     private Callback mCallback;
-    private SurveyFilter mPullDataFilters;
+    private PullSurveyFilter mPullDataFilters;
     private Boolean pullCanceled = false;
 
     public PullUseCase(
@@ -71,8 +71,8 @@ public class PullUseCase implements UseCase {
         mConnectivityManager = connectivityManager;
     }
 
-    public void execute(SurveyFilter surveyFilter, final Callback callback) {
-        mPullDataFilters = surveyFilter;
+    public void execute(PullSurveyFilter pullSurveyFilter, final Callback callback) {
+        mPullDataFilters = pullSurveyFilter;
         mCallback = callback;
 
         mAsyncExecutor.run(this);

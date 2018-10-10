@@ -33,15 +33,10 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import org.eyeseetea.malariacare.data.boundaries.ISurveyDataSource;
-import org.eyeseetea.malariacare.data.database.MetadataValidator;
-import org.eyeseetea.malariacare.data.database.datasources.QuestionLocalDataSource;
-import org.eyeseetea.malariacare.data.database.datasources.SurveyLocalDataSource;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullDataController;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullDemoController;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullMetadataController;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.data.repositories.AuthenticationManager;
 import org.eyeseetea.malariacare.data.network.ConnectivityManager;
 import org.eyeseetea.malariacare.data.remote.sdk.data.SurveySDKDhisDataSource;
 import org.eyeseetea.malariacare.data.repositories.AuthenticationManager;
@@ -61,6 +56,8 @@ import org.eyeseetea.malariacare.domain.usecase.pull.PullUseCase;
 import org.eyeseetea.malariacare.domain.usecase.pull.SurveyFilter;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
+import org.eyeseetea.malariacare.domain.usecase.pull.PullSurveyFilter;
+import org.eyeseetea.malariacare.factories.SyncFactory;
 
 import java.util.Calendar;
 
@@ -144,30 +141,7 @@ public class ProgressActivity extends Activity {
         if (Session.getCredentials().isDemoCredentials()) {
             executeDemoPull();
         } else {
-            PullMetadataController pullMetadataController = new PullMetadataController();
-
-
-            IServerMetadataRepository serverMetadataRepository =
-                    new ServerMetadataRepository(this);
-            IOptionRepository optionRepository = new OptionRepository();
-            IQuestionRepository questionRepository = new QuestionLocalDataSource();
-
-            ISurveyDataSource surveyRemoteDataSource =
-                    new SurveySDKDhisDataSource(serverMetadataRepository,
-                            questionRepository, optionRepository);
-
-            ISurveyDataSource surveyLocalDataSource = new SurveyLocalDataSource();
-
-            PullDataController pullDataController =
-                    new PullDataController(surveyLocalDataSource, surveyRemoteDataSource);
-
-            MetadataValidator metadataValidator = new MetadataValidator();
-            IAsyncExecutor asyncExecutor = new AsyncExecutor();
-            IMainExecutor mainExecutor = new UIThreadExecutor();
-            IConnectivityManager connectivityManager = new ConnectivityManager();
-
-            mPullUseCase = new PullUseCase(asyncExecutor, mainExecutor, pullMetadataController,
-                    pullDataController, metadataValidator, connectivityManager);
+            mPullUseCase = new SyncFactory().getPullUseCase(getApplicationContext());
         }
     }
 
@@ -371,11 +345,12 @@ public class ProgressActivity extends Activity {
         progressBar.setMax(MAX_PULL_STEPS);
         Calendar month = Calendar.getInstance();
         month.add(Calendar.MONTH, -NUMBER_OF_MONTHS);
-        boolean isDemo = Session.getCredentials().equals(Credentials.createDemoCredentials());
-        SurveyFilter surveyFilter = new SurveyFilter(month.getTime(), null,
-                PreferencesState.getInstance().getMaxEvents());
 
-        mPullUseCase.execute(surveyFilter, new PullUseCase.Callback() {
+        PullSurveyFilter pullSurveyFilter = PullSurveyFilter.Builder.create()
+                .withStartDate(month.getTime())
+                .withMaxSize(PreferencesState.getInstance().getMaxEvents()).build();
+
+        mPullUseCase.execute(pullSurveyFilter, new PullUseCase.Callback() {
             @Override
             public void onComplete() {
                 postFinish();

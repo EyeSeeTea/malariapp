@@ -148,7 +148,8 @@ configurations {
 dependencies {
 
     // SDK submodules
-    compile project(':core-rules')
+    compile project(':core')
+    compile project(':models')
     compile project(':ui-bindings')
     compile project(':EyeSeeTea-sdk')
 
@@ -170,6 +171,7 @@ dependencies {
     compile "com.squareup.okhttp3:okhttp:${libs.okhttpVersion}"
     compile "com.googlecode.libphonenumber:libphonenumber:${libs.libphonenumberVersion}"
     compile "com.github.PhilJay:MPAndroidChart:v${libs.MPAndroidChartVersion}"
+    compile "joda-time:joda-time:${libs.jodaTimeVersion}"
 
     //Drive dependencies
     compile "com.google.android.gms:play-services-identity:${libs.gmsPlayVersion}"
@@ -186,6 +188,11 @@ dependencies {
     testCompile "junit:junit:${libs.jUnitVersion}"
     testCompile "org.mockito:mockito-core:${libs.mockitoVersion}"
     testCompile "com.google.code.gson:gson:${libs.gsonVersion}"
+    testCompile "com.fasterxml.jackson.core:jackson-core:${libs.jacksonVersion}"
+    testCompile "com.fasterxml.jackson.core:jackson-databind:${libs.jacksonVersion}"
+    testCompile "com.fasterxml.jackson.core:jackson-annotations:${libs.jacksonVersion}"
+    testCompile "com.fasterxml.jackson.datatype:jackson-datatype-joda:${libs.jacksonVersion}"
+    testCompile "joda-time:joda-time:${libs.jodaTimeVersion}"
 
     // Instrumented tests dependencies
 

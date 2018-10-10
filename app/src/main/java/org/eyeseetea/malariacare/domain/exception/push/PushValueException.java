@@ -1,20 +1,39 @@
 package org.eyeseetea.malariacare.domain.exception.push;
 
+import android.util.Log;
+
+import org.eyeseetea.malariacare.R;
+
 public class PushValueException extends Exception {
-    String message;
+    private static String messagePattern =
+            "The event with UID: %s. was uploaded with conflict in the questionUID: %s. "
+                    + "Message: %s.";
 
-    public PushValueException(String message) {
-        this.message = message;
-        System.out.println(PushValueException.class.getName() + " message " + message);
-    }
-    public PushValueException(Throwable throwable) {
-        throwable.printStackTrace();
-        this.message = throwable.getMessage();
-        System.out.println(PushValueException.class.getName() + " message " + message);
+    private String surveyUid;
+    private String questionUid;
+    private String conflictMessage;
+
+    public PushValueException(String surveyUid, String questionUid, String conflictMessage) {
+        super(String.format(messagePattern, surveyUid, questionUid, conflictMessage));
+
+        this.surveyUid = surveyUid;
+        this.questionUid = questionUid;
+        this.conflictMessage = conflictMessage;
     }
 
-    @Override
-    public String getMessage() {
-        return message;
+    public PushValueException(String errorMessage) {
+        super(errorMessage);
+    }
+
+    public String getSurveyUid() {
+        return surveyUid;
+    }
+
+    public String getQuestionUid() {
+        return questionUid;
+    }
+
+    public String getConflictMessage() {
+        return conflictMessage;
     }
 }
