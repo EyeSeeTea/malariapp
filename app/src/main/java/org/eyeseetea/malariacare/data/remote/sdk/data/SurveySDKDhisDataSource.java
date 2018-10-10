@@ -55,32 +55,23 @@ public class SurveySDKDhisDataSource implements ISurveyDataSource {
     private final IServerMetadataRepository mServerMetadataRepository;
     private final IOptionRepository mOptionRepository;
     private final IQuestionRepository mQuestionRepository;
-    private final IConnectivityManager mConnectivityManager;
 
     public SurveySDKDhisDataSource(IServerMetadataRepository serverMetadataRepository,
             IQuestionRepository questionRepository,
-            IOptionRepository optionRepository,
-            IConnectivityManager connectivityManager) {
+            IOptionRepository optionRepository) {
         this.mServerMetadataRepository = serverMetadataRepository;
         this.mQuestionRepository = questionRepository;
         this.mOptionRepository = optionRepository;
-        this.mConnectivityManager = connectivityManager;
     }
 
     @Override
     public List<Survey> getSurveys(SurveyFilter filters) throws Exception {
-        boolean isNetworkAvailable = mConnectivityManager.isDeviceOnline();
 
-        if (isNetworkAvailable) {
             pullEvents(filters);
 
             List<Survey> surveys = convertToSurveys();
 
             return surveys;
-
-        } else {
-            throw new NetworkException();
-        }
     }
 
 
