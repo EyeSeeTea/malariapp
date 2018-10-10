@@ -313,7 +313,7 @@ public class ObsActionPlanPresenter {
         void shareByText(ObsActionPlanDB obsActionPlan,SurveyDB survey, List<QuestionDB> criticalQuestions,
                 List<CompositeScoreDB> compositeScoresTree);
 
-        void shareNotSent(String data);
+        void shareNotSent(String surveyNoSentMessage);
 
         void enableShareButton();
 

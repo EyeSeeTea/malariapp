@@ -432,8 +432,8 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
     }
 
     @Override
-    public void shareNotSent(String data) {
-        shareData(data);
+    public void shareNotSent(String surveyNoSentMessage) {
+        shareData(surveyNoSentMessage);
     }
 
     @Override
