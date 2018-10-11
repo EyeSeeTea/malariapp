@@ -3,6 +3,7 @@
     "completionDate": "2017-10-03T08:15:53.026+0000",
     "creationDate": "2017-10-03T10:31:03.287+0000",
     "orgUnitUId": "A5HZNrJc2ir",
+    "productivity": 0,
     "programUId": "Qt74wJNHTAS",
     "scheduledDate": "2018-02-03T00:00:00.000",
     "score": {
@@ -235,6 +236,7 @@
     "completionDate": "2017-10-03T10:15:20.026+0000",
     "creationDate": "2017-09-25T22:52:47.291+0000",
     "orgUnitUId": "A5HZNrJc2ir",
+    "productivity": 0,
     "programUId": "Qt74wJNHTAS",
     "scheduledDate": "2018-03-25T00:00:00.000",
     "score": {
@@ -912,6 +914,7 @@
     "completionDate": "2017-10-03T08:15:57.007",
     "creationDate": "2017-10-03T10:42:37.670+0000",
     "orgUnitUId": "A5HZNrJc2ir",
+    "productivity": 0,
     "programUId": "Qt74wJNHTAS",
     "scheduledDate": "2018-02-03T00:00:00.000",
     "score": {

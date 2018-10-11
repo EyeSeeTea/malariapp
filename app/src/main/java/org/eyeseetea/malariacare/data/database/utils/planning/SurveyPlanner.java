@@ -23,7 +23,6 @@ import android.util.Log;
 
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
-import org.eyeseetea.malariacare.data.database.model.ScoreDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.domain.entity.ScoreType;
@@ -162,6 +161,8 @@ public class SurveyPlanner {
     }
 
     public Date findScheduledDateBySurvey(SurveyDB survey) {
+        //TODO: jsanchez When this class use domain entities, remember that next scheduleDate is a value
+        // returned by domain survey
         if (survey == null) {
             return null;
         }

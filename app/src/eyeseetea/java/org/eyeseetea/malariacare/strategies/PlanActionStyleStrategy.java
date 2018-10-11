@@ -7,16 +7,17 @@ import android.widget.RelativeLayout;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
 import org.eyeseetea.sdk.presentation.views.DoubleRectChart;
 
 public class PlanActionStyleStrategy {
-    public static void fabIcons(FloatingActionButton fabComplete, Integer status) {
-        if (status.equals(Constants.SURVEY_IN_PROGRESS)) {
+
+    public static void fabIcons(FloatingActionButton fabComplete, ObservationStatus status) {
+        if (status.equals(ObservationStatus.IN_PROGRESS)) {
             fabComplete.setImageResource(R.drawable.vct_action_uncheck);
-        } else if (status == Constants.SURVEY_SENT) {
+        } else if (status.equals(ObservationStatus.SENT)) {
             fabComplete.setImageResource(R.drawable.vct_double_check);
-        }else {
+        } else {
             fabComplete.setImageResource(R.drawable.vct_action_check);
         }
     }

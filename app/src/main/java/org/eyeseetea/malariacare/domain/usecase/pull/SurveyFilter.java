@@ -24,25 +24,71 @@ import java.util.Date;
 
 public class SurveyFilter {
 
-    Date startDate;
-    Date endDate;
-    int maxEvents;
+    public enum SurveysToRetrieve {ALL, COMPLETED, UNSENT, SENT}
 
-    public SurveyFilter(Date startDate, Date endDate, int maxEvents) {
+    private Date startDate;
+    private Date endDate;
+    private int maxEvents;
+    private SurveysToRetrieve surveysToRetrieve;
+
+    public SurveyFilter(Date startDate, Date endDate, int maxEvents, SurveysToRetrieve surveysToRetrieve) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.maxEvents = maxEvents;
+        this.surveysToRetrieve = surveysToRetrieve;
     }
 
     public Date getStartDate() {
         return startDate;
     }
 
-    public int getMaxEvents() {
+    public int getMaxSize() {
         return maxEvents;
     }
 
     public Date getEndDate() {
         return endDate;
+    }
+
+    public SurveysToRetrieve getSurveysToRetrieve() {
+        return surveysToRetrieve;
+    }
+
+    public static class Builder {
+        private Date startDate = null;
+        private Date endDate = null;
+        private int maxSize = 0;
+        private SurveysToRetrieve surveysToRetrieve = SurveysToRetrieve.ALL;
+
+        private Builder() {
+        }
+
+        public static Builder create() {
+            return new Builder();
+        }
+
+        public Builder withStartDate(Date startDate) {
+            this.startDate = startDate;
+            return this;
+        }
+
+        public Builder withEndDate(Date endDate) {
+            this.endDate = endDate;
+            return this;
+        }
+
+        public Builder withMaxSize(int maxSize) {
+            this.maxSize = maxSize;
+            return this;
+        }
+
+        public Builder WithSurveysToRetrieve(SurveysToRetrieve surveysToRetrieve) {
+            this.surveysToRetrieve = surveysToRetrieve;
+            return this;
+        }
+
+        public SurveyFilter build() {
+            return new SurveyFilter(startDate, endDate, maxSize, surveysToRetrieve);
+        }
     }
 }

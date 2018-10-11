@@ -94,6 +94,10 @@ public class OrgUnitDB extends BaseModel {
         this.setOrgUnitLevel(orgUnitLevel);
     }
 
+    public Long getId_org_unit_level_fk() {
+        return id_org_unit_level_fk;
+    }
+
     public Long getId_org_unit() {
         return id_org_unit;
     }
