@@ -40,7 +40,7 @@
 
 <string name="assessment_title_facility_date">"Instalación / Encuesta</string>
 <string name="assessment_title_state">"%Completo"</string>
-<string name="assessment_sent_date">"Fecha de llenado"</string>
+<string name="assessment_sent_date">"Fecha"</string>
 <string name="assessment_title_header">"Evaluación(es) Activa(s)"</string>
 <string name="assessment_sent_title_header">"Evaluación(es) Anterior(es)"</string>
 
@@ -123,7 +123,7 @@ clínica"</string>
 <string name="feedback_show_only_media">"Mostrar sólo las preguntas que contienen vídeo / imagen"</string>
 <string name="feedback_show_only_one_or_show_all">"Mostrar sólo la última respuesta por programa/unidad organizativa"</string>
 <string name="feedback_return">"Regresar a todas las evaluaciones"</string>
-<string name="quality_of_care">"Calidad de la Asistencia (QoC) Puntuación:"</string>
+<string name="quality_of_care">"Calidad de la Asistencia \nPuntuación general:"</string>
 <string name="overall_quality_of_care">"Puntuación general de calidad de atención (QoC):"</string>
 <string name="feedback_info_passed">"Aprobado"</string>
 <string name="feedback_info_failed">"Suspenso"</string>
@@ -204,7 +204,7 @@ clínica"</string>
 <string name="account_permission_denied">Permiso de contactos denegado. Archivos multimedia no serán sincronizados</string>
 <string name="feedback_media">Ver video feedback</string>
 <string name="feedback_view_image">Abrir imagen con...</string>
-<string name="select_all">Seleccionar todos</string>
+<string name="select_all">Seleccionar Todas</string>
 <string name="demo_login">Modo Demo</string>
 <string name="system_defined">"Definido por el sistema"</string>
 <string name="settings_select_language">"Idioma"</string>
@@ -233,8 +233,8 @@ clínica"</string>
 <string name="planing_due_date">"Fecha de vencimiento"</string>
 <string name="action_button_text">PLAN DE ACCIÓN</string>
 <string name="plan_action_title">Observaciones y plan de acción</string>
-<string name="plan_action_today_date">Terminado: %s</string>
-<string name="plan_action_next_date">Próxima: %s</string>
+<string name="plan_action_today_date">%s</string>
+<string name="plan_action_next_date">%s</string>
 <string name="plan_action_description">Describa lo que se observó durante la visita de un plan de acción específico para abordar las lagunas. Obsérvese también una mejora respecto a la brecha identificada durante la última visita</string>
 <string name="plan_action_gasp_title">Gaps:</string>
 <string name="plan_action_action_plan_title">Plan de acción:</string>
@@ -264,8 +264,6 @@ clínica"</string>
 <string name="comments">"Comentarios"</string>
 <string name="dates">"Fechas anteriores"</string>
 <string name="mark_complete">"Marcar completado"</string>
-<string name="plain_text">Texto sin formato </string>
-<string name="html_text">Texto con formato </string>
 <string name="schedule_title">Programación de encuesta</string>
 <string name="save">"salvar"</string>
 <string name="advanced_options">"Opciones avanzadas"</string>
@@ -274,4 +272,13 @@ clínica"</string>
 <string name="plan_action_edit_text_hint">"Toque para escribir"</string>
 <string name="planning_label_date">"Nueva fecha:"</string>
 <string name="header_reschedule_title">"Re-programar"</string>
+
+<string name="scheduled">Programada</string>
+
+<string name="completed_title">"Completado"</string>
+<string name="completed_next">"Próxima"</string>
+<string name="apply_filters">"Aplicar filtros"</string>
+<string name="filter">"Filtro"</string>
+<string name="failed_video_image_question_only">"Solo preguntas de video/imagen"</string>
+<string name="failed_questions_only">"Solo preguntas fallidas"</string>
 </resources>
