@@ -27,7 +27,6 @@ import org.eyeseetea.malariacare.domain.boundary.IPullMetadataController;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.exception.MetadataException;
-import org.eyeseetea.malariacare.domain.exception.NetworkException;
 import org.eyeseetea.malariacare.domain.usecase.UseCase;
 
 public class PullUseCase implements UseCase {
@@ -121,7 +120,7 @@ public class PullUseCase implements UseCase {
                 }
             });
         } else {
-            notifyError(new NetworkException());
+            notifyNetworkError();
         }
     }
 
@@ -167,13 +166,20 @@ public class PullUseCase implements UseCase {
         });
     }
 
+    private void notifyNetworkError() {
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                mCallback.onNetworkError();
+            }
+        });
+    }
+
     private void notifyError(final Throwable throwable) {
         mMainExecutor.run(new Runnable() {
             @Override
             public void run() {
-                if (throwable instanceof NetworkException) {
-                    mCallback.onNetworkError();
-                } else if (throwable instanceof MetadataException) {
+                if (throwable instanceof MetadataException) {
                     mCallback.onMetadataError();
                 } else {
                     mCallback.onPullError();
