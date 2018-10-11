@@ -59,6 +59,7 @@ import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.Progra
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramSurveyDict;
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramTabDict;
 import org.eyeseetea.malariacare.data.remote.sdk.SdkQueries;
+import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.client.sdk.models.program.ProgramType;
 
@@ -370,8 +371,19 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             dataValueExtended.setProgramUid(event.getProgramId());
             dataValueExtended.accept(this);
         }
+        fixSurveyWithoutScore(survey);
         //Once all the values are processed save common data across created surveys
         //eventToSurveyBuilder.saveCommonData();
+    }
+
+    private void fixSurveyWithoutScore(SurveyDB survey) {
+        if(!survey.hasMainScore()){
+            List<CompositeScoreDB> compositeScores = ScoreRegister.loadCompositeScores(survey,
+                    Constants.PROGRESSACTIVITY_MODULE_KEY);
+            survey.setMainScore(
+                    ScoreRegister.calculateMainScore(compositeScores, survey.getId_survey(), Constants.PROGRESSACTIVITY_MODULE_KEY));
+            survey.saveMainScore();
+        }
     }
 
     private Date convertStringToDate(String format, String dateText) {
