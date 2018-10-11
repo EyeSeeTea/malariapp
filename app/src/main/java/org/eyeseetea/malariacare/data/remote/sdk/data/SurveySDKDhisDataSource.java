@@ -19,22 +19,32 @@
 
 package org.eyeseetea.malariacare.data.remote.sdk.data;
 
+import android.content.Context;
+
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.boundaries.ISurveyDataSource;
+import org.eyeseetea.malariacare.data.boundaries.IDataRemoteDataSource;
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
+import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.data.sync.mappers.PushReportMapper;
 import org.eyeseetea.malariacare.domain.boundary.IConnectivityManager;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IOptionRepository;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IOrgUnitRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IQuestionRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerMetadataRepository;
+import org.eyeseetea.malariacare.domain.entity.IData;
 import org.eyeseetea.malariacare.domain.entity.Option;
+import org.eyeseetea.malariacare.domain.entity.OrgUnit;
 import org.eyeseetea.malariacare.domain.entity.Question;
 import org.eyeseetea.malariacare.domain.entity.ServerMetadata;
 import org.eyeseetea.malariacare.domain.entity.Survey;
+import org.eyeseetea.malariacare.domain.entity.pushsummary.PushReport;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
 import org.eyeseetea.malariacare.domain.usecase.pull.SurveyFilter;
 import org.hisp.dhis.client.sdk.android.api.D2;
 import org.hisp.dhis.client.sdk.core.event.EventFilters;
+import org.hisp.dhis.client.sdk.models.common.importsummary.ImportSummary;
 import org.hisp.dhis.client.sdk.models.event.Event;
 import org.hisp.dhis.client.sdk.models.organisationunit.OrganisationUnit;
 import org.hisp.dhis.client.sdk.models.program.Program;
@@ -50,25 +60,29 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class SurveySDKDhisDataSource implements ISurveyDataSource {
+public class SurveySDKDhisDataSource implements IDataRemoteDataSource {
 
     private final IServerMetadataRepository mServerMetadataRepository;
     private final IOptionRepository mOptionRepository;
     private final IQuestionRepository mQuestionRepository;
+    private final IOrgUnitRepository mOrgUnitRepository;
     private final IConnectivityManager mConnectivityManager;
+    private final Context mContext;
 
-    public SurveySDKDhisDataSource(IServerMetadataRepository serverMetadataRepository,
-            IQuestionRepository questionRepository,
-            IOptionRepository optionRepository,
-            IConnectivityManager connectivityManager) {
+    public SurveySDKDhisDataSource(Context context, IServerMetadataRepository serverMetadataRepository,
+            IQuestionRepository questionRepository, IOptionRepository optionRepository,
+            IOrgUnitRepository orgUnitRepository, IConnectivityManager connectivityManager) {
+        this.mContext = context;
         this.mServerMetadataRepository = serverMetadataRepository;
         this.mQuestionRepository = questionRepository;
         this.mOptionRepository = optionRepository;
+        this.mOrgUnitRepository = orgUnitRepository;
         this.mConnectivityManager = connectivityManager;
     }
 
+
     @Override
-    public List<Survey> getSurveys(SurveyFilter filters) throws Exception {
+    public List<? extends IData> get(SurveyFilter filters) throws Exception {
         boolean isNetworkAvailable = mConnectivityManager.isDeviceOnline();
 
         if (isNetworkAvailable) {
@@ -76,7 +90,7 @@ public class SurveySDKDhisDataSource implements ISurveyDataSource {
 
             List<Survey> surveys = convertToSurveys();
 
-            return surveys;
+            return new ArrayList<IData>(surveys);
 
         } else {
             throw new NetworkException();
@@ -85,8 +99,30 @@ public class SurveySDKDhisDataSource implements ISurveyDataSource {
 
 
     @Override
-    public void Save(List<Survey> surveys) throws Exception {
-        //Here push surveys code
+    public Map<String, PushReport> save(List<? extends IData> dataList) throws Exception {
+        List<Survey> surveys = (List<Survey>) dataList;
+
+        ServerMetadata serverMetadata = mServerMetadataRepository.getServerMetadata();
+        List<Option> options = mOptionRepository.getAll();
+
+        FromSurveyEventMapper eventMapper =
+                new FromSurveyEventMapper(mContext, getSafeUsername(), options, serverMetadata);
+
+        List<Event> events = eventMapper.map(surveys);
+        Set<String> eventUIds = new HashSet<>();
+
+        for (Event event:events) {
+            D2.events().save(event).toBlocking().single();
+            eventUIds.add(event.getUId());
+        }
+
+        Map<String,ImportSummary> importSummaryMap =
+                D2.events().push(eventUIds).toBlocking().single();
+
+        Map<String, PushReport> pushReportMap =
+                PushReportMapper.mapFromImportSummariesToPushReports(importSummaryMap);
+
+        return pushReportMap;
     }
 
     private void pullEvents(SurveyFilter filters) {
@@ -99,7 +135,7 @@ public class SurveySDKDhisDataSource implements ISurveyDataSource {
                 eventFilters.setOrganisationUnitUId(organisationUnit.getUId());
                 eventFilters.setStartDate(filters.getStartDate());
                 eventFilters.setEndDate(filters.getEndDate());
-                eventFilters.setMaxEvents(filters.getMaxEvents());
+                eventFilters.setMaxEvents(filters.getMaxSize());
 
                 D2.events().pull(eventFilters).toBlocking().single();
             }
@@ -110,9 +146,10 @@ public class SurveySDKDhisDataSource implements ISurveyDataSource {
         ServerMetadata serverMetadata = mServerMetadataRepository.getServerMetadata();
         List<Option> options = mOptionRepository.getAll();
         List<Question> questions = mQuestionRepository.getAll();
+        List<OrgUnit> orgUnits = mOrgUnitRepository.getAll();
         List<CompositeScoreDB> compositeScores = CompositeScoreDB.list();
 
-        SurveyMapper surveyMapper = new SurveyMapper(serverMetadata, compositeScores, questions,
+        SurveyMapper surveyMapper = new SurveyMapper(serverMetadata, orgUnits,compositeScores, questions,
                 options);
 
         List<Event> events = getDownloadedEvents();
@@ -167,4 +204,13 @@ public class SurveySDKDhisDataSource implements ISurveyDataSource {
 
         return allPrograms;
     }
+
+    private String getSafeUsername() {
+        UserDB user = Session.getUser();
+        if (user != null) {
+            return user.getUsername();
+        }
+        return "";
+    }
+
 }

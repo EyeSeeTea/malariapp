@@ -19,9 +19,9 @@
 
 package org.eyeseetea.malariacare.domain.exception;
 
-public class SurveysToPushNotFoundException extends Exception {
-    public SurveysToPushNotFoundException(String message)  {
+public class DataToPushNotFoundException extends Exception {
+    public DataToPushNotFoundException(String message)  {
         super("Surveys to push not found");
-        System.out.println(SurveysToPushNotFoundException.class.getName() + message);
+        System.out.println(DataToPushNotFoundException.class.getName() + message);
     }
 }
