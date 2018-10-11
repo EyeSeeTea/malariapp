@@ -49,9 +49,9 @@ import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
 import org.eyeseetea.malariacare.fragments.SurveyFragment;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
 import org.eyeseetea.malariacare.layout.dashboard.config.ModuleSettings;
-import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
+import org.eyeseetea.malariacare.strategies.ActionBarStrategy;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomTextView;
 import org.eyeseetea.malariacare.views.DoublePieChart;
@@ -247,7 +247,7 @@ public class AssessModuleController extends ModuleController {
                                             SurveyAnsweredRatio surveyAnsweredRatio) {
                                         Log.d(getClass().getName(), "onComplete");
                                         if (surveyAnsweredRatio != null) {
-                                            LayoutUtils.setActionBarTitleForSurveyAndChart(
+                                            ActionBarStrategy.setActionBarTitleForSurveyAndChart(
                                                     dashboardActivity, finalSurvey, getTitle(),
                                                     surveyAnsweredRatio);
 
@@ -260,10 +260,10 @@ public class AssessModuleController extends ModuleController {
     }
 
     private void initializeStatusChart() {
+
         DoublePieChart doublePieChart =
-                (DoublePieChart) DashboardActivity.dashboardActivity.getSupportActionBar
-                        ().getCustomView().findViewById(
-                        R.id.action_bar_chart);
+                ActionBarStrategy.getActionBarPie(DashboardActivity.dashboardActivity);
+
 
         doublePieChart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -324,7 +324,6 @@ public class AssessModuleController extends ModuleController {
 
     public void onNewSurvey() {
         if (PreferencesState.getInstance().isVerticalDashboard()) {
-            LayoutUtils.setActionBarBackButton(dashboardActivity);
             CustomTextView sentTitle = (CustomTextView) dashboardActivity.findViewById(
                     R.id.titleCompleted);
             sentTitle.setText("");

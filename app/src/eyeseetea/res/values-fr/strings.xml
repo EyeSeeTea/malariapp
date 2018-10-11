@@ -40,7 +40,7 @@
 
 <string name="assessment_title_facility_date">"Établissement / Rapports"</string>
 <string name="assessment_title_state">"État"</string>
-<string name="assessment_sent_date">"Date d'envoi"</string>
+<string name="assessment_sent_date">"Date"</string>
 <string name="assessment_title_header">"Rapport(s) actif(s)"</string>
 <string name="assessment_sent_title_header">"Rapport(s) antérieur(s)"</string>
 
@@ -121,7 +121,7 @@ Mensuelle"</string>
 <string name="feedback_show_only_media">"Afficher uniquement les questions contenant des vidéos / images"</string>
 <string name="feedback_show_only_one_or_show_all">"Afficher uniquement les derniers commentaires par rapport/établissement"</string>
 <string name="feedback_return">"Retour aux rapports"</string>
-<string name="quality_of_care">"Qualité des soins (QoC) Score:"</string>
+<string name="quality_of_care">"Qualité des soins \nGlobal Score:"</string>
 <string name="overall_quality_of_care">"Note globale sur la qualité des soins (QoC):"</string>
 <string name="feedback_info_passed">"Reussi"</string>
 <string name="feedback_info_failed">"Raté"</string>
@@ -198,7 +198,7 @@ Mensuelle"</string>
 <string name="account_permission_denied">" Contacts permission refusée. Médias ne sera pas synchronisé"</string>
 <string name="feedback_media">"Voir la vidéo commentaires"</string>
 <string name="feedback_view_image">"Ouvrir image avec ..."</string>
-<string name="select_all">"Tout sélectionner"</string>
+<string name="select_all">"Sélectionnez Toutes"</string>
 <string name="demo_login">"Le mode de démonstration"</string>
 <string name="system_defined">"Système défini"</string>
 <string name="settings_select_language">"La langue"</string>
@@ -220,12 +220,13 @@ Mensuelle"</string>
 <string name="dialog_incomplete_surveys_before_refresh">"Vous avez %d rapports non envoyés. Cela sera supprimé. Voulez-vous continuer l'actualisation?"</string>
 <string name="dialog_all_surveys_sent_before_refresh">"Vous n'avez pas d'enquêtes non envoyées. Voulez-vous continuer?"</string>
 
+<string name="header_schedule">"Programmer"</string>
 <string name="header_reschedule">"Réprogrammer"</string>
 <string name="planing_due_date">"Date d'échéance"</string>
 <string name="action_button_text">"PLAN D'ACTION"</string>
 <string name="plan_action_title">"Observations et plan d'action"</string>
-<string name="plan_action_today_date">"Terminé: %s"</string>
-<string name="plan_action_next_date">"Suivante: %s"</string>
+<string name="plan_action_today_date">"%s"</string>
+<string name="plan_action_next_date">"%s"</string>
 <string name="plan_action_description">"Décrivez ce qui a été observé lors de la visite d'un plan d'action spécifique pour combler les lacunes. Notez également une amélioration par rapport à un écart identifié lors de la dernière visite"</string>
 <string name="plan_action_gasp_title">Problèmes:</string>
 <string name="plan_action_action_plan_title">"Plan d'action:"</string>
@@ -259,8 +260,6 @@ Mensuelle"</string>
 <string name="dates">"Dates précédentes"</string>
 <string name="change_date">"Changer la date"</string>
 <string name="mark_complete">"Marquer comme terminé"</string>
-<string name="plain_text">"Texte en clair "</string>
-<string name="html_text">"Texte formaté "</string>
 <string name="schedule_title">"Calendrier de l'enquête"</string>
 <string name="save">"enregistrer"</string>
 <string name="plan_action_provider_title" >"Nom du fournisseur:"</string>
@@ -269,4 +268,13 @@ Mensuelle"</string>
 <string name="planning_label_date">"Nouvelle date:"</string>
 <string name="plan_action_edit_text_hint">"appuyez pour écrire"</string>
 <string name="header_reschedule_title">"Re-programmer"</string>
+
+<string name="scheduled">"Prévu"</string>
+
+<string name="completed_title">"Terminé"</string>
+<string name="completed_next">"Prochain"</string>
+<string name="apply_filters">"Appliquer les filtres"</string>
+<string name="filter">"Filtre"</string>
+<string name="failed_video_image_question_only">"Video / Image questions seulement"</string>
+<string name="failed_questions_only">"Échec des questions seulement"</string>
 </resources>

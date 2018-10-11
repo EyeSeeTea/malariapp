@@ -26,8 +26,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v7.view.menu.ActionMenuItemView;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -303,7 +305,6 @@ public class DashboardActivity extends BaseActivity {
     public void onNewSurvey(View view) {
         dashboardController.onNewSurvey();
     }
-
     /**
      * Create new survey from CreateSurveyFragment
      */
