@@ -206,26 +206,19 @@ public class SurveyService extends IntentService {
         LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
     }
 
-    private void reloadOnlyLastSentFragment() {
-        BaseServiceBundle sentDashboardBundle = new BaseServiceBundle();
-
-        Log.d(TAG,"getAllSentCompletedOrConflictSurveys (Thread:"+Thread.currentThread().getId()+")");
-
-        //Select surveys from sql
-        List<SurveyDB> sentSurveyList;
-
-        sentSurveyList = SurveyDB.getLastSentCompletedOrConflictSurveys();
-        sentDashboardBundle.addModelList(SurveyDB.class.getName(),sentSurveyList);
-        sentDashboardBundle.addModelList(OrgUnitDB.class.getName(),OrgUnitDB.getAllOrgUnit());
-        sentDashboardBundle.addModelList(ProgramDB.class.getName(),ProgramDB.getAllPrograms());
-
-        //Since intents does NOT admit NON serializable as values we use Session instead
-        Session.putServiceValue(RELOAD_SENT_FRAGMENT_ACTION, sentDashboardBundle);
-
-        //Returning result to anyone listening
-        Intent resultIntent= new Intent(RELOAD_SENT_FRAGMENT_ACTION);
-        LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
-
+    private void fixMissingCompositeScores() {
+        List<SurveyDB> surveys = SurveyDB.getAllCompletedSurveysWithMissingScore();
+        for(SurveyDB survey: surveys){
+            if(survey.isSent() && !survey.hasMainScore()){
+                if(!survey.hasMainScore()){
+                    List<CompositeScoreDB> compositeScores = ScoreRegister.loadCompositeScores(survey,
+                            Constants.FRAGMENT_FEEDBACK_KEY);
+                    survey.setMainScore(
+                            ScoreRegister.calculateMainScore(compositeScores, survey.getId_survey(), Constants.FRAGMENT_FEEDBACK_KEY));
+                    survey.saveMainScore();
+                }
+            }
+        }
     }
 
     private void reloadPlannedSurveys() {
@@ -317,6 +310,7 @@ public class SurveyService extends IntentService {
 
     private void reloadDashboard(){
         Log.d(TAG, "reloadDashboard");
+        fixMissingCompositeScores();
         reloadPlannedSurveys();
         reloadSentFragment();
         getAllCompletedSurveys();

@@ -31,6 +31,8 @@ import static org.eyeseetea.malariacare.data.database.AppDatabase.questionOption
 import static org.eyeseetea.malariacare.data.database.AppDatabase.questionOptionName;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.questionRelationAlias;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.questionRelationName;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.scoreAlias;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.scoreName;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.surveyAlias;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.surveyName;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.valueAlias;
@@ -372,6 +374,7 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
         } else {
             score.setScore(valScore);
         }
+        hasMainScore = true;
         score.save();
     }
 
@@ -700,6 +703,17 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
                 .orderBy(OrderBy.fromProperty(SurveyDB_Table.completion_date)).queryList();
     }
 
+
+    public static List<SurveyDB> getAllCompletedSurveysWithMissingScore() {
+        return new Select().from(SurveyDB.class).as(surveyName)
+                .join(ScoreDB.class, Join.JoinType.LEFT_OUTER).as(scoreName)
+                .on(SurveyDB_Table.id_survey.withTable(surveyAlias)
+                        .eq(ScoreDB_Table.id_survey_fk.withTable(scoreAlias)))
+                .where(SurveyDB_Table.status.withTable(surveyAlias).isNot(Constants.SURVEY_PLANNED))
+                .and(SurveyDB_Table.status.withTable(surveyAlias).isNot(Constants.SURVEY_IN_PROGRESS))
+                .and(ScoreDB_Table.id_survey_fk.withTable(scoreAlias).isNull())
+                .orderBy(OrderBy.fromProperty(SurveyDB_Table.completion_date.withTable(surveyAlias))).queryList();
+    }
 
     public static List<SurveyDB> getAllQuarantineSurveysByProgramAndOrgUnit(ProgramDB program, OrgUnitDB orgUnit) {
         return new Select().from(SurveyDB.class)
