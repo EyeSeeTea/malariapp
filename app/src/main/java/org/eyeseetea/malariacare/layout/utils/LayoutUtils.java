@@ -325,8 +325,8 @@ public class LayoutUtils {
                 surveyAnsweredRatio.getTotalStatus());
     }
 
-    private static void updateSurveyActionBarChart(ActionBar actionBar, SurveyAnsweredRatio surveyAnsweredRatio){
-        final DoublePieChart doublePieChart = ActionBarStrategy.getActionBarPie(DashboardActivity.dashboardActivity);
+    private void updateSurveyActionBarChart(ActionBar actionBar, SurveyAnsweredRatio surveyAnsweredRatio){
+        final DoublePieChart doublePieChart = getActionBarPie(DashboardActivity.dashboardActivity);
         doublePieChart.setVisibility(View.VISIBLE);
         updateChart(surveyAnsweredRatio, doublePieChart);
     }
@@ -381,7 +381,7 @@ public class LayoutUtils {
         return String.format("%X", appNameColor).substring(2);
     }
 
-    public static DoublePieChart getActionBarPie(AppCompatActivity activity) {
+    public DoublePieChart getActionBarPie(AppCompatActivity activity) {
         return (DoublePieChart) activity.getSupportActionBar
                 ().getCustomView().findViewById(
                 R.id.action_bar_chart);

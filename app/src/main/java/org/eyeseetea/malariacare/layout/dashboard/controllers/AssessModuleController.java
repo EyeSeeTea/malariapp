@@ -40,9 +40,12 @@ import org.eyeseetea.malariacare.data.repositories.SurveyAnsweredRatioRepository
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.boundary.repositories.ISettingsRepository;
+import org.eyeseetea.malariacare.domain.boundary.repositories.ISettingsRepository.ISettingsRepositoryCallback;
 import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyAnsweredRatioRepository;
+import org.eyeseetea.malariacare.domain.entity.Settings;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.domain.enums.Action;
+import org.eyeseetea.malariacare.domain.usecase.GetSettingsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.domain.usecase.ISurveyAnsweredRatioCallback;
 import org.eyeseetea.malariacare.domain.usecase.SaveSurveyAnsweredRatioUseCase;
@@ -246,16 +249,27 @@ public class AssessModuleController extends ModuleController {
 
                                     @Override
                                     public void onComplete(
-                                            SurveyAnsweredRatio surveyAnsweredRatio) {
+                                            final SurveyAnsweredRatio surveyAnsweredRatio) {
                                         Log.d(getClass().getName(), "onComplete");
                                         if (surveyAnsweredRatio != null) {
+                                            IAsyncExecutor asyncExecutor = new AsyncExecutor();
+                                            IMainExecutor mainExecutor = new UIThreadExecutor();
                                             ISettingsRepository settingsRepository = new SettingsRepository(dashboardActivity);
-                                            ActionBarStrategy actionBarStrategy = new ActionBarStrategy(settingsRepository.getSettings());
-                                            actionBarStrategy.setActionBarTitleForSurveyAndChart(
-                                                    dashboardActivity, finalSurvey, getTitle(),
-                                                    surveyAnsweredRatio);
+                                            GetSettingsUseCase getSettingsUseCase = new GetSettingsUseCase(settingsRepository, mainExecutor, asyncExecutor);
+                                            getSettingsUseCase.execute(new ISettingsRepositoryCallback() {
+                                                @Override
+                                                public void onComplete(Settings settings) {
+                                                    ActionBarStrategy actionBarStrategy = new ActionBarStrategy(settings);
 
-                                            initializeStatusChart();
+                                                    actionBarStrategy.setActionBarTitleForSurveyAndChart(
+                                                            dashboardActivity, finalSurvey, getTitle(),
+                                                            surveyAnsweredRatio);
+
+                                                    DoublePieChart doublePieChart =
+                                                            actionBarStrategy.getActionBarPie(DashboardActivity.dashboardActivity);
+                                                    initializeStatusChart(doublePieChart);
+                                                }
+                                            });
                                         }
                                     }
                                 }, surveyAnsweredRatio);
@@ -263,12 +277,7 @@ public class AssessModuleController extends ModuleController {
                 });
     }
 
-    private void initializeStatusChart() {
-
-        DoublePieChart doublePieChart =
-                ActionBarStrategy.getActionBarPie(DashboardActivity.dashboardActivity);
-
-
+    private void initializeStatusChart(DoublePieChart doublePieChart) {
         doublePieChart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -351,10 +360,6 @@ public class AssessModuleController extends ModuleController {
             return true;
         }
         return false;
-    }
-
-    public void setActionBarDashboard() {
-        super.setActionBarDashboard();
     }
 
     /**
@@ -452,7 +457,16 @@ public class AssessModuleController extends ModuleController {
 //        ScoreRegister.clear();
 
         //Update action bar title
-        super.setActionBarDashboard();
+        IAsyncExecutor asyncExecutor = new AsyncExecutor();
+        IMainExecutor mainExecutor = new UIThreadExecutor();
+        final ISettingsRepository settingsRepository = new SettingsRepository(dashboardActivity);
+        GetSettingsUseCase getSettingsUseCase = new GetSettingsUseCase(settingsRepository, mainExecutor, asyncExecutor);
+        getSettingsUseCase.execute(new ISettingsRepositoryCallback() {
+            @Override
+            public void onComplete(Settings settings) {
+                setActionBarDashboard(settings);
+            }
+        });
     }
 
     public void alertCompulsoryQuestionIncompleted() {
@@ -467,7 +481,7 @@ public class AssessModuleController extends ModuleController {
         new AlertDialog.Builder(dashboardActivity)
                 .setTitle(null)
                 .setMessage(String.format(dashboardActivity.getResources().getString(
-                        R.string.dialog_info_ask_for_completion), survey.getProgram().getName()))
+                        R.string.dialog_info_ask_for_completion)+"", survey.getProgram().getName()))
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
                         //Change state
@@ -493,7 +507,7 @@ public class AssessModuleController extends ModuleController {
         new AlertDialog.Builder(dashboardActivity)
                 .setTitle(null)
                 .setMessage(String.format(dashboardActivity.getResources().getString(
-                        R.string.dialog_info_on_complete), survey.getProgram().getName()))
+                        R.string.dialog_info_on_complete)+"", survey.getProgram().getName()))
                 .setPositiveButton(android.R.string.ok, null)
                 .setCancelable(true)
                 .create().show();
@@ -503,7 +517,7 @@ public class AssessModuleController extends ModuleController {
         new AlertDialog.Builder(dashboardActivity)
                 .setTitle(null)
                 .setMessage(String.format(dashboardActivity.getResources().getString(
-                        R.string.dialog_info_on_complete), survey.getProgram().getName()))
+                        R.string.dialog_info_on_complete)+"", survey.getProgram().getName()))
                 .setNeutralButton(android.R.string.ok, null)
                 .setPositiveButton((R.string.go_to_feedback),
                         new DialogInterface.OnClickListener() {

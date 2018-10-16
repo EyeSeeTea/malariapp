@@ -59,10 +59,12 @@ import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.boundary.repositories.ISettingsRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyAnsweredRatioRepository;
 import org.eyeseetea.malariacare.domain.entity.Question;
+import org.eyeseetea.malariacare.domain.entity.Settings;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.domain.subscriber.DomainEventPublisher;
 import org.eyeseetea.malariacare.domain.subscriber.DomainEventSubscriber;
 import org.eyeseetea.malariacare.domain.subscriber.event.ValueChangedEvent;
+import org.eyeseetea.malariacare.domain.usecase.GetSettingsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.domain.usecase.ISurveyAnsweredRatioCallback;
 import org.eyeseetea.malariacare.domain.usecase.SaveSurveyAnsweredRatioUseCase;
@@ -99,7 +101,7 @@ public class SurveyFragment extends Fragment implements DomainEventSubscriber<Va
     IAsyncExecutor asyncExecutor;
     IMainExecutor mainExecutor;
     SurveyAnsweredRatio mSurveyAnsweredRatio;
-    ISettingsRepository settingsRepository;
+    Settings mSettings;
 
 
     //FIXME Better than a bunch of 'ifs' worse than it should
@@ -187,7 +189,6 @@ public class SurveyFragment extends Fragment implements DomainEventSubscriber<Va
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
         PreferencesState.getInstance().initalizateActivityDependencies();
-
     }
 
     @Override
@@ -199,7 +200,6 @@ public class SurveyFragment extends Fragment implements DomainEventSubscriber<Va
         }
 
         llLayout = (RelativeLayout) inflater.inflate(R.layout.survey, container, false);
-        settingsRepository= new SettingsRepository(getActivity().getApplicationContext());
         surveyAnsweredRatioRepository = new SurveyAnsweredRatioRepository();
         registerReceiver();
         createMenu(moduleName);
@@ -404,15 +404,24 @@ public class SurveyFragment extends Fragment implements DomainEventSubscriber<Va
         mainExecutor.run(new Runnable() {
             @Override
             public void run() {
-                runChartUpdate(valueChangedEvent);
+                IAsyncExecutor asyncExecutor = new AsyncExecutor();
+                IMainExecutor mainExecutor = new UIThreadExecutor();
+                final ISettingsRepository settingsRepository = new SettingsRepository(getActivity().getApplicationContext());
+                GetSettingsUseCase getSettingsUseCase = new GetSettingsUseCase(settingsRepository, mainExecutor, asyncExecutor);
+                getSettingsUseCase.execute(new ISettingsRepository.ISettingsRepositoryCallback() {
+                    @Override
+                    public void onComplete(Settings settings) {
+                        ActionBarStrategy actionBarStrategy = new ActionBarStrategy(settings);
+                        DoublePieChart doublePieChart = actionBarStrategy.getActionBarPie(DashboardActivity.dashboardActivity);
+                        runChartUpdate(valueChangedEvent, doublePieChart);
+                    }
+                });
             }
         });
     }
 
-    private void runChartUpdate(final ValueChangedEvent valueChangedEvent) {
+    private void runChartUpdate(final ValueChangedEvent valueChangedEvent, final DoublePieChart doublePieChart) {
 
-        final DoublePieChart doublePieChart =
-                ActionBarStrategy.getActionBarPie(DashboardActivity.dashboardActivity);
         if(doublePieChart!=null){
             doublePieChart.setVisibility(View.VISIBLE);
         }
@@ -478,6 +487,16 @@ public class AsyncChangeTab extends AsyncTask<Void, Integer, View> {
         super.onPreExecute();
         //actionSpinner
         startProgress();
+        IAsyncExecutor asyncExecutor = new AsyncExecutor();
+        IMainExecutor mainExecutor = new UIThreadExecutor();
+        final ISettingsRepository settingsRepository = new SettingsRepository(getActivity().getApplicationContext());
+        GetSettingsUseCase getSettingsUseCase = new GetSettingsUseCase(settingsRepository, mainExecutor, asyncExecutor);
+        getSettingsUseCase.execute(new ISettingsRepository.ISettingsRepositoryCallback() {
+            @Override
+            public void onComplete(Settings settings) {
+                mSettings = settings;
+            }
+        });
     }
 
     @Override
@@ -797,19 +816,28 @@ private class SurveyReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.d(TAG, "onReceive");
-        List<CompositeScoreDB> compositeScores =
+        final List<CompositeScoreDB> compositeScores =
                 (List<CompositeScoreDB>) Session.popServiceValue(
                         SurveyService.PREPARE_SURVEY_ACTION_COMPOSITE_SCORES);
-        List<TabDB> tabs = (List<TabDB>) Session.popServiceValue(
+        final List<TabDB> tabs = (List<TabDB>) Session.popServiceValue(
                 SurveyService.PREPARE_SURVEY_ACTION_TABS);
 
-        tabAdaptersCache.reloadAdapters(tabs, compositeScores);
-        reloadTabs(tabs);
-        stopProgress();
-        allTabs = (List<TabDB>) Session.popServiceValue(SurveyService.PREPARE_ALL_TABS);
-        // After loading first tab we start the individual services that preload the items
-        // for the rest of tabs
-        preLoadItems();
+        IAsyncExecutor asyncExecutor = new AsyncExecutor();
+        IMainExecutor mainExecutor = new UIThreadExecutor();
+        final ISettingsRepository settingsRepository = new SettingsRepository(getActivity().getApplicationContext());
+        GetSettingsUseCase getSettingsUseCase = new GetSettingsUseCase(settingsRepository, mainExecutor, asyncExecutor);
+        getSettingsUseCase.execute(new ISettingsRepository.ISettingsRepositoryCallback() {
+            @Override
+            public void onComplete(Settings settings) {
+                tabAdaptersCache.reloadAdapters(tabs, compositeScores, settings);
+                reloadTabs(tabs);
+                stopProgress();
+                allTabs = (List<TabDB>) Session.popServiceValue(SurveyService.PREPARE_ALL_TABS);
+                // After loading first tab we start the individual services that preload the items
+                // for the rest of tabs
+                preLoadItems();
+            }
+        });
     }
 }
 
@@ -871,12 +899,12 @@ private class TabAdaptersCache {
      * Resets the state of the cache.
      * Called form the receiver once data is ready.
      */
-    public void reloadAdapters(List<TabDB> tabs, List<CompositeScoreDB> compositeScores) {
+    public void reloadAdapters(List<TabDB> tabs, List<CompositeScoreDB> compositeScores, Settings settings) {
         TabDB firstTab = tabs.get(0);
         this.adapters.clear();
 
         this.adapters.put(firstTab, AutoTabAdapter.build(firstTab, getActivity(),
-                Session.getSurveyByModule(moduleName).getId_survey(), moduleName, settingsRepository.getSettings()));
+                Session.getSurveyByModule(moduleName).getId_survey(), moduleName, settings));
         this.compositeScores = compositeScores;
     }
 
@@ -908,7 +936,7 @@ private class TabAdaptersCache {
      */
     private ITabAdapter buildAdapter(TabDB tab) {
         return AutoTabAdapter.build(tab, getActivity(),
-                Session.getSurveyByModule(moduleName).getId_survey(), moduleName, settingsRepository.getSettings());
+                Session.getSurveyByModule(moduleName).getId_survey(), moduleName, mSettings);
     }
 }
 }

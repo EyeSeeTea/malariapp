@@ -351,7 +351,7 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
     private WebView initMonitor() {
         Activity activity = getActivity();
         WebView webView = (WebView) activity.findViewById(R.id.dashboard_monitor);
-        //Init webView settings
+        //Init webView mSettings
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             webView.getSettings().setAllowUniversalAccessFromFileURLs(true);
             webView.getSettings().setAllowFileAccessFromFileURLs(true);

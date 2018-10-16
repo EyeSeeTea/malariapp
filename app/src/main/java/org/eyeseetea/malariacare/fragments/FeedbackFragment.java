@@ -45,8 +45,14 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.data.repositories.SettingsRepository;
+import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
+import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.boundary.repositories.ISettingsRepository;
+import org.eyeseetea.malariacare.domain.entity.Settings;
+import org.eyeseetea.malariacare.domain.usecase.GetSettingsUseCase;
 import org.eyeseetea.malariacare.layout.adapters.survey.FeedbackAdapter;
+import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
+import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.strategies.FeedbackFragmentStyleStrategy;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -108,7 +114,17 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
         FragmentActivity faActivity = (FragmentActivity) super.getActivity();
         // Replace LinearLayout by the type of the root element of the layout you're trying to load
         llLayout = (RelativeLayout) inflater.inflate(R.layout.feedback, container, false);
-        prepareUI(moduleName);
+
+        IAsyncExecutor asyncExecutor = new AsyncExecutor();
+        IMainExecutor mainExecutor = new UIThreadExecutor();
+        final ISettingsRepository settingsRepository = new SettingsRepository(getActivity().getApplicationContext());
+        GetSettingsUseCase getSettingsUseCase = new GetSettingsUseCase(settingsRepository, mainExecutor, asyncExecutor);
+        getSettingsUseCase.execute(new ISettingsRepository.ISettingsRepositoryCallback() {
+            @Override
+            public void onComplete(Settings settings) {
+                prepareUI(moduleName, settings);
+            }
+        });
         //Starts the background service only one time
         startProgress();
         registerReceiver();
@@ -158,13 +174,12 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
     /**
      * Gets a reference to the progress view in order to stop it later
      */
-    private void prepareUI(String module) {
+    private void prepareUI(String module, Settings settings) {
         //Get progress
         progressBar = (ProgressBar) llLayout.findViewById(R.id.survey_progress);
-        ISettingsRepository settingsRepository = new SettingsRepository(getActivity().getApplicationContext());
         //Set adapter and list
         feedbackAdapter = new FeedbackAdapter(getActivity(),
-                Session.getSurveyByModule(module).getId_survey(), module, settingsRepository.getSettings());
+                Session.getSurveyByModule(module).getId_survey(), module, settings);
         feedbackListView = (ListView) llLayout.findViewById(R.id.feedbackListView);
         feedbackListView.setAdapter(feedbackAdapter);
         feedbackListView.setDivider(null);

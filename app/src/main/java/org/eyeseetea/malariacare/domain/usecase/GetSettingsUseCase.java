@@ -1,11 +1,9 @@
 package org.eyeseetea.malariacare.domain.usecase;
 
-import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.boundary.repositories.ISettingsRepository;
 import org.eyeseetea.malariacare.domain.entity.Settings;
-import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 
 public class GetSettingsUseCase implements UseCase{
 
@@ -22,10 +20,6 @@ public class GetSettingsUseCase implements UseCase{
         this.asyncExecutor = asyncExecutor;
         this.settingsRepository = settingsRepository;
     }
-
-    public SurveyAnsweredRatio mSurveyAnsweredRatio;
-
-    SurveyDB surveyDB;
 
     public void execute(ISettingsRepository.ISettingsRepositoryCallback callback) {
         mCallback = callback;

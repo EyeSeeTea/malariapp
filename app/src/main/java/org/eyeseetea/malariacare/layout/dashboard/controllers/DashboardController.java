@@ -42,9 +42,17 @@ import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyScheduleDB;
 import org.eyeseetea.malariacare.data.database.utils.planning.ScheduleListener;
+import org.eyeseetea.malariacare.data.repositories.SettingsRepository;
+import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
+import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
+import org.eyeseetea.malariacare.domain.boundary.repositories.ISettingsRepository;
+import org.eyeseetea.malariacare.domain.entity.Settings;
+import org.eyeseetea.malariacare.domain.usecase.GetSettingsUseCase;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardSettings;
+import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
+import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
@@ -171,8 +179,17 @@ public class DashboardController {
         }else {
             onCreateHorizontal(savedInstanceState);
         }
-        //First module sets the dashboard actionBar
-        getFirstVisibleModule().setActionBarDashboard();
+        IAsyncExecutor asyncExecutor = new AsyncExecutor();
+        IMainExecutor mainExecutor = new UIThreadExecutor();
+        final ISettingsRepository settingsRepository = new SettingsRepository(dashboardActivity);
+        GetSettingsUseCase getSettingsUseCase = new GetSettingsUseCase(settingsRepository, mainExecutor, asyncExecutor);
+        getSettingsUseCase.execute(new ISettingsRepository.ISettingsRepositoryCallback() {
+            @Override
+            public void onComplete(Settings settings) {
+                //First module sets the dashboard actionBar
+                getFirstVisibleModule().setActionBarDashboard(settings);
+            }
+        });
     }
 
     public void onCreateVertical(){
@@ -221,7 +238,7 @@ public class DashboardController {
             public void onTabChanged(String tabId) {
                 //References to previous and current modules
                 ModuleController currentModuleController = getCurrentModule();
-                ModuleController nextModuleController = getModuleByName(tabId);
+                final ModuleController nextModuleController = getModuleByName(tabId);
 
                 //Reset tab colors
                 resetTabBackground();
@@ -241,10 +258,19 @@ public class DashboardController {
 
                 //Before leaving current tab
                 currentModuleController.onExitTab();
-                //Update action bar
-                nextModuleController.setActionBarDashboard();
                 //Preparing new tab
                 nextModuleController.onTabChanged();
+                IAsyncExecutor asyncExecutor = new AsyncExecutor();
+                IMainExecutor mainExecutor = new UIThreadExecutor();
+                final ISettingsRepository settingsRepository = new SettingsRepository(dashboardActivity);
+                GetSettingsUseCase getSettingsUseCase = new GetSettingsUseCase(settingsRepository, mainExecutor, asyncExecutor);
+                getSettingsUseCase.execute(new ISettingsRepository.ISettingsRepositoryCallback() {
+                    @Override
+                    public void onComplete(Settings settings) {
+                        //Update action bar
+                        nextModuleController.setActionBarDashboard(settings);
+                    }
+                });
             }
         });
     }
@@ -528,9 +554,18 @@ public class DashboardController {
 
         }
 
-        ImproveModuleController improveModuleController = (ImproveModuleController)getModuleByName(ImproveModuleController.getSimpleName());
+        final ImproveModuleController improveModuleController = (ImproveModuleController)getModuleByName(ImproveModuleController.getSimpleName());
         improveModuleController.onFeedbackSelected(survey, modifyFilter);
-        improveModuleController.setActionBarDashboardWithProgram();
+        IAsyncExecutor asyncExecutor = new AsyncExecutor();
+        IMainExecutor mainExecutor = new UIThreadExecutor();
+        final ISettingsRepository settingsRepository = new SettingsRepository(dashboardActivity);
+        GetSettingsUseCase getSettingsUseCase = new GetSettingsUseCase(settingsRepository, mainExecutor, asyncExecutor);
+        getSettingsUseCase.execute(new ISettingsRepository.ISettingsRepositoryCallback() {
+            @Override
+            public void onComplete(Settings settings) {
+                improveModuleController.setActionBarDashboardWithProgram(settings);
+            }
+        });
     }
 
 
@@ -614,7 +649,16 @@ public class DashboardController {
             module.reloadData();
 
         }
-        getFirstVisibleModule().setActionBarDashboard();
+        IAsyncExecutor asyncExecutor = new AsyncExecutor();
+        IMainExecutor mainExecutor = new UIThreadExecutor();
+        final ISettingsRepository settingsRepository = new SettingsRepository(dashboardActivity);
+        GetSettingsUseCase getSettingsUseCase = new GetSettingsUseCase(settingsRepository, mainExecutor, asyncExecutor);
+        getSettingsUseCase.execute(new ISettingsRepository.ISettingsRepositoryCallback() {
+            @Override
+            public void onComplete(Settings settings) {
+                getFirstVisibleModule().setActionBarDashboard(settings);
+            }
+        });
     }
 
     /**

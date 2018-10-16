@@ -28,13 +28,19 @@ import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.repositories.SettingsRepository;
+import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
+import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.boundary.repositories.ISettingsRepository;
+import org.eyeseetea.malariacare.domain.entity.Settings;
+import org.eyeseetea.malariacare.domain.usecase.GetSettingsUseCase;
 import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
 import org.eyeseetea.malariacare.fragments.FeedbackFragment;
 import org.eyeseetea.malariacare.fragments.PlanActionFragment;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
 import org.eyeseetea.malariacare.layout.dashboard.config.ModuleSettings;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
+import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.strategies.ActionBarStrategy;
 import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
 
@@ -110,7 +116,7 @@ public class ImproveModuleController extends ModuleController {
         closeFeedbackFragment();
     }
 
-    public void onFeedbackSelected(SurveyDB survey, boolean modifyFilter){
+    public void onFeedbackSelected(final SurveyDB survey, final boolean modifyFilter){
         Session.setSurveyByModule(survey, getSimpleName());
         try {
             LinearLayout filters = (LinearLayout) dashboardActivity.findViewById(R.id.filters_sentSurveys);
@@ -123,13 +129,24 @@ public class ImproveModuleController extends ModuleController {
         // on to the back stack.
         feedbackFragment.setModuleName(getSimpleName());
         replaceFragment(R.id.dashboard_completed_container, feedbackFragment);
-        ISettingsRepository settingsRepository = new SettingsRepository(dashboardActivity.getApplicationContext());
-        ActionBarStrategy actionBarStrategy = new ActionBarStrategy(settingsRepository.getSettings());
-        actionBarStrategy.setActionBarForSurveyFeedback(dashboardActivity, survey);
 
-        if(modifyFilter) {
-            UpdateFiltersBySurvey(survey);
-        }
+
+        IAsyncExecutor asyncExecutor = new AsyncExecutor();
+        IMainExecutor mainExecutor = new UIThreadExecutor();
+        final ISettingsRepository settingsRepository = new SettingsRepository(dashboardActivity);
+        GetSettingsUseCase getSettingsUseCase = new GetSettingsUseCase(settingsRepository, mainExecutor, asyncExecutor);
+        getSettingsUseCase.execute(new ISettingsRepository.ISettingsRepositoryCallback() {
+            @Override
+            public void onComplete(Settings settings) {
+                ActionBarStrategy actionBarStrategy = new ActionBarStrategy(settings);
+                actionBarStrategy.setActionBarForSurveyFeedback(dashboardActivity, survey);
+
+                if(modifyFilter) {
+                    UpdateFiltersBySurvey(survey);
+                }
+
+            }
+        });
     }
 
     public void onPlanActionSelected(SurveyDB survey){
@@ -176,7 +193,16 @@ public class ImproveModuleController extends ModuleController {
             reloadFragment();
         }
 
-        //Update action bar title
-        super.setActionBarDashboard();
+        IAsyncExecutor asyncExecutor = new AsyncExecutor();
+        IMainExecutor mainExecutor = new UIThreadExecutor();
+        final ISettingsRepository settingsRepository = new SettingsRepository(dashboardActivity);
+        GetSettingsUseCase getSettingsUseCase = new GetSettingsUseCase(settingsRepository, mainExecutor, asyncExecutor);
+        getSettingsUseCase.execute(new ISettingsRepository.ISettingsRepositoryCallback() {
+            @Override
+            public void onComplete(Settings settings) {
+                //Update action bar title
+                setActionBarDashboard(settings);
+            }
+        });
     }
 }

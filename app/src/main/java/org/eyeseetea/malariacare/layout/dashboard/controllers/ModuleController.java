@@ -37,6 +37,7 @@ import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.repositories.SettingsRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.ISettingsRepository;
+import org.eyeseetea.malariacare.domain.entity.Settings;
 import org.eyeseetea.malariacare.fragments.IModuleFragment;
 import org.eyeseetea.malariacare.layout.dashboard.config.ModuleSettings;
 import org.eyeseetea.malariacare.strategies.ActionBarStrategy;
@@ -220,15 +221,13 @@ public abstract class ModuleController {
                 }).create().show();
     }
 
-    public void setActionBarDashboard() {
-        ISettingsRepository settingsRepository = new SettingsRepository(dashboardActivity.getApplicationContext());
-        ActionBarStrategy actionBarStrategy = new ActionBarStrategy(settingsRepository.getSettings());
+    public void setActionBarDashboard(Settings settings) {
+        ActionBarStrategy actionBarStrategy = new ActionBarStrategy(settings);
         actionBarStrategy.setActionBarDashboard(dashboardActivity, getTitle());
     }
 
-    public void setActionBarDashboardWithProgram() {
-        ISettingsRepository settingsRepository = new SettingsRepository(dashboardActivity.getApplicationContext());
-        ActionBarStrategy actionBarStrategy = new ActionBarStrategy(settingsRepository.getSettings());
+    public void setActionBarDashboardWithProgram(Settings settings) {
+        ActionBarStrategy actionBarStrategy = new ActionBarStrategy(settings);
         actionBarStrategy.setActionBarDashboard(dashboardActivity, getTitle()+" - "+Session.getSurveyByModule(getName()).getProgram().getName());
     }
 
