@@ -19,40 +19,40 @@
 
 package org.eyeseetea.malariacare.data.database.iomodules.dhis.importer;
 
-import org.eyeseetea.malariacare.data.boundaries.ISurveyDataSource;
+import org.eyeseetea.malariacare.data.boundaries.IDataLocalDataSource;
+import org.eyeseetea.malariacare.data.boundaries.IDataRemoteDataSource;
 import org.eyeseetea.malariacare.domain.boundary.IPullDataController;
-import org.eyeseetea.malariacare.domain.entity.Survey;
+import org.eyeseetea.malariacare.domain.entity.IData;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
 import org.eyeseetea.malariacare.domain.usecase.pull.SurveyFilter;
 
 import java.util.List;
 
 public class PullDataController implements IPullDataController {
-    private final String TAG = ".PullDataController";
 
     IPullDataController.Callback callback;
 
-    private ISurveyDataSource remoteSurveyDataSource;
-    private ISurveyDataSource localSurveyDataSource;
+    private IDataLocalDataSource mSurveyLocalDataSource;
+    private IDataRemoteDataSource mSurveyRemoteDataSource;
 
     public PullDataController(
-            ISurveyDataSource localSurveyDataSource,
-            ISurveyDataSource remoteSurveyDataSource) {
+            IDataLocalDataSource surveyLocalDataSource,
+            IDataRemoteDataSource surveyRemoteDataSource) {
 
-        this.localSurveyDataSource = localSurveyDataSource;
-        this.remoteSurveyDataSource = remoteSurveyDataSource;
+        this.mSurveyLocalDataSource = surveyLocalDataSource;
+        this.mSurveyRemoteDataSource = surveyRemoteDataSource;
     }
 
     @Override
     public void pullData(final SurveyFilter filters, final IPullDataController.Callback callback) {
         this.callback = callback;
 
-       try {
+        try {
             callback.onStep(PullStep.PREPARING_SURVEYS);
 
-            List<Survey> surveys = remoteSurveyDataSource.getSurveys(filters);
+            List<? extends IData> surveys = mSurveyRemoteDataSource.get(filters);
 
-            localSurveyDataSource.Save(surveys);
+            mSurveyLocalDataSource.save(surveys);
 
             callback.onComplete();
 

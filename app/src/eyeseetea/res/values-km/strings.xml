@@ -232,7 +232,7 @@ evaluation"</string>
 <string name="survey_second_step">"Checking mandatory questions"</string>
 <string name="survey_third_step">"Calculating completeness ratio"</string>
 <string name="survey_fourth_step">"Calculating Score register"</string>
-<string name="error_conflict_message"></string>
+<string name="error_conflict_message">ព្រឹត្តិការណ៍ដែលមាន UID:%1$s ។ ត្រូវបានផ្ទុកឡើងជាមួយ pushConflict នៅក្នុងធាតុទិន្នន័យ UID:%2$s ជាមួយសារ:%3$s ។ សូមទាក់ទងអ្នកគ្រប់គ្រង។</string>
 <string name="dialog_action_logout">"ចេញតម្រូវឱ្យលុបឬផ្ញើទិន្នន័យមិនទាន់អានរបស់អ្នក។ "</string>
 <string name="dialog_action_refresh">"ទិន្នន័យមេតាឱ្យស្រស់តម្រូវឱ្យលុបឬផ្ញើទិន្នន័យមិនទាន់អានរបស់អ្នក។"</string>
 <string name="dialog_incomplete_surveys_before_refresh">"អ្នកមានការស្ទង់មតិមិនបានផ្ញើ %d និងនឹងត្រូវបានលុប។ តើអ្នកចង់បន្តឬ?"</string>

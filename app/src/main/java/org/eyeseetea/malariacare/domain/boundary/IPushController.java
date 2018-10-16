@@ -21,7 +21,7 @@ package org.eyeseetea.malariacare.domain.boundary;
 
 public interface IPushController {
 
-    enum Kind {EVENTS, PLANS}
+    enum Kind {EVENTS, OBSERVATIONS}
 
     void push(IPushControllerCallback callback);
 

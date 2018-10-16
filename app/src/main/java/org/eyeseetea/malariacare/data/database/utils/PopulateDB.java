@@ -32,7 +32,6 @@ import org.eyeseetea.malariacare.data.database.model.SurveyScheduleDB;
 import org.eyeseetea.malariacare.data.database.model.TabDB;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.model.ValueDB;
-import org.eyeseetea.malariacare.data.database.model.ObsActionPlanDB;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
