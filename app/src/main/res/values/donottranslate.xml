@@ -132,5 +132,7 @@
     <string name="user_preference_program_filter" translatable="false">user_preference_program_filter</string>
     <string name="user_preference_org_unit_filter" translatable="false">user_preference_org_unit_filter</string>
     <string-array name="server_list">
+        <item>@string/login_info_dhis_default_server_url</item>
+        <item>@string/other</item>
     </string-array>
 </resources>
