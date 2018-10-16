@@ -5,11 +5,12 @@ import android.util.Log;
 
 import org.eyeseetea.malariacare.domain.entity.Observation;
 import org.eyeseetea.malariacare.domain.entity.ObservationValue;
+import org.eyeseetea.malariacare.domain.entity.Option;
+import org.eyeseetea.malariacare.domain.entity.ServerMetadata;
 import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
 import org.hisp.dhis.client.sdk.models.event.Event;
 import org.hisp.dhis.client.sdk.models.trackedentity.TrackedEntityDataValue;
-import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,8 +21,9 @@ public class FromObservationEventMapper extends EventMapper {
     private String TAG = "FromObservationEventMapper";
     private Map<String, Survey> surveysMap;
 
-    public FromObservationEventMapper(Context context, String username, List<Survey> surveys) {
-        super(context,username);
+    public FromObservationEventMapper(Context context, String username,
+            List<Survey> surveys, List<Option> options, ServerMetadata serverMetadata) {
+        super(context,username, options, serverMetadata);
 
         createMaps(surveys);
     }
@@ -51,14 +53,7 @@ public class FromObservationEventMapper extends EventMapper {
 
         try {
             Log.d(TAG, "build event " + observation.getSurveyUid());
-            Event event = buildEvent(observation.getSurveyUid(),relatedSurvey.getOrgUnitUId(),
-                    relatedSurvey.getProgramUId(), false);
-
-            event.setCreated(new DateTime(relatedSurvey.getCreationDate()));
-            event.setEventDate(new DateTime(relatedSurvey.getCreationDate()));
-            event.setLastUpdated(new DateTime(relatedSurvey.getUploadDate()));
-
-            event.setDataValues(new ArrayList<TrackedEntityDataValue>());
+            Event event = super.mapFromSurvey(relatedSurvey);
 
             for (ObservationValue observationValue : observation.getValues()) {
                 TrackedEntityDataValue dataValue =

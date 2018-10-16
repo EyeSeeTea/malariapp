@@ -7,7 +7,6 @@ import org.eyeseetea.malariacare.data.boundaries.IDataLocalDataSource;
 import org.eyeseetea.malariacare.data.boundaries.IDataRemoteDataSource;
 import org.eyeseetea.malariacare.data.database.MetadataValidator;
 import org.eyeseetea.malariacare.data.database.datasources.ObservationLocalDataSource;
-import org.eyeseetea.malariacare.data.database.datasources.QuestionLocalDataSource;
 import org.eyeseetea.malariacare.data.database.datasources.SurveyLocalDataSource;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushDataController;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullDataController;
@@ -15,9 +14,6 @@ import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullMetad
 import org.eyeseetea.malariacare.data.network.ConnectivityManager;
 import org.eyeseetea.malariacare.data.remote.sdk.data.ObservationSDKDhisDataSource;
 import org.eyeseetea.malariacare.data.remote.sdk.data.SurveySDKDhisDataSource;
-import org.eyeseetea.malariacare.data.repositories.OptionRepository;
-import org.eyeseetea.malariacare.data.repositories.OrgUnitRepository;
-import org.eyeseetea.malariacare.data.repositories.ServerMetadataRepository;
 import org.eyeseetea.malariacare.domain.boundary.IConnectivityManager;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
@@ -32,8 +28,9 @@ import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 
 public class SyncFactory {
-    IAsyncExecutor asyncExecutor = new AsyncExecutor();
-    IMainExecutor mainExecutor = new UIThreadExecutor();
+    private IAsyncExecutor asyncExecutor = new AsyncExecutor();
+    private IMainExecutor mainExecutor = new UIThreadExecutor();
+    private MetadataFactory metadataFactory = new MetadataFactory();
 
     public PullUseCase getPullUseCase(Context context){
         PullMetadataController pullMetadataController = new PullMetadataController();
@@ -81,11 +78,13 @@ public class SyncFactory {
 
     @NonNull
     private IDataRemoteDataSource getSurveyRemoteDataSource(Context context) {
+
         IServerMetadataRepository serverMetadataRepository =
-                new ServerMetadataRepository(context);
-        IOptionRepository optionRepository = new OptionRepository();
-        IQuestionRepository questionRepository = new QuestionLocalDataSource();
-        IOrgUnitRepository orgUnitRepository = new OrgUnitRepository();
+                metadataFactory.getServerMetadataRepository(context);
+
+        IOptionRepository optionRepository = metadataFactory.getOptionRepository();
+        IQuestionRepository questionRepository = metadataFactory.getQuestionLocalDataSource();
+        IOrgUnitRepository orgUnitRepository = metadataFactory.getOrgUnitRepository();
         IConnectivityManager connectivityManager = new ConnectivityManager();
 
         return new SurveySDKDhisDataSource(context, serverMetadataRepository,
@@ -99,6 +98,13 @@ public class SyncFactory {
 
     @NonNull
     private IDataRemoteDataSource getObservationRemoteDataSource(Context context) {
-        return new ObservationSDKDhisDataSource(context,getSurveyLocalDataSource());
+        IServerMetadataRepository serverMetadataRepository =
+                metadataFactory.getServerMetadataRepository(context);
+
+        IOptionRepository optionRepository = metadataFactory.getOptionRepository();
+
+
+        return new ObservationSDKDhisDataSource(context,getSurveyLocalDataSource(),
+                serverMetadataRepository, optionRepository);
     }
 }

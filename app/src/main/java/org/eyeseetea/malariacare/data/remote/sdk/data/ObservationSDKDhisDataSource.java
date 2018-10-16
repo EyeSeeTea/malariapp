@@ -26,13 +26,18 @@ import org.eyeseetea.malariacare.data.boundaries.IDataRemoteDataSource;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.sync.mappers.PushReportMapper;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IOptionRepository;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IServerMetadataRepository;
 import org.eyeseetea.malariacare.domain.entity.IData;
 import org.eyeseetea.malariacare.domain.entity.Observation;
+import org.eyeseetea.malariacare.domain.entity.Option;
+import org.eyeseetea.malariacare.domain.entity.ServerMetadata;
 import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.entity.pushsummary.PushReport;
 import org.eyeseetea.malariacare.domain.usecase.pull.SurveyFilter;
 import org.hisp.dhis.client.sdk.android.api.D2;
 import org.hisp.dhis.client.sdk.models.common.importsummary.ImportSummary;
+import org.hisp.dhis.client.sdk.models.common.state.Action;
 import org.hisp.dhis.client.sdk.models.event.Event;
 
 import java.util.HashSet;
@@ -44,10 +49,15 @@ public class ObservationSDKDhisDataSource implements IDataRemoteDataSource {
 
     private final Context mContext;
     private final IDataLocalDataSource mSurveyLocalDataSource;
+    private final IOptionRepository mOptionRepository;
+    private final IServerMetadataRepository mServerMetadataRepository;
 
-    public ObservationSDKDhisDataSource(Context context, IDataLocalDataSource surveyLocalDataSource) {
+    public ObservationSDKDhisDataSource(Context context, IDataLocalDataSource surveyLocalDataSource,
+            IServerMetadataRepository serverMetadataRepository,IOptionRepository optionRepository) {
         mContext = context;
         mSurveyLocalDataSource = surveyLocalDataSource;
+        mOptionRepository = optionRepository;
+        mServerMetadataRepository = serverMetadataRepository;
     }
 
     @Override
@@ -61,9 +71,12 @@ public class ObservationSDKDhisDataSource implements IDataRemoteDataSource {
     public Map<String, PushReport> save(List<? extends IData> dataList) throws Exception {
         List<Observation> observations = (List<Observation>) dataList;
 
+        ServerMetadata serverMetadata = mServerMetadataRepository.getServerMetadata();
+        List<Option> options = mOptionRepository.getAll();
+
         FromObservationEventMapper eventMapper =
                 new FromObservationEventMapper(mContext, getSafeUsername(),
-                        (List<Survey>) mSurveyLocalDataSource.getAll());
+                        (List<Survey>) mSurveyLocalDataSource.getAll(),options, serverMetadata);
 
         List<Event> events = eventMapper.map(observations);
         Set<String> eventUIds = new HashSet<>();
@@ -74,7 +87,7 @@ public class ObservationSDKDhisDataSource implements IDataRemoteDataSource {
         }
 
         Map<String,ImportSummary> importSummaryMap =
-                D2.events().push(eventUIds).toBlocking().single();
+                D2.events().push(eventUIds, Action.TO_UPDATE).toBlocking().single();
 
         Map<String, PushReport> pushReportMap =
                 PushReportMapper.mapFromImportSummariesToPushReports(importSummaryMap);
