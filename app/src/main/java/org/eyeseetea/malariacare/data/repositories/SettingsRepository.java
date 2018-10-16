@@ -19,14 +19,6 @@ import java.util.HashMap;
 
 
 public class SettingsRepository implements ISettingsRepository {
-    public static final String DEFAULT_SCHEDULE_MONTHS_VALUE ="https://data.psi-mis.org";
-    public static final String ALTERNATIVE_SCHEDULE_MONTHS_VALUE ="https://zw.hnqis.org/";
-    public static final HashMap<String, int[]> nextScheduleMonths = new HashMap<>();
-
-    static {
-        nextScheduleMonths.put(DEFAULT_SCHEDULE_MONTHS_VALUE, new int[]{2, 4, 6});
-        nextScheduleMonths.put(ALTERNATIVE_SCHEDULE_MONTHS_VALUE, new int[]{1, 1, 6});
-    }
 
     Context context;
 
@@ -42,7 +34,8 @@ public class SettingsRepository implements ISettingsRepository {
 
     private Server getServer() {
         String serverUrl=getServerUrl();
-        return new Server(getServerUrl(), new NextScheduleMonths(getMonthArray(serverUrl)));
+        int[] month = NextScheduleMonths.getMonthArray(serverUrl);
+        return new Server(getServerUrl(), new NextScheduleMonths(month));
     }
 
     private String getServerUrl() {
@@ -52,14 +45,5 @@ public class SettingsRepository implements ISettingsRepository {
                 PreferencesState.getInstance().getContext().getResources().getString(
                         R.string.dhis_url), "");
         return serverUrl;
-    }
-
-    private int[] getMonthArray(String serverUrl) {
-        if(nextScheduleMonths.containsKey(serverUrl))
-        {
-            return nextScheduleMonths.get(serverUrl);
-        } else {
-            return nextScheduleMonths.get(DEFAULT_SCHEDULE_MONTHS_VALUE);
-        }
     }
 }
