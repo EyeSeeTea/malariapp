@@ -45,6 +45,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -58,21 +59,31 @@ import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.remote.api.UserAccountAPIDataSource;
 import org.eyeseetea.malariacare.data.database.datasources.UserAccountLocalDataSource;
 import org.eyeseetea.malariacare.data.repositories.AuthenticationManager;
+import org.eyeseetea.malariacare.data.repositories.ServerRepository;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IAuthenticationManager;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IServerRepository;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IServerRepository.IServerRepositoryCallback;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
+import org.eyeseetea.malariacare.domain.entity.Server;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
 import org.eyeseetea.malariacare.domain.enums.NetworkStrategy;
+import org.eyeseetea.malariacare.domain.usecase.GetServersUseCase;
 import org.eyeseetea.malariacare.domain.usecase.GetUserAccountUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
+import org.eyeseetea.malariacare.layout.adapters.general.AddlArrayAdapter;
+import org.eyeseetea.malariacare.layout.adapters.general.ServerArrayAdapter;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Permissions;
+import org.eyeseetea.malariacare.views.CustomTextView;
 import org.hisp.dhis.client.sdk.ui.activities.AbsLoginActivity;
+import org.hisp.dhis.client.sdk.ui.views.FontButton;
 
 import java.io.InputStream;
+import java.util.List;
 
 import fr.castorflex.android.circularprogressbar.CircularProgressBar;
 
@@ -119,20 +130,27 @@ public class LoginActivity extends AbsLoginActivity {
         serverContainer = (LinearLayout) findViewById(R.id.edittext_server_url_input_layout);
         serverEditText = (EditText) findViewById(R.id.edittext_server_url);
 
-        initServerAdapter();
+        final IServerRepository serverRepository = new ServerRepository(getApplicationContext());
+        GetServersUseCase getServersUseCase = new GetServersUseCase(new UIThreadExecutor(), new  AsyncExecutor(), serverRepository);
+        getServersUseCase.execute(new IServerRepositoryCallback() {
+            @Override
+            public void onComplete(List servers) {
+                initServerAdapter(servers);
+            }
+        });
     }
 
-    private void initServerAdapter() {
-        String[] serverList = getResources().getStringArray(R.array.server_list);
-        if(serverList.length<1) {
+    private void initServerAdapter(List<Server> serverList) {
+        if(serverList.size()<1) {
             return;
         }
-        ArrayAdapter serversListAdapter = new ArrayAdapter<>(getBaseContext(),android.R.layout.simple_spinner_item, serverList);
-        serverSpinner.setAdapter(serversListAdapter);
+        Context context = getApplicationContext();
+        ServerArrayAdapter serverArrayAdapter = new ServerArrayAdapter(context, R.layout.android_simple_spinner_item, serverList);
+        serverSpinner.setAdapter(serverArrayAdapter);
         serverSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String value = parent.getItemAtPosition(position).toString();
+                String value = ((Server)parent.getItemAtPosition(position)).getUrl();
                 if(value.equals(parent.getContext().getResources().getString(R.string.other))){
                     serverEditText.setText("");
                     serverContainer.setVisibility(View.VISIBLE);
@@ -140,7 +158,7 @@ public class LoginActivity extends AbsLoginActivity {
                     if(serverContainer.getVisibility()==View.VISIBLE){
                         serverContainer.setVisibility(View.GONE);
                     }
-                    serverEditText.setText(parent.getItemAtPosition(position).toString());
+                    serverEditText.setText(value);
                 }
             }
 

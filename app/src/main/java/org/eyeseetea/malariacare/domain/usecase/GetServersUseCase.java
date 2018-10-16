@@ -19,9 +19,9 @@ public class GetServersUseCase implements UseCase{
     IServerRepository.IServerRepositoryCallback callback;
 
     public GetServersUseCase(
-            IServerRepository serverRepository,
             IMainExecutor mainExecutor,
-            IAsyncExecutor asyncExecutor) {
+            IAsyncExecutor asyncExecutor,
+            IServerRepository serverRepository) {
         this.mainExecutor = mainExecutor;
         this.asyncExecutor = asyncExecutor;
         this.serverRepository = serverRepository;
