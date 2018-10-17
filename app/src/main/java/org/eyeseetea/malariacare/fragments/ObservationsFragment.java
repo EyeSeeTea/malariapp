@@ -49,12 +49,15 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.data.repositories.ObservationRepository;
 import org.eyeseetea.malariacare.data.repositories.ServerMetadataRepository;
+import org.eyeseetea.malariacare.data.repositories.SettingsRepository;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IObservationRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerMetadataRepository;
+import org.eyeseetea.malariacare.domain.boundary.repositories.ISettingsRepository;
 import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
 import org.eyeseetea.malariacare.domain.usecase.GetServerMetadataUseCase;
+import org.eyeseetea.malariacare.domain.usecase.GetSettingsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.observation.GetObservationBySurveyUidUseCase;
 import org.eyeseetea.malariacare.domain.usecase.observation.SaveObservationUseCase;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
@@ -150,6 +153,10 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
         IObservationRepository observationRepository =
                 new ObservationRepository(observationLocalDataSource);
 
+        ISettingsRepository settingsRepository = new SettingsRepository(getActivity().getApplicationContext());
+
+        GetSettingsUseCase getSettingsUseCase = new GetSettingsUseCase(settingsRepository, mainExecutor, asyncExecutor);
+
         GetObservationBySurveyUidUseCase getObservationBySurveyUidUseCase =
                 new GetObservationBySurveyUidUseCase(asyncExecutor,mainExecutor, observationRepository);
 
@@ -163,7 +170,8 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
                 new SaveObservationUseCase(asyncExecutor, mainExecutor, observationRepository);
 
         presenter = new ObservationsPresenter(getActivity(),
-                getObservationBySurveyUidUseCase, getServerMetadataUseCase, saveObservationUseCase);
+                getObservationBySurveyUidUseCase, getServerMetadataUseCase, getSettingsUseCase,
+                saveObservationUseCase);
 
 
         presenter.attachView(this, surveyUid);
