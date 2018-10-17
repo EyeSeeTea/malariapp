@@ -20,6 +20,8 @@ public class SurveyShould {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
+    private  NextScheduleMonths nextScheduleMonths = new NextScheduleMonths(new int[]{2, 4, 6});
+
     @Test
     public void create_survey_with_mandatory_fields(){
         Survey survey = Survey.createEmptySurvey("UID","PROGRAM_UID", "ORG_UNIT_UID", "USER_UID", 0);
@@ -101,7 +103,7 @@ public class SurveyShould {
         thrown.expect(CalculateNextScheduledDateException.class);
 
         Survey survey = Survey.createEmptySurvey("UID","PROGRAM_UID", "ORG_UNIT_UID", "USER_UID", 0);
-        survey.calculateNextScheduledDate();
+        survey.calculateNextScheduledDate(nextScheduleMonths);
     }
 
     @Test
@@ -111,7 +113,7 @@ public class SurveyShould {
 
         Survey survey = Survey.createEmptySurvey("UID","PROGRAM_UID", "ORG_UNIT_UID", "USER_UID", 0);
         survey.assignCompletionDate(new Date());
-        survey.calculateNextScheduledDate();
+        survey.calculateNextScheduledDate(nextScheduleMonths);
     }
 
     @Test
@@ -124,7 +126,7 @@ public class SurveyShould {
         survey.assignCompletionDate(date);
 
         DateTime completionDateTime = new DateTime(survey.getCompletionDate().getTime());
-        DateTime nextScheduledDateTime = new DateTime( survey.calculateNextScheduledDate().getTime());
+        DateTime nextScheduledDateTime = new DateTime( survey.calculateNextScheduledDate(nextScheduleMonths).getTime());
 
         Months differenceInMonths = Months.monthsBetween(completionDateTime,nextScheduledDateTime);
 
@@ -141,7 +143,7 @@ public class SurveyShould {
         survey.assignCompletionDate(date);
 
         DateTime completionDateTime = new DateTime(survey.getCompletionDate().getTime());
-        DateTime nextScheduledDateTime = new DateTime( survey.calculateNextScheduledDate().getTime());
+        DateTime nextScheduledDateTime = new DateTime( survey.calculateNextScheduledDate(nextScheduleMonths).getTime());
 
         Months differenceInMonths = Months.monthsBetween(completionDateTime,nextScheduledDateTime);
 
@@ -158,7 +160,7 @@ public class SurveyShould {
         survey.assignCompletionDate(date);
 
         DateTime completionDateTime = new DateTime(survey.getCompletionDate().getTime());
-        DateTime nextScheduledDateTime = new DateTime( survey.calculateNextScheduledDate().getTime());
+        DateTime nextScheduledDateTime = new DateTime( survey.calculateNextScheduledDate(nextScheduleMonths).getTime());
 
         Months differenceInMonths = Months.monthsBetween(completionDateTime,nextScheduledDateTime);
 

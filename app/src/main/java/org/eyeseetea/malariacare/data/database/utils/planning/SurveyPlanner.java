@@ -103,14 +103,14 @@ public class SurveyPlanner {
     /**
      * Plans a new survey according to the given sent survey and its values
      */
-    public SurveyDB buildNext(SurveyDB survey) {
+    public SurveyDB buildNext(SurveyDB survey, Date nextScheduledDate) {
         SurveyDB plannedSurvey = new SurveyDB();
         //Create and save a planned survey
         plannedSurvey.setStatus(Constants.SURVEY_PLANNED);
         plannedSurvey.setOrgUnit(survey.getOrgUnit());
         plannedSurvey.setUser(Session.getUser());
         plannedSurvey.setProgram(survey.getProgram());
-        plannedSurvey.setScheduledDate(findScheduledDateBySurvey(survey));
+        plannedSurvey.setScheduledDate(nextScheduledDate);
         plannedSurvey.save();
         plannedSurvey.setMainScore(plannedSurvey.getId_survey(), survey.getMainScore().getUid(), survey.getMainScore().getScore());
 
@@ -150,18 +150,7 @@ public class SurveyPlanner {
         return survey;
     }
 
-    /**
-     * Plans a new survey according to the last surveys that has been sent for each combo orgunit +
-     * program
-     */
-    public void buildNext() {
-        //Plan a copy according to that survey
-        for (SurveyDB survey : SurveyDB.listLastByOrgUnitProgram()) {
-            buildNext(survey);
-        }
-
-    }
-
+    @Deprecated
     public Date findScheduledDateBySurvey(SurveyDB survey) {
         //TODO: jsanchez When this class use domain entities, remember that next scheduleDate is a value
         // returned by domain survey

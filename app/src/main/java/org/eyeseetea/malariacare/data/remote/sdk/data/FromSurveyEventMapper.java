@@ -14,6 +14,7 @@ import org.eyeseetea.malariacare.domain.entity.Option;
 import org.eyeseetea.malariacare.domain.entity.QuestionValue;
 import org.eyeseetea.malariacare.domain.entity.ScoreType;
 import org.eyeseetea.malariacare.domain.entity.ServerMetadata;
+import org.eyeseetea.malariacare.domain.entity.Settings;
 import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.exception.CalculateNextScheduledDateException;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
@@ -35,12 +36,14 @@ public class FromSurveyEventMapper extends EventMapper {
 
     private Map<String, Option> optionsMap;
     private ServerMetadata mServerMetadata;
+    private Settings mSettings;
 
     public FromSurveyEventMapper(Context context, String username,
-            List<Option> options, ServerMetadata serverMetadata) {
+            List<Option> options, ServerMetadata serverMetadata, Settings settings) {
         super(context,username);
 
         mServerMetadata = serverMetadata;
+        mSettings = settings;
 
         createMaps(options);
     }
@@ -249,7 +252,7 @@ public class FromSurveyEventMapper extends EventMapper {
         if (mServerMetadata.getNextAssessment() != null){
             TrackedEntityDataValue dataValue = createDataValue(event,
                     mServerMetadata.getNextAssessment().getUId(),
-                    DateParser.format(survey.calculateNextScheduledDate(), AMERICAN_DATE_FORMAT));
+                    DateParser.format(survey.calculateNextScheduledDate(mSettings.getServer().getNextScheduleMatrix()), AMERICAN_DATE_FORMAT));
             event.getDataValues().add(dataValue);
         }
     }

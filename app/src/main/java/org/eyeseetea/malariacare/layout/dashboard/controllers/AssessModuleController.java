@@ -43,8 +43,10 @@ import org.eyeseetea.malariacare.domain.boundary.repositories.ISettingsRepositor
 import org.eyeseetea.malariacare.domain.boundary.repositories.ISettingsRepository.ISettingsRepositoryCallback;
 import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyAnsweredRatioRepository;
 import org.eyeseetea.malariacare.domain.entity.Settings;
+import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.domain.enums.Action;
+import org.eyeseetea.malariacare.domain.exception.CalculateNextScheduledDateException;
 import org.eyeseetea.malariacare.domain.usecase.GetSettingsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.domain.usecase.ISurveyAnsweredRatioCallback;
@@ -62,6 +64,8 @@ import org.eyeseetea.malariacare.views.CustomTextView;
 import org.eyeseetea.malariacare.views.DoublePieChart;
 import org.eyeseetea.malariacare.views.SurveyDialog;
 import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
+
+import java.util.Date;
 
 /**
  * Created by idelcano on 25/02/2016.
@@ -421,20 +425,36 @@ public class AssessModuleController extends ModuleController {
                 .setNegativeButton(android.R.string.no, null)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
-                        SurveyDB survey = Session.getSurveyByModule(getSimpleName());
-                        survey.setCompleteSurveyState(getSimpleName());
+                        final SurveyDB surveyDB = Session.getSurveyByModule(getSimpleName());
+                        SettingsRepository settingsRepository = new SettingsRepository(dashboardActivity);
+                        GetSettingsUseCase getSettingsUseCase = new GetSettingsUseCase(settingsRepository, new UIThreadExecutor(), new AsyncExecutor());
+                        final String name = getSimpleName();
+                        getSettingsUseCase.execute(new ISettingsRepositoryCallback() {
+                            @Override
+                            public void onComplete(Settings settings) {
+                                Survey survey = org.eyeseetea.malariacare.data.database.mapper.SurveyMapper.mapEmptySurvey(surveyDB);
+                                Date nextScheduleDate = null;
+                                try {
+                                    nextScheduleDate = survey.calculateNextScheduledDate(settings.getServer().getNextScheduleMatrix());
+                                } catch (CalculateNextScheduledDateException e) {
+                                    e.printStackTrace();
+                                }
 
-                        if (!survey.isInProgress()) {
-                            alertOnCompleteGoToFeedback(survey);
-                        }
+                                surveyDB.setCompleteSurveyState(name, nextScheduleDate);
 
-                        dashboardController.setNavigatingBackwards(true);
-                        closeSurveyFragment();
-                        if (DashboardOrientation.VERTICAL.equals(
-                                dashboardController.getOrientation())) {
-                            dashboardController.reloadVertical();
-                        }
-                        dashboardController.setNavigatingBackwards(false);
+                                if (!surveyDB.isInProgress()) {
+                                    alertOnCompleteGoToFeedback(surveyDB);
+                                }
+
+                                dashboardController.setNavigatingBackwards(true);
+                                closeSurveyFragment();
+                                if (DashboardOrientation.VERTICAL.equals(
+                                        dashboardController.getOrientation())) {
+                                    dashboardController.reloadVertical();
+                                }
+                                dashboardController.setNavigatingBackwards(false);
+                            }
+                        });
                     }
                 }).create().show();
     }
@@ -477,24 +497,42 @@ public class AssessModuleController extends ModuleController {
                 .create().show();
     }
 
-    private void alertAreYouSureYouWantToComplete(final SurveyDB survey) {
+    private void alertAreYouSureYouWantToComplete(final SurveyDB surveyDB) {
         new AlertDialog.Builder(dashboardActivity)
                 .setTitle(null)
                 .setMessage(String.format(dashboardActivity.getResources().getString(
-                        R.string.dialog_info_ask_for_completion)+"", survey.getProgram().getName()))
+                        R.string.dialog_info_ask_for_completion)+"", surveyDB.getProgram().getName()))
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
-                        //Change state
-                        survey.setCompleteSurveyState(getSimpleName());
-                        if (!survey.isInProgress()) {
-                            alertOnCompleteGoToFeedback(survey);
-                        }
 
-                        //Remove from list
-                        ((DashboardUnsentFragment) fragment).removeSurveyFromAdapter(survey);
-                        //Reload sent surveys
-                        ((DashboardUnsentFragment) fragment).reloadToSend();
 
+                        final SurveyDB surveyDB = Session.getSurveyByModule(getSimpleName());
+                        SettingsRepository settingsRepository = new SettingsRepository(dashboardActivity);
+                        GetSettingsUseCase getSettingsUseCase = new GetSettingsUseCase(settingsRepository, new UIThreadExecutor(), new AsyncExecutor());
+                        final String name = getSimpleName();
+                        getSettingsUseCase.execute(new ISettingsRepositoryCallback() {
+                            @Override
+                            public void onComplete(Settings settings) {
+                                Survey survey = org.eyeseetea.malariacare.data.database.mapper.SurveyMapper.mapEmptySurvey(surveyDB);
+                                Date nextScheduleDate = null;
+                                try {
+                                    nextScheduleDate = survey.calculateNextScheduledDate(settings.getServer().getNextScheduleMatrix());
+                                } catch (CalculateNextScheduledDateException e) {
+                                    e.printStackTrace();
+                                }
+                                //Change state
+                                surveyDB.setCompleteSurveyState(getSimpleName(), nextScheduleDate);
+                                if (!surveyDB.isInProgress()) {
+                                    alertOnCompleteGoToFeedback(surveyDB);
+                                }
+
+                                //Remove from list
+                                ((DashboardUnsentFragment) fragment).removeSurveyFromAdapter(surveyDB);
+                                //Reload sent surveys
+                                ((DashboardUnsentFragment) fragment).reloadToSend();
+
+                            }
+                        });
 
                     }
                 })

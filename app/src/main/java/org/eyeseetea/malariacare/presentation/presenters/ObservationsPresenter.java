@@ -9,9 +9,14 @@ import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.Ev
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 import org.eyeseetea.malariacare.data.database.model.QuestionDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.domain.boundary.repositories.ISettingsRepository;
 import org.eyeseetea.malariacare.domain.entity.Observation;
 import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
 import org.eyeseetea.malariacare.domain.entity.ServerMetadata;
+import org.eyeseetea.malariacare.domain.entity.Settings;
+import org.eyeseetea.malariacare.domain.entity.Survey;
+import org.eyeseetea.malariacare.domain.exception.CalculateNextScheduledDateException;
+import org.eyeseetea.malariacare.domain.usecase.GetSettingsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.observation.GetObservationBySurveyUidUseCase;
 import org.eyeseetea.malariacare.domain.usecase.GetServerMetadataUseCase;
 import org.eyeseetea.malariacare.domain.usecase.observation.SaveObservationUseCase;
@@ -22,6 +27,7 @@ import org.eyeseetea.malariacare.presentation.viewModels.ObservationViewModel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -29,6 +35,7 @@ import java.util.Observer;
 public class ObservationsPresenter {
     private final Context mContext;
     GetObservationBySurveyUidUseCase mGetObservationBySurveyUidUseCase;
+    GetSettingsUseCase mGetSettingsUseCase;
     GetServerMetadataUseCase mGetServerMetadataUseCase;
     SaveObservationUseCase mSaveObservationUseCase;
 
@@ -45,9 +52,11 @@ public class ObservationsPresenter {
     public ObservationsPresenter(Context context,
             GetObservationBySurveyUidUseCase getObservationBySurveyUidUseCase,
             GetServerMetadataUseCase getServerMetadataUseCase,
+            GetSettingsUseCase getSettingsUseCase,
             SaveObservationUseCase saveObservationUseCase) {
         this.mContext = context;
         this.mGetObservationBySurveyUidUseCase = getObservationBySurveyUidUseCase;
+        this.mGetSettingsUseCase = getSettingsUseCase;
         this.mGetServerMetadataUseCase = getServerMetadataUseCase;
         this.mSaveObservationUseCase = saveObservationUseCase;
 
@@ -77,7 +86,13 @@ public class ObservationsPresenter {
             @Override
             public void onSuccess(ServerMetadata serverMetadata) {
                 ObservationsPresenter.this.mServerMetadata = serverMetadata;
-                loadObservation();
+                mGetSettingsUseCase.execute(new ISettingsRepository.ISettingsRepositoryCallback() {
+                    @Override
+                    public void onComplete(Settings settings) {
+
+                        loadObservation();
+                    }
+                });
             }
 
             @Override
@@ -309,14 +324,26 @@ public class ObservationsPresenter {
     }
 
     public void shareObsActionPlan() {
-        List<QuestionDB> criticalQuestions = QuestionDB.getCriticalFailedQuestions(
+        final List<QuestionDB> criticalQuestions = QuestionDB.getCriticalFailedQuestions(
                 mSurvey.getId_survey());
 
-        List<CompositeScoreDB> compositeScoresTree = getValidTreeOfCompositeScores();
+        final List<CompositeScoreDB> compositeScoresTree = getValidTreeOfCompositeScores();
 
         if (mView != null) {
-            mView.shareByText(mObservationViewModel, mSurvey, criticalQuestions,
-                    compositeScoresTree);
+            mGetSettingsUseCase.execute(new ISettingsRepository.ISettingsRepositoryCallback() {
+                @Override
+                public void onComplete(Settings settings) {
+                    Survey survey = org.eyeseetea.malariacare.data.database.mapper.SurveyMapper.mapEmptySurvey(mSurvey);
+                    Date nextScheduleDate = null;
+                    try {
+                        nextScheduleDate = survey.calculateNextScheduledDate(settings.getServer().getNextScheduleMatrix());
+                    } catch (CalculateNextScheduledDateException e) {
+                        e.printStackTrace();
+                    }
+                    mView.shareByText(mObservationViewModel, mSurvey, criticalQuestions,
+                            compositeScoresTree, nextScheduleDate);
+                }
+            });
         }
     }
 
@@ -414,7 +441,8 @@ public class ObservationsPresenter {
         void updateStatusView(ObservationStatus status);
 
         void shareByText(ObservationViewModel observationViewModel, SurveyDB survey,
-                List<QuestionDB> criticalQuestions, List<CompositeScoreDB> compositeScoresTree);
+                List<QuestionDB> criticalQuestions, List<CompositeScoreDB> compositeScoresTree,
+                         Date nextScheduleDate);
 
         void enableShareButton();
 

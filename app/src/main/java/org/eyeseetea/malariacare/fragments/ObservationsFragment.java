@@ -68,6 +68,7 @@ import org.eyeseetea.malariacare.views.CustomSpinner;
 import org.eyeseetea.malariacare.views.CustomTextView;
 import org.eyeseetea.sdk.presentation.views.DoubleRectChart;
 
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -458,9 +459,9 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
 
     @Override
     public void shareByText(ObservationViewModel observationViewModel, SurveyDB survey,
-            List<QuestionDB> criticalQuestions, List<CompositeScoreDB> compositeScoresTree) {
+            List<QuestionDB> criticalQuestions, List<CompositeScoreDB> compositeScoresTree, Date nextScheduleDate) {
         String data = extractTextData(observationViewModel, survey, criticalQuestions,
-                compositeScoresTree);
+                compositeScoresTree, nextScheduleDate);
 
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
@@ -489,7 +490,8 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
     }
 
     private String extractTextData(ObservationViewModel observationViewModel, SurveyDB survey,
-            List<QuestionDB> criticalQuestions, List<CompositeScoreDB> compositeScoresTree) {
+            List<QuestionDB> criticalQuestions, List<CompositeScoreDB> compositeScoresTree,
+                                   Date nextScheduleDate) {
         String data =
                 PreferencesState.getInstance().getContext().getString(
                         R.string.app_name) + "- \n";
@@ -504,7 +506,7 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
         data += getString(R.string.quality_of_care) + " " + roundedScore + "% \n";
 
         data += String.format(getString(R.string.plan_action_next_date),
-                EventExtended.format(SurveyPlanner.getInstance().findScheduledDateBySurvey(survey),
+                EventExtended.format(nextScheduleDate,
                         EventExtended.EUROPEAN_DATE_FORMAT));
 
         if(observationViewModel.getProvider()!=null && !observationViewModel.getProvider().isEmpty()) {

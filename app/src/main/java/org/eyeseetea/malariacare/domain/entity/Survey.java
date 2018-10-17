@@ -188,7 +188,7 @@ public class Survey implements IData {
         }
     }
 
-    public Date calculateNextScheduledDate() throws CalculateNextScheduledDateException {
+    public Date calculateNextScheduledDate(NextScheduleMonths nextScheduleMonths) throws CalculateNextScheduledDateException {
 
         if (getCompletionDate() == null) {
             throw new CalculateNextScheduledDateException(
@@ -203,14 +203,14 @@ public class Survey implements IData {
         ScoreType scoreType = new ScoreType(getScore().getScore());
 
         if (scoreType.isTypeA()) {
-            return getInXMonths(getCompletionDate(), TYPE_A_NEXT_DATE);
+            return getInXMonths(getCompletionDate(), nextScheduleMonths.getScoreAMonths());
         }
 
         if (isLowProductivity()) {
-            return getInXMonths(getCompletionDate(), TYPE_BC_LOW_NEXT_DATE);
+            return getInXMonths(getCompletionDate(), nextScheduleMonths.getHighProductivityMonths());
         }
 
-        return getInXMonths(getCompletionDate(), TYPE_BC_HIGH_NEXT_DATE);
+        return getInXMonths(getCompletionDate(), nextScheduleMonths.getLowProductivityMonths());
     }
 
     private Date getInXMonths(Date date, int numMonths) {

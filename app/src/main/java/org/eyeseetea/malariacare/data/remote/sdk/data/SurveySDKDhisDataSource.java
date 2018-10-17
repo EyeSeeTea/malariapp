@@ -33,11 +33,13 @@ import org.eyeseetea.malariacare.domain.boundary.repositories.IOptionRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IOrgUnitRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IQuestionRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerMetadataRepository;
+import org.eyeseetea.malariacare.domain.boundary.repositories.ISettingsRepository;
 import org.eyeseetea.malariacare.domain.entity.IData;
 import org.eyeseetea.malariacare.domain.entity.Option;
 import org.eyeseetea.malariacare.domain.entity.OrgUnit;
 import org.eyeseetea.malariacare.domain.entity.Question;
 import org.eyeseetea.malariacare.domain.entity.ServerMetadata;
+import org.eyeseetea.malariacare.domain.entity.Settings;
 import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.entity.pushsummary.PushReport;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
@@ -63,6 +65,7 @@ import java.util.Set;
 public class SurveySDKDhisDataSource implements IDataRemoteDataSource {
 
     private final IServerMetadataRepository mServerMetadataRepository;
+    private final ISettingsRepository mSettingsRepository;
     private final IOptionRepository mOptionRepository;
     private final IQuestionRepository mQuestionRepository;
     private final IOrgUnitRepository mOrgUnitRepository;
@@ -70,10 +73,12 @@ public class SurveySDKDhisDataSource implements IDataRemoteDataSource {
     private final Context mContext;
 
     public SurveySDKDhisDataSource(Context context, IServerMetadataRepository serverMetadataRepository,
+                                   ISettingsRepository settingsRepository,
             IQuestionRepository questionRepository, IOptionRepository optionRepository,
             IOrgUnitRepository orgUnitRepository, IConnectivityManager connectivityManager) {
         this.mContext = context;
         this.mServerMetadataRepository = serverMetadataRepository;
+        this.mSettingsRepository = settingsRepository;
         this.mQuestionRepository = questionRepository;
         this.mOptionRepository = optionRepository;
         this.mOrgUnitRepository = orgUnitRepository;
@@ -103,10 +108,11 @@ public class SurveySDKDhisDataSource implements IDataRemoteDataSource {
         List<Survey> surveys = (List<Survey>) dataList;
 
         ServerMetadata serverMetadata = mServerMetadataRepository.getServerMetadata();
+        Settings settings = mSettingsRepository.getSettings();
         List<Option> options = mOptionRepository.getAll();
 
         FromSurveyEventMapper eventMapper =
-                new FromSurveyEventMapper(mContext, getSafeUsername(), options, serverMetadata);
+                new FromSurveyEventMapper(mContext, getSafeUsername(), options, serverMetadata, settings);
 
         List<Event> events = eventMapper.map(surveys);
         Set<String> eventUIds = new HashSet<>();

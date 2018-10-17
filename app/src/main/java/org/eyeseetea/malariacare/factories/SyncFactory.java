@@ -18,6 +18,7 @@ import org.eyeseetea.malariacare.data.remote.sdk.data.SurveySDKDhisDataSource;
 import org.eyeseetea.malariacare.data.repositories.OptionRepository;
 import org.eyeseetea.malariacare.data.repositories.OrgUnitRepository;
 import org.eyeseetea.malariacare.data.repositories.ServerMetadataRepository;
+import org.eyeseetea.malariacare.data.repositories.SettingsRepository;
 import org.eyeseetea.malariacare.domain.boundary.IConnectivityManager;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
@@ -26,6 +27,7 @@ import org.eyeseetea.malariacare.domain.boundary.repositories.IOptionRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IOrgUnitRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IQuestionRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerMetadataRepository;
+import org.eyeseetea.malariacare.domain.boundary.repositories.ISettingsRepository;
 import org.eyeseetea.malariacare.domain.usecase.PushUseCase;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullUseCase;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
@@ -83,12 +85,14 @@ public class SyncFactory {
     private IDataRemoteDataSource getSurveyRemoteDataSource(Context context) {
         IServerMetadataRepository serverMetadataRepository =
                 new ServerMetadataRepository(context);
+        ISettingsRepository settingsRepository =
+                new SettingsRepository(context);
         IOptionRepository optionRepository = new OptionRepository();
         IQuestionRepository questionRepository = new QuestionLocalDataSource();
         IOrgUnitRepository orgUnitRepository = new OrgUnitRepository();
         IConnectivityManager connectivityManager = new ConnectivityManager();
 
-        return new SurveySDKDhisDataSource(context, serverMetadataRepository,
+        return new SurveySDKDhisDataSource(context, serverMetadataRepository, settingsRepository,
                 questionRepository, optionRepository, orgUnitRepository, connectivityManager);
     }
 
