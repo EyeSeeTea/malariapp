@@ -23,9 +23,9 @@ import android.util.Log;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushController;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.domain.exception.push.PushValueException;
 import org.eyeseetea.malariacare.domain.usecase.MockedPushSurveysUseCase;
 import org.eyeseetea.malariacare.domain.usecase.PushUseCase;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
@@ -71,8 +71,8 @@ public class PushServiceStrategy {
 
         pushUseCase.execute(new PushUseCase.Callback() {
             @Override
-            public void onComplete(PushController.Kind kind) {
-                AlarmPushReceiver.isDoneSuccess(kind);
+            public void onComplete() {
+                AlarmPushReceiver.isDoneSuccess();
                 Log.d(TAG, "push complete");
             }
 
@@ -95,10 +95,21 @@ public class PushServiceStrategy {
             }
 
             @Override
-            public void onInformativeError(String message) {
-                Log.e(TAG, "An error has occurred to the conversion in push process"+message);
-                showInDialog(PreferencesState.getInstance().getContext().getString(
-                        R.string.error_message), message);
+            public void onInformativeError(Throwable throwable) {
+                Log.e(TAG, "An error has occurred in push process"+throwable.getMessage());
+
+                if (throwable instanceof PushValueException){
+                    PushValueException pushValueException = (PushValueException) throwable;
+
+                    showInDialog(mPushService.getString(R.string.error_message),
+                            mPushService.getString(R.string.error_conflict_message,
+                                    pushValueException.getSurveyUid(),
+                                    pushValueException.getQuestionUid(),
+                                    pushValueException.getConflictMessage()));
+                } else {
+                    showInDialog(PreferencesState.getInstance().getContext().getString(
+                            R.string.error_message), throwable.getMessage());
+                }
             }
 
             @Override

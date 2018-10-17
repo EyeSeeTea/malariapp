@@ -27,7 +27,6 @@ import static org.mockito.Mockito.when;
 
 import android.support.annotation.NonNull;
 
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushController;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
@@ -52,7 +51,7 @@ public class PushUseCaseTest {
         pushUseCase.execute(new PushUseCase.Callback() {
 
             @Override
-            public void onComplete(PushController.Kind kind) {
+            public void onComplete() {
                 callbackInvoked(false);
             }
 
@@ -72,7 +71,7 @@ public class PushUseCaseTest {
             }
 
             @Override
-            public void onInformativeError(String message) {
+            public void onInformativeError(Throwable throwable) {
                 callbackInvoked(false);
             }
 

@@ -19,14 +19,12 @@
 
 package org.eyeseetea.malariacare.domain.usecase;
 
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushController;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
-import org.eyeseetea.malariacare.domain.exception.MetadataException;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
-import org.eyeseetea.malariacare.domain.exception.SurveysToPushNotFoundException;
+import org.eyeseetea.malariacare.domain.exception.DataToPushNotFoundException;
 import org.eyeseetea.malariacare.domain.exception.push.PushReportException;
 import org.eyeseetea.malariacare.data.remote.SurveyChecker;
 
@@ -63,12 +61,12 @@ public class PushUseCase implements UseCase{
 
         mPushController.push(new IPushController.IPushControllerCallback() {
             @Override
-            public void onComplete(PushController.Kind kind) {
+            public void onComplete() {
                 System.out.println("PusUseCase Complete");
 
                 mPushController.changePushInProgress(false);
 
-                notifyOnComplete(kind);
+                notifyOnComplete();
             }
 
             @Override
@@ -80,17 +78,17 @@ public class PushUseCase implements UseCase{
 
             @Override
             public void onInformativeError(Throwable throwable) {
-                notifyOnInformativeError(throwable.getMessage());
+                notifyOnInformativeError(throwable);
             }
         });
     }
 
 
-    private void notifyOnComplete(final PushController.Kind kind) {
+    private void notifyOnComplete() {
         mMainExecutor.run(new Runnable() {
             @Override
             public void run() {
-                mCallback.onComplete(kind);
+                mCallback.onComplete();
             }
         });
     }
@@ -105,7 +103,7 @@ public class PushUseCase implements UseCase{
                 } else if (throwable instanceof ConversionException) {
                     mPushController.changePushInProgress(false);
                     mCallback.onConversionError();
-                } else if (throwable instanceof SurveysToPushNotFoundException) {
+                } else if (throwable instanceof DataToPushNotFoundException) {
                     mPushController.changePushInProgress(false);
                     mCallback.onSurveysNotFoundError();
                 } else if (throwable instanceof PushReportException){
@@ -119,11 +117,11 @@ public class PushUseCase implements UseCase{
         });
     }
 
-    private void notifyOnInformativeError(final String message) {
+    private void notifyOnInformativeError(final Throwable throwable) {
         mMainExecutor.run(new Runnable() {
             @Override
             public void run() {
-                mCallback.onInformativeError(message);
+                mCallback.onInformativeError(throwable);
             }
         });
     }
@@ -138,7 +136,7 @@ public class PushUseCase implements UseCase{
     }
 
     public interface Callback {
-        void onComplete(PushController.Kind kind);
+        void onComplete();
 
         void onPushError();
 
@@ -146,7 +144,7 @@ public class PushUseCase implements UseCase{
 
         void onSurveysNotFoundError();
 
-        void onInformativeError(String message);
+        void onInformativeError(Throwable throwable);
 
         void onConversionError();
 

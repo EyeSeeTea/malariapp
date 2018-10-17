@@ -12,7 +12,8 @@ public enum SurveyStatus {
     HIDE(3),
     CONFLICT(4),
     QUARANTINE(5),
-    SENDING(6);
+    SENDING(6),
+    ERRORCONVERSIONSYNC(7);
 
     private static final Map<Integer, SurveyStatus> lookup
             = new HashMap<Integer, SurveyStatus>();

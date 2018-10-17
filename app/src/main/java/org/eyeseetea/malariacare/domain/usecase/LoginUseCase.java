@@ -25,6 +25,7 @@ import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
 import org.eyeseetea.malariacare.domain.exception.InvalidCredentialsException;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
+import org.hisp.dhis.client.sdk.models.common.UnsupportedServerVersionException;
 
 import java.net.MalformedURLException;
 import java.net.UnknownHostException;
@@ -38,6 +39,8 @@ public class LoginUseCase {
         void onInvalidCredentials();
 
         void onNetworkError();
+
+        void onUnsupportedServerVersion();
     }
 
     private IAuthenticationManager mUserAccountRepository;
@@ -47,7 +50,7 @@ public class LoginUseCase {
     }
 
     public void execute(Credentials credentials, final Callback callback) {
-        
+
         mUserAccountRepository.login(credentials,
                 new IRepositoryCallback<UserAccount>() {
                     @Override
@@ -64,6 +67,8 @@ public class LoginUseCase {
                             callback.onInvalidCredentials();
                         } else if (throwable instanceof NetworkException) {
                             callback.onNetworkError();
+                        } else if (throwable instanceof UnsupportedServerVersionException){
+                            callback.onUnsupportedServerVersion();
                         }
                     }
                 });

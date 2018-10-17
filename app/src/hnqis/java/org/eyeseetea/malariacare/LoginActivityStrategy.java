@@ -98,6 +98,11 @@ public class LoginActivityStrategy {
                             public void onNetworkError() {
                                 Log.e(this.getClass().getSimpleName(), "Network Error");
                             }
+
+                            @Override
+                            public void onUnsupportedServerVersion() {
+                                Log.e(this.getClass().getSimpleName(), "Unsupported Server Version");
+                            }
                         });
             }
         });
