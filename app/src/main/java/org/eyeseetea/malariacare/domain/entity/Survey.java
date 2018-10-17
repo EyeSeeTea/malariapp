@@ -207,10 +207,10 @@ public class Survey implements IData {
         }
 
         if (isLowProductivity()) {
-            return getInXMonths(getCompletionDate(), nextScheduleMonths.getHighProductivityMonths());
+            return getInXMonths(getCompletionDate(), nextScheduleMonths.getLowProductivityMonths());
         }
 
-        return getInXMonths(getCompletionDate(), nextScheduleMonths.getLowProductivityMonths());
+        return getInXMonths(getCompletionDate(), nextScheduleMonths.getHighProductivityMonths());
     }
 
     private Date getInXMonths(Date date, int numMonths) {
