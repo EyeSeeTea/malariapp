@@ -69,8 +69,8 @@
 
 
     <!-- Arrow padding !-->
-    <dimen name="left_padding_arrow">50dip</dimen>
-    <dimen name="right_padding_arrow">50dip</dimen>
+    <dimen name="left_padding_arrow">15dip</dimen>
+    <dimen name="right_padding_arrow">15dip</dimen>
 
     <!--Text size for age and phone-->
     <dimen name="input_number_edit_text">32dp</dimen>
@@ -101,10 +101,9 @@
     <dimen name="planing_per_org_text_size">14dp</dimen>
     <dimen name="planing_per_org_text_light_size">14dp</dimen>
     <dimen name="planing_text_first_title_size">15dp</dimen>
-    <dimen name="header_light_text_size">18sp</dimen>
+    <dimen name="header_light_text_size">18dp</dimen>
     <dimen name="header_bold_text_size">18dp</dimen>
 
-    <!-- Quest mark guide -->
     <!-- Quest mark guide -->
     <dimen name="roboto_10">10dp</dimen>
     <dimen name="roboto_11">11dp</dimen>
@@ -115,22 +114,23 @@
     <dimen name="roboto_18">18dp</dimen>
     <dimen name="roboto_20">20dp</dimen>
     <dimen name="roboto_28">28dp</dimen>
-    <dimen name="planing_button_text_size">@dimen/roboto_14</dimen>
-    <dimen name="planing_small_text_size">@dimen/roboto_10</dimen>
-    <dimen name="feedback_text_size">@dimen/roboto_12</dimen>
+    <dimen name="planing_button_text_size">@dimen/roboto_18</dimen>
+    <dimen name="planing_small_text_size">@dimen/roboto_14</dimen>
+    <dimen name="feedback_text_size">@dimen/roboto_14</dimen>
     <dimen name="margin_quality_of_care">6dip</dimen>
-    <dimen name="cs_header_title_size">@dimen/roboto_14</dimen>
+    <dimen name="cs_header_title_size">@dimen/roboto_16</dimen>
     <dimen name="sent_header_rows_text_size">@dimen/roboto_14</dimen>
     <dimen name="sent_rows_text_size">@dimen/roboto_14</dimen>
     <dimen name="unsent_rows_text_size">@dimen/roboto_14</dimen>
 
-    <dimen name="login_title_text">@dimen/roboto_28</dimen>
     <dimen name="dialog_tile_row_size">@dimen/roboto_18</dimen>
     <dimen name="dialog_button_size">@dimen/roboto_18</dimen>
+    <dimen name="dialog_text_row_size">@dimen/roboto_16</dimen>
+
+    <dimen name="login_title_text">@dimen/roboto_28</dimen>
     <dimen name="feedback_question_row_left_padding">10dp</dimen>
     <dimen name="mini_fab_separation">6dp</dimen>
     <dimen name="fab_image_size">24dp</dimen>
-    <dimen name="dialog_text_row_size">@dimen/roboto_11</dimen>
     <dimen name="dialog_subttile_row_size">@dimen/roboto_16</dimen>
     <dimen name="dialog_log_size">@dimen/roboto_14</dimen>
     <dimen name="dialog_button_space">16dp</dimen>
@@ -152,10 +152,20 @@
     <dimen name="tab_host_text_size">14dip</dimen>
 
     <dimen name="create_survey_title_extra_bottom_marging">12dip</dimen>
+
+    <dimen name="header_big_text_size">18dp</dimen>
+    <dimen name="header_medium_text_size">14dp</dimen>
+    <dimen name="header_medium_right_text_size">13dp</dimen>
+    <dimen name="header_small_text_size">10dp</dimen>
+    <dimen name="plan_action_button_text_size">@dimen/roboto_16</dimen>
+    <dimen name="plan_action_text_size">@dimen/roboto_13</dimen>
+    <dimen name="plan_action_text_title_size">@dimen/roboto_14</dimen>
+    <dimen name="plan_action_fab_padding">15dp</dimen>
+    <dimen name="plan_date_right_padding">0dp</dimen>
+
     <dimen name="creation_title">18dip</dimen>   <!-- Quest mark guide -->
     <dimen name="planning_title_number">@dimen/roboto_20</dimen>
     <dimen name="planning_titles">@dimen/roboto_18</dimen>
-
 
     <dimen name="filter_top_padding">0dp</dimen>
     <dimen name="filter_right_padding">0dp</dimen>
@@ -163,6 +173,17 @@
     <dimen name="filter_bottom_padding">15dp</dimen>
 
     <dimen name="design_fab_size_normal">70dp</dimen>
+    <dimen name="design_fab_size_mini">60dp</dimen>
+    <dimen name="fab_icon_size">44dp</dimen>
+
+    <dimen name="filters_header_height">56.0dip</dimen>
+    <dimen name="feedback_top_bottom_padding">5dp</dimen>
+    <dimen name="feedback_action_button_size">2dp</dimen>
+    <dimen name="feedback_header">35dp</dimen>
+    <dimen name="feedback_header_score">33dp</dimen>
+    <dimen name="feedback_width_score">80dp</dimen>
+    <dimen name="feedback_height_score">40dp</dimen>
+
 
     <dimen name="progressbar_stroke_width">10dp</dimen>
 </resources>

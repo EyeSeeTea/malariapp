@@ -40,6 +40,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
@@ -162,11 +163,11 @@ public class AutoTabAdapter extends ATabAdapter {
      * Store subscore bar views in a private class to later access them quickly
      */
     private void initializeScoreViews() {
-        scoreHolder.score = (CustomTextView) ((Activity) getContext()).findViewById(R.id.score);
-        scoreHolder.totalDenum = (CustomTextView) ((Activity) getContext()).findViewById(R.id.totalDen);
-        scoreHolder.totalNum = (CustomTextView) ((Activity) getContext()).findViewById(R.id.totalNum);
-        scoreHolder.subtotalscore = (CustomTextView) ((Activity) getContext()).findViewById(R.id.subtotalScoreText);
-        scoreHolder.qualitativeScore = (CustomTextView) ((Activity) getContext()).findViewById(R.id.qualitativeScore);
+        scoreHolder.score = (TextView) ((Activity) getContext()).findViewById(R.id.score);
+        scoreHolder.totalDenum = (TextView) ((Activity) getContext()).findViewById(R.id.totalDen);
+        scoreHolder.totalNum = (TextView) ((Activity) getContext()).findViewById(R.id.totalNum);
+        scoreHolder.subtotalscore = (TextView) ((Activity) getContext()).findViewById(R.id.subtotalScoreText);
+        scoreHolder.qualitativeScore = (TextView) ((Activity) getContext()).findViewById(R.id.qualitativeScore);
     }
 
     /**
@@ -238,7 +239,7 @@ public class AutoTabAdapter extends ATabAdapter {
 
         } else if(item instanceof HeaderDB){
             rowView = getInflater().inflate(R.layout.headers, parent, false);
-            viewHolder.statement = (CustomTextView) rowView.findViewById(R.id.headerName);
+            viewHolder.statement = (TextView) rowView.findViewById(R.id.headerName);
             viewHolder.statement.setText(((HeaderDB) item).getName());
         }else{
             QuestionRow questionRow = (QuestionRow)item;

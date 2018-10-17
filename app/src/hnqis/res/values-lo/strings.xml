@@ -282,4 +282,6 @@
 <string name="health_facility">ສູນການແພດ</string>
 <string name="mandatory">"ບັງຄັບ"</string>
 <string name="dialog_action_plan">"ແຜນການປະຕິບັດງານ"</string>
+<string name="filter">"ຕົວກອງ"</string>
+<string name="apply_filters">"ນໍາໃຊ້ຕົວກັ່ນຕອງ"</string>
 </resources>
