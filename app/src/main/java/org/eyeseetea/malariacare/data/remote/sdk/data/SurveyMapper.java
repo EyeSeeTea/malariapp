@@ -60,22 +60,6 @@ public class SurveyMapper {
         return surveys;
     }
 
-    public static  HashMap<String, Question> mapQuestionListToHashMap(List<Question> questions) {
-        HashMap<String, Question> hasMapQuestions = new HashMap<>();
-        for (Question question:questions){
-            hasMapQuestions.put(question.getUId(), question);
-        }
-        return hasMapQuestions;
-    }
-
-    public static HashMap<String,QuestionValue> mapValueListToHashMap(List<QuestionValue> questionValues) {
-        HashMap<String, QuestionValue> hasMapQuestionValues = new HashMap<>();
-        for (QuestionValue question:questionValues){
-            hasMapQuestionValues.put(question.getQuestionUId(), question);
-        }
-        return hasMapQuestionValues;
-    }
-
     private Survey map(Event event) {
 
         String eventUid = event.getUId();

@@ -1,7 +1,5 @@
 package org.eyeseetea.malariacare.domain.entity;
 
-import org.eyeseetea.malariacare.data.remote.sdk.data.SurveyMapper;
-
 import static org.eyeseetea.malariacare.domain.utils.RequiredChecker.required;
 
 import java.util.ArrayList;
@@ -39,7 +37,7 @@ public class Survey {
     public static Survey createEmptySurvey(String uId, String programUId, String orgUnitUId,
             String userUId, List questions) {
         Survey survey = new Survey(uId, programUId, orgUnitUId, userUId);
-        survey.startQuestionSurvey(SurveyMapper.mapQuestionListToHashMap(questions));
+        survey.startQuestionSurvey(createQuestionsMap(questions));
         return survey;
     }
 
@@ -52,7 +50,7 @@ public class Survey {
         survey.changeUploadDate(uploadDate);
         survey.changeScheduledDate(scheduledDate);
         survey.assignCompletionDate(completionDate);
-        survey.addQuestionValues(SurveyMapper.mapValueListToHashMap(questionValues));
+        survey.addQuestionValues(createQuestionValuesMap(questionValues));
         survey.assignScore(score);
         return survey;
     }
@@ -205,6 +203,22 @@ public class Survey {
             }
         }
         return total;
+    }
+
+    public static  HashMap<String, Question> createQuestionsMap(List<Question> questions) {
+        HashMap<String, Question> hasMapQuestions = new HashMap<>();
+        for (Question question:questions){
+            hasMapQuestions.put(question.getUId(), question);
+        }
+        return hasMapQuestions;
+    }
+
+    public static HashMap<String,QuestionValue> createQuestionValuesMap(List<QuestionValue> questionValues) {
+        HashMap<String, QuestionValue> hasMapQuestionValues = new HashMap<>();
+        for (QuestionValue question:questionValues){
+            hasMapQuestionValues.put(question.getQuestionUId(), question);
+        }
+        return hasMapQuestionValues;
     }
 
     @Override
