@@ -21,13 +21,14 @@ package org.eyeseetea.malariacare.domain.usecase;
 
 import android.net.Uri;
 
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullDemoController;
 import org.eyeseetea.malariacare.domain.boundary.IImportController;
-import org.eyeseetea.malariacare.domain.boundary.IPullDemoController;
+import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
+import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 
-public class ImportUseCase {
+public class ImportUseCase implements UseCase {
 
     Uri uri;
+
 
     public interface Callback {
         void onComplete();
@@ -35,25 +36,49 @@ public class ImportUseCase {
         void onImportError();
     }
 
+    private IAsyncExecutor mAsyncExecutor;
+    private IMainExecutor mMainExecutor;
+    private Callback mCallback;
     IImportController mImportController;
 
-    public ImportUseCase(Uri uri, IImportController importController) {
+    public ImportUseCase(Uri uri, IImportController importController, IAsyncExecutor asyncExecutor,
+            IMainExecutor mainExecutor) {
         mImportController = importController;
         this.uri = uri;
+        mAsyncExecutor = asyncExecutor;
+        mMainExecutor = mainExecutor;
     }
 
-    public void execute(final Callback callback) {
+
+    @Override
+    public void run() {
         mImportController.importDB(uri, new IImportController.IImportControllerCallback() {
             @Override
             public void onComplete() {
-                callback.onComplete();
+                mMainExecutor.run(new Runnable() {
+                    @Override
+                    public void run() {
+                        mCallback.onComplete();
+                    }
+                });
             }
 
             @Override
             public void onError(Throwable throwable) {
                 throwable.printStackTrace();
-                callback.onImportError();
+                mMainExecutor.run(new Runnable() {
+                    @Override
+                    public void run() {
+                        mCallback.onImportError();
+                    }
+                });
             }
         });
+    }
+
+
+    public void execute(final Callback callback) {
+        mCallback = callback;
+        mAsyncExecutor.run(this);
     }
 }

@@ -44,10 +44,10 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.network.ConnectivityManager;
 import org.eyeseetea.malariacare.data.remote.sdk.data.SurveySDKDhisDataSource;
+import org.eyeseetea.malariacare.data.repositories.AuthenticationManager;
 import org.eyeseetea.malariacare.data.repositories.OptionRepository;
 import org.eyeseetea.malariacare.data.repositories.ServerMetadataRepository;
 import org.eyeseetea.malariacare.domain.boundary.IConnectivityManager;
-import org.eyeseetea.malariacare.data.repositories.AuthenticationManager;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IOptionRepository;
@@ -56,9 +56,9 @@ import org.eyeseetea.malariacare.domain.boundary.repositories.IServerMetadataRep
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullDemoUseCase;
-import org.eyeseetea.malariacare.domain.usecase.pull.SurveyFilter;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullUseCase;
+import org.eyeseetea.malariacare.domain.usecase.pull.SurveyFilter;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 
@@ -292,7 +292,10 @@ public class ProgressActivity extends Activity {
     private void executeLogout() {
         Log.d(TAG, "Logging out...");
         AuthenticationManager authenticationManager = new AuthenticationManager(this);
-        LogoutUseCase logoutUseCase = new LogoutUseCase(authenticationManager);
+        IAsyncExecutor mAsyncExecutor = new AsyncExecutor();
+        IMainExecutor mMainExecutor = new UIThreadExecutor();
+        LogoutUseCase logoutUseCase = new LogoutUseCase(authenticationManager, mMainExecutor,
+                mAsyncExecutor);
 
         logoutUseCase.execute(new LogoutUseCase.Callback() {
             @Override

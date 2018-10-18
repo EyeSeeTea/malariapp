@@ -25,18 +25,37 @@ import android.preference.PreferenceManager;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
+import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 
-public class LoadCredentialsUseCase {
+public class LoadCredentialsUseCase implements  UseCase{
 
-    Context mContext;
-
-    public LoadCredentialsUseCase(Context context) {
-        mContext = context;
+    public interface Callback {
+        void onSuccess(Credentials credentials);
     }
 
-    public void execute() {
+    Context mContext;
+    private IAsyncExecutor mAsyncExecutor;
+    private IMainExecutor mMainExecutor;
+    private Callback mCallback;
+
+    public LoadCredentialsUseCase(Context context, IMainExecutor mainExecutor,
+            IAsyncExecutor asyncExecutor) {
+        mContext = context;
+        mMainExecutor = mainExecutor;
+        mAsyncExecutor = asyncExecutor;
+    }
+
+
+    @Override
+    public void run() {
         loadCredentials();
+    }
+
+    public void execute(Callback callback) {
+        mCallback = callback;
+        mAsyncExecutor.run(this);
     }
 
     private void loadCredentials() {
@@ -48,8 +67,16 @@ public class LoadCredentialsUseCase {
         String password = sharedPreferences.getString(mContext.getString(R.string.dhis_password),
                 "");
 
-        Credentials credentials = new Credentials(serverURL, username, password);
+        final Credentials credentials = new Credentials(serverURL, username, password);
 
         Session.setCredentials(credentials);
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                mCallback.onSuccess(credentials);
+            }
+        });
     }
+
+
 }

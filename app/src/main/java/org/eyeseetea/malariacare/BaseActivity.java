@@ -31,13 +31,10 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
 
@@ -49,13 +46,16 @@ import org.eyeseetea.malariacare.data.database.utils.LanguageContextWrapper;
 import org.eyeseetea.malariacare.data.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.repositories.AuthenticationManager;
+import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
+import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IAuthenticationManager;
 import org.eyeseetea.malariacare.domain.usecase.ImportUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.listeners.SurveyLocationListener;
+import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
+import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
-import org.eyeseetea.malariacare.strategies.ActionBarStrategy;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 
@@ -85,7 +85,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         initView(savedInstanceState);
 
         mUserAccountRepository = new AuthenticationManager(this);
-        mLogoutUseCase = new LogoutUseCase(mUserAccountRepository);
+        IMainExecutor mainExecutor = new UIThreadExecutor();
+        IAsyncExecutor asyncExecutor = new AsyncExecutor();
+        mLogoutUseCase = new LogoutUseCase(mUserAccountRepository, mainExecutor, asyncExecutor);
         checkQuarantineSurveys();
         alarmPush = new AlarmPushReceiver();
         alarmPush.setPushAlarm(this);
@@ -221,7 +223,10 @@ public abstract class BaseActivity extends AppCompatActivity {
                     Uri uri = data.getData();
                     Log.d(TAG, "File Uri: " + uri.toString());
                     ImportController importController = new ImportController(this);
-                    ImportUseCase importUseCase = new ImportUseCase(uri, importController);
+                    IMainExecutor mainExecutor = new UIThreadExecutor();
+                    IAsyncExecutor asyncExecutor = new AsyncExecutor();
+                    ImportUseCase importUseCase = new ImportUseCase(uri, importController,
+                            asyncExecutor, mainExecutor);
                     importUseCase.execute(new ImportUseCase.Callback() {
                         @Override
                         public void onComplete() {

@@ -27,8 +27,12 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.metadata.PhoneMetaData;
+import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
+import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.usecase.LoadCredentialsUseCase;
+import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
+import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 
 import java.util.HashMap;
 import java.util.List;
@@ -104,10 +108,15 @@ public class Session {
 
     public static Credentials getCredentials() {
         if (credentials == null) {
-            LoadCredentialsUseCase loadCredentialsUseCase =
-                    new LoadCredentialsUseCase(
-                            PreferencesState.getInstance().getContext());
-            loadCredentialsUseCase.execute();
+            IAsyncExecutor asyncExecutor = new AsyncExecutor();
+            IMainExecutor mainExecutor = new UIThreadExecutor();
+            LoadCredentialsUseCase loadCredentialsUseCase = new LoadCredentialsUseCase(PreferencesState.getInstance().getContext(), mainExecutor, asyncExecutor);
+            loadCredentialsUseCase.execute(new LoadCredentialsUseCase.Callback() {
+                @Override
+                public void onSuccess(Credentials credentials) {
+
+                }
+            });
             if (credentials == null) {
                 return  null;
             }
