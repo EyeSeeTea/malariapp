@@ -19,8 +19,8 @@ public class Survey {
     private Date uploadDate;
     private Date scheduledDate;
     private SurveyStatus status;
-    private HashMap<String, QuestionValue> questionValues;
-    private HashMap<String, Question> questions;
+    private HashMap<String, QuestionValue> questionValuesMap;
+    private HashMap<String, Question> questionsMap;
     private SurveyAnsweredRatio surveyAnsweredRatio;
 
     private Survey(String uId, String programUId, String orgUnitUId, String userUId) {
@@ -28,29 +28,29 @@ public class Survey {
         this.programUId=required(programUId, "Survey programUId is required");
         this.orgUnitUId=required(orgUnitUId, "Survey orgUnitUId is required");
         this.userUId=required(userUId, "Survey userUId is required");
-        this.questionValues = new HashMap<>();
-        this.questions = new HashMap<>();
+        this.questionValuesMap = new HashMap<>();
+        this.questionsMap = new HashMap<>();
         creationDate = new Date();
         status = SurveyStatus.IN_PROGRESS;
     }
 
     public static Survey createEmptySurvey(String uId, String programUId, String orgUnitUId,
-            String userUId, List questions) {
+            String userUId, List<Question> questions) {
         Survey survey = new Survey(uId, programUId, orgUnitUId, userUId);
-        survey.startQuestionSurvey(createQuestionsMap(questions));
+        survey.startQuestionSurvey(questions);
         return survey;
     }
 
     public static Survey createSentSurvey(String uId, String programUId, String orgUnitUId,
             String userUId, Date creationDate, Date uploadDate, Date scheduledDate,
-            Date completionDate, List questionValues, Score score) {
+            Date completionDate, List<QuestionValue> questionValues, Score score) {
         Survey survey = new Survey(uId, programUId, orgUnitUId, userUId);
         survey.changeStatus(SurveyStatus.SENT);
         survey.assignCreationDate(creationDate);
         survey.changeUploadDate(uploadDate);
         survey.changeScheduledDate(scheduledDate);
         survey.assignCompletionDate(completionDate);
-        survey.addQuestionValues(createQuestionValuesMap(questionValues));
+        survey.addQuestionValues(questionValues);
         survey.assignScore(score);
         return survey;
     }
@@ -92,7 +92,7 @@ public class Survey {
     }
 
     public List<QuestionValue> getValues() {
-        return new ArrayList<>(questionValues.values());
+        return new ArrayList<>(questionValuesMap.values());
     }
 
     public Score getScore() {
@@ -101,10 +101,6 @@ public class Survey {
 
     public void assignScore(Score score) {
         this.score = score;
-    }
-
-    private void addQuestionValues(HashMap<String, QuestionValue> values) {
-        questionValues.putAll(values);
     }
 
     public void assignCreationDate(Date date) {
@@ -128,7 +124,7 @@ public class Survey {
     }
 
     public Question getQuestion(String uid) {
-        return questions.get(uid);
+        return questionsMap.get(uid);
     }
 
     public SurveyAnsweredRatio getAnsweredRatio() {
@@ -137,38 +133,38 @@ public class Survey {
 
     public void addValue(QuestionValue questionValue){
         boolean isRepeated = false;
-        if(questionValues.containsKey(questionValue.getQuestionUId())){
+        if(questionValuesMap.containsKey(questionValue.getQuestionUId())){
             isRepeated = true;
         }
         //update
-        questionValues.put(questionValue.getQuestionUId(), questionValue);
+        questionValuesMap.put(questionValue.getQuestionUId(), questionValue);
         if(isRepeated) {
             //value count is already added
             return;
         }
-        if(questions.get(questionValue.getQuestionUId()).hasChildren()) {
-            for(Question childQuestion : questions.get(questionValue.getQuestionUId()).getChildren()){
-                Question updatedQuestion = questions.get(childQuestion.getUId());
+        if(questionsMap.get(questionValue.getQuestionUId()).hasChildren()) {
+            for(Question childQuestion : questionsMap.get(questionValue.getQuestionUId()).getChildren()){
+                Question updatedQuestion = questionsMap.get(childQuestion.getUId());
                 if(updatedQuestion.shouldActivateQuestion(questionValue)) {
                     updatedQuestion.activateQuestionOptionMatch(questionValue);
                     getAnsweredRatio().fixTotalQuestion(updatedQuestion.isCompulsory(), updatedQuestion.isVisible());
                 }
             }
         }
-        getAnsweredRatio().addQuestion(questions.get(questionValue.getQuestionUId()).isCompulsory());
+        getAnsweredRatio().addQuestion(questionsMap.get(questionValue.getQuestionUId()).isCompulsory());
     }
 
     public void removeValue(QuestionValue questionValue){
-        if(!questionValues.containsKey(questionValue.getQuestionUId())){
+        if(!questionValuesMap.containsKey(questionValue.getQuestionUId())){
             //value not exist
             return;
         }
-        questionValues.remove(questionValue.getQuestionUId());
-        getAnsweredRatio().removeQuestion(questions.get(questionValue.getQuestionUId()).isCompulsory());
-        if(questions.get(questionValue.getQuestionUId()).hasChildren()) {
-            for(Question childQuestion : questions.get(questionValue.getQuestionUId()).getChildren()){
-                QuestionValue childQuestionValue = questionValues.get(childQuestion.getUId());
-                Question updatedQuestion = questions.get(childQuestion.getUId());
+        questionValuesMap.remove(questionValue.getQuestionUId());
+        getAnsweredRatio().removeQuestion(questionsMap.get(questionValue.getQuestionUId()).isCompulsory());
+        if(questionsMap.get(questionValue.getQuestionUId()).hasChildren()) {
+            for(Question childQuestion : questionsMap.get(questionValue.getQuestionUId()).getChildren()){
+                QuestionValue childQuestionValue = questionValuesMap.get(childQuestion.getUId());
+                Question updatedQuestion = questionsMap.get(childQuestion.getUId());
                 updatedQuestion.deactivateQuestionOptionMatch(questionValue);
                 if(childQuestionValue!=null && !childQuestion.isVisible()) {
                     removeValue(childQuestionValue);
@@ -178,11 +174,11 @@ public class Survey {
         }
     }
 
-    private void startQuestionSurvey(HashMap<String, Question> questions) {
-        int totalCompulsory = countTotalCompulsoryQuestions(questions);
-        int total = countTotalActiveQuestions(questions) + totalCompulsory;
+    private void startQuestionSurvey(List<Question> questions) {
+        this.questionsMap = createQuestionsMap(questions);
+        int totalCompulsory = countTotalCompulsoryQuestions(questionsMap);
+        int total = countTotalActiveQuestions(questionsMap) + totalCompulsory;
         surveyAnsweredRatio = (SurveyAnsweredRatio.startSurvey(total, totalCompulsory));
-        this.questions = questions;
     }
 
     private int countTotalCompulsoryQuestions(HashMap<String, Question> questions) {
@@ -205,7 +201,7 @@ public class Survey {
         return total;
     }
 
-    public static  HashMap<String, Question> createQuestionsMap(List<Question> questions) {
+    private HashMap<String, Question> createQuestionsMap(List<Question> questions) {
         HashMap<String, Question> hasMapQuestions = new HashMap<>();
         for (Question question:questions){
             hasMapQuestions.put(question.getUId(), question);
@@ -213,12 +209,16 @@ public class Survey {
         return hasMapQuestions;
     }
 
-    public static HashMap<String,QuestionValue> createQuestionValuesMap(List<QuestionValue> questionValues) {
+    private HashMap<String,QuestionValue> createQuestionValuesMap(List<QuestionValue> questionValues) {
         HashMap<String, QuestionValue> hasMapQuestionValues = new HashMap<>();
         for (QuestionValue question:questionValues){
             hasMapQuestionValues.put(question.getQuestionUId(), question);
         }
         return hasMapQuestionValues;
+    }
+
+    private void addQuestionValues(List<QuestionValue> questionValues) {
+        questionValuesMap = createQuestionValuesMap(questionValues);
     }
 
     @Override
@@ -277,8 +277,8 @@ public class Survey {
                 ", uploadDate=" + uploadDate +
                 ", scheduledDate=" + scheduledDate +
                 ", status=" + status +
-                ", questionValues=" + questionValues +
-                ", questions=" + questions +
+                ", questionValues=" + questionValuesMap +
+                ", questions=" + questionsMap +
                 ", surveyAnsweredRatio=" + surveyAnsweredRatio +
                 '}';
     }

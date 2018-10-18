@@ -19,11 +19,6 @@
 
 package org.eyeseetea.malariacare.domain.entity;
 
-
-/**
- * VO that holds the completion ratio of answered/expected questions
- * Created by arrizabalaga on 1/07/15.
- */
 public class SurveyAnsweredRatio {
     /**
      * Id of the related survey
