@@ -1,4 +1,4 @@
-package org.eyeseetea.malariacare.domain.utils;
+package org.eyeseetea.malariacare.domain.common;
 
 public class PositiveOrCeroChecker {
 

@@ -1,4 +1,4 @@
-package org.eyeseetea.malariacare.data.remote.sdk.data;
+package org.eyeseetea.malariacare.data.remote.sdk.dataSources;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -13,6 +13,7 @@ import org.eyeseetea.malariacare.common.DateTimeTypeAdapter;
 import org.eyeseetea.malariacare.common.DateTypeAdapter;
 import org.eyeseetea.malariacare.common.ResourcesFileReader;
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
+import org.eyeseetea.malariacare.data.remote.sdk.mapper.SurveyMapper;
 import org.eyeseetea.malariacare.domain.entity.Option;
 import org.eyeseetea.malariacare.domain.entity.OrgUnit;
 import org.eyeseetea.malariacare.domain.entity.Question;

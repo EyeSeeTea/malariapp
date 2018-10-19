@@ -1,4 +1,4 @@
-package org.eyeseetea.malariacare.data.remote.sdk.data;
+package org.eyeseetea.malariacare.data.remote.sdk.mapper;
 
 import static org.eyeseetea.malariacare.utils.DateParser.AMERICAN_DATE_FORMAT;
 import static org.eyeseetea.malariacare.utils.DateParser.DHIS2_GMT_DATE_FORMAT;

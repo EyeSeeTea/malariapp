@@ -21,7 +21,7 @@ package org.eyeseetea.malariacare.domain.entity;
 
 import java.util.Date;
 
-import static org.eyeseetea.malariacare.domain.utils.RequiredChecker.required;
+import static org.eyeseetea.malariacare.domain.common.RequiredChecker.required;
 
 public class UserAccount {
     private String name;

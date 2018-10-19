@@ -12,13 +12,14 @@ import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushDataC
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullDataController;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullMetadataController;
 import org.eyeseetea.malariacare.data.network.ConnectivityManager;
-import org.eyeseetea.malariacare.data.remote.sdk.data.ObservationSDKDhisDataSource;
-import org.eyeseetea.malariacare.data.remote.sdk.data.SurveySDKDhisDataSource;
+import org.eyeseetea.malariacare.data.remote.sdk.dataSources.ObservationSDKDhisDataSource;
+import org.eyeseetea.malariacare.data.remote.sdk.dataSources.SurveySDKDhisDataSource;
 import org.eyeseetea.malariacare.domain.boundary.IConnectivityManager;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IOptionRepository;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IOrgUnitLevelRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IOrgUnitRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IQuestionRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerMetadataRepository;
@@ -33,7 +34,7 @@ public class SyncFactory {
     private MetadataFactory metadataFactory = new MetadataFactory();
 
     public PullUseCase getPullUseCase(Context context){
-        PullMetadataController pullMetadataController = new PullMetadataController();
+        PullMetadataController pullMetadataController = getPullMetadataController();
 
         IDataRemoteDataSource surveyRemoteDataSource = getSurveyRemoteDataSource(context);
         IDataLocalDataSource surveyLocalDataSource = getSurveyLocalDataSource();
@@ -50,6 +51,14 @@ public class SyncFactory {
                 pullDataController, metadataValidator);
 
         return pullUseCase;
+    }
+
+    @NonNull
+    private PullMetadataController getPullMetadataController() {
+        IOrgUnitLevelRepository orgUnitLevelRepository =
+                metadataFactory.getOrgUnitLevelRepository();
+
+        return new PullMetadataController(orgUnitLevelRepository);
     }
 
     public PushUseCase getPushUseCase(Context context){

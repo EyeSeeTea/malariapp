@@ -1,12 +1,8 @@
 package org.eyeseetea.malariacare.domain.entity;
 
-import static org.eyeseetea.malariacare.domain.utils.RequiredChecker.required;
+import static org.eyeseetea.malariacare.domain.common.RequiredChecker.required;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-public class OrgUnitLevel {
+public class OrgUnitLevel implements IMetadata{
     private final String uid;
     private final String name;
 

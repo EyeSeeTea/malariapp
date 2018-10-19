@@ -1,4 +1,4 @@
-package org.eyeseetea.malariacare.data.remote.sdk.data;
+package org.eyeseetea.malariacare.data.remote.sdk.mapper;
 
 import android.util.Log;
 

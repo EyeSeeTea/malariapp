@@ -23,16 +23,15 @@ import android.util.Log;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.IPullSourceCallback;
+import org.eyeseetea.malariacare.data.boundaries.IMetadataLocalDataSource;
+import org.eyeseetea.malariacare.data.boundaries.IMetadataRemoteDataSource;
 import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.DataElementExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.OptionSetExtended;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models
-        .OrganisationUnitExtended;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models
-        .OrganisationUnitLevelExtended;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.OrganisationUnitExtended;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.OrganisationUnitLevelExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.ProgramExtended;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models
-        .ProgramStageDataElementExtended;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.ProgramStageDataElementExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.ProgramStageExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.UserAccountExtended;
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
@@ -41,6 +40,8 @@ import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.remote.sdk.PullDhisSDKDataSource;
 import org.eyeseetea.malariacare.data.remote.sdk.SdkQueries;
 import org.eyeseetea.malariacare.domain.boundary.IPullMetadataController;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IOrgUnitLevelRepository;
+import org.eyeseetea.malariacare.domain.common.ReadPolicy;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
 
 import java.util.ArrayList;
@@ -53,18 +54,39 @@ import java.util.Map;
 public class PullMetadataController implements IPullMetadataController {
 
     private final String TAG = ".PullMetadataController";
+
+    private IMetadataLocalDataSource mOrgUnitLevelLocalDataSource;
+    private IMetadataRemoteDataSource mOrgUnitLevelRemoteDataSource;
+
     PullDhisSDKDataSource pullRemoteDataSource;
     IPullMetadataController.Callback callback;
 
     ConvertFromSDKVisitor converter;
 
-    public PullMetadataController() {
+    IOrgUnitLevelRepository mOrgUnitLevelRepository;
+
+    public PullMetadataController(IOrgUnitLevelRepository orgUnitLevelRepository) {
         converter = new ConvertFromSDKVisitor();
         pullRemoteDataSource = new PullDhisSDKDataSource();
+
+        mOrgUnitLevelRepository = orgUnitLevelRepository;
     }
 
     @Override
     public void pullMetadata(final IPullMetadataController.Callback callback) {
+
+        try {
+
+            mOrgUnitLevelRepository.getAll(ReadPolicy.NETWORK_FIRST);
+
+        } catch (Exception e){
+            callback.onError(e);
+        }
+
+        oldPull(callback);
+    }
+
+    private void oldPull(final Callback callback) {
         //TODO: jsanchez when we decoupled from dhis metadata review this
         //should we remove login user in pull process?
         //In any case if we remove the user table in wipeDatabase then remove also session user
@@ -72,7 +94,6 @@ public class PullMetadataController implements IPullMetadataController {
         Session.setUser(null);
 
         this.callback = callback;
-
 
         pullRemoteDataSource.wipeDataBase();
 
@@ -82,8 +103,6 @@ public class PullMetadataController implements IPullMetadataController {
 
             @Override
             public void onComplete() {
-                callback.onStep(PullStep.EVENTS);
-
                 convertMetaData();
 
                 Log.d(TAG, "PULL process...OK");

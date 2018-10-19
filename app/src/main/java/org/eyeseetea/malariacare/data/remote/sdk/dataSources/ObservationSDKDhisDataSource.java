@@ -17,7 +17,7 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.data.remote.sdk.data;
+package org.eyeseetea.malariacare.data.remote.sdk.dataSources;
 
 import android.content.Context;
 
@@ -25,6 +25,7 @@ import org.eyeseetea.malariacare.data.boundaries.IDataLocalDataSource;
 import org.eyeseetea.malariacare.data.boundaries.IDataRemoteDataSource;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.data.remote.sdk.mapper.FromObservationEventMapper;
 import org.eyeseetea.malariacare.data.sync.mappers.PushReportMapper;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IOptionRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerMetadataRepository;

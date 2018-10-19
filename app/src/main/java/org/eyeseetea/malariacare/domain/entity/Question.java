@@ -1,8 +1,6 @@
 package org.eyeseetea.malariacare.domain.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-import static org.eyeseetea.malariacare.domain.utils.RequiredChecker.required;
+import static org.eyeseetea.malariacare.domain.common.RequiredChecker.required;
 
 public class Question {
     private String uId;
