@@ -31,14 +31,10 @@ import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullDemoController;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
-import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
-import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.usecase.LoadCredentialsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullDemoUseCase;
-import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
-import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.hisp.dhis.client.sdk.ui.views.FontButton;
 
 public class LoginActivityStrategy {
@@ -53,17 +49,12 @@ public class LoginActivityStrategy {
 
     public void onCreate() {
         if (existsLoggedUser()) {
-            IAsyncExecutor asyncExecutor = new AsyncExecutor();
-            IMainExecutor mainExecutor = new UIThreadExecutor();
             LoadCredentialsUseCase loadCredentialsUseCase =
-                    new LoadCredentialsUseCase(loginActivity, mainExecutor, asyncExecutor);
+                    new LoadCredentialsUseCase(loginActivity);
 
-            loadCredentialsUseCase.execute(new LoadCredentialsUseCase.Callback() {
-                @Override
-                public void onSuccess(Credentials credentials) {
-                    finishAndGo(DashboardActivity.class);
-                }
-            });
+            loadCredentialsUseCase.execute();
+
+            finishAndGo(DashboardActivity.class);
         } else {
             loginActivity.runOnUiThread(new Runnable() {
                 public void run() {
