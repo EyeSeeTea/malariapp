@@ -139,6 +139,9 @@ android {
             targetModuleName 'EyeSeeTea'
         }
     }
+    configurations.all {
+        resolutionStrategy.force "com.google.code.findbugs:jsr305:${libs.jsr305Version}"
+    }
 }
 
 configurations {
