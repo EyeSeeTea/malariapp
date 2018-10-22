@@ -5,9 +5,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class SurveyAnswerRatioShould {
 
     @Rule
@@ -245,7 +242,7 @@ public class SurveyAnswerRatioShould {
         answeredRatio.fixTotalQuestion(true, false);
         answeredRatio.fixTotalQuestion(true, false);
         answeredRatio.fixTotalQuestion(true, false);
-        
+
         //then
         Assert.assertTrue(answeredRatio.getTotal()==10);
         Assert.assertTrue(answeredRatio.getTotalCompulsory()==10);
