@@ -68,29 +68,39 @@ public class LoginUseCase implements UseCase {
                     public void onError(Throwable throwable) {
                         if (throwable instanceof MalformedURLException
                                 || throwable instanceof UnknownHostException) {
-                            mMainExecutor.run(new Runnable() {
-                                @Override
-                                public void run() {
-                                    mCallback.onServerURLNotValid();
-                                }
-                            });
+                            notifyOnServerURLNotValid();
                         } else if (throwable instanceof InvalidCredentialsException) {
-                            mMainExecutor.run(new Runnable() {
-                                @Override
-                                public void run() {
-                                    mCallback.onInvalidCredentials();
-                                }
-                            });
+                           notifyOnInvalidCredentials();
                         } else if (throwable instanceof NetworkException) {
-                            mMainExecutor.run(new Runnable() {
-                                @Override
-                                public void run() {
-                                    mCallback.onNetworkError();
-                                }
-                            });
+                            notifyOnNetworkError();
                         }
                     }
                 });
+    }
+
+    private void notifyOnServerURLNotValid(){
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                mCallback.onServerURLNotValid();
+            }
+        });
+    }
+    private void notifyOnInvalidCredentials(){
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                mCallback.onInvalidCredentials();
+            }
+        });
+    }
+    private void notifyOnNetworkError(){
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                mCallback.onNetworkError();
+            }
+        });
     }
 
     public void execute(Credentials credentials, final Callback callback) {

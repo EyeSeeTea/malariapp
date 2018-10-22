@@ -49,24 +49,31 @@ public class LogoutUseCase implements UseCase {
                 new IRepositoryCallback<Void>() {
                     @Override
                     public void onSuccess(Void result) {
-                        mMainExecutor.run(new Runnable() {
-                            @Override
-                            public void run() {
-                                mCallback.onLogoutSuccess();
-                            }
-                        });
+                        notifyOnLogoutSucces();
                     }
 
                     @Override
-                    public void onError(final Throwable throwable) {
-                        mMainExecutor.run(new Runnable() {
-                            @Override
-                            public void run() {
-                                mCallback.onLogoutError(throwable.getMessage());
-                            }
-                        });
+                    public void onError(Throwable throwable) {
+                        notifyOnLogoutError(throwable);
                     }
                 });
+    }
+
+    private void notifyOnLogoutSucces(){
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                mCallback.onLogoutSuccess();
+            }
+        });
+    }
+    private void notifyOnLogoutError(final Throwable throwable){
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                mCallback.onLogoutError(throwable.getMessage());
+            }
+        });
     }
 
     public void execute(final Callback callback) {

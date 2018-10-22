@@ -21,8 +21,12 @@ package org.eyeseetea.malariacare.domain.usecase.pull;
 
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullDemoController;
 import org.eyeseetea.malariacare.domain.boundary.IPullDemoController;
+import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
+import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
+import org.eyeseetea.malariacare.domain.usecase.UseCase;
 
-public class PullDemoUseCase {
+public class PullDemoUseCase implements UseCase {
+
 
     public interface Callback {
         void onComplete();
@@ -31,22 +35,51 @@ public class PullDemoUseCase {
     }
 
     IPullDemoController mPullController;
+    private IAsyncExecutor mAsyncExecutor;
+    private IMainExecutor mMainExecutor;
+    private Callback mCallback;
 
-    public PullDemoUseCase(IPullDemoController pullController) {
+    public PullDemoUseCase(IPullDemoController pullController, IMainExecutor mainExecutor,
+            IAsyncExecutor asyncExecutor) {
         mPullController = pullController;
+        mMainExecutor = mainExecutor;
+        mAsyncExecutor = asyncExecutor;
     }
 
-    public void execute(final Callback callback) {
+    @Override
+    public void run() {
         mPullController.pull(new PullDemoController.IPullDemoControllerCallback() {
-
             @Override
             public void onComplete() {
-                callback.onComplete();
+                notifyOnComplete();
             }
 
             @Override
             public void onError(Throwable throwable) {
-                callback.onPullError();
+                notifyOnPullError();
+            }
+        });
+    }
+
+    public void execute(final Callback callback) {
+        mCallback = callback;
+        mMainExecutor.run(this);
+    }
+
+    private void notifyOnComplete() {
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                mCallback.onComplete();
+            }
+        });
+    }
+
+    private void notifyOnPullError() {
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                mCallback.onPullError();
             }
         });
     }

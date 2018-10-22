@@ -55,23 +55,31 @@ public class ImportUseCase implements UseCase {
         mImportController.importDB(uri, new IImportController.IImportControllerCallback() {
             @Override
             public void onComplete() {
-                mMainExecutor.run(new Runnable() {
-                    @Override
-                    public void run() {
-                        mCallback.onComplete();
-                    }
-                });
+                notifyOnComplete();
             }
 
             @Override
             public void onError(Throwable throwable) {
                 throwable.printStackTrace();
-                mMainExecutor.run(new Runnable() {
-                    @Override
-                    public void run() {
-                        mCallback.onImportError();
-                    }
-                });
+                notifyOnError();
+            }
+        });
+    }
+
+    private void notifyOnComplete() {
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                mCallback.onComplete();
+            }
+        });
+    }
+
+    private void notifyOnError() {
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                mCallback.onImportError();
             }
         });
     }

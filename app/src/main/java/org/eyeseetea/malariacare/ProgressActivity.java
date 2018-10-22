@@ -173,7 +173,10 @@ public class ProgressActivity extends Activity {
     }
 
     private void executeDemoPull() {
-        new PullDemoUseCase(new PullDemoController(this)).execute(new PullDemoUseCase.Callback() {
+        IMainExecutor mainExecutor = new UIThreadExecutor();
+        IAsyncExecutor asyncExecutor = new AsyncExecutor();
+        new PullDemoUseCase(new PullDemoController(this), mainExecutor, asyncExecutor).execute(
+                new PullDemoUseCase.Callback() {
             @Override
             public void onComplete() {
                 finishAndGo(DashboardActivity.class);

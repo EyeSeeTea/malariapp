@@ -54,6 +54,10 @@ public class MockedPushSurveysUseCase implements UseCase {
             survey.setStatus(SURVEY_SENT);
             survey.save();
         }
+        notifyOnPushFinished();
+    }
+
+    private void notifyOnPushFinished() {
         mMainExecutor.run(new Runnable() {
             @Override
             public void run() {
