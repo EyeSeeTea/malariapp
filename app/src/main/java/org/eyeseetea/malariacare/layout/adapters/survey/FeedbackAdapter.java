@@ -238,7 +238,7 @@ public class FeedbackAdapter extends BaseAdapter {
         if(!PreferencesState.getInstance().isVerticalDashboard()){
             textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkGrey));
         }
-        if(feedback.isLabel()){
+        if(!feedback.isOptionSet()){
             textView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         }
 
@@ -292,7 +292,7 @@ public class FeedbackAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 QuestionFeedback questionFeedback=(QuestionFeedback)v.getTag();
-                if(questionFeedback==null || questionFeedback.isLabel() || questionFeedback.getFeedback()==null){
+                if(questionFeedback==null || !questionFeedback.isOptionSet() || questionFeedback.getFeedback()==null){
                     return;
                 }
                 toggleFeedback((LinearLayout)v, questionFeedback.toggleFeedbackShown());

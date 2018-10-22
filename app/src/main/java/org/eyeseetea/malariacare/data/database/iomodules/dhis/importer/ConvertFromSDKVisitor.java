@@ -336,10 +336,6 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         //Label does not have an optionset
         if (dataElement.getOptionSet() != null) {
             appQuestion.setAnswer(answerMap.get(dataElement.getOptionSet()));
-        } else {
-            //A question with NO optionSet is a Label Question
-            Log.d(TAG, String.format("Question (%s) is a LABEL", dataElement.getUid()));
-            appQuestion.setAnswer(buildAnswerLabel());
         }
 
         ProgramStageDataElementExtended programStageDataElement =
@@ -360,31 +356,6 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
     public void buildRelations(DataElementExtended dataElementExtended) {
         questionBuilder.addRelations(dataElementExtended);
-    }
-
-    /**
-     * A dataElement (question) without optionSet is a Label.
-     * This method inits the LABEL answer (the first time) and updates de question.answer to it
-     */
-
-    /**
-     * Builds a synthetic answer 'LABEL'
-     */
-    public AnswerDB buildAnswerLabel() {
-
-        //Build a sintetic Key (AnswerLABEL)
-        final String key = AnswerDB.class + Constants.LABEL;
-        //Look for sintetic LABEL (answer) already created
-        AnswerDB answer = answerMap.get(key);
-
-        //First time no Label answer has been created
-        if (answer == null) {
-            answer = new AnswerDB(Constants.LABEL);
-            answer.save();
-            answerMap.put(key, answer);
-        }
-
-        return answer;
     }
 
     /**

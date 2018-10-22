@@ -2,10 +2,8 @@ package org.eyeseetea.malariacare.data.database.datasources;
 
 import com.raizlabs.android.dbflow.sql.language.Select;
 
-import org.eyeseetea.malariacare.data.database.model.OptionDB;
 import org.eyeseetea.malariacare.data.database.model.QuestionDB;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IQuestionRepository;
-import org.eyeseetea.malariacare.domain.entity.Option;
 import org.eyeseetea.malariacare.domain.entity.Question;
 
 import java.util.ArrayList;
@@ -34,7 +32,12 @@ public class QuestionLocalDataSource implements IQuestionRepository{
     }
 
     private Question mapQuestion(QuestionDB questionDB) {
-        return new Question(questionDB.getUid(), questionDB.getOutput(), questionDB.getCompulsory(), questionDB.getAnswer().getName());
+        String answerName = null;
+
+        if (questionDB.getAnswer() != null)
+            answerName = questionDB.getAnswer().getName();
+
+        return new Question(questionDB.getUid(), questionDB.getOutput(), questionDB.getCompulsory(),answerName);
     }
 
 }

@@ -177,10 +177,13 @@ public class SurveyMapper {
 
         Question question = questionsMap.get(dataValue.getDataElement());
 
-        for (Option option : optionsMap.get(question.getAnswerName())) {
-            if (option.getCode().equals(dataValue.getValue())) {
-                optionResult = option;
-                break;
+        if (question.getAnswerName() != null) {
+
+            for (Option option : optionsMap.get(question.getAnswerName())) {
+                if (option.getCode().equals(dataValue.getValue())) {
+                    optionResult = option;
+                    break;
+                }
             }
         }
 

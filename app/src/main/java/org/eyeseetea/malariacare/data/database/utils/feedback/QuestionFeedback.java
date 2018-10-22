@@ -24,7 +24,6 @@ import org.eyeseetea.malariacare.data.database.model.MediaDB;
 import org.eyeseetea.malariacare.data.database.model.OptionDB;
 import org.eyeseetea.malariacare.data.database.model.QuestionDB;
 import org.eyeseetea.malariacare.data.database.model.ValueDB;
-import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.List;
 
@@ -232,10 +231,8 @@ public class QuestionFeedback implements Feedback {
      *
      * @return
      */
-    public boolean isLabel() {
-        if (question.getAnswer().getName() != null && question.getAnswer().getName().equals(Constants.LABEL))
-            return true;
-        return false;
+    public boolean isOptionSet() {
+        return (question.getAnswer() != null);
     }
 
     @Override
