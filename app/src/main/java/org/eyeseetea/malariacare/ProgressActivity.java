@@ -44,7 +44,6 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.network.ConnectivityManager;
 import org.eyeseetea.malariacare.data.remote.sdk.data.SurveySDKDhisDataSource;
-import org.eyeseetea.malariacare.data.repositories.AuthenticationManager;
 import org.eyeseetea.malariacare.data.repositories.OptionRepository;
 import org.eyeseetea.malariacare.data.repositories.ServerMetadataRepository;
 import org.eyeseetea.malariacare.domain.boundary.IConnectivityManager;
@@ -59,6 +58,7 @@ import org.eyeseetea.malariacare.domain.usecase.pull.PullDemoUseCase;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullUseCase;
 import org.eyeseetea.malariacare.domain.usecase.pull.SurveyFilter;
+import org.eyeseetea.malariacare.factories.AuthenticationFactory;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 
@@ -294,11 +294,7 @@ public class ProgressActivity extends Activity {
 
     private void executeLogout() {
         Log.d(TAG, "Logging out...");
-        AuthenticationManager authenticationManager = new AuthenticationManager(this);
-        IAsyncExecutor mAsyncExecutor = new AsyncExecutor();
-        IMainExecutor mMainExecutor = new UIThreadExecutor();
-        LogoutUseCase logoutUseCase = new LogoutUseCase(authenticationManager, mMainExecutor,
-                mAsyncExecutor);
+        LogoutUseCase logoutUseCase = new AuthenticationFactory().getLogoutUseCase(this);
 
         logoutUseCase.execute(new LogoutUseCase.Callback() {
             @Override

@@ -51,6 +51,7 @@ import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IAuthenticationManager;
 import org.eyeseetea.malariacare.domain.usecase.ImportUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
+import org.eyeseetea.malariacare.factories.AuthenticationFactory;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.listeners.SurveyLocationListener;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
@@ -84,10 +85,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         initView(savedInstanceState);
 
-        mUserAccountRepository = new AuthenticationManager(this);
-        IMainExecutor mainExecutor = new UIThreadExecutor();
-        IAsyncExecutor asyncExecutor = new AsyncExecutor();
-        mLogoutUseCase = new LogoutUseCase(mUserAccountRepository, mainExecutor, asyncExecutor);
+        mLogoutUseCase = new AuthenticationFactory().getLogoutUseCase(this);
         checkQuarantineSurveys();
         alarmPush = new AlarmPushReceiver();
         alarmPush.setPushAlarm(this);
