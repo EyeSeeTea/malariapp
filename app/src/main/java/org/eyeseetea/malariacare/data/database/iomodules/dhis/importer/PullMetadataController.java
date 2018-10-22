@@ -23,8 +23,6 @@ import android.util.Log;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.IPullSourceCallback;
-import org.eyeseetea.malariacare.data.boundaries.IMetadataLocalDataSource;
-import org.eyeseetea.malariacare.data.boundaries.IMetadataRemoteDataSource;
 import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.DataElementExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.OptionSetExtended;
@@ -55,9 +53,6 @@ public class PullMetadataController implements IPullMetadataController {
 
     private final String TAG = ".PullMetadataController";
 
-    private IMetadataLocalDataSource mOrgUnitLevelLocalDataSource;
-    private IMetadataRemoteDataSource mOrgUnitLevelRemoteDataSource;
-
     PullDhisSDKDataSource pullRemoteDataSource;
     IPullMetadataController.Callback callback;
 
@@ -74,7 +69,7 @@ public class PullMetadataController implements IPullMetadataController {
 
     @Override
     public void pullMetadata(final IPullMetadataController.Callback callback) {
-
+        //TODO: this method on the future should be in PullUseCase
         try {
 
             mOrgUnitLevelRepository.getAll(ReadPolicy.NETWORK_FIRST);
@@ -83,6 +78,7 @@ public class PullMetadataController implements IPullMetadataController {
             callback.onError(e);
         }
 
+        //TODO:Remove OldPull when pull is uncoupled from dhis 2 sdk
         oldPull(callback);
     }
 
