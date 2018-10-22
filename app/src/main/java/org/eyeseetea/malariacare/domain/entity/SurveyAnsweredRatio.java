@@ -45,19 +45,24 @@ public class SurveyAnsweredRatio {
 
     public SurveyAnsweredRatio(int total, int answered, int totalCompulsory,
                                int compulsoryAnswered) {
-        this.total = total;
+        this.total = validateTotal(total);
         this.answered = answered;
         this.totalCompulsory = totalCompulsory;
         this.compulsoryAnswered = compulsoryAnswered;
     }
 
+    private int validateTotal(int total) {
+        if(total>0){
+            return total;
+        }else{
+            throw  new IllegalArgumentException("The total of question must be up than 0");
+        }
+    }
+
     public SurveyAnsweredRatio(long surveyId, int total, int answered, int totalCompulsory,
             int compulsoryAnswered) {
+        this(total, answered, totalCompulsory, compulsoryAnswered);
         this.surveyId = surveyId;
-        this.total = total;
-        this.answered = answered;
-        this.totalCompulsory = totalCompulsory;
-        this.compulsoryAnswered = compulsoryAnswered;
     }
 
     public long getSurveyId() {
