@@ -43,6 +43,11 @@ public class LogoutUseCase implements UseCase {
         mAsyncExecutor = asyncExecutor;
     }
 
+    public void execute(final Callback callback) {
+        mCallback = callback;
+        mAsyncExecutor.run(this);
+    }
+
     @Override
     public void run() {
         mUserAccountRepository.logout(
@@ -74,10 +79,5 @@ public class LogoutUseCase implements UseCase {
                 mCallback.onLogoutError(throwable.getMessage());
             }
         });
-    }
-
-    public void execute(final Callback callback) {
-        mCallback = callback;
-        mAsyncExecutor.run(this);
     }
 }

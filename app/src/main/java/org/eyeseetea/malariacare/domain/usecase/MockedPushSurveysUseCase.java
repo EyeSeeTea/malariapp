@@ -61,7 +61,6 @@ public class MockedPushSurveysUseCase implements UseCase {
         mMainExecutor.run(new Runnable() {
             @Override
             public void run() {
-
                 mCallback.onPushFinished();
             }
         });

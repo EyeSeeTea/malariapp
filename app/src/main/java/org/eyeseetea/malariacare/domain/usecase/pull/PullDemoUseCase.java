@@ -46,6 +46,11 @@ public class PullDemoUseCase implements UseCase {
         mAsyncExecutor = asyncExecutor;
     }
 
+    public void execute(final Callback callback) {
+        mCallback = callback;
+        mMainExecutor.run(this);
+    }
+
     @Override
     public void run() {
         mPullController.pull(new PullDemoController.IPullDemoControllerCallback() {
@@ -59,11 +64,6 @@ public class PullDemoUseCase implements UseCase {
                 notifyOnPullError();
             }
         });
-    }
-
-    public void execute(final Callback callback) {
-        mCallback = callback;
-        mMainExecutor.run(this);
     }
 
     private void notifyOnComplete() {
