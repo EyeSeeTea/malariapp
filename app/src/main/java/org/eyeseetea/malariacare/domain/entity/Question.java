@@ -5,9 +5,7 @@ import android.support.annotation.NonNull;
 import static org.eyeseetea.malariacare.domain.utils.RequiredChecker.required;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Question {
     private String uId;
@@ -15,9 +13,9 @@ public class Question {
     private boolean removed;
     private QuestionType questionType;
     private String answerName;
-    private List<Question> children;
-    private List<Question> parents;
-    private Map<String, Map<String, Boolean>> questionOptionMatches;
+    private List<String> children;
+    private List<String> parents;
+    private QuestionParentRelations questionOptionRelations;
 
     public Question(String uId, int questionType, boolean isCompulsory) {
         this(uId, questionType, isCompulsory, null);
@@ -30,7 +28,7 @@ public class Question {
         this.answerName = answerName;
         children = new ArrayList<>();
         parents = new ArrayList<>();
-        questionOptionMatches = new HashMap<>();
+        questionOptionRelations = new QuestionParentRelations();
     }
 
 
@@ -70,14 +68,13 @@ public class Question {
     }
 
     public void addQuestionParentAndOptionMatch(Question question, String optionUid) {
-        addParentIfNotExist(question);
-        Map<String, Boolean> matches = new HashMap<>();
-        matches = addNotTriggeredMatch(question, optionUid, matches);
-        questionOptionMatches.put(question.getUId(), matches);
+        addParentIfNotExist(question.getUId());
+        QuestionOption questionOption = new QuestionOption(question.getUId(), optionUid);
+        questionOptionRelations.addQuestionOptionRelation(questionOption);
     }
 
-    public void addChildren(Question question) {
-        children.add(question);
+    public void addChildren(String questionUId) {
+        children.add(questionUId);
     }
 
     public boolean hasChildren() {
@@ -87,69 +84,60 @@ public class Question {
         return  parents.size()>0;
     }
 
-    public List<Question> getChildren(){
+    public List<String> getChildren(){
         return children;
     }
 
-    public boolean shouldActivateQuestion(QuestionValue value) {
-        Map<String, Boolean> matches = questionOptionMatches.get(value.getQuestionUId());
-        return !isVisible() && matches!=null && matches.containsKey(value.getOptionUId());
+    public boolean shouldActivateQuestion(String questionUId, String optionUId) {
+        return !isVisible() && isValidQuestionOptionMatch(questionUId, optionUId);
     }
 
-    //this method is triggered when a option parent is matched, setting a match question option relation to true
-    public void activateQuestionOptionMatch(QuestionValue questionValue) {
-        if(questionValue.getQuestionUId()!=null && questionValue.getOptionUId()!=null){
-            Map<String, Boolean> match = questionOptionMatches.get(questionValue.getQuestionUId());
-            match.put(questionValue.getOptionUId(), true);
-            questionOptionMatches.put(questionValue.getQuestionUId(), match);
+    //this method is triggered when a option parent is matched, setting a positive match for question option relation
+    public void activateQuestionOptionMatch(String questionUId, String optionUId) {
+        if(questionUId!=null && optionUId!=null && isValidQuestionOptionMatch(questionUId, optionUId)){
+            questionOptionRelations.updateQuestionOption(getMatchedQuestionOption(questionUId, optionUId));
         }
     }
 
-    //this method is triggered when a option parent is disabled, setting a match question option relation to false
-    public void deactivateQuestionOptionMatch(QuestionValue questionValue) {
-        if(questionValue.getQuestionUId()!=null && questionValue.getOptionUId()!=null){
-            Map<String, Boolean> match = questionOptionMatches.get(questionValue.getQuestionUId());
-            match.put(questionValue.getOptionUId(), false);
-            questionOptionMatches.put(questionValue.getQuestionUId(), match);
+    //this method is triggered when a option parent is disabled, setting a negative match  for question option relation
+    public void deactivateQuestionOptionMatch(String questionUId, String optionUId) {
+        if(questionUId!=null && optionUId!=null && isValidQuestionOptionMatch(questionUId, optionUId)) {
+            questionOptionRelations.updateQuestionOption(getUnMatchedQuestionOption(questionUId, optionUId));
         }
+    }
+
+    //Check if the question + option is on matches combinations.
+    private boolean isValidQuestionOptionMatch(String questionUId, String optionUId) {
+        if(optionUId==null) {
+            return false;
+        }
+        QuestionOption questionOption = new QuestionOption(questionUId, optionUId);
+        return questionOptionRelations.checkIfExist(questionOption);
     }
 
     @NonNull
-    private Map<String, Boolean> addNotTriggeredMatch(Question question, String optionUid1, Map<String, Boolean> matches) {
-        if(questionOptionMatches.containsKey(question.getUId())) {
-            matches = questionOptionMatches.get(question.getUId());
-        }
-        matches.put(optionUid1, false);
-        return matches;
-    }
-
-    @NonNull
-    private void addParentIfNotExist(Question question){
-        if(!parents.contains(question)) {
-            parents.add(question);
+    private void addParentIfNotExist(String questionUId){
+        if(!parents.contains(questionUId)) {
+            parents.add(questionUId);
         }
     }
 
-    //this method search an active option match for each question parent option match relations.
+    //this method search an active option doMatch for each question parent option doMatch relations.
     private boolean checkIfParentHasActiveMatches() {
-        for(String questionUId : questionOptionMatches.keySet()){
-            Map<String, Boolean> optionMatcher = questionOptionMatches.get(questionUId);
-            if(optionMatcher==null){
-                continue;
-            }
-            if (findActiveMatch(optionMatcher)) return true;
-        }
-        return false;
+        return questionOptionRelations.hasActiveMatches();
     }
 
-    //this method search an active option match for each question parent option match relations.
-    private boolean findActiveMatch(Map<String, Boolean> optionMatcher) {
-        for(String optionUId : optionMatcher.keySet()) {
-            if (optionMatcher.get(optionUId).booleanValue()) {
-                return true;
-            }
-        }
-        return false;
+    @NonNull
+    private QuestionOption getMatchedQuestionOption(String questionUId, String optionUId) {
+        QuestionOption questionOption = new QuestionOption(questionUId, optionUId);
+        questionOption.doMatch();
+        return questionOption;
+    }
+
+    private QuestionOption getUnMatchedQuestionOption(String questionUId, String optionUId) {
+        QuestionOption questionOption = new QuestionOption(questionUId, optionUId);
+        questionOption.doUnMatch();
+        return questionOption;
     }
 
     @Override
@@ -161,19 +149,27 @@ public class Question {
 
         if (isCompulsory != question.isCompulsory) return false;
         if (removed != question.removed) return false;
-        if (!uId.equals(question.uId)) return false;
+        if (uId != null ? !uId.equals(question.uId) : question.uId != null) return false;
         if (questionType != question.questionType) return false;
-        return answerName != null ? !answerName.equals(question.answerName)
-                : question.answerName != null;
+        if (answerName != null ? !answerName.equals(question.answerName) : question.answerName != null)
+            return false;
+        if (children != null ? !children.equals(question.children) : question.children != null)
+            return false;
+        if (parents != null ? !parents.equals(question.parents) : question.parents != null)
+            return false;
+        return questionOptionRelations != null ? questionOptionRelations.equals(question.questionOptionRelations) : question.questionOptionRelations == null;
     }
 
     @Override
     public int hashCode() {
-        int result = uId.hashCode();
+        int result = uId != null ? uId.hashCode() : 0;
         result = 31 * result + (isCompulsory ? 1 : 0);
         result = 31 * result + (removed ? 1 : 0);
-        result = 31 * result + questionType.hashCode();
+        result = 31 * result + (questionType != null ? questionType.hashCode() : 0);
         result = 31 * result + (answerName != null ? answerName.hashCode() : 0);
+        result = 31 * result + (children != null ? children.hashCode() : 0);
+        result = 31 * result + (parents != null ? parents.hashCode() : 0);
+        result = 31 * result + (questionOptionRelations != null ? questionOptionRelations.hashCode() : 0);
         return result;
     }
 
@@ -185,6 +181,9 @@ public class Question {
                 ", removed=" + removed +
                 ", questionType=" + questionType +
                 ", answerName='" + answerName + '\'' +
+                ", children=" + children +
+                ", parents=" + parents +
+                ", questionOptionRelations=" + questionOptionRelations +
                 '}';
     }
 }

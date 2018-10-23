@@ -142,15 +142,7 @@ public class Survey {
             //value count is already added
             return;
         }
-        if(questionsMap.get(questionValue.getQuestionUId()).hasChildren()) {
-            for(Question childQuestion : questionsMap.get(questionValue.getQuestionUId()).getChildren()){
-                Question updatedQuestion = questionsMap.get(childQuestion.getUId());
-                if(updatedQuestion.shouldActivateQuestion(questionValue)) {
-                    updatedQuestion.activateQuestionOptionMatch(questionValue);
-                    getAnsweredRatio().fixTotalQuestion(updatedQuestion.isCompulsory(), updatedQuestion.isVisible());
-                }
-            }
-        }
+        updateChildrenQuestionsOnAddedValue(questionValue);
         getAnsweredRatio().addQuestion(questionsMap.get(questionValue.getQuestionUId()).isCompulsory());
     }
 
@@ -160,17 +152,44 @@ public class Survey {
             return;
         }
         questionValuesMap.remove(questionValue.getQuestionUId());
+        updateChildrenQuestionsOnRemovedValue(questionValue);
+    }
+
+    private void updateChildrenQuestionsOnAddedValue(QuestionValue questionValue) {
+        if(questionsMap.get(questionValue.getQuestionUId()).hasChildren()) {
+            for(String childQuestionUid : questionsMap.get(questionValue.getQuestionUId()).getChildren()){
+                Question childQuestion = questionsMap.get(childQuestionUid);
+
+                activateChildrenQuestionWhenParentIsAdded(questionValue, childQuestion);
+            }
+        }
+    }
+
+    private void activateChildrenQuestionWhenParentIsAdded(QuestionValue questionValue, Question childQuestion) {
+        if(childQuestion.shouldActivateQuestion(questionValue.getQuestionUId(), questionValue.getOptionUId())) {
+            childQuestion.activateQuestionOptionMatch(questionValue.getQuestionUId(), questionValue.getOptionUId());
+            getAnsweredRatio().fixTotalQuestion(childQuestion.isCompulsory(), childQuestion.isVisible());
+        }
+    }
+
+    private void updateChildrenQuestionsOnRemovedValue(QuestionValue questionValue) {
         getAnsweredRatio().removeQuestion(questionsMap.get(questionValue.getQuestionUId()).isCompulsory());
         if(questionsMap.get(questionValue.getQuestionUId()).hasChildren()) {
-            for(Question childQuestion : questionsMap.get(questionValue.getQuestionUId()).getChildren()){
-                QuestionValue childQuestionValue = questionValuesMap.get(childQuestion.getUId());
-                Question updatedQuestion = questionsMap.get(childQuestion.getUId());
-                updatedQuestion.deactivateQuestionOptionMatch(questionValue);
-                if(childQuestionValue!=null && !childQuestion.isVisible()) {
-                    removeValue(childQuestionValue);
-                    getAnsweredRatio().fixTotalQuestion(childQuestion.isCompulsory(), childQuestion.isVisible());
-                }
+            for(String childQuestionUId : questionsMap.get(questionValue.getQuestionUId()).getChildren()){
+                QuestionValue childQuestionValue = questionValuesMap.get(childQuestionUId);
+                Question childQuestion = questionsMap.get(childQuestionUId);
+
+                childQuestion.deactivateQuestionOptionMatch(questionValue.getQuestionUId(), questionValue.getOptionUId());
+
+                removeChildrenQuestionValue(childQuestionValue, childQuestion);
             }
+        }
+    }
+
+    private void removeChildrenQuestionValue(QuestionValue childQuestionValue, Question childQuestion) {
+        if(childQuestionValue!=null && !childQuestion.isVisible()) {
+            removeValue(childQuestionValue);
+            getAnsweredRatio().fixTotalQuestion(childQuestion.isCompulsory(), childQuestion.isVisible());
         }
     }
 
