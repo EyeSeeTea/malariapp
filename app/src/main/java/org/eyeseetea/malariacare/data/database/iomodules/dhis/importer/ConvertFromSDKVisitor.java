@@ -234,6 +234,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         //Build answer
         AnswerDB appAnswer = new AnswerDB();
         appAnswer.setName(sdkOptionSet.getName());
+        appAnswer.setUid_option_set(sdkOptionSet.getUid());
         appAnswer.save();
 
         //Annotate built answer

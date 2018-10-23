@@ -42,6 +42,8 @@ public class AnswerDB extends BaseModel{
     long id_answer;
     @Column
     String name;
+    @Column
+    String uid_option_set;
 
     /**
      * List of options that belongs to this answer type
@@ -76,6 +78,13 @@ public class AnswerDB extends BaseModel{
         this.name = name;
     }
 
+    public String getUid_option_set() {
+        return uid_option_set;
+    }
+
+    public void setUid_option_set(String uid_option_set) {
+        this.uid_option_set = uid_option_set;
+    }
 
     public List<OptionDB> getOptions(){
         if(options==null){
