@@ -208,13 +208,22 @@ public class SurveyFragment extends Fragment implements DomainEventSubscriber<Va
         prepareSurveyInfo();
         DomainEventPublisher.instance().subscribe(this);
 
-        initializeSurvey();
+        IAsyncExecutor asyncExecutor = new AsyncExecutor();
+        IMainExecutor mainExecutor = new UIThreadExecutor();
+        final ISettingsRepository settingsRepository = new SettingsRepository(getActivity().getApplicationContext());
+        GetSettingsUseCase getSettingsUseCase = new GetSettingsUseCase(settingsRepository, mainExecutor, asyncExecutor);
+        getSettingsUseCase.execute(new ISettingsRepository.ISettingsRepositoryCallback() {
+            @Override
+            public void onComplete(Settings settings) {
+                initializeSurvey(settings);
+            }
+        });
         return llLayout;
     }
 
-    private void initializeSurvey() {
+    private void initializeSurvey(final Settings settings) {
         final SurveyDB survey = Session.getSurveyByModule(moduleName);
-
+        surveyAnsweredRatioRepository = new SurveyAnsweredRatioRepository();
         asyncExecutor = new AsyncExecutor();
         mainExecutor = new UIThreadExecutor();
         GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase =
@@ -233,6 +242,7 @@ public class SurveyFragment extends Fragment implements DomainEventSubscriber<Va
                         Log.d(getClass().getName(), "onComplete");
                         mSurveyAnsweredRatio = surveyAnsweredRatio;
                         tabAdapter.notifyDataSetChanged();
+                        updateChart(settings);
                     }
                 });
     }
@@ -411,20 +421,14 @@ public class SurveyFragment extends Fragment implements DomainEventSubscriber<Va
                 getSettingsUseCase.execute(new ISettingsRepository.ISettingsRepositoryCallback() {
                     @Override
                     public void onComplete(Settings settings) {
-                        ActionBarStrategy actionBarStrategy = new ActionBarStrategy(settings);
-                        DoublePieChart doublePieChart = actionBarStrategy.getActionBarPie(DashboardActivity.dashboardActivity);
-                        runChartUpdate(valueChangedEvent, doublePieChart);
+                        runChartUpdate(valueChangedEvent, settings);
                     }
                 });
             }
         });
     }
 
-    private void runChartUpdate(final ValueChangedEvent valueChangedEvent, final DoublePieChart doublePieChart) {
-
-        if(doublePieChart!=null){
-            doublePieChart.setVisibility(View.VISIBLE);
-        }
+    private void runChartUpdate(final ValueChangedEvent valueChangedEvent, final Settings settings) {
         for (Question question : valueChangedEvent.getQuestions()) {
             if(question.isComputable()) {
                 if (valueChangedEvent.getAction().equals(
@@ -444,6 +448,12 @@ public class SurveyFragment extends Fragment implements DomainEventSubscriber<Va
             }
         }
 
+        reloadChart(settings);
+        }
+
+    private void reloadChart(final Settings settings) {
+        IAsyncExecutor asyncExecutor = new AsyncExecutor();
+        IMainExecutor mainExecutor = new UIThreadExecutor();
         SaveSurveyAnsweredRatioUseCase saveSurveyAnsweredRatioUseCase =
                 new SaveSurveyAnsweredRatioUseCase(
                         new SurveyAnsweredRatioRepository(), mainExecutor,
@@ -458,16 +468,22 @@ public class SurveyFragment extends Fragment implements DomainEventSubscriber<Va
                     public void onComplete(
                             SurveyAnsweredRatio surveyAnsweredRatio) {
                         if (surveyAnsweredRatio != null) {
-                            if(doublePieChart!=null) {
-                                LayoutUtils.updateChart(mSurveyAnsweredRatio,
-                                        doublePieChart);
-                            }
+                            updateChart(settings);
                         }
                     }
                 }, mSurveyAnsweredRatio);
-        }
+    }
 
-@Override
+    private void updateChart(Settings settings) {
+        ActionBarStrategy actionBarStrategy = new ActionBarStrategy(settings);
+        DoublePieChart doublePieChart = actionBarStrategy.getActionBarPie(DashboardActivity.dashboardActivity);
+        if(doublePieChart!=null) {
+            LayoutUtils.updateChart(mSurveyAnsweredRatio,
+                    doublePieChart);
+        }
+    }
+
+    @Override
 public Class<ValueChangedEvent> subscribedToEventType(){
         return ValueChangedEvent.class;
     }

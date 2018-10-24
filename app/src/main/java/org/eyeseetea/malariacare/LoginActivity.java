@@ -40,28 +40,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.eyeseetea.malariacare.data.database.datasources.UserAccountLocalDataSource;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.LanguageContextWrapper;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.remote.api.UserAccountAPIDataSource;
-import org.eyeseetea.malariacare.data.database.datasources.UserAccountLocalDataSource;
-import org.eyeseetea.malariacare.data.repositories.AuthenticationManager;
 import org.eyeseetea.malariacare.data.repositories.ServerRepository;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
-import org.eyeseetea.malariacare.domain.boundary.repositories.IAuthenticationManager;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerRepository.IServerRepositoryCallback;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
@@ -72,15 +65,13 @@ import org.eyeseetea.malariacare.domain.usecase.GetServersUseCase;
 import org.eyeseetea.malariacare.domain.usecase.GetUserAccountUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
-import org.eyeseetea.malariacare.layout.adapters.general.AddlArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.general.ServerArrayAdapter;
+import org.eyeseetea.malariacare.factories.AuthenticationFactory;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Permissions;
-import org.eyeseetea.malariacare.views.CustomTextView;
 import org.hisp.dhis.client.sdk.ui.activities.AbsLoginActivity;
-import org.hisp.dhis.client.sdk.ui.views.FontButton;
 
 import java.io.InputStream;
 import java.util.List;
@@ -90,9 +81,8 @@ import fr.castorflex.android.circularprogressbar.CircularProgressBar;
 public class LoginActivity extends AbsLoginActivity {
     private static final String TAG = ".LoginActivity";
 
-    public IAuthenticationManager mUserAccountRepository = new AuthenticationManager(this);
-    public LoginUseCase mLoginUseCase = new LoginUseCase(mUserAccountRepository);
-    LogoutUseCase mLogoutUseCase = new LogoutUseCase(mUserAccountRepository);
+    public LoginUseCase mLoginUseCase = new AuthenticationFactory().getLoginUseCase(this);
+    LogoutUseCase mLogoutUseCase =  new AuthenticationFactory().getLogoutUseCase(this);
     public LoginActivityStrategy mLoginActivityStrategy = new LoginActivityStrategy(this);
 
     private CircularProgressBar progressBar;
