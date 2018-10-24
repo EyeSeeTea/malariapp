@@ -48,6 +48,16 @@ public class ObservationLocalDataSource implements IObservationDataSource, IData
     }
 
     @Override
+    public IData getByUId(String uid) {
+        try {
+            return getObservation(uid);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
     public void save(List<? extends IData> dataList) throws Exception {
         List<Observation> observations = (List<Observation>) dataList;
         saveObservations(observations);

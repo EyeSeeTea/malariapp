@@ -49,6 +49,11 @@ public class SurveyLocalDataSource implements IDataLocalDataSource {
     }
 
     @Override
+    public IData getByUId(String uid) {
+        return getSurveyByUid(uid);
+    }
+
+    @Override
     public void save(List<? extends IData> dataList) throws Exception {
         List<Survey> surveys = (List<Survey>) dataList;
         saveSurveys(surveys);
@@ -92,6 +97,19 @@ public class SurveyLocalDataSource implements IDataLocalDataSource {
         List<Survey> surveys = surveyMapper.mapSurveys(surveyDBS);
 
         return surveys;
+    }
+
+    private Survey getSurveyByUid(String eventUId) {
+
+        List<SurveyDB> surveyDBS = getSurveysDB(eventUId);
+
+        SurveyMapper surveyMapper = new SurveyMapper(
+                OrgUnitDB.list(), ProgramDB.getAllPrograms(), QuestionDB.list(),
+                OptionDB.list(), UserDB.list(), ScoreDB.list(), OrgUnitProgramRelationDB.list());
+
+        List<Survey> surveys = surveyMapper.mapSurveys(surveyDBS);
+
+        return surveys.get(0);
     }
 
     private void saveSurvey(Survey survey) {
@@ -161,6 +179,22 @@ public class SurveyLocalDataSource implements IDataLocalDataSource {
             valueDB.setSurvey(surveyDB);
             valueDB.save();
         }
+    }
+
+    private List<SurveyDB> getSurveysDB(String eventUId){
+        List<SurveyDB> surveyDBS = null;
+
+        From from = new Select().from(SurveyDB.class);
+
+        Where where = from.where(SurveyDB_Table.uid_event_fk.eq(eventUId));
+
+        surveyDBS = where.orderBy(OrderBy.fromProperty(SurveyDB_Table.completion_date))
+                .orderBy(OrderBy.fromProperty(SurveyDB_Table.id_org_unit_fk)).queryList();
+
+        if (surveyDBS.size() > 0)
+            loadValuesInSurveys(surveyDBS);
+
+        return surveyDBS;
     }
 
     private List<SurveyDB> getSurveysDB(SurveyStatus status){
