@@ -679,13 +679,12 @@ public class SurveyDB extends BaseModel {
         saveMainScore();
     }
 
-    public void setCompleteSurveyState(String module, Date nextScheduledDate) {
-        setStatus(Constants.SURVEY_COMPLETED);
-        //CompletionDate
-        this.setCompletionDate(new Date());
+    public void saveScoreOnComplete(String module){
         saveScore(module);
         save();
         saveMainScore();
+    }
+    public void prepareNextSurvey(Date nextScheduledDate) {
         //Plan a new survey for the future
         SurveyPlanner.getInstance().buildNext(this, nextScheduledDate);
     }

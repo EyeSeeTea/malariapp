@@ -192,6 +192,18 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
                 surveysIntent);
     }
 
+    public void reloadInProgress() {
+        updateSelectedFilters();
+
+        //Reload data using service
+        Intent surveysIntent = new Intent(
+                PreferencesState.getInstance().getContext().getApplicationContext(),
+                SurveyService.class);
+        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.ALL_IN_PROGRESS_SURVEYS_ACTION);
+        PreferencesState.getInstance().getContext().getApplicationContext().startService(
+                surveysIntent);
+    }
+
     public void reloadToSend() {
         //Reload data using service
         Intent surveysIntent = new Intent(PreferencesState.getInstance().getContext().getApplicationContext()

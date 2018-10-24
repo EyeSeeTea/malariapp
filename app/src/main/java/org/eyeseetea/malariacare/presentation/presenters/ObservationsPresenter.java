@@ -5,6 +5,8 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.data.boundaries.IDataLocalDataSource;
+import org.eyeseetea.malariacare.data.database.datasources.SurveyLocalDataSource;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 import org.eyeseetea.malariacare.data.database.model.QuestionDB;
@@ -333,7 +335,8 @@ public class ObservationsPresenter {
             mGetSettingsUseCase.execute(new ISettingsRepository.ISettingsRepositoryCallback() {
                 @Override
                 public void onComplete(Settings settings) {
-                    Survey survey = org.eyeseetea.malariacare.data.database.mapper.SurveyMapper.mapEmptySurvey(mSurvey);
+                    IDataLocalDataSource surveyLocalDataSource = new SurveyLocalDataSource();
+                    Survey survey = (Survey) surveyLocalDataSource.getByUId(mSurvey.getEventUid());
                     Date nextScheduleDate = null;
                     try {
                         nextScheduleDate = survey.calculateNextScheduledDate(settings.getServer().getNextScheduleMatrix());
