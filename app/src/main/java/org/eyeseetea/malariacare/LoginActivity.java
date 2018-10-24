@@ -43,14 +43,16 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.eyeseetea.malariacare.data.database.datasources.UserAccountLocalDataSource;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.LanguageContextWrapper;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.remote.api.UserAccountAPIDataSource;
-import org.eyeseetea.malariacare.data.database.datasources.UserAccountLocalDataSource;
 import org.eyeseetea.malariacare.data.repositories.AuthenticationManager;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
+import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
+import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IAuthenticationManager;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
@@ -72,8 +74,12 @@ public class LoginActivity extends AbsLoginActivity {
     private static final String TAG = ".LoginActivity";
 
     public IAuthenticationManager mUserAccountRepository = new AuthenticationManager(this);
-    public LoginUseCase mLoginUseCase = new LoginUseCase(mUserAccountRepository);
-    LogoutUseCase mLogoutUseCase = new LogoutUseCase(mUserAccountRepository);
+    public IAsyncExecutor mAsyncExecutor = new AsyncExecutor();
+    public IMainExecutor mMainExecutor = new UIThreadExecutor();
+    public LoginUseCase mLoginUseCase = new LoginUseCase(mUserAccountRepository, mMainExecutor,
+            mAsyncExecutor);
+    LogoutUseCase mLogoutUseCase = new LogoutUseCase(mUserAccountRepository, mMainExecutor,
+            mAsyncExecutor);
     public LoginActivityStrategy mLoginActivityStrategy = new LoginActivityStrategy(this);
 
     private CircularProgressBar progressBar;

@@ -42,8 +42,13 @@ import android.util.Log;
 import org.eyeseetea.malariacare.data.database.utils.LanguageContextWrapper;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.repositories.AuthenticationManager;
+import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
+import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
+import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
+import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -525,7 +530,10 @@ class LoginRequiredOnPreferenceClickListener implements Preference.OnPreferenceC
     private void logout() {
         Log.d(TAG, "Logging out...");
         AuthenticationManager authenticationManager = new AuthenticationManager(activity);
-        LogoutUseCase logoutUseCase = new LogoutUseCase(authenticationManager);
+        IAsyncExecutor mAsyncExecutor = new AsyncExecutor();
+        IMainExecutor mMainExecutor = new UIThreadExecutor();
+        LogoutUseCase logoutUseCase = new LogoutUseCase(authenticationManager, mMainExecutor,
+                mAsyncExecutor);
 
         logoutUseCase.execute(new LogoutUseCase.Callback() {
             @Override
