@@ -19,10 +19,10 @@
 
 package org.eyeseetea.malariacare.domain.usecase;
 
-import org.eyeseetea.malariacare.domain.enums.NetworkStrategy;
-import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
+import org.eyeseetea.malariacare.domain.common.ReadPolicy;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
 
 public class GetUserAccountUseCase implements UseCase {
@@ -37,7 +37,7 @@ public class GetUserAccountUseCase implements UseCase {
     private final IMainExecutor mMainExecutor;
     private final IUserAccountRepository userAccountRepository;
     private Callback mCallback;
-    private NetworkStrategy networkStrategy;
+    private ReadPolicy readPolicy;
 
     public GetUserAccountUseCase(
             IAsyncExecutor asyncExecutor,
@@ -48,9 +48,9 @@ public class GetUserAccountUseCase implements UseCase {
         this.userAccountRepository = userAccountRepository;
     }
 
-    public void execute( NetworkStrategy networkStrategy, final Callback callback) {
+    public void execute( ReadPolicy readPolicy, final Callback callback) {
         this.mCallback = callback;
-        this.networkStrategy = networkStrategy;
+        this.readPolicy = readPolicy;
         mAsyncExecutor.run(this);
     }
 
@@ -58,7 +58,7 @@ public class GetUserAccountUseCase implements UseCase {
     public void run() {
         UserAccount updatedUserAccount = null;
         try {
-            updatedUserAccount = userAccountRepository.getUser(networkStrategy);
+            updatedUserAccount = userAccountRepository.getUser(readPolicy);
         } catch (Exception e){
             notifyError();
         }

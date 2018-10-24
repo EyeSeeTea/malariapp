@@ -23,7 +23,6 @@ import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
-import org.eyeseetea.malariacare.domain.enums.NetworkStrategy;
 
 public class SaveUserAccountUseCase implements UseCase {
 

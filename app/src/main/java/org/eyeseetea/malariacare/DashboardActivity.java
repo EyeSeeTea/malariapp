@@ -26,14 +26,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.v7.view.menu.ActionMenuItemView;
 import android.telephony.TelephonyManager;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import org.eyeseetea.malariacare.data.database.datasources.UserAccountLocalDataSource;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
@@ -42,10 +41,9 @@ import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.metadata.PhoneMetaData;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.data.remote.api.UserAccountAPIDataSource;
-import org.eyeseetea.malariacare.data.database.datasources.UserAccountLocalDataSource;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
+import org.eyeseetea.malariacare.domain.common.ReadPolicy;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
-import org.eyeseetea.malariacare.domain.enums.NetworkStrategy;
 import org.eyeseetea.malariacare.domain.usecase.GetUserAccountUseCase;
 import org.eyeseetea.malariacare.drive.DriveRestController;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
@@ -83,7 +81,7 @@ public class DashboardActivity extends BaseActivity {
                             new UserAccountLocalDataSource())
             );
 
-            getUserAccountUseCase.execute(NetworkStrategy.NETWORK_FIRST,
+            getUserAccountUseCase.execute(ReadPolicy.NETWORK_FIRST,
                     new GetUserAccountUseCase.Callback() {
                         @Override
                         public void onSuccess(UserAccount userAccount) {

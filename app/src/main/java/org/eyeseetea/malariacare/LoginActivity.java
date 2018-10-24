@@ -50,9 +50,9 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.remote.api.UserAccountAPIDataSource;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
+import org.eyeseetea.malariacare.domain.common.ReadPolicy;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
-import org.eyeseetea.malariacare.domain.enums.NetworkStrategy;
 import org.eyeseetea.malariacare.domain.usecase.GetUserAccountUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
@@ -200,7 +200,7 @@ public class LoginActivity extends AbsLoginActivity {
                                 new UserAccountLocalDataSource())
                 );
 
-                getUserAccountUseCase.execute(NetworkStrategy.NETWORK_FIRST,
+                getUserAccountUseCase.execute(ReadPolicy.NETWORK_FIRST,
                         new GetUserAccountUseCase.Callback() {
                             @Override
                             public void onSuccess(UserAccount userAccount) {

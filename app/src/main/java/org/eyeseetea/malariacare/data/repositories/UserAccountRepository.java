@@ -2,8 +2,8 @@ package org.eyeseetea.malariacare.data.repositories;
 
 import org.eyeseetea.malariacare.data.IUserAccountDataSource;
 import org.eyeseetea.malariacare.data.filters.UserFilter;
-import org.eyeseetea.malariacare.domain.enums.NetworkStrategy;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
+import org.eyeseetea.malariacare.domain.common.ReadPolicy;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
 
 public class UserAccountRepository implements IUserAccountRepository {
@@ -18,14 +18,14 @@ public class UserAccountRepository implements IUserAccountRepository {
     }
 
     @Override
-    public UserAccount getUser(NetworkStrategy networkStrategy) throws Exception {
+    public UserAccount getUser(ReadPolicy readPolicy) throws Exception {
 
         UserAccount localUserAccount = null;
 
         UserFilter userFilter = new UserFilter();
         localUserAccount = userAccountLocalDataSource.getUser(userFilter);
 
-        if(networkStrategy.equals(NetworkStrategy.NETWORK_FIRST)){
+        if(readPolicy.equals(ReadPolicy.NETWORK_FIRST)){
             UserAccount userAccount = null;
             try {
                 userFilter = new UserFilter();
