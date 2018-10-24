@@ -43,21 +43,20 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.eyeseetea.malariacare.data.database.datasources.UserAccountLocalDataSource;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.LanguageContextWrapper;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.remote.api.UserAccountAPIDataSource;
-import org.eyeseetea.malariacare.data.database.datasources.UserAccountLocalDataSource;
-import org.eyeseetea.malariacare.data.repositories.AuthenticationManager;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
-import org.eyeseetea.malariacare.domain.boundary.repositories.IAuthenticationManager;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
 import org.eyeseetea.malariacare.domain.enums.NetworkStrategy;
 import org.eyeseetea.malariacare.domain.usecase.GetUserAccountUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
+import org.eyeseetea.malariacare.factories.AuthenticationFactory;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.utils.AUtils;
@@ -71,9 +70,8 @@ import fr.castorflex.android.circularprogressbar.CircularProgressBar;
 public class LoginActivity extends AbsLoginActivity {
     private static final String TAG = ".LoginActivity";
 
-    public IAuthenticationManager mUserAccountRepository = new AuthenticationManager(this);
-    public LoginUseCase mLoginUseCase = new LoginUseCase(mUserAccountRepository);
-    LogoutUseCase mLogoutUseCase = new LogoutUseCase(mUserAccountRepository);
+    public LoginUseCase mLoginUseCase = new AuthenticationFactory().getLoginUseCase(this);
+    LogoutUseCase mLogoutUseCase =  new AuthenticationFactory().getLogoutUseCase(this);
     public LoginActivityStrategy mLoginActivityStrategy = new LoginActivityStrategy(this);
 
     private CircularProgressBar progressBar;
