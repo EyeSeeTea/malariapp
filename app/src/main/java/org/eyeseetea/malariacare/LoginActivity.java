@@ -60,6 +60,7 @@ import org.eyeseetea.malariacare.domain.enums.NetworkStrategy;
 import org.eyeseetea.malariacare.domain.usecase.GetUserAccountUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
+import org.eyeseetea.malariacare.factories.AuthenticationFactory;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.utils.AUtils;
@@ -73,13 +74,8 @@ import fr.castorflex.android.circularprogressbar.CircularProgressBar;
 public class LoginActivity extends AbsLoginActivity {
     private static final String TAG = ".LoginActivity";
 
-    public IAuthenticationManager mUserAccountRepository = new AuthenticationManager(this);
-    public IAsyncExecutor mAsyncExecutor = new AsyncExecutor();
-    public IMainExecutor mMainExecutor = new UIThreadExecutor();
-    public LoginUseCase mLoginUseCase = new LoginUseCase(mUserAccountRepository, mMainExecutor,
-            mAsyncExecutor);
-    LogoutUseCase mLogoutUseCase = new LogoutUseCase(mUserAccountRepository, mMainExecutor,
-            mAsyncExecutor);
+    public LoginUseCase mLoginUseCase = new AuthenticationFactory().getLoginUseCase(this);
+    LogoutUseCase mLogoutUseCase =  new AuthenticationFactory().getLogoutUseCase(this);
     public LoginActivityStrategy mLoginActivityStrategy = new LoginActivityStrategy(this);
 
     private CircularProgressBar progressBar;
