@@ -38,7 +38,7 @@ public class Credentials {
 
     public static Credentials createDemoCredentials() {
         Credentials credentials = new Credentials(DEMO_SERVER, DEMO_USER, DEMO_USER);
-
+        credentials.setUserUid(DEMO_USER);
         return credentials;
     }
 
