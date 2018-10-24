@@ -55,13 +55,19 @@ public class LoginUseCase implements UseCase {
         mAsyncExecutor = asyncExecutor;
     }
 
+    public void execute(Credentials credentials, final Callback callback) {
+        mCallback = callback;
+        mCredentials = credentials;
+        mAsyncExecutor.run(this);
+    }
+
     @Override
     public void run() {
         mUserAccountRepository.login(mCredentials,
                 new IRepositoryCallback<UserAccount>() {
                     @Override
                     public void onSuccess(UserAccount userAccount) {
-                        mCallback.onLoginSuccess();
+                        notifyOnSuccess();
                     }
 
                     @Override
@@ -76,6 +82,15 @@ public class LoginUseCase implements UseCase {
                         }
                     }
                 });
+    }
+
+    private void notifyOnSuccess() {
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                mCallback.onLoginSuccess();
+            }
+        });
     }
 
     private void notifyOnServerURLNotValid(){
@@ -101,12 +116,6 @@ public class LoginUseCase implements UseCase {
                 mCallback.onNetworkError();
             }
         });
-    }
-
-    public void execute(Credentials credentials, final Callback callback) {
-        mCallback = callback;
-        mCredentials = credentials;
-        mAsyncExecutor.run(this);
     }
 
 }
