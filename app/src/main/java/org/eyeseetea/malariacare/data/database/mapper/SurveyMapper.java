@@ -60,10 +60,6 @@ public class SurveyMapper {
         return surveys;
     }
 
-    public static Survey mapEmptySurvey(SurveyDB surveyDB){
-        return Survey.createEmptySurvey(surveyDB.getEventUid(), surveyDB.getOrgUnit().getUid(), surveyDB.getProgram().getUid(), surveyDB.getUser().getUid(), surveyDB.getProductivity());
-    }
-
     private Survey map(SurveyDB surveyDB) {
 
         String eventUid = surveyDB.getEventUid();
