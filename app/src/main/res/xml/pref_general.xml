@@ -17,11 +17,11 @@
   ~  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<android.support.v7.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- A 'parent' preference, which enables/disables child preferences (below)
          when checked/unchecked. -->
-    <CheckBoxPreference
+    <android.support.v7.preference.CheckBoxPreference
         android:key="@string/customize_fonts"
         android:title="@string/settings_checkbox_customize_fonts"
         android:defaultValue="false" />
@@ -29,7 +29,7 @@
     <!-- Allows the user to choose a ringtone in the 'notification' category. -->
     <!-- NOTE: This preference will be enabled only when the checkbox above is checked. -->
     <!-- NOTE: RingtonePreference's summary should be set to its value by the activity code. -->
-    <ListPreference
+    <android.support.v7.preference.ListPreference
         android:key="@string/font_sizes"
         android:dependency="@string/customize_fonts"
         android:title="@string/settings_list_font_sizes"
@@ -39,7 +39,7 @@
         android:negativeButtonText="@null"
         android:positiveButtonText="@null" />
 
-    <ListPreference
+    <android.support.v7.preference.ListPreference
         android:defaultValue=""
         android:key="@string/language_code"
         android:negativeButtonText="@null"
@@ -74,7 +74,7 @@
         android:singleLine="true"
         android:maxLines="1" />
 
-    <EditTextPreference
+    <android.support.v7.preference.EditTextPreference
         android:key="@string/dhis_max_items"
         android:title="@string/settings_text_dhis_max_items"
         android:defaultValue="@string/dhis_default_max_items"
@@ -85,7 +85,7 @@
         android:maxLines="1"
         android:maxLength="4"/>
 
-    <EditTextPreference
+    <android.support.v7.preference.EditTextPreference
         android:key="@string/monitoring_target"
         android:title="@string/settings_monitoring_target"
         android:defaultValue="@string/default_monitoring_target"
@@ -96,15 +96,15 @@
         android:maxLines="1"
         android:maxLength="4"/>
 
-    <CheckBoxPreference
+    <android.support.v7.preference.CheckBoxPreference
         android:key="@string/hide_planning_tab_key"
         android:title="@string/hide_planning_tab_title"
         android:summary="@string/hide_planning_tab_summary"
         android:defaultValue="false" />
     
-    <CheckBoxPreference
+    <android.support.v7.preference.CheckBoxPreference
         android:key="@string/developer_option"
         android:title="@string/developer_option_title"
         android:summary="@string/developer_option_summary"
         android:defaultValue="false" />
-</PreferenceScreen>
+</android.support.v7.preference.PreferenceScreen>
