@@ -20,33 +20,64 @@
 package org.eyeseetea.malariacare.domain.usecase;
 
 import org.eyeseetea.malariacare.domain.boundary.IRepositoryCallback;
-import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
+import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
+import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IAuthenticationManager;
 
-public class LogoutUseCase {
+public class LogoutUseCase implements UseCase {
     public interface Callback {
         void onLogoutSuccess();
 
         void onLogoutError(String message);
     }
 
-    private IUserAccountRepository mUserAccountRepository;
+    private IAuthenticationManager mUserAccountRepository;
+    private IAsyncExecutor mAsyncExecutor;
+    private IMainExecutor mMainExecutor;
+    private Callback mCallback;
 
-    public LogoutUseCase(IUserAccountRepository userAccountRepository) {
+    public LogoutUseCase(IAuthenticationManager userAccountRepository, IMainExecutor mainExecutor,
+            IAsyncExecutor asyncExecutor) {
         mUserAccountRepository = userAccountRepository;
+        mMainExecutor = mainExecutor;
+        mAsyncExecutor = asyncExecutor;
     }
 
     public void execute(final Callback callback) {
+        mCallback = callback;
+        mAsyncExecutor.run(this);
+    }
+
+    @Override
+    public void run() {
         mUserAccountRepository.logout(
                 new IRepositoryCallback<Void>() {
                     @Override
                     public void onSuccess(Void result) {
-                        callback.onLogoutSuccess();
+                        notifyOnLogoutSucces();
                     }
 
                     @Override
                     public void onError(Throwable throwable) {
-                        callback.onLogoutError(throwable.getMessage());
+                        notifyOnLogoutError(throwable);
                     }
                 });
+    }
+
+    private void notifyOnLogoutSucces(){
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                mCallback.onLogoutSuccess();
+            }
+        });
+    }
+    private void notifyOnLogoutError(final Throwable throwable){
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                mCallback.onLogoutError(throwable.getMessage());
+            }
+        });
     }
 }

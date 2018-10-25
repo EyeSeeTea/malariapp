@@ -25,7 +25,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
@@ -44,16 +43,26 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.eyeseetea.malariacare.data.database.datasources.UserAccountLocalDataSource;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.LanguageContextWrapper;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
-import org.eyeseetea.malariacare.data.remote.api.PullDhisApiDataSource;
+import org.eyeseetea.malariacare.data.remote.api.UserAccountAPIDataSource;
+import org.eyeseetea.malariacare.data.repositories.AuthenticationManager;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
-import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
+import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
+import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IAuthenticationManager;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
+import org.eyeseetea.malariacare.domain.entity.UserAccount;
+import org.eyeseetea.malariacare.domain.enums.NetworkStrategy;
+import org.eyeseetea.malariacare.domain.usecase.GetUserAccountUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
+import org.eyeseetea.malariacare.factories.AuthenticationFactory;
+import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
+import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Permissions;
 import org.hisp.dhis.client.sdk.ui.activities.AbsLoginActivity;
@@ -65,9 +74,8 @@ import fr.castorflex.android.circularprogressbar.CircularProgressBar;
 public class LoginActivity extends AbsLoginActivity {
     private static final String TAG = ".LoginActivity";
 
-    public IUserAccountRepository mUserAccountRepository = new UserAccountRepository(this);
-    public LoginUseCase mLoginUseCase = new LoginUseCase(mUserAccountRepository);
-    LogoutUseCase mLogoutUseCase = new LogoutUseCase(mUserAccountRepository);
+    public LoginUseCase mLoginUseCase = new AuthenticationFactory().getLoginUseCase(this);
+    LogoutUseCase mLogoutUseCase =  new AuthenticationFactory().getLogoutUseCase(this);
     public LoginActivityStrategy mLoginActivityStrategy = new LoginActivityStrategy(this);
 
     private CircularProgressBar progressBar;
@@ -78,7 +86,7 @@ public class LoginActivity extends AbsLoginActivity {
     public void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
+
         mLoginActivity = this;
         requestPermissions();
         PreferencesState.getInstance().initalizateActivityDependencies();
@@ -102,9 +110,11 @@ public class LoginActivity extends AbsLoginActivity {
 
     private void replaceDhisLogoToHNQISLogo() {
         FrameLayout progressBarContainer = (FrameLayout) findViewById(R.id.layout_dhis_logo);
-        ((org.hisp.dhis.client.sdk.ui.views.FontTextView)progressBarContainer.getChildAt(2)).setText("");
+        ((org.hisp.dhis.client.sdk.ui.views.FontTextView) progressBarContainer.getChildAt(
+                2)).setText("");
 
-        LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(
+                Context.LAYOUT_INFLATER_SERVICE);
         progressBarContainer.addView(inflater.inflate(R.layout.progress_logo_item, null));
     }
 
@@ -185,11 +195,27 @@ public class LoginActivity extends AbsLoginActivity {
         mLoginUseCase.execute(credentials, new LoginUseCase.Callback() {
             @Override
             public void onLoginSuccess() {
-                PreferencesState.getInstance().setUserAccept(false);
                 hideProgress();
-                AsyncPullAnnouncement
-                        asyncPullAnnouncement = new AsyncPullAnnouncement();
-                asyncPullAnnouncement.execute(mLoginActivity);
+                GetUserAccountUseCase getUserAccountUseCase = new GetUserAccountUseCase(
+                        new AsyncExecutor(),
+                        new UIThreadExecutor(),
+                        new UserAccountRepository(
+                                new UserAccountAPIDataSource(Session.getCredentials()),
+                                new UserAccountLocalDataSource())
+                );
+
+                getUserAccountUseCase.execute(NetworkStrategy.NETWORK_FIRST,
+                        new GetUserAccountUseCase.Callback() {
+                            @Override
+                            public void onSuccess(UserAccount userAccount) {
+                                onGetUserSuccess(userAccount.isClosed());
+                            }
+
+                            @Override
+                            public void onError() {
+                                System.out.println("Error pulling closed user date.");
+                            }
+                        });
             }
 
             @Override
@@ -220,7 +246,7 @@ public class LoginActivity extends AbsLoginActivity {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
-    public void onSuccess(boolean isClosed) {
+    public void onGetUserSuccess(boolean isClosed) {
         if (isClosed) {
             closeUser(R.string.admin_announcement,
                     PreferencesState.getInstance().getContext().getString(R.string.user_close),
@@ -235,7 +261,6 @@ public class LoginActivity extends AbsLoginActivity {
         DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                PreferencesState.getInstance().setUserAccept(false);
                 LoginActivity.mLoginActivity.executeLogout();
             }
         };
@@ -294,25 +319,6 @@ public class LoginActivity extends AbsLoginActivity {
         }
         if (!EyeSeeTeaApplication.permissions.areAllPermissionsGranted()) {
             EyeSeeTeaApplication.permissions.requestNextPermission();
-        }
-    }
-
-    public class AsyncPullAnnouncement extends AsyncTask<LoginActivity, Void, Void> {
-        //userCloseChecker is never saved, Only for check if the date is closed.
-        LoginActivity loginActivity;
-        boolean isUserClosed = false;
-
-        @Override
-        protected Void doInBackground(LoginActivity... params) {
-            loginActivity = params[0];
-            isUserClosed = PullDhisApiDataSource.isUserClosed(Session.getUser().getUid());
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            onSuccess(isUserClosed);
         }
     }
 

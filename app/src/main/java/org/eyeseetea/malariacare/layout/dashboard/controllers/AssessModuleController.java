@@ -40,6 +40,7 @@ import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyAnsweredRatioRepository;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
+import org.eyeseetea.malariacare.domain.enums.Action;
 import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.domain.usecase.ISurveyAnsweredRatioCallback;
 import org.eyeseetea.malariacare.domain.usecase.SaveSurveyAnsweredRatioUseCase;
@@ -48,9 +49,9 @@ import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
 import org.eyeseetea.malariacare.fragments.SurveyFragment;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
 import org.eyeseetea.malariacare.layout.dashboard.config.ModuleSettings;
-import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
+import org.eyeseetea.malariacare.strategies.ActionBarStrategy;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomTextView;
 import org.eyeseetea.malariacare.views.DoublePieChart;
@@ -128,12 +129,11 @@ public class AssessModuleController extends ModuleController {
         }
 
         surveyFragment.showProgress();
-        closeSurveyFragment(survey, org.eyeseetea.malariacare.domain
-                .utils.Action.CHANGE_TAB);
+        closeSurveyFragment(survey, Action.CHANGE_TAB);
     }
 
     private void closeSurveyFragment(final SurveyDB survey,
-            final org.eyeseetea.malariacare.domain.utils.Action action) {
+            final Action action) {
         getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
                 new ISurveyAnsweredRatioCallback() {
                     @Override
@@ -144,7 +144,7 @@ public class AssessModuleController extends ModuleController {
                     @Override
                     public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
                         if (action.equals(
-                                org.eyeseetea.malariacare.domain.utils.Action.PRESS_BACK_BUTTON)) {
+                                Action.PRESS_BACK_BUTTON)) {
                             surveyFragment.hideProgress();
                             boolean isDialogShown = onSurveyBackPressed(surveyAnsweredRatio);
                             if (!isDialogShown) {
@@ -159,7 +159,7 @@ public class AssessModuleController extends ModuleController {
                                 }
                             }
                         } else if (action.equals(
-                                org.eyeseetea.malariacare.domain.utils.Action.CHANGE_TAB)) {
+                                Action.CHANGE_TAB)) {
                             if (surveyAnsweredRatio.getCompulsoryAnswered()
                                     == surveyAnsweredRatio.getTotalCompulsory()
                                     && surveyAnsweredRatio.getTotalCompulsory() != 0) {
@@ -195,8 +195,7 @@ public class AssessModuleController extends ModuleController {
         surveyFragment.showProgress();
         final SurveyDB survey = Session.getSurveyByModule(getSimpleName());
 
-        closeSurveyFragment(survey, org.eyeseetea.malariacare.domain
-                .utils.Action.PRESS_BACK_BUTTON);
+        closeSurveyFragment(survey, Action.PRESS_BACK_BUTTON);
         //if the survey is opened in review mode exit.
     }
 
@@ -248,7 +247,7 @@ public class AssessModuleController extends ModuleController {
                                             SurveyAnsweredRatio surveyAnsweredRatio) {
                                         Log.d(getClass().getName(), "onComplete");
                                         if (surveyAnsweredRatio != null) {
-                                            LayoutUtils.setActionBarTitleForSurveyAndChart(
+                                            ActionBarStrategy.setActionBarTitleForSurveyAndChart(
                                                     dashboardActivity, finalSurvey, getTitle(),
                                                     surveyAnsweredRatio);
 
@@ -261,10 +260,10 @@ public class AssessModuleController extends ModuleController {
     }
 
     private void initializeStatusChart() {
+
         DoublePieChart doublePieChart =
-                (DoublePieChart) DashboardActivity.dashboardActivity.getSupportActionBar
-                        ().getCustomView().findViewById(
-                        R.id.action_bar_chart);
+                ActionBarStrategy.getActionBarPie(DashboardActivity.dashboardActivity);
+
 
         doublePieChart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -325,7 +324,6 @@ public class AssessModuleController extends ModuleController {
 
     public void onNewSurvey() {
         if (PreferencesState.getInstance().isVerticalDashboard()) {
-            LayoutUtils.setActionBarBackButton(dashboardActivity);
             CustomTextView sentTitle = (CustomTextView) dashboardActivity.findViewById(
                     R.id.titleCompleted);
             sentTitle.setText("");

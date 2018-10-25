@@ -20,7 +20,9 @@
 package org.eyeseetea.malariacare.domain.usecase;
 
 import org.eyeseetea.malariacare.domain.boundary.IRepositoryCallback;
-import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
+import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
+import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IAuthenticationManager;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
 import org.eyeseetea.malariacare.domain.exception.InvalidCredentialsException;
@@ -29,7 +31,7 @@ import org.eyeseetea.malariacare.domain.exception.NetworkException;
 import java.net.MalformedURLException;
 import java.net.UnknownHostException;
 
-public class LoginUseCase {
+public class LoginUseCase implements UseCase {
     public interface Callback {
         void onLoginSuccess();
 
@@ -40,33 +42,80 @@ public class LoginUseCase {
         void onNetworkError();
     }
 
-    private IUserAccountRepository mUserAccountRepository;
+    private IAuthenticationManager mUserAccountRepository;
+    private IAsyncExecutor mAsyncExecutor;
+    private IMainExecutor mMainExecutor;
+    private Callback mCallback;
+    private Credentials mCredentials;
 
-    public LoginUseCase(IUserAccountRepository userAccountRepository) {
+    public LoginUseCase(IAuthenticationManager userAccountRepository, IMainExecutor mainExecutor,
+            IAsyncExecutor asyncExecutor) {
         mUserAccountRepository = userAccountRepository;
+        mMainExecutor = mainExecutor;
+        mAsyncExecutor = asyncExecutor;
     }
 
     public void execute(Credentials credentials, final Callback callback) {
-        
-        mUserAccountRepository.login(credentials,
+        mCallback = callback;
+        mCredentials = credentials;
+        mAsyncExecutor.run(this);
+    }
+
+    @Override
+    public void run() {
+        mUserAccountRepository.login(mCredentials,
                 new IRepositoryCallback<UserAccount>() {
                     @Override
                     public void onSuccess(UserAccount userAccount) {
-                        callback.onLoginSuccess();
+                        notifyOnSuccess();
                     }
 
                     @Override
                     public void onError(Throwable throwable) {
                         if (throwable instanceof MalformedURLException
                                 || throwable instanceof UnknownHostException) {
-                            callback.onServerURLNotValid();
+                            notifyOnServerURLNotValid();
                         } else if (throwable instanceof InvalidCredentialsException) {
-                            callback.onInvalidCredentials();
+                           notifyOnInvalidCredentials();
                         } else if (throwable instanceof NetworkException) {
-                            callback.onNetworkError();
+                            notifyOnNetworkError();
                         }
                     }
                 });
+    }
+
+    private void notifyOnSuccess() {
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                mCallback.onLoginSuccess();
+            }
+        });
+    }
+
+    private void notifyOnServerURLNotValid(){
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                mCallback.onServerURLNotValid();
+            }
+        });
+    }
+    private void notifyOnInvalidCredentials(){
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                mCallback.onInvalidCredentials();
+            }
+        });
+    }
+    private void notifyOnNetworkError(){
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                mCallback.onNetworkError();
+            }
+        });
     }
 
 }

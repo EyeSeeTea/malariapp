@@ -48,7 +48,6 @@ import org.eyeseetea.malariacare.data.remote.sdk.data.SurveySDKDhisDataSource;
 import org.eyeseetea.malariacare.data.repositories.ICompositeScoreRepository;
 import org.eyeseetea.malariacare.data.repositories.OptionRepository;
 import org.eyeseetea.malariacare.data.repositories.ServerMetadataRepository;
-import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
 import org.eyeseetea.malariacare.domain.boundary.IConnectivityManager;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
@@ -58,9 +57,10 @@ import org.eyeseetea.malariacare.domain.boundary.repositories.IServerMetadataRep
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullDemoUseCase;
-import org.eyeseetea.malariacare.domain.usecase.pull.SurveyFilter;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullUseCase;
+import org.eyeseetea.malariacare.domain.usecase.pull.SurveyFilter;
+import org.eyeseetea.malariacare.factories.AuthenticationFactory;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 
@@ -176,7 +176,10 @@ public class ProgressActivity extends Activity {
     }
 
     private void executeDemoPull() {
-        new PullDemoUseCase(new PullDemoController(this)).execute(new PullDemoUseCase.Callback() {
+        IMainExecutor mainExecutor = new UIThreadExecutor();
+        IAsyncExecutor asyncExecutor = new AsyncExecutor();
+        new PullDemoUseCase(new PullDemoController(this), mainExecutor, asyncExecutor).execute(
+                new PullDemoUseCase.Callback() {
             @Override
             public void onComplete() {
                 finishAndGo(DashboardActivity.class);
@@ -294,8 +297,7 @@ public class ProgressActivity extends Activity {
 
     private void executeLogout() {
         Log.d(TAG, "Logging out...");
-        UserAccountRepository userAccountRepository = new UserAccountRepository(this);
-        LogoutUseCase logoutUseCase = new LogoutUseCase(userAccountRepository);
+        LogoutUseCase logoutUseCase = new AuthenticationFactory().getLogoutUseCase(this);
 
         logoutUseCase.execute(new LogoutUseCase.Callback() {
             @Override
