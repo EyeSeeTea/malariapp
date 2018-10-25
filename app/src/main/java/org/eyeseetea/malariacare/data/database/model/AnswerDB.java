@@ -58,10 +58,6 @@ public class AnswerDB extends BaseModel{
     public AnswerDB() {
     }
 
-    public AnswerDB(String name) {
-        this.name = name;
-    }
-
     public Long getId_answer() {
         return id_answer;
     }
