@@ -63,6 +63,11 @@ public class DashboardSettings {
      */
     boolean tabTitleVisible;
 
+    /**
+     * Boolean to hide or shown the inner planning header
+     */
+    boolean planInnerHeader;
+
     List<ModuleSettings> modules;
 
     public DashboardSettings(){
@@ -105,6 +110,12 @@ public class DashboardSettings {
     public void setDeveloperOptions(boolean developerOptions){
         this.developerOptions =developerOptions;
     }
+    public boolean isPlanInnerHeader(){
+        return planInnerHeader;
+    }
+    public void setPlanInnerHeader(boolean planInnerHeader){
+        this.planInnerHeader = planInnerHeader;
+    }
 
     public boolean isTabTitleVisible(){
         return tabTitleVisible;
@@ -146,6 +157,7 @@ public class DashboardSettings {
                 ", list filter=" + listFilter +
                 ", developerOptions=" + developerOptions +
                 ", tabTitleVisible=" + tabTitleVisible +
+                ", planInnerHeader=" + planInnerHeader +
                 '}';
     }
 }

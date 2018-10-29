@@ -47,6 +47,7 @@ import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.domain.usecase.ISurveyAnsweredRatioCallback;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
+import org.eyeseetea.malariacare.strategies.AssessmentUnsentAdapterCosmeticsStrategy;
 import org.eyeseetea.malariacare.views.CustomTextView;
 import org.eyeseetea.malariacare.views.DoublePieChart;
 
@@ -72,11 +73,9 @@ public class AssessmentUnsentAdapter extends ADashboardAdapter {
     }
 
     @Override
-    protected void decorateCustomColumns(final SurveyDB survey, final View rowView) {
-        final CustomTextView overall =
-                (CustomTextView) rowView.findViewById(R.id.label_overall);
-
-        final CustomTextView  mandatory = (CustomTextView) rowView.findViewById(R.id.label_mandatory_completed);
+    protected void decorateCustomColumns(final SurveyDB survey, View rowView) {
+        final DoublePieChart doublePieChart =
+                (DoublePieChart) rowView.findViewById(R.id.double_pie_chart);
 
         ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
                 new SurveyAnsweredRatioRepository();
@@ -84,34 +83,25 @@ public class AssessmentUnsentAdapter extends ADashboardAdapter {
         IMainExecutor mainExecutor = new UIThreadExecutor();
         GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase =
                 new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository, mainExecutor, asyncExecutor);
-
         getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
                 new ISurveyAnsweredRatioCallback() {
-            @Override
-            public void nextProgressMessage() {
-                Log.d(getClass().getName(), "nextProgressMessage");
-            }
+                    @Override
+                    public void nextProgressMessage() {
+                        Log.d(getClass().getName(), "nextProgressMessage");
+                    }
 
-            @Override
-            public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
-                Log.d(getClass().getName(), "onComplete");
+                    @Override
+                    public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
+                        Log.d(getClass().getName(), "onComplete");
 
-                if (surveyAnsweredRatio != null) {
-                    int mandatoryStatus = surveyAnsweredRatio.getMandatoryStatus();
-                    int totalStatus = surveyAnsweredRatio.getTotalStatus();
-
-                    setPercentage(mandatory,mandatoryStatus,DoublePieChart.getMandatoryColorByPercentage(mandatoryStatus, mandatory.getContext()));
-                    setPercentage(overall,totalStatus,DoublePieChart.getOverAllColorByPercentage(totalStatus, overall.getContext()));
-                }
-            }
-        });
+                        if (surveyAnsweredRatio != null) {
+                            doublePieChart.createDoublePie(surveyAnsweredRatio.getMandatoryStatus(),
+                                    surveyAnsweredRatio.getTotalStatus());
+                        }
+                    }
+                });
     }
 
-    private void setPercentage(CustomTextView textView, int percentage, int color){
-        Context context = textView.getContext();
-        textView.setText(context.getString(R.string.template_percentage_number,percentage));
-        textView.setTextColor(color);
-    }
 
     protected void createPie(PieChart mChart, int percentage,
             int highColor, int middleColor, int lowColor) {
@@ -219,6 +209,13 @@ public class AssessmentUnsentAdapter extends ADashboardAdapter {
                 new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0.5f));
         surveyType.setLayoutParams(
                 new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0.5f));
+    }
+
+    @Override
+    protected void decorateSurveyChart(View rowView, SurveyDB survey) {
+        AssessmentUnsentAdapterCosmeticsStrategy assessmentUnsentAdapterCosmeticsStrategy =
+                new AssessmentUnsentAdapterCosmeticsStrategy();
+        assessmentUnsentAdapterCosmeticsStrategy.decorateUnsentSurveyChart(rowView, survey);
     }
 
     /**

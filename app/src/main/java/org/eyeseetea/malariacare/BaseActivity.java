@@ -31,7 +31,7 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -45,22 +45,24 @@ import org.eyeseetea.malariacare.data.database.utils.ExportData;
 import org.eyeseetea.malariacare.data.database.utils.LanguageContextWrapper;
 import org.eyeseetea.malariacare.data.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.data.repositories.AuthenticationManager;
 import org.eyeseetea.malariacare.data.sync.IData;
+import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
+import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IAuthenticationManager;
-import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
 import org.eyeseetea.malariacare.domain.usecase.ImportUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
+import org.eyeseetea.malariacare.factories.AuthenticationFactory;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.listeners.SurveyLocationListener;
-import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
+import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.utils.AUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class BaseActivity extends ActionBarActivity {
+public abstract class BaseActivity extends AppCompatActivity {
     /**
      * Extra param to annotate the activity to return after settings
      */
@@ -83,8 +85,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         initView(savedInstanceState);
 
-        mUserAccountRepository = new AuthenticationManager(this);
-        mLogoutUseCase = new LogoutUseCase(mUserAccountRepository);
+        mLogoutUseCase = new AuthenticationFactory().getLogoutUseCase(this);
         checkQuarantineData();
         alarmPush = new AlarmPushReceiver();
         alarmPush.setPushAlarm(this);
@@ -111,8 +112,6 @@ public abstract class BaseActivity extends ActionBarActivity {
      */
     private void initView(Bundle savedInstanceState) {
         setTheme(R.style.EyeSeeTheme);
-        android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
-        LayoutUtils.setActionBarLogo(actionBar);
 
         if (savedInstanceState == null) {
             initTransition();
@@ -221,7 +220,10 @@ public abstract class BaseActivity extends ActionBarActivity {
                     Uri uri = data.getData();
                     Log.d(TAG, "File Uri: " + uri.toString());
                     ImportController importController = new ImportController(this);
-                    ImportUseCase importUseCase = new ImportUseCase(uri, importController);
+                    IMainExecutor mainExecutor = new UIThreadExecutor();
+                    IAsyncExecutor asyncExecutor = new AsyncExecutor();
+                    ImportUseCase importUseCase = new ImportUseCase(uri, importController,
+                            asyncExecutor, mainExecutor);
                     importUseCase.execute(new ImportUseCase.Callback() {
                         @Override
                         public void onComplete() {
@@ -238,6 +240,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -98,6 +98,7 @@ public abstract class ADashboardAdapter extends ABaseAdapter {
         showFacility(facilityName, surveyType, survey);
 
         decorateSurveyType(surveyType, survey);
+        decorateSurveyChart(rowView, survey);
         rowView = decorateBackground(position, rowView);
 
         return rowView;
@@ -123,6 +124,7 @@ public abstract class ADashboardAdapter extends ABaseAdapter {
     protected abstract void showFacility(CustomTextView facilityName, CustomTextView surveyType,
             SurveyDB survey);
 
+    protected abstract void decorateSurveyChart(View rowView, SurveyDB survey);
     /**
      * Calculate proper background according to the following rule:
      * -Same orgunit same background
