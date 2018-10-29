@@ -23,11 +23,30 @@ package org.eyeseetea.malariacare.domain.usecase;
 import static org.eyeseetea.malariacare.utils.Constants.SURVEY_SENT;
 
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
+import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 
 import java.util.List;
 
-public class MockedPushSurveysUseCase {
+public class MockedPushSurveysUseCase implements UseCase {
+    private IAsyncExecutor mAsyncExecutor;
+    private IMainExecutor mMainExecutor;
+    private Callback mCallback;
+
+    public MockedPushSurveysUseCase(
+            IAsyncExecutor asyncExecutor,
+            IMainExecutor mainExecutor) {
+        mAsyncExecutor = asyncExecutor;
+        mMainExecutor = mainExecutor;
+    }
+
     public void execute(Callback callback) {
+        mCallback = callback;
+        mAsyncExecutor.run(this);
+    }
+
+    @Override
+    public void run() {
         List<SurveyDB> surveys = SurveyDB.getAllCompletedUnsentSurveys();
 
         //Check surveys not in progress
@@ -35,8 +54,16 @@ public class MockedPushSurveysUseCase {
             survey.setStatus(SURVEY_SENT);
             survey.save();
         }
+        notifyOnPushFinished();
+    }
 
-        callback.onPushFinished();
+    private void notifyOnPushFinished() {
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                mCallback.onPushFinished();
+            }
+        });
     }
 
     public interface Callback {

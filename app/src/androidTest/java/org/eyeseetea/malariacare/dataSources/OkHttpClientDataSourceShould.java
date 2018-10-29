@@ -18,7 +18,7 @@ import org.junit.runner.RunWith;
 public class OkHttpClientDataSourceShould {
 
     private static final String DHIS_CHECK_EVENT_API =
-            "/api/events.json?program=%s&orgUnit=%s&startDate=%s&endDate=%s&skipPaging=true"
+            "api/events.json?program=%s&orgUnit=%s&startDate=%s&endDate=%s&skipPaging=true"
                     + "&fields=event,orgUnit,program,dataValues";
     private Credentials mCredentials;
 

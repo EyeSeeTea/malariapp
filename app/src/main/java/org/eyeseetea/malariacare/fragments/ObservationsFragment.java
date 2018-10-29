@@ -25,9 +25,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -58,6 +60,7 @@ import org.eyeseetea.malariacare.domain.usecase.GetServerMetadataUseCase;
 import org.eyeseetea.malariacare.domain.usecase.observation.GetObservationBySurveyUidUseCase;
 import org.eyeseetea.malariacare.domain.usecase.observation.SaveObservationUseCase;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.strategies.PlanActionStyleStrategy;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.presentation.presenters.ObservationsPresenter;
@@ -65,6 +68,8 @@ import org.eyeseetea.malariacare.presentation.viewModels.ObservationViewModel;
 import org.eyeseetea.malariacare.views.CustomEditText;
 import org.eyeseetea.malariacare.views.CustomSpinner;
 import org.eyeseetea.malariacare.views.CustomTextView;
+import org.eyeseetea.sdk.common.FileUtils;
+import org.eyeseetea.sdk.presentation.views.DoubleRectChart;
 
 import java.util.Iterator;
 import java.util.List;
@@ -78,6 +83,7 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
     private ArrayAdapter<CharSequence> mSubActionsAdapter;
 
     private CustomTextView mTotalScoreTextView;
+    private DoubleRectChart mDoubleRectChart;
     private CustomTextView mOrgUnitTextView;
     private CustomTextView mNextDateTextView;
     private CustomTextView mCompletionDateTextView;
@@ -340,6 +346,7 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
 
     private void initLayoutHeaders() {
         mTotalScoreTextView = (CustomTextView) mRootView.findViewById(R.id.feedback_total_score);
+        mDoubleRectChart = PlanActionStyleStrategy.loadDoubleRectChart(mRootView);
         mOrgUnitTextView = (CustomTextView) mRootView.findViewById(
                 R.id.org_unit);
         mCompletionDateTextView = (CustomTextView) mRootView.findViewById(
@@ -405,13 +412,8 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
 
     @Override
     public void updateStatusView(ObservationStatus status) {
-        if (status.equals(ObservationStatus.IN_PROGRESS)) {
-            mFabComplete.setImageResource(R.drawable.ic_action_uncheck);
-        } else if (status.equals(ObservationStatus.SENT)) {
-            mFabComplete.setImageResource(R.drawable.ic_double_check);
-        }else {
-            mFabComplete.setImageResource(R.drawable.ic_action_check);
-        }
+        PlanActionStyleStrategy.fabIcons(mFabComplete, status);
+
     }
 
     @Override
@@ -420,22 +422,27 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
 
         mOrgUnitTextView.setText(orgUnitName);
 
-        if (mainScore > 0f) {
-            mTotalScoreTextView.setText(String.format("%.1f%%", mainScore));
-            int colorId = LayoutUtils.trafficColor(mainScore);
-            mTotalScoreTextView.setBackgroundColor(getResources().getColor(colorId));
-        } else {
-            mTotalScoreTextView.setText(String.format("NaN"));
-            int colorId = LayoutUtils.trafficColor(mainScore);
-            mTotalScoreTextView.setBackgroundColor(getResources().getColor(colorId));
+        if (mTotalScoreTextView != null) {
+            if (mainScore > 0f) {
+                mTotalScoreTextView.setText(String.format("%.1f%%", mainScore));
+                int colorId = LayoutUtils.trafficColor(mainScore);
+                mTotalScoreTextView.setBackgroundColor(getResources().getColor(colorId));
+            } else {
+                mTotalScoreTextView.setText(String.format("NaN"));
+                int colorId = LayoutUtils.trafficColor(mainScore);
+                mTotalScoreTextView.setBackgroundColor(getResources().getColor(colorId));
+            }
+        } else if (mDoubleRectChart != null) {
+            LayoutUtils.drawScore(mainScore, mDoubleRectChart);
+
+
+            mCompletionDateTextView.setText(
+                    String.format(getString(R.string.plan_action_today_date), completionDate));
+
+            mNextDateTextView.setText(
+                    String.format(getString(R.string.plan_action_next_date), nextDate));
+
         }
-
-        mCompletionDateTextView.setText(
-                String.format(getString(R.string.plan_action_today_date), completionDate));
-
-        mNextDateTextView.setText(
-                String.format(getString(R.string.plan_action_next_date), nextDate));
-
     }
 
     @Override
@@ -475,12 +482,13 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
         int shareColor = ContextCompat.getColor(fabShare.getContext(), R.color.share_fab_background);
 
         fabShare.getBackground().setColorFilter(shareColor, PorterDuff.Mode.SRC_IN);
-
+        PlanActionStyleStrategy.enableShare(fabShare);
     }
 
     @Override
     public void disableShareButton() {
         fabShare.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+        PlanActionStyleStrategy.disableShare(fabShare);
         fabShare.setEnabled(false);
     }
 

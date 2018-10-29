@@ -19,7 +19,7 @@
         android:paddingBottom="5dp"
         android:typeface="sans"
         android:textStyle="bold"
-        android:background="@color/app_background"
+        android:background="@color/white"
         android:paddingLeft="10dip"
         android:textSize="18dp"
         app:tDimension="@string/font_size_level2"

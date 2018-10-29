@@ -25,7 +25,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:fillViewport="true">
-
+<include layout="@layout/dev_custom_tool_bar"></include>
     <TabHost
         android:id="@+id/tabHost"
         android:layout_width="fill_parent"

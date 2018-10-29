@@ -10,7 +10,6 @@
         android:layout_width="wrap_content"
         android:paddingLeft="@dimen/left_padding_arrow"
         android:paddingRight="@dimen/right_padding_arrow"
-        android:layout_marginLeft="20dp"
         android:layout_height="wrap_content"
         android:id="@+id/previous_tab"
         android:background="@color/transparent"
