@@ -1,16 +1,10 @@
 package org.eyeseetea.malariacare.data.repositories;
 
-import org.eyeseetea.dhis2.lightsdk.Dhis2Api;
-import org.eyeseetea.dhis2.lightsdk.common.Credentials;
-import org.eyeseetea.dhis2.lightsdk.common.Dhis2ApiConfig;
-import org.eyeseetea.dhis2.lightsdk.optionsets.OptionSet;
 import org.eyeseetea.malariacare.data.IUserAccountDataSource;
 import org.eyeseetea.malariacare.data.filters.UserFilter;
+import org.eyeseetea.malariacare.domain.enums.NetworkStrategy;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
-import org.eyeseetea.malariacare.domain.enums.NetworkStrategy;
-
-import java.util.List;
 
 public class UserAccountRepository implements IUserAccountRepository {
 
@@ -25,13 +19,6 @@ public class UserAccountRepository implements IUserAccountRepository {
 
     @Override
     public UserAccount getUser(NetworkStrategy networkStrategy) throws Exception {
-
-        Dhis2ApiConfig config = new Dhis2ApiConfig("https://dhis2.asia/cnm_android",
-                new Credentials("KHMCS","sUcnSA64WhQiUk6A!"));
-
-        Dhis2Api dhis2Api = new Dhis2Api(config);
-
-        List<OptionSet> optionSets = dhis2Api.optionSets().getOptionSets();
 
         UserAccount localUserAccount = null;
 
