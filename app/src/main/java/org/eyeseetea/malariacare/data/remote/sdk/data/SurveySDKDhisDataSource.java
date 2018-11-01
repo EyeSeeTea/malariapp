@@ -26,6 +26,7 @@ import org.eyeseetea.malariacare.data.boundaries.IDataRemoteDataSource;
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.data.repositories.ICompositeScoreRepository;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.sync.mappers.PushReportMapper;
 import org.eyeseetea.malariacare.domain.boundary.IConnectivityManager;
@@ -33,6 +34,7 @@ import org.eyeseetea.malariacare.domain.boundary.repositories.IOptionRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IOrgUnitRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IQuestionRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerMetadataRepository;
+import org.eyeseetea.malariacare.domain.entity.CompositeScore;
 import org.eyeseetea.malariacare.domain.boundary.repositories.ISettingsRepository;
 import org.eyeseetea.malariacare.domain.entity.IData;
 import org.eyeseetea.malariacare.domain.entity.Option;
@@ -68,19 +70,24 @@ public class SurveySDKDhisDataSource implements IDataRemoteDataSource {
     private final ISettingsRepository mSettingsRepository;
     private final IOptionRepository mOptionRepository;
     private final IQuestionRepository mQuestionRepository;
+    private final ICompositeScoreRepository mCompositeScoreRepository;
     private final IOrgUnitRepository mOrgUnitRepository;
     private final IConnectivityManager mConnectivityManager;
     private final Context mContext;
 
     public SurveySDKDhisDataSource(Context context, IServerMetadataRepository serverMetadataRepository,
                                    ISettingsRepository settingsRepository,
-            IQuestionRepository questionRepository, IOptionRepository optionRepository,
-            IOrgUnitRepository orgUnitRepository, IConnectivityManager connectivityManager) {
+            IQuestionRepository questionRepository,
+            IOptionRepository optionRepository,
+            IOrgUnitRepository orgUnitRepository,
+            ICompositeScoreRepository mCompositeScoreRepository,
+            IConnectivityManager connectivityManager) {
         this.mContext = context;
         this.mServerMetadataRepository = serverMetadataRepository;
         this.mSettingsRepository = settingsRepository;
         this.mQuestionRepository = questionRepository;
         this.mOptionRepository = optionRepository;
+        this.mCompositeScoreRepository = mCompositeScoreRepository;
         this.mOrgUnitRepository = orgUnitRepository;
         this.mConnectivityManager = connectivityManager;
     }
@@ -152,8 +159,8 @@ public class SurveySDKDhisDataSource implements IDataRemoteDataSource {
         ServerMetadata serverMetadata = mServerMetadataRepository.getServerMetadata();
         List<Option> options = mOptionRepository.getAll();
         List<Question> questions = mQuestionRepository.getAll();
+        List<CompositeScore> compositeScores = mCompositeScoreRepository.getAll();
         List<OrgUnit> orgUnits = mOrgUnitRepository.getAll();
-        List<CompositeScoreDB> compositeScores = CompositeScoreDB.list();
 
         SurveyMapper surveyMapper = new SurveyMapper(serverMetadata, orgUnits,compositeScores, questions,
                 options);

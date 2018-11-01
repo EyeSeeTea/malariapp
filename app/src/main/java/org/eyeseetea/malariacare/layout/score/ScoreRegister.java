@@ -86,7 +86,7 @@ public class ScoreRegister {
     }
 
     private static List<Float> getRecursiveScore(CompositeScoreDB cScore, List<Float> result, float idSurvey, String module) {
-        Log.d(TAG, " mod "+ module +" idsurvey "+ idSurvey + " score "+ cScore);
+        //Log.d(TAG, " mod "+ module +" idsurvey "+ idSurvey + " score "+ cScore);
         //Protect from wrong server data
         if (compositeScoreMapBySurvey.get(module) == null || compositeScoreMapBySurvey.get(
                 module).get(idSurvey) == null || compositeScoreMapBySurvey.get(
@@ -119,7 +119,7 @@ public class ScoreRegister {
 
         List<Float>result= getRecursiveScore(cScore, new ArrayList<>(Arrays.asList(0F, 0F)), idSurvey, module);
 
-        Log.d(TAG,String.format("getCompositeScore %s -> %s",cScore.getHierarchical_code(),result.toString()));
+       // Log.d(TAG,String.format("getCompositeScore %s -> %s",cScore.getHierarchical_code(),result.toString()));
         return ScoreUtils.calculateScoreFromNumDen(result);
     }
 
@@ -133,7 +133,7 @@ public class ScoreRegister {
 
         List<Float>result= getRecursiveScore(cScore, new ArrayList<>(Arrays.asList(0F, 0F)), idSurvey, module);
 
-        Log.d(TAG,String.format("getCompositeScore %s -> %s",cScore.getHierarchical_code(),result.toString()));
+        //Log.d(TAG,String.format("getCompositeScore %s -> %s",cScore.getHierarchical_code(),result.toString()));
 
         return result;
     }
@@ -273,9 +273,9 @@ public class ScoreRegister {
      */
     public static List<CompositeScoreDB> loadCompositeScores(SurveyDB survey, String module){
         //Cleans score
-        Log.d(TAG, "clean composite score "+ survey.getId_survey() + " module " + module);
+        //Log.d(TAG, "clean composite score "+ survey.getId_survey() + " module " + module);
         ScoreRegister.clear(survey.getId_survey(), module);
-        Log.d(TAG, "load composite Score "+ survey.getId_survey() + " module " + module);
+        //Log.d(TAG, "load composite Score "+ survey.getId_survey() + " module " + module);
 
         //Register scores for tabs
         List<TabDB> tabs=survey.getProgram().getTabs();
@@ -287,7 +287,7 @@ public class ScoreRegister {
         //Initialize scores x question
         ScoreRegister.initScoresForQuestions(QuestionDB.listByProgram(survey.getProgram()), survey, module);
 
-        Log.d(TAG, "Composite Score loaded "+ survey.getId_survey() + " module " + module);
+        //Log.d(TAG, "Composite Score loaded "+ survey.getId_survey() + " module " + module);
         return compositeScoreList;
     }
 

@@ -5,7 +5,9 @@ import android.support.annotation.NonNull;
 
 import org.eyeseetea.malariacare.data.boundaries.IDataLocalDataSource;
 import org.eyeseetea.malariacare.data.boundaries.IDataRemoteDataSource;
+import org.eyeseetea.malariacare.data.boundaries.ISurveyDataSource;
 import org.eyeseetea.malariacare.data.database.MetadataValidator;
+import org.eyeseetea.malariacare.data.database.datasources.CompositeScoreDataSource;
 import org.eyeseetea.malariacare.data.database.datasources.ObservationLocalDataSource;
 import org.eyeseetea.malariacare.data.database.datasources.QuestionLocalDataSource;
 import org.eyeseetea.malariacare.data.database.datasources.SurveyLocalDataSource;
@@ -15,6 +17,7 @@ import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullMetad
 import org.eyeseetea.malariacare.data.network.ConnectivityManager;
 import org.eyeseetea.malariacare.data.remote.sdk.data.ObservationSDKDhisDataSource;
 import org.eyeseetea.malariacare.data.remote.sdk.data.SurveySDKDhisDataSource;
+import org.eyeseetea.malariacare.data.repositories.ICompositeScoreRepository;
 import org.eyeseetea.malariacare.data.repositories.OptionRepository;
 import org.eyeseetea.malariacare.data.repositories.OrgUnitRepository;
 import org.eyeseetea.malariacare.data.repositories.ServerMetadataRepository;
@@ -40,8 +43,22 @@ public class SyncFactory {
     public PullUseCase getPullUseCase(Context context){
         PullMetadataController pullMetadataController = new PullMetadataController();
 
-        IDataRemoteDataSource surveyRemoteDataSource = getSurveyRemoteDataSource(context);
-        IDataLocalDataSource surveyLocalDataSource = getSurveyLocalDataSource();
+
+        IServerMetadataRepository serverMetadataRepository =
+                new ServerMetadataRepository(context);
+        IOptionRepository optionRepository = new OptionRepository();
+        ISettingsRepository settingsRepository = new SettingsRepository(context);
+        IQuestionRepository questionRepository = new QuestionLocalDataSource();
+        ICompositeScoreRepository compositeScoreRepository = new CompositeScoreDataSource();
+        IConnectivityManager connectivityManager = new ConnectivityManager();
+        IOrgUnitRepository orgUnitRepository = new OrgUnitRepository();
+
+
+        IDataRemoteDataSource surveyRemoteDataSource =
+                new SurveySDKDhisDataSource(context, serverMetadataRepository, settingsRepository, questionRepository,
+                        optionRepository, orgUnitRepository, compositeScoreRepository, connectivityManager);
+
+        IDataLocalDataSource surveyLocalDataSource = new SurveyLocalDataSource();
 
         PullDataController pullDataController =
                 new PullDataController(surveyLocalDataSource, surveyRemoteDataSource);
@@ -50,11 +67,9 @@ public class SyncFactory {
         IAsyncExecutor asyncExecutor = new AsyncExecutor();
         IMainExecutor mainExecutor = new UIThreadExecutor();
 
-        PullUseCase pullUseCase = new PullUseCase(
+       return new PullUseCase(
                 asyncExecutor, mainExecutor, pullMetadataController,
                 pullDataController, metadataValidator);
-
-        return pullUseCase;
     }
 
     public PushUseCase getPushUseCase(Context context){
@@ -89,11 +104,12 @@ public class SyncFactory {
                 new SettingsRepository(context);
         IOptionRepository optionRepository = new OptionRepository();
         IQuestionRepository questionRepository = new QuestionLocalDataSource();
+        ICompositeScoreRepository compositeScoreRepository = new CompositeScoreDataSource();
         IOrgUnitRepository orgUnitRepository = new OrgUnitRepository();
         IConnectivityManager connectivityManager = new ConnectivityManager();
 
         return new SurveySDKDhisDataSource(context, serverMetadataRepository, settingsRepository,
-                questionRepository, optionRepository, orgUnitRepository, connectivityManager);
+                questionRepository, optionRepository, orgUnitRepository, compositeScoreRepository, connectivityManager);
     }
 
     @NonNull
