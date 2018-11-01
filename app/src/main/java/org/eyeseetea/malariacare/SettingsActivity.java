@@ -31,20 +31,25 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.preference.PreferenceScreen;
+import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.View;
+import android.widget.ListView;
 
 import org.eyeseetea.malariacare.data.database.utils.LanguageContextWrapper;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.repositories.AuthenticationManager;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
+import org.eyeseetea.malariacare.views.SimpleDividerItemDecoration;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -272,7 +277,6 @@ public class SettingsActivity extends AppCompatActivity implements
             // Add 'general' preferences.
             addPreferencesFromResource(R.xml.pref_general);
 
-
             PreferencesState.getInstance().initalizateActivityDependencies();
 
             // fitler the font options by screen size
@@ -324,6 +328,12 @@ public class SettingsActivity extends AppCompatActivity implements
             if (BuildConfig.customFontHidden) {
                 hideFontCustomisationOption(preferenceScreen);
             }
+        }
+
+        @Override
+        public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+            super.onViewCreated(view, savedInstanceState);
+            getListView().addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
         }
     }
 

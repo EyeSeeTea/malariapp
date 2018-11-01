@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:paddingLeft="-40dp">
     <fragment
         android:name="org.eyeseetea.malariacare.SettingsActivity$GeneralPreferenceFragment"
         android:tag=".GeneralPreferenceFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/settings_left_margin"
+        android:layout_marginRight="36dp"/>
 </FrameLayout>
