@@ -19,12 +19,21 @@
   -->
 <resources>
 
-    <string name="login_title" translatable="false"></string>
-    <string name="app_name" translatable="false">QA App</string>
+    <string name="login_title" translatable="false">QuestMark</string>
+    <!-- # general -->
+    <string name="app_name" translatable="false">QuestMark</string>
+
+    <!-- default server url -->
+    <string name="login_info_dhis_default_server_url" translatable="false">https://data.psi-mis.org</string>
+    <string name="assessment_no_schedule_date" translatable="false">"-"</string>
+
+    <!-- pull control codes -->
+    <string name="pull_program_code" translatable="false">HNQIS</string>
+
+    <!-- app common do no translate strings -->
     <string name="developers" translatable="false">EyeSeeTea LTD</string>
     <string name="empty_string" translatable="false"></string>
     <string name="ok" translatable="false">Ok</string>
-    <string name="login_info_dhis_default_server_url" translatable="false">https://malariacare.psi.org</string>
     <string name="number_zero" translatable="false">0</string>
     <string name="number_zero_percentage" translatable="false">0 % </string>
     <string name="custom_info_one" translatable="false">1</string>
