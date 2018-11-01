@@ -282,4 +282,6 @@ clínica"</string>
 <string name="failed_video_image_question_only">"Solo preguntas de video/imagen"</string>
 <string name="failed_questions_only">"Solo preguntas fallidas"</string>
 <string name="monitor_no_surveys_to_show">"No hay encuesta que mostrar"</string>
+<string name="header_schedule">"Programar"</string>
+<string name="mandatory">Obligatorio</string>
 </resources>

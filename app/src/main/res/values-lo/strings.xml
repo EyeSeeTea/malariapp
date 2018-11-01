@@ -291,4 +291,9 @@
 <string name="failed_video_image_question_only">"ຄໍາຖາມວິດີໂອ / ຮູບພາບເທົ່ານັ້ນ"</string>
 <string name="failed_questions_only">"ຄໍາຖາມບໍ່ເທົ່າທຽມ"</string>
 <string name="monitor_no_surveys_to_show">"ບໍ່ມີການສໍາຫຼວດທີ່ຈະສະແດງ"</string>
+<string name="import_data_option_title">"ນໍາເຂົ້າຖານຂໍ້ມູນ"</string>
+<string name="install_file_manager">ກະລຸນາຕິດຕັ້ງຜູ້ຈັດການໄຟລ໌</string>
+<string name="get_db_file_dialog">ກະລຸນາຄັດເລືອກເອົາໄຟລ໌ db ທີ່ຖືກຕ້ອງ</string>
+<string name="start">ເລີ່ມຕົ້ນ</string>
+<string name="mandatory">ບັງຄັບ</string>
 </resources>

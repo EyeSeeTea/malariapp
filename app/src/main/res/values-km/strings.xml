@@ -203,8 +203,6 @@ evaluation"</string>
 <string name="progress_pull_relationships">"កសាងទំនាក់ទំនងសំណួរ ..."</string>
 <string name="create">"Create"</string>
 <string name="modify">"Modify"</string>
-<string name="review"></string>
-<string name="send"></string>
 <string name="clear">"ច្បាស់ណាស់"</string>
 <string name="dialog_info_ask_for_completion">"Are you sure you want to complete %s? You cannot undo this action"</string>
 <string name="dialog_info_ask_for_completion_plan">Are you sure you want to complete plan? You cannot undo this action</string>
@@ -294,4 +292,8 @@ evaluation"</string>
 <string name="failed_video_image_question_only">"សំណួរវីដេអូ / រូបភាពប៉ុណ្ណោះ"</string>
 <string name="failed_questions_only">"បានបរាជ័យតែប៉ុណ្ណោះសំណួរ"</string>
 <string name="monitor_no_surveys_to_show">"គ្មានការស្ទង់មតិដើម្បីបង្ហាញ"</string>
+<string name="import_data_option_title">"នាំចូលមូលដ្ឋានទិន្នន័យ"</string>
+<string name="planing_due_date">"កាលបរិច្ឆេទ​កំណត់"</string>
+<string name="save">"រក្សាទុក"</string>
+<string name="mandatory">ចាំបាច់</string>
 </resources>

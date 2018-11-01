@@ -31,6 +31,7 @@
     <string name="pull_program_code" translatable="false">HNQIS</string>
 
     <!-- app common do no translate strings -->
+    <string name="percent">&#37;</string>
     <string name="developers" translatable="false">EyeSeeTea LTD</string>
     <string name="empty_string" translatable="false"></string>
     <string name="ok" translatable="false">Ok</string>
