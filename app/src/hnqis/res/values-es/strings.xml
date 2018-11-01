@@ -270,7 +270,6 @@ clínica"</string>
 <string name="html_text">Texto con formato </string>
 <string name="schedule_title">Programación de encuesta</string>
 <string name="save">"Salvar"</string>
-<string name="monitor_no_surveys_to_show">"No hay encuesta que mostrar"</string>
 <string name="plan_action_provider_title" >"NOMBRE DEL PROVEEDOR:"</string>
 <string name="health_facility">Centro Médico</string>
 <string name="mandatory">"Obligatorio"</string>
