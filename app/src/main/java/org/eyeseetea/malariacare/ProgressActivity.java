@@ -131,7 +131,7 @@ public class ProgressActivity extends Activity {
             executeDemoPull();
         } else {
             mPullUseCase = new SyncFactory().getPullUseCase(getApplicationContext());
-        }
+        }build
     }
 
     private void executeDemoPull() {
