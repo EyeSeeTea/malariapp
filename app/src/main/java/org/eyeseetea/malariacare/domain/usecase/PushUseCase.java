@@ -23,9 +23,8 @@ import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
-import org.eyeseetea.malariacare.domain.exception.MetadataException;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
-import org.eyeseetea.malariacare.domain.exception.SurveysToPushNotFoundException;
+import org.eyeseetea.malariacare.domain.exception.DataToPushNotFoundException;
 import org.eyeseetea.malariacare.domain.exception.push.PushReportException;
 import org.eyeseetea.malariacare.data.remote.SurveyChecker;
 
@@ -104,7 +103,7 @@ public class PushUseCase implements UseCase{
                 } else if (throwable instanceof ConversionException) {
                     mPushController.changePushInProgress(false);
                     mCallback.onConversionError();
-                } else if (throwable instanceof SurveysToPushNotFoundException) {
+                } else if (throwable instanceof DataToPushNotFoundException) {
                     mPushController.changePushInProgress(false);
                     mCallback.onSurveysNotFoundError();
                 } else if (throwable instanceof PushReportException){

@@ -70,7 +70,7 @@ public class AssessmentUnsentAdapterCosmeticsStrategy {
             float score = 0;
 
             if (survey.getMainScore() != null)
-                score = survey.getMainScore().getScore();
+                score = survey.getMainScoreValue();
 
             LayoutUtils.drawScore(score, doubleRectChart);
 

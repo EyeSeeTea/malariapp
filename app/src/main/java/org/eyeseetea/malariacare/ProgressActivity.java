@@ -35,6 +35,7 @@ import android.widget.TextView;
 
 import org.eyeseetea.malariacare.data.boundaries.ISurveyDataSource;
 import org.eyeseetea.malariacare.data.database.MetadataValidator;
+import org.eyeseetea.malariacare.data.database.datasources.CompositeScoreDataSource;
 import org.eyeseetea.malariacare.data.database.datasources.QuestionLocalDataSource;
 import org.eyeseetea.malariacare.data.database.datasources.SurveyLocalDataSource;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullDataController;
@@ -44,10 +45,10 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.network.ConnectivityManager;
 import org.eyeseetea.malariacare.data.remote.sdk.data.SurveySDKDhisDataSource;
+import org.eyeseetea.malariacare.data.repositories.ICompositeScoreRepository;
 import org.eyeseetea.malariacare.data.repositories.OptionRepository;
 import org.eyeseetea.malariacare.data.repositories.ServerMetadataRepository;
 import org.eyeseetea.malariacare.domain.boundary.IConnectivityManager;
-import org.eyeseetea.malariacare.data.repositories.AuthenticationManager;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IOptionRepository;
@@ -56,9 +57,10 @@ import org.eyeseetea.malariacare.domain.boundary.repositories.IServerMetadataRep
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullDemoUseCase;
-import org.eyeseetea.malariacare.domain.usecase.pull.SurveyFilter;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullUseCase;
+import org.eyeseetea.malariacare.domain.usecase.pull.SurveyFilter;
+import org.eyeseetea.malariacare.factories.AuthenticationFactory;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 
@@ -151,11 +153,12 @@ public class ProgressActivity extends Activity {
                     new ServerMetadataRepository(this);
             IOptionRepository optionRepository = new OptionRepository();
             IQuestionRepository questionRepository = new QuestionLocalDataSource();
+            ICompositeScoreRepository compositeScoreRepository = new CompositeScoreDataSource();
             IConnectivityManager connectivityManager = new ConnectivityManager();
 
             ISurveyDataSource surveyRemoteDataSource =
-                    new SurveySDKDhisDataSource(serverMetadataRepository,
-                            questionRepository, optionRepository, connectivityManager);
+                    new SurveySDKDhisDataSource(serverMetadataRepository, questionRepository,
+                            optionRepository, compositeScoreRepository, connectivityManager);
 
             ISurveyDataSource surveyLocalDataSource = new SurveyLocalDataSource();
 
@@ -173,7 +176,10 @@ public class ProgressActivity extends Activity {
     }
 
     private void executeDemoPull() {
-        new PullDemoUseCase(new PullDemoController(this)).execute(new PullDemoUseCase.Callback() {
+        IMainExecutor mainExecutor = new UIThreadExecutor();
+        IAsyncExecutor asyncExecutor = new AsyncExecutor();
+        new PullDemoUseCase(new PullDemoController(this), mainExecutor, asyncExecutor).execute(
+                new PullDemoUseCase.Callback() {
             @Override
             public void onComplete() {
                 finishAndGo(DashboardActivity.class);
@@ -291,8 +297,7 @@ public class ProgressActivity extends Activity {
 
     private void executeLogout() {
         Log.d(TAG, "Logging out...");
-        AuthenticationManager authenticationManager = new AuthenticationManager(this);
-        LogoutUseCase logoutUseCase = new LogoutUseCase(authenticationManager);
+        LogoutUseCase logoutUseCase = new AuthenticationFactory().getLogoutUseCase(this);
 
         logoutUseCase.execute(new LogoutUseCase.Callback() {
             @Override

@@ -29,6 +29,10 @@ import java.util.List;
 
 public class FilterProgramArrayAdapter extends AddlArrayAdapter<ProgramDB> {
 
+    public FilterProgramArrayAdapter(Context context, Integer spinnerItemLayout, Integer spinnerDropdownItemLayout, List<ProgramDB> programs) {
+        super(context, spinnerItemLayout, spinnerDropdownItemLayout, programs);
+    }
+
     public FilterProgramArrayAdapter(Context context, List<ProgramDB> programs) {
         super(context, programs);
     }
