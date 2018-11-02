@@ -284,4 +284,7 @@ clínica"</string>
 <string name="monitor_no_surveys_to_show">"No hay encuesta que mostrar"</string>
 <string name="header_schedule">"Programar"</string>
 <string name="mandatory">Obligatorio</string>
+<string name="monitor_js_multiple_event_legend" >"(*)Hay más de una encuesta en el mismo mes"</string>
+<string name="health_facility">Centro Médico</string>
+<string name="dialog_pie_chart_label_explanation">"El círculo exterior muestra el nivel de completado.\n\nEl círculo interior muestra el nivel de completado de las preguntas obligatorias, normalmente marcadas con un *. Solo cuando se complete el 100% de las preguntas obligatorias, puede 'Marcar completa'"</string>
 </resources>

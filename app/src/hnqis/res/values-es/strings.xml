@@ -18,10 +18,8 @@
 <string name="monitor">"Monitorización"</string>
 <string name="filter_all_org_assessments">"Todas las encuestas"</string>
 <string name="monitor_js_assessments" >Encuestas realizadas</string>
-<string name="monitor_js_multiple_event_legend" >"(*)Hay más de una encuesta en el mismo mes"</string>
 <string name="select_all">Seleccionar todos</string>
 <string name="demo_login">Demo</string>
-<string name="dialog_pie_chart_label_explanation">"El círculo exterior muestra el nivel de completado.\n\nEl círculo interior muestra el nivel de completado de las preguntas obligatorias, normalmente marcadas con un *. Solo cuando se complete el 100% de las preguntas obligatorias, puede 'Marcar completa'"</string>
 <string name="plan_action_today_date">Terminado: %s</string>
 <string name="plan_action_next_date">PRÓXIMA EVALUACIÓN: %s</string>
 <string name="plan_action_gasp_title">BRECHAS:</string>
@@ -36,7 +34,6 @@
 <string name="plain_text">Texto sin formato </string>
 <string name="html_text">Texto con formato </string>
 <string name="plan_action_provider_title" >"NOMBRE DEL PROVEEDOR:"</string>
-<string name="health_facility">Centro Médico</string>
 <string name="dialog_action_plan">"Plan de acción"</string>
 <string name="filter">"filtro"</string>
 </resources>

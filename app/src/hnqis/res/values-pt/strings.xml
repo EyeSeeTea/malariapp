@@ -17,10 +17,8 @@
 <string name="monitor">"Monitor"</string>
 <string name="filter_all_org_assessments">"Todas as pesquisas"</string>
 <string name="monitor_js_assessments" >"Inquéritos realizados"</string>
-<string name="monitor_js_multiple_event_legend" >"(*) Mais de uma pesquisa existe no mesmo mês"</string>
 <string name="select_all">Selecionar tudo</string>
 <string name="demo_login">Demonstração</string>
-<string name="dialog_pie_chart_label_explanation">"O círculo externo mostra a conclusão geral.\n\nO círculo interno mostra a conclusão de perguntas obrigatórias, normalmente marcadas com *. Somente quando 100% das perguntas obrigatórias estiverem concluídas, você pode marcar completo."</string>
 <string name="plan_action_today_date">Concluído: %s</string>
 <string name="plan_action_next_date">PRÓXIMA AVALIAÇÃO: %s</string>
 <string name="plan_action_gasp_title">LACUNAS:</string>
@@ -35,7 +33,6 @@
 <string name="plain_text">"Texto simples "</string>
 <string name="html_text">"Texto formatado "</string>
 <string name="plan_action_provider_title" >"NOME DO PROVEEDOR:"</string>
-<string name="health_facility">Centro médico</string>
 <string name="dialog_action_plan">"Plano de ação"</string>
 <string name="filter">"filter"</string>
 </resources>

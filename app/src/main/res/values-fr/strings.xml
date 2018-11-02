@@ -279,4 +279,7 @@ Mensuelle"</string>
 <string name="failed_questions_only">"Échec des questions seulement"</string>
 <string name="monitor_no_surveys_to_show">"Aucune enquête à afficher"</string>
 <string name="mandatory">Obligatoire</string>
+<string name="monitor_js_multiple_event_legend" >"(*) Plus d'une enquête existe le même mois"</string>
+<string name="health_facility">Centre médical</string>
+<string name="dialog_pie_chart_label_explanation">"Le cercle extérieur vous montre l'achèvement global.\n\nLe cercle intérieur affiche l'achèvement des questions obligatoires, normalement marquées d'un *. Seulement lorsque 100% des questions obligatoires sont complétées, vous pouvez "Marquer comme terminé"</string>
 </resources>

@@ -18,10 +18,8 @@
 <string name="monitor">"Contrôle"</string>
 <string name="filter_all_org_assessments">"Toutes Les enquêtes"</string>
 <string name="monitor_js_assessments">"Enquêtes réalisés"</string>
-<string name="monitor_js_multiple_event_legend" >"(*) Plus d'une enquête existe le même mois"</string>
 <string name="select_all">"Tout sélectionner"</string>
 <string name="demo_login">"Démo"</string>
-<string name="dialog_pie_chart_label_explanation">"Le cercle extérieur vous montre l'achèvement global.\n\nLe cercle intérieur affiche l'achèvement des questions obligatoires, normalement marquées d'un *. Seulement lorsque 100% des questions obligatoires sont complétées, vous pouvez "Marquer comme terminé"</string>
 <string name="plan_action_today_date">"Terminé: %s"</string>
 <string name="plan_action_next_date">PROCHAINE ÉVALUATION %s</string>
 
@@ -37,7 +35,6 @@
 <string name="plain_text">"Texte en clair "</string>
 <string name="html_text">"Texte formaté "</string>
 <string name="plan_action_provider_title" >"NOM DU FOURNISSEUR:"</string>
-<string name="health_facility">Centre médical</string>
 <string name="dialog_action_plan">"Plan d'action"</string>
 <string name="filter">"filtre"</string>
 </resources>

@@ -296,4 +296,7 @@
 <string name="get_db_file_dialog">ກະລຸນາຄັດເລືອກເອົາໄຟລ໌ db ທີ່ຖືກຕ້ອງ</string>
 <string name="start">ເລີ່ມຕົ້ນ</string>
 <string name="mandatory">ບັງຄັບ</string>
+<string name="monitor_js_multiple_event_legend" >"(*) ມີການສໍາຫຼວດຫຼາຍກວ່າຫນຶ່ງເດືອນໃນເດືອນດຽວກັນ"</string>
+<string name="health_facility">ສູນການແພດ</string>
+<string name="dialog_pie_chart_label_explanation">"ວົງກົມພາຍນອກສະແດງໃຫ້ທ່ານເຫັນວ່າການສໍາເລັດສົມບູນ.\n\nວົງກົມພາຍໃນສະແດງໃຫ້ເຫັນວ່າທ່ານໄດ້ສໍາເລັດຄໍາຖາມບັງຄັບ, ໂດຍປົກກະຕິຫມາຍດ້ວຍ *. ພຽງແຕ່ເມື່ອມີຄໍາຕອບ 100% ແລ້ວ, ທ່ານສາມາດຫມາຍສໍາເລັດ."</string>
 </resources>

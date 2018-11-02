@@ -17,10 +17,8 @@
 <string name="monitor">"ຕິດຕາມ"</string>
 <string name="filter_all_org_assessments">"ທຸກໆການສໍາຫຼວດ"</string>
 <string name="monitor_js_assessments">"ການສໍາຫຼວດປະຕິບັດ"</string>
-<string name="monitor_js_multiple_event_legend" >"(*) ມີການສໍາຫຼວດຫຼາຍກວ່າຫນຶ່ງເດືອນໃນເດືອນດຽວກັນ"</string>
 <string name="select_all">"ເລືອກທັງໝົດ"</string>
 <string name="demo_login">"ຕົວຢ່າງ"</string>
-<string name="dialog_pie_chart_label_explanation">"ວົງກົມພາຍນອກສະແດງໃຫ້ທ່ານເຫັນວ່າການສໍາເລັດສົມບູນ.\n\nວົງກົມພາຍໃນສະແດງໃຫ້ເຫັນວ່າທ່ານໄດ້ສໍາເລັດຄໍາຖາມບັງຄັບ, ໂດຍປົກກະຕິຫມາຍດ້ວຍ *. ພຽງແຕ່ເມື່ອມີຄໍາຕອບ 100% ແລ້ວ, ທ່ານສາມາດຫມາຍສໍາເລັດ."</string>
 <string name="plan_action_today_date">"ສຳເລັດແລ້ວ: %s"</string>
 <string name="plan_action_next_date">ການປະເມີນຕໍ່ໄປນີ້: %s</string>
 
@@ -36,7 +34,6 @@
 <string name="plain_text">"ຂໍ້ຄວາມທົ່ງພຽງ "</string>
 <string name="html_text">"ຮູບແບບຮູບແບບ "</string>
 <string name="plan_action_provider_title" >"ຊື່ຜູ້ໃຫ້ບໍລິການ:"</string>
-<string name="health_facility">ສູນການແພດ</string>
 <string name="dialog_action_plan">"ແຜນການປະຕິບັດງານ"</string>
 <string name="filter">"ຕົວກອງ"</string>
 </resources>
