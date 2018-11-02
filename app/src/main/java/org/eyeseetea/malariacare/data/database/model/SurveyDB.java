@@ -56,7 +56,10 @@ import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.VisitableToSDK;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
+import org.eyeseetea.malariacare.data.sync.IData;
+import org.eyeseetea.malariacare.domain.entity.Score;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
+import org.eyeseetea.malariacare.domain.entity.SurveyStatus;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -68,7 +71,7 @@ import java.util.Date;
 import java.util.List;
 
 @Table(database = AppDatabase.class, name = "Survey")
-public class SurveyDB extends BaseModel implements VisitableToSDK {
+public class SurveyDB extends BaseModel implements VisitableToSDK, IData {
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -143,7 +146,7 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
         this.completion_date = null;
         this.upload_date = null;
         this.scheduled_date = null;
-        //// TODO: 26/07/2018  This action should be make on survey entity creation (SurveyPlanned build or when create a new survey). 
+        //// TODO: 26/07/2018  This action should be make on survey entity creation (SurveyPlanned build or when create a new survey).
         this.uid_event_fk = CodeGenerator.generateCode();
     }
 
@@ -750,14 +753,6 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
                 .count();
     }
 
-    public void saveConflict(String uid) {
-        for (ValueDB value : getValues()) {
-            if (value.getQuestion().getUid().equals(uid)) {
-                value.setConflict(true);
-                value.save();
-            }
-        }
-    }
 
     public boolean hasConflict() {
         for (ValueDB value : getValues()) {
@@ -904,12 +899,60 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
                 .where(SurveyDB_Table.id_survey.eq(id)).querySingle();
     }
 
+
+    public static SurveyDB getSurveyByUId(String uid) {
+        return new Select()
+                .from(SurveyDB.class)
+                .where(SurveyDB_Table.uid_event_fk.eq(uid)).querySingle();
+    }
+
+
     public String getFullName() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(this.getOrgUnit().getName());
         stringBuilder.append(", ");
         stringBuilder.append(this.getProgram().getName());
         return stringBuilder.toString();
+    }
+
+    @Override
+    public Long getSurveyId() {
+        return getId_survey();
+    }
+
+    @Override
+    public void changeStatusToSending() {
+        setStatus(SurveyStatus.SENDING.getCode());
+        save();
+    }
+
+    @Override
+    public void changeStatusToQuarantine() {
+        setStatus(SurveyStatus.QUARANTINE.getCode());
+        save();
+    }
+
+    @Override
+    public void changeStatusToConflict() {
+        setStatus(SurveyStatus.CONFLICT.getCode());
+        save();
+    }
+
+    @Override
+    public void changeStatusToSent() {
+        setStatus(SurveyStatus.SENT.getCode());
+        saveMainScore();
+        save();
+    }
+
+    @Override
+    public void saveConflict(String questionUid) {
+        for (ValueDB value : getValues()) {
+            if (value.getQuestion().getUid().equals(questionUid)) {
+                value.setConflict(true);
+                value.save();
+            }
+        }
     }
 
     @Override

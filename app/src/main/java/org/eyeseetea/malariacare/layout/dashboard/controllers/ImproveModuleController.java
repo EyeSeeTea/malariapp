@@ -29,7 +29,7 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
 import org.eyeseetea.malariacare.fragments.FeedbackFragment;
-import org.eyeseetea.malariacare.fragments.PlanActionFragment;
+import org.eyeseetea.malariacare.fragments.ObservationsFragment;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
 import org.eyeseetea.malariacare.layout.dashboard.config.ModuleSettings;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
@@ -41,7 +41,7 @@ import java.util.List;
 public class ImproveModuleController extends ModuleController {
 
     FeedbackFragment feedbackFragment;
-    PlanActionFragment mPlanActionFragment;
+    ObservationsFragment mObservationsFragment;
 
     OrgUnitProgramFilterView orgUnitProgramFilterView;
 
@@ -69,7 +69,7 @@ public class ImproveModuleController extends ModuleController {
     }
 
     public void onExitTab(){
-        if(!isFragmentActive(FeedbackFragment.class) && !isFragmentActive(PlanActionFragment.class)){
+        if(!isFragmentActive(FeedbackFragment.class) && !isFragmentActive(ObservationsFragment.class)){
             return;
         }
 
@@ -80,7 +80,7 @@ public class ImproveModuleController extends ModuleController {
         if (fragment == null || !fragment.isAdded()) {
             reloadFragment();
         }
-        if(isFragmentActive(FeedbackFragment.class) || isFragmentActive(PlanActionFragment.class)){
+        if(isFragmentActive(FeedbackFragment.class) || isFragmentActive(ObservationsFragment.class)){
            return;
         }
 
@@ -137,9 +137,9 @@ public class ImproveModuleController extends ModuleController {
             e.printStackTrace();
         }
 
-        mPlanActionFragment = PlanActionFragment.newInstance(survey.getId_survey());
+        mObservationsFragment = ObservationsFragment.newInstance(survey.getEventUid());
 
-        replaceFragment(R.id.dashboard_completed_container, mPlanActionFragment);
+        replaceFragment(R.id.dashboard_completed_container, mObservationsFragment);
 
         UpdateFiltersBySurvey(survey);
     }
@@ -158,7 +158,7 @@ public class ImproveModuleController extends ModuleController {
             if(feedbackFragment.getView()!=null){
                 feedbackFragment.getView().setVisibility(View.GONE);
             }
-        }else if(fragment instanceof PlanActionFragment){
+        }else if(fragment instanceof ObservationsFragment){
             if (feedbackFragment != null)
                 replaceFragment(R.id.dashboard_completed_container, feedbackFragment);
             else
