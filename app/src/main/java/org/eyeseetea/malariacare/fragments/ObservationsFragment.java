@@ -25,11 +25,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.res.ResourcesCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -413,7 +411,6 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
     @Override
     public void updateStatusView(ObservationStatus status) {
         PlanActionStyleStrategy.fabIcons(mFabComplete, status);
-
     }
 
     @Override

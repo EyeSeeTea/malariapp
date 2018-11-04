@@ -11,7 +11,7 @@ public class PlanActionStyleStrategy {
     public static void fabIcons(FloatingActionButton fabComplete, ObservationStatus status) {
         if (status.equals(ObservationStatus.IN_PROGRESS)) {
             fabComplete.setImageResource(R.drawable.ic_action_uncheck);
-        } else if (status == ObservationStatus.SENT) {
+        } else if (status.equals(ObservationStatus.SENT)) {
             fabComplete.setImageResource(R.drawable.ic_double_check);
         } else {
             fabComplete.setImageResource(R.drawable.ic_action_check);

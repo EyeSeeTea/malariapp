@@ -24,13 +24,13 @@ import static org.eyeseetea.malariacare.data.database.AppDatabase.compositeScore
 import static org.eyeseetea.malariacare.data.database.AppDatabase.compositeScoreTwoAlias;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.compositeScoreTwoName;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.headerAlias;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.headerName;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.programAlias;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.programName;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.questionAlias;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.questionName;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.tabAlias;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.tabName;
-import static org.eyeseetea.malariacare.data.database.AppDatabase.headerName;
 
 import android.util.Log;
 
@@ -43,8 +43,6 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.data.database.AppDatabase;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.VisitableToSDK;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -54,7 +52,7 @@ import java.util.List;
 import java.util.Set;
 
 @Table(database = AppDatabase.class, name = "CompositeScore")
-public class CompositeScoreDB extends BaseModel implements VisitableToSDK {
+public class CompositeScoreDB extends BaseModel {
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -276,11 +274,6 @@ public class CompositeScoreDB extends BaseModel implements VisitableToSDK {
 
     public boolean hasChildren(){
         return !getCompositeScoreChildren().isEmpty();
-    }
-
-    @Override
-    public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) {
-        IConvertToSDKVisitor.visit(this);
     }
 
     /**

@@ -2,6 +2,7 @@ package org.eyeseetea.malariacare.data.database.mapper;
 
 import org.eyeseetea.malariacare.data.database.model.OptionDB;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitProgramRelationDB;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.QuestionDB;
 import org.eyeseetea.malariacare.data.database.model.ScoreDB;
@@ -26,6 +27,8 @@ public class SurveyMapper {
     private Map<Long, ProgramDB> programsDBMap;
     private Map<Long, UserDB> usersDBMap;
     private Map<Long, ScoreDB> scoreDBMap;
+    private Map<String, OrgUnitProgramRelationDB> orgUnitProgramRelationsMap;
+
 
     public SurveyMapper(
             List<OrgUnitDB> orgUnitsDB,
@@ -33,9 +36,10 @@ public class SurveyMapper {
             List<QuestionDB> questionsDB,
             List<OptionDB> optionsDB,
             List<UserDB> usersDB,
-            List<ScoreDB> scores) {
+            List<ScoreDB> scores,
+            List<OrgUnitProgramRelationDB> orgUnitProgramRelationsDB) {
 
-        createMaps(orgUnitsDB, programsDB, questionsDB, optionsDB, usersDB, scores);
+        createMaps(orgUnitsDB, programsDB, questionsDB, optionsDB, usersDB, scores,orgUnitProgramRelationsDB);
     }
 
     public List<Survey> mapSurveys(List<SurveyDB> surveyDBS) {
@@ -61,7 +65,6 @@ public class SurveyMapper {
         String eventUid = surveyDB.getEventUid();
         String orgUnitUid = orgUnitsDBMap.get(surveyDB.getId_org_unit_fk()).getUid();
         String programUid = programsDBMap.get(surveyDB.getId_program_fk()).getUid();
-
         String userUid = null;
 
         if (usersDBMap.containsKey(surveyDB.getId_user_fk()))
@@ -89,9 +92,18 @@ public class SurveyMapper {
             }
         }
 
+        OrgUnitProgramRelationDB orgUnitProgramRelationDB =
+                orgUnitProgramRelationsMap.get(surveyDB.getId_org_unit_fk() + "_" +
+                surveyDB.getId_program_fk());
+
+        int productivity = Survey.DEFAULT_PRODUCTIVITY;
+
+        if (orgUnitProgramRelationDB != null)
+            productivity = orgUnitProgramRelationDB.getProductivity();
+
         Survey survey = Survey.createStoredSurvey(SurveyStatus.get(surveyDB.getStatus()),
                 eventUid, programUid, orgUnitUid, userUid, creationDate, uploadDate, scheduledDate,
-                completionDate, values, score);
+                completionDate, values, score, productivity);
 
         return survey;
 
@@ -131,7 +143,8 @@ public class SurveyMapper {
     private void createMaps(List<OrgUnitDB> orgUnitsDB, List<ProgramDB> programsDB,
             List<QuestionDB> questionsDB, List<OptionDB> optionsDB, List<UserDB
             > usersDB,
-            List<ScoreDB> scoresDB) {
+            List<ScoreDB> scoresDB,
+            List<OrgUnitProgramRelationDB> orgUnitProgramRelationsDB) {
         orgUnitsDBMap = new HashMap<>();
         for (OrgUnitDB orgUnitDB : orgUnitsDB) {
             orgUnitsDBMap.put(orgUnitDB.getId_org_unit(), orgUnitDB);
@@ -160,6 +173,12 @@ public class SurveyMapper {
         scoreDBMap = new HashMap<>();
         for (ScoreDB scoreDB : scoresDB) {
             scoreDBMap.put(scoreDB.getId_survey_fk(), scoreDB);
+        }
+
+        orgUnitProgramRelationsMap = new HashMap<>();
+        for (OrgUnitProgramRelationDB orgUnitProgramRelationDB : orgUnitProgramRelationsDB) {
+            orgUnitProgramRelationsMap.put(orgUnitProgramRelationDB.getId_org_unit_fk() + "_" +
+                    orgUnitProgramRelationDB.getProgram(), orgUnitProgramRelationDB);
         }
     }
 }

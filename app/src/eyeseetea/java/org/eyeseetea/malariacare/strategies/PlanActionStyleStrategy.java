@@ -11,12 +11,13 @@ import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
 import org.eyeseetea.sdk.presentation.views.DoubleRectChart;
 
 public class PlanActionStyleStrategy {
+
     public static void fabIcons(FloatingActionButton fabComplete, ObservationStatus status) {
         if (status.equals(ObservationStatus.IN_PROGRESS)) {
             fabComplete.setImageResource(R.drawable.vct_action_uncheck);
-        } else if (status == ObservationStatus.SENT) {
+        } else if (status.equals(ObservationStatus.SENT)) {
             fabComplete.setImageResource(R.drawable.vct_double_check);
-        }else {
+        } else {
             fabComplete.setImageResource(R.drawable.vct_action_check);
         }
     }

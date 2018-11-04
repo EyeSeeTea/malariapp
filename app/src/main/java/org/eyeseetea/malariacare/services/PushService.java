@@ -22,8 +22,6 @@ package org.eyeseetea.malariacare.services;
 
 import android.app.IntentService;
 import android.content.Intent;
-
-import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.usecase.PushUseCase;
 import org.eyeseetea.malariacare.factories.SyncFactory;
 import org.eyeseetea.malariacare.strategies.PushServiceStrategy;
@@ -42,7 +40,6 @@ public class PushService extends IntentService {
 
     public static final String TAG = ".PushServiceB&D";
 
-    IPushController pushController;
     PushUseCase pushUseCase;
 
     PushServiceStrategy mPushServiceStrategy = new PushServiceStrategy(this);

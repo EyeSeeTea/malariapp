@@ -19,22 +19,12 @@
 
 package org.eyeseetea.malariacare.data.database.model;
 
-import static org.eyeseetea.malariacare.data.database.AppDatabase.matchAlias;
-import static org.eyeseetea.malariacare.data.database.AppDatabase.matchName;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.orgUnitAlias;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.orgUnitName;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.programAlias;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.programName;
-import static org.eyeseetea.malariacare.data.database.AppDatabase.questionAlias;
-import static org.eyeseetea.malariacare.data.database.AppDatabase.questionName;
-import static org.eyeseetea.malariacare.data.database.AppDatabase.questionOptionAlias;
-import static org.eyeseetea.malariacare.data.database.AppDatabase.questionOptionName;
-import static org.eyeseetea.malariacare.data.database.AppDatabase.questionRelationAlias;
-import static org.eyeseetea.malariacare.data.database.AppDatabase.questionRelationName;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.surveyAlias;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.surveyName;
-import static org.eyeseetea.malariacare.data.database.AppDatabase.valueAlias;
-import static org.eyeseetea.malariacare.data.database.AppDatabase.valueName;
 
 import android.util.Log;
 
@@ -53,14 +43,7 @@ import com.raizlabs.android.dbflow.sql.language.Where;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.data.database.AppDatabase;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.VisitableToSDK;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
-import org.eyeseetea.malariacare.data.sync.IData;
-import org.eyeseetea.malariacare.domain.entity.Score;
-import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
-import org.eyeseetea.malariacare.domain.entity.SurveyStatus;
-import org.eyeseetea.malariacare.domain.exception.ConversionException;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
@@ -71,7 +54,7 @@ import java.util.Date;
 import java.util.List;
 
 @Table(database = AppDatabase.class, name = "Survey")
-public class SurveyDB extends BaseModel implements VisitableToSDK, IData {
+public class SurveyDB extends BaseModel {
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -531,10 +514,6 @@ public class SurveyDB extends BaseModel implements VisitableToSDK, IData {
                 .queryList();
     }
 
-    @Override
-    public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) throws ConversionException {
-        IConvertToSDKVisitor.visit(this);
-    }
     /* Returns the last surveys (by date) with status Completed or sent
     * @return
          */
@@ -836,46 +815,6 @@ public class SurveyDB extends BaseModel implements VisitableToSDK, IData {
         stringBuilder.append(", ");
         stringBuilder.append(this.getProgram().getName());
         return stringBuilder.toString();
-    }
-
-    @Override
-    public Long getSurveyId() {
-        return getId_survey();
-    }
-
-    @Override
-    public void changeStatusToSending() {
-        setStatus(SurveyStatus.SENDING.getCode());
-        save();
-    }
-
-    @Override
-    public void changeStatusToQuarantine() {
-        setStatus(SurveyStatus.QUARANTINE.getCode());
-        save();
-    }
-
-    @Override
-    public void changeStatusToConflict() {
-        setStatus(SurveyStatus.CONFLICT.getCode());
-        save();
-    }
-
-    @Override
-    public void changeStatusToSent() {
-        setStatus(SurveyStatus.SENT.getCode());
-        saveMainScore();
-        save();
-    }
-
-    @Override
-    public void saveConflict(String questionUid) {
-        for (ValueDB value : getValues()) {
-            if (value.getQuestion().getUid().equals(questionUid)) {
-                value.setConflict(true);
-                value.save();
-            }
-        }
     }
 
     @Override

@@ -6,6 +6,7 @@ import org.eyeseetea.malariacare.domain.usecase.pull.SurveyFilter;
 import java.util.List;
 
 public interface ISurveyDataSource{
+    //TODO:Review with next issues to merge
     List<Survey> getSurveys(SurveyFilter filters) throws Exception;
     void save(List<Survey> surveys) throws Exception;
 }

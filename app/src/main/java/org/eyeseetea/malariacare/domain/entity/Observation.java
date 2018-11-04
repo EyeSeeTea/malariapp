@@ -3,9 +3,10 @@ package org.eyeseetea.malariacare.domain.entity;
 import org.eyeseetea.malariacare.domain.utils.RequiredChecker;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-public class Observation {
+public class Observation implements IData {
     private String surveyUid;
     private ObservationStatus status;
     private List<ObservationValue> values;
@@ -39,6 +40,7 @@ public class Observation {
             values.add(values.indexOf(observationValue),observationValue);
     }
 
+    @Override
     public String getSurveyUid() {
         return surveyUid;
     }
@@ -49,6 +51,45 @@ public class Observation {
 
     public List<ObservationValue> getValues() {
         return new ArrayList<>(values);
+    }
+
+    public void changeStatus(ObservationStatus status) {
+        this.status = status;
+    }
+
+    @Override
+    public void markAsSending() {
+        changeStatus(ObservationStatus.SENDING);
+    }
+
+    @Override
+    public void markAsErrorConversionSync() {
+        changeStatus(ObservationStatus.ERRORCONVERSIONSYNC);
+    }
+
+    @Override
+    public void markAsRetrySync() {
+        changeStatus(ObservationStatus.COMPLETED);
+    }
+
+    @Override
+    public void markAsSent() {
+        changeStatus(ObservationStatus.SENT);
+    }
+
+    @Override
+    public void markAsConflict() {
+        changeStatus(ObservationStatus.CONFLICT);
+    }
+
+    @Override
+    public void markValueAsConflict(String uid) {
+        //for now observationValue does not save conflict in values
+    }
+
+    @Override
+    public void assignUploadDate(Date date) {
+        //for now observation does not update UploadDate
     }
 
     @Override
@@ -79,4 +120,7 @@ public class Observation {
                 ", observationValues=" + values +
                 '}';
     }
+
+
+
 }
