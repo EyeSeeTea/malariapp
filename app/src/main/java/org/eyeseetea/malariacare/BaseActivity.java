@@ -46,6 +46,10 @@ import org.eyeseetea.malariacare.data.database.utils.LanguageContextWrapper;
 import org.eyeseetea.malariacare.data.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.repositories.AuthenticationManager;
+import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
+import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
+import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
+import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IAuthenticationManager;
 import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
 import org.eyeseetea.malariacare.domain.entity.SurveyStatus;
@@ -53,8 +57,11 @@ import org.eyeseetea.malariacare.domain.usecase.ImportUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.domain.usecase.MarkAsRetryAllSendingDataUseCase;
 import org.eyeseetea.malariacare.factories.SyncFactory;
+import org.eyeseetea.malariacare.factories.AuthenticationFactory;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.listeners.SurveyLocationListener;
+import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
+import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.utils.AUtils;
 
@@ -83,8 +90,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         initView(savedInstanceState);
 
-        mUserAccountRepository = new AuthenticationManager(this);
-        mLogoutUseCase = new LogoutUseCase(mUserAccountRepository);
+        mLogoutUseCase = new AuthenticationFactory().getLogoutUseCase(this);
         checkQuarantineData();
         alarmPush = new AlarmPushReceiver();
         alarmPush.setPushAlarm(this);
@@ -223,7 +229,10 @@ public abstract class BaseActivity extends AppCompatActivity {
                     Uri uri = data.getData();
                     Log.d(TAG, "File Uri: " + uri.toString());
                     ImportController importController = new ImportController(this);
-                    ImportUseCase importUseCase = new ImportUseCase(uri, importController);
+                    IMainExecutor mainExecutor = new UIThreadExecutor();
+                    IAsyncExecutor asyncExecutor = new AsyncExecutor();
+                    ImportUseCase importUseCase = new ImportUseCase(uri, importController,
+                            asyncExecutor, mainExecutor);
                     importUseCase.execute(new ImportUseCase.Callback() {
                         @Override
                         public void onComplete() {

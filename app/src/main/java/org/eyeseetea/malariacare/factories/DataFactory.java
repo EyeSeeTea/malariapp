@@ -5,12 +5,14 @@ import android.support.annotation.NonNull;
 
 import org.eyeseetea.malariacare.data.boundaries.IDataLocalDataSource;
 import org.eyeseetea.malariacare.data.boundaries.IDataRemoteDataSource;
+import org.eyeseetea.malariacare.data.database.datasources.CompositeScoreDataSource;
 import org.eyeseetea.malariacare.data.database.datasources.ObservationLocalDataSource;
 import org.eyeseetea.malariacare.data.database.datasources.QuestionLocalDataSource;
 import org.eyeseetea.malariacare.data.database.datasources.SurveyLocalDataSource;
 import org.eyeseetea.malariacare.data.network.ConnectivityManager;
 import org.eyeseetea.malariacare.data.remote.sdk.data.ObservationSDKDhisDataSource;
 import org.eyeseetea.malariacare.data.remote.sdk.data.SurveySDKDhisDataSource;
+import org.eyeseetea.malariacare.data.repositories.ICompositeScoreRepository;
 import org.eyeseetea.malariacare.data.repositories.ObservationRepository;
 import org.eyeseetea.malariacare.data.repositories.OptionRepository;
 import org.eyeseetea.malariacare.data.repositories.OrgUnitRepository;
@@ -53,10 +55,12 @@ public class DataFactory extends AFactory {
         IOptionRepository optionRepository = new OptionRepository();
         IQuestionRepository questionRepository = new QuestionLocalDataSource();
         IOrgUnitRepository orgUnitRepository = new OrgUnitRepository();
+        ICompositeScoreRepository compositeScoreRepository = new CompositeScoreDataSource();
         IConnectivityManager connectivityManager = new ConnectivityManager();
 
         return new SurveySDKDhisDataSource(context, serverMetadataRepository,
-                questionRepository, optionRepository, orgUnitRepository, connectivityManager);
+                questionRepository, optionRepository, compositeScoreRepository, orgUnitRepository,
+                connectivityManager);
     }
 
     @NonNull

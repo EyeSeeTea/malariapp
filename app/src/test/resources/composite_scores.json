@@ -1,0 +1,2254 @@
+[
+  {
+    "children": [
+      {
+        "children": [
+          {
+            "children": [],
+            "hierarchicalCode": "1.1",
+            "label": "Pre-provision Counseling: OCs",
+            "orderPos": 2,
+            "parentUid": "lLAekr1vmO2",
+            "uid": "WsVtUUYOigY"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "1.2",
+            "label": "Assesses Eligibility for OCs",
+            "orderPos": 3,
+            "parentUid": "lLAekr1vmO2",
+            "uid": "UjVo5dwjTLd"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "1.3",
+            "label": "Provision of OCs",
+            "orderPos": 4,
+            "parentUid": "lLAekr1vmO2",
+            "uid": "BFDA0u1EHxx"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "1.4",
+            "label": "Infection Prevention: OCs",
+            "orderPos": 5,
+            "parentUid": "lLAekr1vmO2",
+            "uid": "j0Xcf7FsqAK"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "1.5",
+            "label": "Key Indicators of Quality: OCs",
+            "orderPos": 6,
+            "parentUid": "lLAekr1vmO2",
+            "uid": "xph5v9aJR4s"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "1.6",
+            "label": "Follow-up visit: OC",
+            "orderPos": 7,
+            "parentUid": "lLAekr1vmO2",
+            "uid": "KA6X3LAxWuz"
+          }
+        ],
+        "hierarchicalCode": "1",
+        "label": "Oral Contraceptives",
+        "orderPos": 1,
+        "parentUid": "pxHcA2H4CU3",
+        "uid": "lLAekr1vmO2"
+      },
+      {
+        "children": [
+          {
+            "children": [],
+            "hierarchicalCode": "2.1",
+            "label": "Pre-provision counseling: Injectables",
+            "orderPos": 9,
+            "parentUid": "u6wL2Ugs51C",
+            "uid": "pQ1rRGhMR8X"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "2.2",
+            "label": "Assesses Eligibility for Injectables",
+            "orderPos": 10,
+            "parentUid": "u6wL2Ugs51C",
+            "uid": "uqaxzQmpzGQ"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "2.3",
+            "label": "Preparation",
+            "orderPos": 11,
+            "parentUid": "u6wL2Ugs51C",
+            "uid": "RLdAyMElzpH"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "2.4",
+            "label": "Injection procedure - DMPA and NET-EN",
+            "orderPos": 12,
+            "parentUid": "u6wL2Ugs51C",
+            "uid": "Iy2pHvXyD70"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "2.5",
+            "label": "Infection Prevention: Injectables",
+            "orderPos": 13,
+            "parentUid": "u6wL2Ugs51C",
+            "uid": "qNpIbeeuUdb"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "2.6",
+            "label": "Key Indicators of Quality: Injectables",
+            "orderPos": 14,
+            "parentUid": "u6wL2Ugs51C",
+            "uid": "EtKvm8y5SFj"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "2.7",
+            "label": "Follow-up visit: Injectables",
+            "orderPos": 15,
+            "parentUid": "u6wL2Ugs51C",
+            "uid": "tSIOX4Vkavf"
+          }
+        ],
+        "hierarchicalCode": "2",
+        "label": "Injectable Contraceptives",
+        "orderPos": 8,
+        "parentUid": "pxHcA2H4CU3",
+        "uid": "u6wL2Ugs51C"
+      }
+    ],
+    "hierarchicalCode": "0",
+    "label": "Overall QA Score",
+    "orderPos": 0,
+    "uid": "pxHcA2H4CU3"
+  },
+  {
+    "children": [
+      {
+        "children": [
+          {
+            "children": [],
+            "hierarchicalCode": "1.1",
+            "label": "Introduction",
+            "orderPos": 2,
+            "parentUid": "CxvkQFC6y2p",
+            "uid": "cBPEWA9TD73"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "1.2",
+            "label": "Inquiry",
+            "orderPos": 3,
+            "parentUid": "CxvkQFC6y2p",
+            "uid": "PeYx9ldD1AW"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "1.3",
+            "label": "Physical Examination",
+            "orderPos": 4,
+            "parentUid": "CxvkQFC6y2p",
+            "uid": "CeKCuu0UWw1"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "1.4",
+            "label": "RDT Procedure",
+            "orderPos": 5,
+            "parentUid": "CxvkQFC6y2p",
+            "uid": "KExO9XjsBYQ"
+          }
+        ],
+        "hierarchicalCode": "1",
+        "label": "Inquiry and Physical Examination",
+        "orderPos": 1,
+        "parentUid": "Zsu8EY6iK4L",
+        "uid": "CxvkQFC6y2p"
+      },
+      {
+        "children": [
+          {
+            "children": [],
+            "hierarchicalCode": "2.1",
+            "label": "Diagnosis and Treatment",
+            "orderPos": 7,
+            "parentUid": "SZAbhkFmr0I",
+            "uid": "azxeOoKqrWj"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "2.2",
+            "label": "Counseling",
+            "orderPos": 8,
+            "parentUid": "SZAbhkFmr0I",
+            "uid": "wVSELdBDbEH"
+          }
+        ],
+        "hierarchicalCode": "2",
+        "label": "Diagnosis, Treatment and Counseling",
+        "orderPos": 6,
+        "parentUid": "Zsu8EY6iK4L",
+        "uid": "SZAbhkFmr0I"
+      },
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [],
+                "hierarchicalCode": "3.1.1",
+                "label": "Workplace",
+                "orderPos": 11,
+                "parentUid": "LlwcnM8BZzh",
+                "uid": "Q0kppcxSsP1"
+              },
+              {
+                "children": [],
+                "hierarchicalCode": "3.1.2",
+                "label": "Equipment, Supplies and Consumables",
+                "orderPos": 12,
+                "parentUid": "LlwcnM8BZzh",
+                "uid": "UCajGNSOUlG"
+              },
+              {
+                "children": [],
+                "hierarchicalCode": "3.1.3",
+                "label": "Documentation and Reporting",
+                "orderPos": 13,
+                "parentUid": "LlwcnM8BZzh",
+                "uid": "CD92l5DyIPH"
+              }
+            ],
+            "hierarchicalCode": "3.1",
+            "label": "RDT Work Environment",
+            "orderPos": 10,
+            "parentUid": "lMxYtxadn6Q",
+            "uid": "LlwcnM8BZzh"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "3.2",
+            "label": "IMCI Work Environment",
+            "orderPos": 14,
+            "parentUid": "lMxYtxadn6Q",
+            "uid": "bu5fp12SQ6R"
+          }
+        ],
+        "hierarchicalCode": "3",
+        "label": "Work Environment",
+        "orderPos": 9,
+        "parentUid": "Zsu8EY6iK4L",
+        "uid": "lMxYtxadn6Q"
+      }
+    ],
+    "hierarchicalCode": "0",
+    "label": "Overall Score",
+    "orderPos": 0,
+    "uid": "Zsu8EY6iK4L"
+  },
+  {
+    "children": [
+      {
+        "children": [
+          {
+            "children": [],
+            "hierarchicalCode": "1.1",
+            "label": "Equipment and Supplies",
+            "orderPos": 2,
+            "parentUid": "gvwBEC2cLHX",
+            "uid": "fkem0mwW7mt"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "1.2",
+            "label": "Physical Environment",
+            "orderPos": 3,
+            "parentUid": "gvwBEC2cLHX",
+            "uid": "V3o46squpEd"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "1.3",
+            "label": "Provider Evaluation - Pre-screening",
+            "orderPos": 4,
+            "parentUid": "gvwBEC2cLHX",
+            "uid": "Ns6E6nWY1qg"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "1.4",
+            "label": "Provider Evaluation - Screening",
+            "orderPos": 5,
+            "parentUid": "gvwBEC2cLHX",
+            "uid": "r9sO3mlavJg"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "1.5",
+            "label": "Provider Evaluation - Post-screening",
+            "orderPos": 6,
+            "parentUid": "gvwBEC2cLHX",
+            "uid": "QkLuyvNCLLr"
+          }
+        ],
+        "hierarchicalCode": "1",
+        "label": "Screening (VIA)",
+        "orderPos": 1,
+        "parentUid": "FOdFhyzbAS1",
+        "uid": "gvwBEC2cLHX"
+      },
+      {
+        "children": [
+          {
+            "children": [],
+            "hierarchicalCode": "2.1",
+            "label": "Equipment and Supplies",
+            "orderPos": 8,
+            "parentUid": "lkbZXD7eCYm",
+            "uid": "joEfNR93LB4"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "2.2",
+            "label": "Physical Environment",
+            "orderPos": 9,
+            "parentUid": "lkbZXD7eCYm",
+            "uid": "WxFEth60cDA"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "2.3",
+            "label": "Provider Evaluation-Prescreening for cryotherapy",
+            "orderPos": 10,
+            "parentUid": "lkbZXD7eCYm",
+            "uid": "g7nfWdAAgPi"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "2.4",
+            "label": "Provider Evaluation- Visual Inspection to Identify the Lesion",
+            "orderPos": 11,
+            "parentUid": "lkbZXD7eCYm",
+            "uid": "c4xPNz8tJfH"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "2.5",
+            "label": "Cryotherapy Procedure",
+            "orderPos": 12,
+            "parentUid": "lkbZXD7eCYm",
+            "uid": "nB4debCUqMZ"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "2.6",
+            "label": "Post Cryotherapy Procedures",
+            "orderPos": 13,
+            "parentUid": "lkbZXD7eCYm",
+            "uid": "ubLCx7SU9us"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "2.7",
+            "label": "Provider Evaluation-Post-cryotherapy Procedures",
+            "orderPos": 14,
+            "parentUid": "lkbZXD7eCYm",
+            "uid": "K55EoFnwDEI"
+          }
+        ],
+        "hierarchicalCode": "2",
+        "label": "Cryotherapy",
+        "orderPos": 7,
+        "parentUid": "FOdFhyzbAS1",
+        "uid": "lkbZXD7eCYm"
+      }
+    ],
+    "hierarchicalCode": "0",
+    "label": "Overall QA Score",
+    "orderPos": 0,
+    "uid": "FOdFhyzbAS1"
+  },
+  {
+    "children": [
+      {
+        "children": [],
+        "hierarchicalCode": "1",
+        "label": "Licenses",
+        "orderPos": 1,
+        "parentUid": "gDRLgX8HMOB",
+        "uid": "eQTxEUZN5IB"
+      },
+      {
+        "children": [],
+        "hierarchicalCode": "2",
+        "label": "General Infrastructure and Equipment",
+        "orderPos": 2,
+        "parentUid": "gDRLgX8HMOB",
+        "uid": "oJ33KOHlHeN"
+      },
+      {
+        "children": [],
+        "hierarchicalCode": "3",
+        "label": "Service delivery guidelines",
+        "orderPos": 3,
+        "parentUid": "gDRLgX8HMOB",
+        "uid": "FESHHiFlwOu"
+      },
+      {
+        "children": [],
+        "hierarchicalCode": "4",
+        "label": "Commodities",
+        "orderPos": 4,
+        "parentUid": "gDRLgX8HMOB",
+        "uid": "dTBJ23kYBRh"
+      },
+      {
+        "children": [],
+        "hierarchicalCode": "5",
+        "label": "Documentation",
+        "orderPos": 5,
+        "parentUid": "gDRLgX8HMOB",
+        "uid": "o6r0VGon4BK"
+      }
+    ],
+    "hierarchicalCode": "0",
+    "label": "Work Environment",
+    "orderPos": 0,
+    "uid": "gDRLgX8HMOB"
+  },
+  {
+    "children": [
+      {
+        "children": [
+          {
+            "children": [],
+            "hierarchicalCode": "1.1",
+            "label": "IUD Pre-Insertion Screening and Counseling",
+            "orderPos": 2,
+            "parentUid": "XeN6pcf7zoD",
+            "uid": "DEwxRb68xnj"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "1.2",
+            "label": "IUD Pre-insertion (Clinical)",
+            "orderPos": 3,
+            "parentUid": "XeN6pcf7zoD",
+            "uid": "b9L1b4TCBTY"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "1.3",
+            "label": "IUD Insertion Procedure",
+            "orderPos": 4,
+            "parentUid": "XeN6pcf7zoD",
+            "uid": "tzwQlZRnlox"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "1.4",
+            "label": "IUD Post-Insertion",
+            "orderPos": 5,
+            "parentUid": "XeN6pcf7zoD",
+            "uid": "f4FGpiYbGAN"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "1.5",
+            "label": "Infection Prevention: IUD Insertion",
+            "orderPos": 6,
+            "parentUid": "XeN6pcf7zoD",
+            "uid": "fMQGk0NzqPS"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "1.6",
+            "label": "Key Indicators of Quality: IUD Insertion",
+            "orderPos": 7,
+            "parentUid": "XeN6pcf7zoD",
+            "uid": "eQuQ0hi6GH7"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "1.7",
+            "label": "Videos: IUD Insertion",
+            "orderPos": 8,
+            "parentUid": "XeN6pcf7zoD",
+            "uid": "iDS3HlsoFV1"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "1.8",
+            "label": "IUD Follow-up Visit",
+            "orderPos": 9,
+            "parentUid": "XeN6pcf7zoD",
+            "uid": "hFq8qgeBoTt"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "1.9",
+            "label": "Videos: IUD Follow-up visit",
+            "orderPos": 10,
+            "parentUid": "XeN6pcf7zoD",
+            "uid": "n2GPjX9xZsx"
+          }
+        ],
+        "hierarchicalCode": "1",
+        "label": "IUD Insertion",
+        "orderPos": 1,
+        "parentUid": "O4RfbCjbs1H",
+        "uid": "XeN6pcf7zoD"
+      },
+      {
+        "children": [
+          {
+            "children": [],
+            "hierarchicalCode": "2.1",
+            "label": "IUD Pre-Removal Counseling",
+            "orderPos": 12,
+            "parentUid": "bcYFnKiXDID",
+            "uid": "GACHWLqZ2Zc"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "2.2",
+            "label": "Removal: IUD",
+            "orderPos": 13,
+            "parentUid": "bcYFnKiXDID",
+            "uid": "TFe8vnkuPwZ"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "2.3",
+            "label": "Post-removal: IUD",
+            "orderPos": 14,
+            "parentUid": "bcYFnKiXDID",
+            "uid": "aDzmgHLpIbu"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "2.4",
+            "label": "Infection Prevention: IUD Removal",
+            "orderPos": 15,
+            "parentUid": "bcYFnKiXDID",
+            "uid": "Hy5ZFy8NrzM"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "2.5",
+            "label": "Key Indicators of Quality: IUDs",
+            "orderPos": 16,
+            "parentUid": "bcYFnKiXDID",
+            "uid": "MQgaaiQzXHG"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "2.6",
+            "label": "Videos: IUD Removal",
+            "orderPos": 17,
+            "parentUid": "bcYFnKiXDID",
+            "uid": "eMihQy21Tq6"
+          }
+        ],
+        "hierarchicalCode": "2",
+        "label": "IUD Removal",
+        "orderPos": 11,
+        "parentUid": "O4RfbCjbs1H",
+        "uid": "bcYFnKiXDID"
+      },
+      {
+        "children": [
+          {
+            "children": [],
+            "hierarchicalCode": "3.1",
+            "label": "Pre-insertion Counseling and Screening: Implants",
+            "orderPos": 19,
+            "parentUid": "nOd5ewwi8j9",
+            "uid": "edTTlJUgiJu"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "3.2",
+            "label": "Pre-insertion preparation: Implants",
+            "orderPos": 20,
+            "parentUid": "nOd5ewwi8j9",
+            "uid": "txRRHV1sVJd"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "3.3",
+            "label": "Insertion: Jadelle",
+            "orderPos": 21,
+            "parentUid": "nOd5ewwi8j9",
+            "uid": "jPr8VWVcu1M"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "3.4",
+            "label": "Insertion: Implanon NXT",
+            "orderPos": 22,
+            "parentUid": "nOd5ewwi8j9",
+            "uid": "xLorFqptbPK"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "3.5",
+            "label": "Post-insertion: Implants",
+            "orderPos": 23,
+            "parentUid": "nOd5ewwi8j9",
+            "uid": "BjVsWlE8uXn"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "3.6",
+            "label": "Infection Prevention: Implants",
+            "orderPos": 24,
+            "parentUid": "nOd5ewwi8j9",
+            "uid": "MLgS9nA3MAA"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "3.7",
+            "label": "Key Indicators of Quality: Implants",
+            "orderPos": 25,
+            "parentUid": "nOd5ewwi8j9",
+            "uid": "IoEF4mQiMqn"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "3.8",
+            "label": "Videos: Implant Insertion",
+            "orderPos": 26,
+            "parentUid": "nOd5ewwi8j9",
+            "uid": "VaOMuo09yAb"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "3.9",
+            "label": "Implant Follow-up visit",
+            "orderPos": 27,
+            "parentUid": "nOd5ewwi8j9",
+            "uid": "Pw6kMrrI9r0"
+          }
+        ],
+        "hierarchicalCode": "3",
+        "label": "Implant Insertion",
+        "orderPos": 18,
+        "parentUid": "O4RfbCjbs1H",
+        "uid": "nOd5ewwi8j9"
+      },
+      {
+        "children": [
+          {
+            "children": [],
+            "hierarchicalCode": "4.1",
+            "label": "Pre-removal Counseling: Implants",
+            "orderPos": 29,
+            "parentUid": "FcQkkhilSTl",
+            "uid": "FKImV91STUR"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "4.2",
+            "label": "Pre-removal procedures: Implants",
+            "orderPos": 30,
+            "parentUid": "FcQkkhilSTl",
+            "uid": "A8oVu4wGlxg"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "4.3",
+            "label": "Removal: \u0027U\u0027 Technique",
+            "orderPos": 31,
+            "parentUid": "FcQkkhilSTl",
+            "uid": "wCYr92VMRKY"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "4.4",
+            "label": "Removal: Forceps Technique",
+            "orderPos": 32,
+            "parentUid": "FcQkkhilSTl",
+            "uid": "WB2Kjx36Et6"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "4.5",
+            "label": "Post-removal: Implants",
+            "orderPos": 33,
+            "parentUid": "FcQkkhilSTl",
+            "uid": "ORT73P1rwBh"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "4.6",
+            "label": "Infection Prevention: Implants",
+            "orderPos": 34,
+            "parentUid": "FcQkkhilSTl",
+            "uid": "NccQ53mGwuj"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "4.7",
+            "label": "Key Indicators of Quality: Implants",
+            "orderPos": 35,
+            "parentUid": "FcQkkhilSTl",
+            "uid": "OIpXWipHniY"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "4.8",
+            "label": "Videos: Implant Removal",
+            "orderPos": 36,
+            "parentUid": "FcQkkhilSTl",
+            "uid": "wAuPGUCPSmA"
+          }
+        ],
+        "hierarchicalCode": "4",
+        "label": "Implant Removal",
+        "orderPos": 28,
+        "parentUid": "O4RfbCjbs1H",
+        "uid": "FcQkkhilSTl"
+      },
+      {
+        "children": [
+          {
+            "children": [],
+            "hierarchicalCode": "5.1",
+            "label": "Pre-insertion Counseling and Screening: Forceps",
+            "orderPos": 38,
+            "parentUid": "ooi7CbAIvgE",
+            "uid": "rJHpvAfyUTB"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "5.2",
+            "label": "Pre-insertion Tasks (Clinical)",
+            "orderPos": 39,
+            "parentUid": "ooi7CbAIvgE",
+            "uid": "hzsVum9p5ew"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "5.3",
+            "label": "Post-Partum Insertion (Postplacental or Immediate Postpartum)",
+            "orderPos": 40,
+            "parentUid": "ooi7CbAIvgE",
+            "uid": "FiaXexhwqHb"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "5.4",
+            "label": "Post-Insertion (Forceps)",
+            "orderPos": 41,
+            "parentUid": "ooi7CbAIvgE",
+            "uid": "CQrqDM1tj0V"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "5.5",
+            "label": "Videos: PPIUD Forceps Insertion",
+            "orderPos": 42,
+            "parentUid": "ooi7CbAIvgE",
+            "uid": "JdFXJ7mYdZu"
+          }
+        ],
+        "hierarchicalCode": "5",
+        "label": "PPIUD: Forceps Insertion",
+        "orderPos": 37,
+        "parentUid": "O4RfbCjbs1H",
+        "uid": "ooi7CbAIvgE"
+      },
+      {
+        "children": [
+          {
+            "children": [],
+            "hierarchicalCode": "6.1",
+            "label": "Pre-insertion Medical Assessment (PPIUD)",
+            "orderPos": 44,
+            "parentUid": "D4OyZ3xEMOp",
+            "uid": "zCJKOB0dDEq"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "6.2",
+            "label": "Pre-insertion Tasks (PPIUD)",
+            "orderPos": 45,
+            "parentUid": "D4OyZ3xEMOp",
+            "uid": "dkPzhOw4zER"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "6.3",
+            "label": "Pelvic Examination (PPIUD)",
+            "orderPos": 46,
+            "parentUid": "D4OyZ3xEMOp",
+            "uid": "Z1eqnE24A0y"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "6.4",
+            "label": "Insertion Tasks (PPIUD)",
+            "orderPos": 47,
+            "parentUid": "D4OyZ3xEMOp",
+            "uid": "eavtdBK8pNl"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "6.5",
+            "label": "Post-Insertion Tasks (PPIUD)",
+            "orderPos": 48,
+            "parentUid": "D4OyZ3xEMOp",
+            "uid": "Jf2OxvJpvxX"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "6.6",
+            "label": "Infection Prevention (PPIUD)",
+            "orderPos": 49,
+            "parentUid": "D4OyZ3xEMOp",
+            "uid": "QZBXnYnJ3sR"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "6.7",
+            "label": "Key Indicators of Quality: PPIUD",
+            "orderPos": 50,
+            "parentUid": "D4OyZ3xEMOp",
+            "uid": "Bowh6eJLpq3"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "6.8",
+            "label": "Videos: PPIUD Dedicated Inserter",
+            "orderPos": 51,
+            "parentUid": "D4OyZ3xEMOp",
+            "uid": "HZtqA9tF2Lg"
+          }
+        ],
+        "hierarchicalCode": "6",
+        "label": "PPIUD: Dedicated Inserter",
+        "orderPos": 43,
+        "parentUid": "O4RfbCjbs1H",
+        "uid": "D4OyZ3xEMOp"
+      },
+      {
+        "children": [
+          {
+            "children": [],
+            "hierarchicalCode": "7.1",
+            "label": "Clinic Infrastructure (LARC)",
+            "orderPos": 53,
+            "parentUid": "mdePMcdcta0",
+            "uid": "jVcIMtZolVO"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "7.2",
+            "label": "Equipment and Supplies (LARC)",
+            "orderPos": 54,
+            "parentUid": "mdePMcdcta0",
+            "uid": "wGimJdT42jy"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "7.3",
+            "label": "IUDs (LARC)",
+            "orderPos": 55,
+            "parentUid": "mdePMcdcta0",
+            "uid": "xek9mGvS8ym"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "7.4",
+            "label": "Implants (LARC)",
+            "orderPos": 56,
+            "parentUid": "mdePMcdcta0",
+            "uid": "MZyfsXtVUVD"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "7.5",
+            "label": "Supplies needed for processing instruments to prevent infection",
+            "orderPos": 57,
+            "parentUid": "mdePMcdcta0",
+            "uid": "UpAfi1McMTC"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "7.6",
+            "label": "Record keeping",
+            "orderPos": 58,
+            "parentUid": "mdePMcdcta0",
+            "uid": "O0VrBh6g7V1"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "7.7",
+            "label": "Key Indicators of Quality: LARC",
+            "orderPos": 59,
+            "parentUid": "mdePMcdcta0",
+            "uid": "LflF9TmmEnC"
+          }
+        ],
+        "hierarchicalCode": "7",
+        "label": "Facility Checklist for LARC Service Delivery",
+        "orderPos": 52,
+        "parentUid": "O4RfbCjbs1H",
+        "uid": "mdePMcdcta0"
+      }
+    ],
+    "hierarchicalCode": "0",
+    "label": "Overall QA Score",
+    "orderPos": 0,
+    "uid": "O4RfbCjbs1H"
+  },
+  {
+    "children": [
+      {
+        "children": [],
+        "hierarchicalCode": "1",
+        "label": "Inquiry",
+        "orderPos": 1,
+        "parentUid": "BsWxpbUS6KU",
+        "uid": "HXyEsrHbWc4"
+      },
+      {
+        "children": [],
+        "hierarchicalCode": "2",
+        "label": "Examination",
+        "orderPos": 2,
+        "parentUid": "BsWxpbUS6KU",
+        "uid": "wPaOn5R3UDH"
+      },
+      {
+        "children": [],
+        "hierarchicalCode": "3",
+        "label": "Treatment",
+        "orderPos": 3,
+        "parentUid": "BsWxpbUS6KU",
+        "uid": "UyXsrTanB4m"
+      },
+      {
+        "children": [],
+        "hierarchicalCode": "4",
+        "label": "Counseling",
+        "orderPos": 4,
+        "parentUid": "BsWxpbUS6KU",
+        "uid": "GVyaI0WBYDK"
+      },
+      {
+        "children": [],
+        "hierarchicalCode": "5",
+        "label": "Work Environment",
+        "orderPos": 5,
+        "parentUid": "BsWxpbUS6KU",
+        "uid": "ipy2Tle6Yf5"
+      }
+    ],
+    "hierarchicalCode": "0",
+    "label": "Tuberculosis",
+    "orderPos": 0,
+    "uid": "BsWxpbUS6KU"
+  },
+  {
+    "children": [
+      {
+        "children": [
+          {
+            "children": [],
+            "hierarchicalCode": "1.1",
+            "label": "Preparation",
+            "orderPos": 2,
+            "parentUid": "E8BXsVJmqUr",
+            "uid": "ClU4UGGakCw"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "1.2",
+            "label": "Resuscitation and clearing of airways",
+            "orderPos": 3,
+            "parentUid": "E8BXsVJmqUr",
+            "uid": "u0iQR6ygxgs"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "1.3",
+            "label": "Ventilation with bag and mask",
+            "orderPos": 4,
+            "parentUid": "E8BXsVJmqUr",
+            "uid": "FscwoVsf8TL"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "1.4",
+            "label": "After Resuscitation",
+            "orderPos": 5,
+            "parentUid": "E8BXsVJmqUr",
+            "uid": "e1Cluc27cdB"
+          }
+        ],
+        "hierarchicalCode": "1",
+        "label": "Newborn Resuscitation",
+        "orderPos": 1,
+        "parentUid": "NXXzWDvuQnT",
+        "uid": "E8BXsVJmqUr"
+      }
+    ],
+    "hierarchicalCode": "0",
+    "label": "Overall QA Score",
+    "orderPos": 0,
+    "uid": "NXXzWDvuQnT"
+  },
+  {
+    "children": [
+      {
+        "children": [
+          {
+            "children": [],
+            "hierarchicalCode": "1.1",
+            "label": "Work Environment -Equipment and Supplies",
+            "orderPos": 2,
+            "parentUid": "xWUdeVU4JAr",
+            "uid": "SYp9pOjFKyf"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "1.2",
+            "label": "Work Place - Physical Environment",
+            "orderPos": 3,
+            "parentUid": "xWUdeVU4JAr",
+            "uid": "WLDhERhQ3Ih"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "1.3",
+            "label": "Provider Evaluation - Prescreening",
+            "orderPos": 4,
+            "parentUid": "xWUdeVU4JAr",
+            "uid": "X3sQ2RX5Vn7"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "1.4",
+            "label": "Provider Evaluation - Screening",
+            "orderPos": 5,
+            "parentUid": "xWUdeVU4JAr",
+            "uid": "SNoQ2dEPfBU"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "1.5",
+            "label": "Provider Evaluation - Post-screening",
+            "orderPos": 6,
+            "parentUid": "xWUdeVU4JAr",
+            "uid": "k5b1GT20fk0"
+          }
+        ],
+        "hierarchicalCode": "1",
+        "label": "Hypertension",
+        "orderPos": 1,
+        "parentUid": "iVNzYd5Cz5C",
+        "uid": "xWUdeVU4JAr"
+      }
+    ],
+    "hierarchicalCode": "0",
+    "label": "Overall QA Score",
+    "orderPos": 0,
+    "uid": "iVNzYd5Cz5C"
+  },
+  {
+    "children": [
+      {
+        "children": [
+          {
+            "children": [],
+            "hierarchicalCode": "1.1",
+            "label": "Client Centered Counseling",
+            "orderPos": 2,
+            "parentUid": "wOVb4P2aEin",
+            "uid": "iaCXqxXjz3D"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "1.2",
+            "label": "History Taking",
+            "orderPos": 3,
+            "parentUid": "wOVb4P2aEin",
+            "uid": "wmAD44ZXG7h"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "1.3",
+            "label": "Clinical Examination",
+            "orderPos": 4,
+            "parentUid": "wOVb4P2aEin",
+            "uid": "vtszobvrUnX"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "1.4",
+            "label": "Medication and Routine Laboratory Testing",
+            "orderPos": 5,
+            "parentUid": "wOVb4P2aEin",
+            "uid": "XkdTs2p6NIN"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "1.5",
+            "label": "HIV Testing in Pregnancy",
+            "orderPos": 6,
+            "parentUid": "wOVb4P2aEin",
+            "uid": "hPh7sUziITQ"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "1.6",
+            "label": "Patient Education and Follow-up",
+            "orderPos": 7,
+            "parentUid": "wOVb4P2aEin",
+            "uid": "elH1r6c1uBL"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "1.7",
+            "label": "Infection Prevention",
+            "orderPos": 8,
+            "parentUid": "wOVb4P2aEin",
+            "uid": "PoFgS54cGiP"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "1.8",
+            "label": "Key Indicators of Quality",
+            "orderPos": 9,
+            "parentUid": "wOVb4P2aEin",
+            "uid": "WRtGto0VXLo"
+          }
+        ],
+        "hierarchicalCode": "1",
+        "label": "Focused Antenatal Care (FANC)",
+        "orderPos": 1,
+        "parentUid": "aO0qBCcydX6",
+        "uid": "wOVb4P2aEin"
+      },
+      {
+        "children": [
+          {
+            "children": [],
+            "hierarchicalCode": "2.1",
+            "label": "Client Centered Counseling",
+            "orderPos": 11,
+            "parentUid": "hLXpYOozxRp",
+            "uid": "zyo1XqypQJV"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "2.2",
+            "label": "Patient History",
+            "orderPos": 12,
+            "parentUid": "hLXpYOozxRp",
+            "uid": "Py5naShm4Ov"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "2.3",
+            "label": "Postpartum Family Planning",
+            "orderPos": 13,
+            "parentUid": "hLXpYOozxRp",
+            "uid": "cdtfsU5Sf0b"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "2.4",
+            "label": "Clinical Assessment of Mother",
+            "orderPos": 14,
+            "parentUid": "hLXpYOozxRp",
+            "uid": "wUd87XdxfPW"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "2.5",
+            "label": "Clinical Assessment of Newborn",
+            "orderPos": 15,
+            "parentUid": "hLXpYOozxRp",
+            "uid": "TtxAGudK3k1"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "2.6",
+            "label": "Patient Education and Follow-up",
+            "orderPos": 16,
+            "parentUid": "hLXpYOozxRp",
+            "uid": "p7EYXeq0PRo"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "2.7",
+            "label": "Infection Prevention",
+            "orderPos": 17,
+            "parentUid": "hLXpYOozxRp",
+            "uid": "F8EVOyyR2pS"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "2.8",
+            "label": "Key Indicators of Quality",
+            "orderPos": 18,
+            "parentUid": "hLXpYOozxRp",
+            "uid": "uTz9F31dFtb"
+          }
+        ],
+        "hierarchicalCode": "2",
+        "label": "Postnatal Care (PNC)",
+        "orderPos": 10,
+        "parentUid": "aO0qBCcydX6",
+        "uid": "hLXpYOozxRp"
+      },
+      {
+        "children": [
+          {
+            "children": [],
+            "hierarchicalCode": "3.1",
+            "label": "Client Centered Counseling",
+            "orderPos": 20,
+            "parentUid": "EbQyg4a9M0b",
+            "uid": "FY9ijVSfWCq"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "3.2",
+            "label": "Initial Client Assessment and Examination",
+            "orderPos": 21,
+            "parentUid": "EbQyg4a9M0b",
+            "uid": "BySd4ynFufl"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "3.3",
+            "label": "First Stage of Labor",
+            "orderPos": 22,
+            "parentUid": "EbQyg4a9M0b",
+            "uid": "QdGdFdzFydP"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "3.4",
+            "label": "Prior to Delivery",
+            "orderPos": 23,
+            "parentUid": "EbQyg4a9M0b",
+            "uid": "rgsyQQAVNE3"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "3.5",
+            "label": "Second and Third Stage of Labor",
+            "orderPos": 24,
+            "parentUid": "EbQyg4a9M0b",
+            "uid": "Z4NQDAm8eNH"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "3.6",
+            "label": "Immediate Newborn and Postpartum Care",
+            "orderPos": 25,
+            "parentUid": "EbQyg4a9M0b",
+            "uid": "KS2FEH0udBK"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "3.7",
+            "label": "Prior to Discharge",
+            "orderPos": 26,
+            "parentUid": "EbQyg4a9M0b",
+            "uid": "MVYaYheM9AR"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "3.8",
+            "label": "Infection Prevention",
+            "orderPos": 27,
+            "parentUid": "EbQyg4a9M0b",
+            "uid": "sAWXgkqPkih"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "3.9",
+            "label": "Key Indicators of Quality",
+            "orderPos": 28,
+            "parentUid": "EbQyg4a9M0b",
+            "uid": "oJFkzDs7oHb"
+          }
+        ],
+        "hierarchicalCode": "3",
+        "label": "Normal Labor and Delivery",
+        "orderPos": 19,
+        "parentUid": "aO0qBCcydX6",
+        "uid": "EbQyg4a9M0b"
+      },
+      {
+        "children": [
+          {
+            "children": [],
+            "hierarchicalCode": "4.1",
+            "label": "Clinical Management",
+            "orderPos": 30,
+            "parentUid": "aOGW6T3nHw1",
+            "uid": "UDDqsMxnGTi"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "4.2",
+            "label": "Non-Clinical Management",
+            "orderPos": 31,
+            "parentUid": "aOGW6T3nHw1",
+            "uid": "ACaVF8nOknn"
+          }
+        ],
+        "hierarchicalCode": "4",
+        "label": "Antepartum Hemorrhage",
+        "orderPos": 29,
+        "parentUid": "aO0qBCcydX6",
+        "uid": "aOGW6T3nHw1"
+      },
+      {
+        "children": [
+          {
+            "children": [],
+            "hierarchicalCode": "5.1",
+            "label": "Clinical Management",
+            "orderPos": 33,
+            "parentUid": "DKx55vIaSUX",
+            "uid": "TQZVkOYsWIR"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "5.2",
+            "label": "Non-Clinical Management",
+            "orderPos": 34,
+            "parentUid": "DKx55vIaSUX",
+            "uid": "KU5cKdvPbVB"
+          }
+        ],
+        "hierarchicalCode": "5",
+        "label": "Postpartum Hemorrhage",
+        "orderPos": 32,
+        "parentUid": "aO0qBCcydX6",
+        "uid": "DKx55vIaSUX"
+      },
+      {
+        "children": [
+          {
+            "children": [],
+            "hierarchicalCode": "6.1",
+            "label": "Clinical Management",
+            "orderPos": 36,
+            "parentUid": "YLzy0xH6zYY",
+            "uid": "Rf07xUpHf2U"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "6.2",
+            "label": "Non-Clinical Management",
+            "orderPos": 37,
+            "parentUid": "YLzy0xH6zYY",
+            "uid": "oWdPZTJbmfi"
+          }
+        ],
+        "hierarchicalCode": "6",
+        "label": "Eclampsia",
+        "orderPos": 35,
+        "parentUid": "aO0qBCcydX6",
+        "uid": "YLzy0xH6zYY"
+      },
+      {
+        "children": [
+          {
+            "children": [],
+            "hierarchicalCode": "7.1",
+            "label": "Clinical Management",
+            "orderPos": 39,
+            "parentUid": "tyhdocZwprc",
+            "uid": "wYPWhUdprbf"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "7.2",
+            "label": "Non-Clinical Management",
+            "orderPos": 40,
+            "parentUid": "tyhdocZwprc",
+            "uid": "MrpBYjra1ft"
+          }
+        ],
+        "hierarchicalCode": "7",
+        "label": "Severe Pre-eclampsia",
+        "orderPos": 38,
+        "parentUid": "aO0qBCcydX6",
+        "uid": "tyhdocZwprc"
+      },
+      {
+        "children": [
+          {
+            "children": [],
+            "hierarchicalCode": "8.1",
+            "label": "Clinic and Maternity: Hygiene and cleanliness",
+            "orderPos": 42,
+            "parentUid": "DNxBu2ywiEe",
+            "uid": "OKDGYWNheq8"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "8.11",
+            "label": "ANC and PNC clinic: instruments, equipment and supplies in adequate condition and quantity",
+            "orderPos": 51,
+            "parentUid": "DNxBu2ywiEe",
+            "uid": "epq1e0n0tzF"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "8.12",
+            "label": "Delivery ward: instruments, equipment and supplies in adequate condition and quantity",
+            "orderPos": 52,
+            "parentUid": "DNxBu2ywiEe",
+            "uid": "SPRx2nx0SNO"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "8.13",
+            "label": "Postpartum ward: instruments, equipment and supplies in adequate condition and quantity",
+            "orderPos": 53,
+            "parentUid": "DNxBu2ywiEe",
+            "uid": "GC75I90yvtq"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "8.14",
+            "label": "Essential medicines and supplies for ANC/PNC and delivery",
+            "orderPos": 54,
+            "parentUid": "DNxBu2ywiEe",
+            "uid": "kZ2wI9cWudN"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "8.15",
+            "label": "Availability of Protocols",
+            "orderPos": 55,
+            "parentUid": "DNxBu2ywiEe",
+            "uid": "gshQpIxZl7G"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "8.16",
+            "label": "Partographs",
+            "orderPos": 56,
+            "parentUid": "DNxBu2ywiEe",
+            "uid": "Pm8nFoDaLDM"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "8.2",
+            "label": "Clinic and Maternity: Lighting and Ventilation",
+            "orderPos": 43,
+            "parentUid": "DNxBu2ywiEe",
+            "uid": "O8Ldtf35EAm"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "8.3",
+            "label": "Clinic waiting room",
+            "orderPos": 44,
+            "parentUid": "DNxBu2ywiEe",
+            "uid": "UmeOx3YtiF7"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "8.4",
+            "label": "Bathrooms operational and available for clients",
+            "orderPos": 45,
+            "parentUid": "DNxBu2ywiEe",
+            "uid": "OPo6ptCL1Lm"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "8.5",
+            "label": "Bathrooms operational and available for staff",
+            "orderPos": 46,
+            "parentUid": "DNxBu2ywiEe",
+            "uid": "UPueo5gdWJV"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "8.6",
+            "label": "Placenta disposal",
+            "orderPos": 47,
+            "parentUid": "DNxBu2ywiEe",
+            "uid": "sWEaAyHZ2TF"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "8.7",
+            "label": "Record keeping is adequate",
+            "orderPos": 48,
+            "parentUid": "DNxBu2ywiEe",
+            "uid": "FiaCV5ix0SS"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "8.8",
+            "label": "Referral system in place",
+            "orderPos": 49,
+            "parentUid": "DNxBu2ywiEe",
+            "uid": "V9kJM4Hb570"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "8.9",
+            "label": "Clinic and maternity: Infection prevention equipment",
+            "orderPos": 50,
+            "parentUid": "DNxBu2ywiEe",
+            "uid": "uRLBz2pKKCs"
+          }
+        ],
+        "hierarchicalCode": "8",
+        "label": "Maternal Health Facility Checklist",
+        "orderPos": 41,
+        "parentUid": "aO0qBCcydX6",
+        "uid": "DNxBu2ywiEe"
+      }
+    ],
+    "hierarchicalCode": "0",
+    "label": "Overall QA Score",
+    "orderPos": 0,
+    "uid": "aO0qBCcydX6"
+  },
+  {
+    "children": [
+      {
+        "children": [
+          {
+            "children": [],
+            "hierarchicalCode": "1.1",
+            "label": "Client who has already selected a method",
+            "orderPos": 2,
+            "parentUid": "luEL4y9ckmX",
+            "uid": "ikH7QsE2QFi"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "1.2",
+            "label": "Client who hasn\u0027t selected a method yet",
+            "orderPos": 3,
+            "parentUid": "luEL4y9ckmX",
+            "uid": "EftFPI310TL"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "1.3",
+            "label": "Returning client who is not satisfied with her FP method",
+            "orderPos": 4,
+            "parentUid": "luEL4y9ckmX",
+            "uid": "dRTc4APihxx"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "1.4",
+            "label": "Post-partum client",
+            "orderPos": 5,
+            "parentUid": "luEL4y9ckmX",
+            "uid": "P6sjncHkF9N"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "1.5",
+            "label": "Post-abortion client",
+            "orderPos": 6,
+            "parentUid": "luEL4y9ckmX",
+            "uid": "leru7Ydn6MZ"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "1.6",
+            "label": "Return visit of client satisfied with FP method",
+            "orderPos": 7,
+            "parentUid": "luEL4y9ckmX",
+            "uid": "fEhmvuuZHf8"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "1.7",
+            "label": "Videos: FP Counseling",
+            "orderPos": 8,
+            "parentUid": "luEL4y9ckmX",
+            "uid": "Jlq6y9iojPF"
+          }
+        ],
+        "hierarchicalCode": "1",
+        "label": "Family Planning Counseling for Continuation",
+        "orderPos": 1,
+        "parentUid": "rRCmCI0V13X",
+        "uid": "luEL4y9ckmX"
+      }
+    ],
+    "hierarchicalCode": "0",
+    "label": "Overall QA Score",
+    "orderPos": 0,
+    "uid": "rRCmCI0V13X"
+  },
+  {
+    "children": [
+      {
+        "children": [
+          {
+            "children": [],
+            "hierarchicalCode": "1.1",
+            "label": "Pre-test counseling",
+            "orderPos": 2,
+            "parentUid": "KC7BOy9SHma",
+            "uid": "rr6deydaNRF"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "1.11",
+            "label": "Compliance with National Testing Algorithm and Stategy",
+            "orderPos": 11,
+            "parentUid": "KC7BOy9SHma",
+            "uid": "r8fLPs6x6Ss"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "1.12",
+            "label": "Quality Assurance of HIV testing",
+            "orderPos": 12,
+            "parentUid": "KC7BOy9SHma",
+            "uid": "qUfP0mJV4GF"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "1.13",
+            "label": "Quality Assurance of HIV testing (part 2)",
+            "orderPos": 13,
+            "parentUid": "KC7BOy9SHma",
+            "uid": "gW1xm1sS15K"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "1.2",
+            "label": "Testing Process",
+            "orderPos": 3,
+            "parentUid": "KC7BOy9SHma",
+            "uid": "TVJRQK0gOGr"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "1.3",
+            "label": "Post-Test Counseling",
+            "orderPos": 4,
+            "parentUid": "KC7BOy9SHma",
+            "uid": "aVVN1cFD0O2"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "1.4",
+            "label": "Post-Test Counseling -Positive Result",
+            "orderPos": 5,
+            "parentUid": "KC7BOy9SHma",
+            "uid": "VQMbe29zELY"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "1.5",
+            "label": "Post-Test Counseling -Positive Result-TB screening",
+            "orderPos": 6,
+            "parentUid": "KC7BOy9SHma",
+            "uid": "eAlZhfwYOg9"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "1.6",
+            "label": "Post-Test Counseling -Positive Result-STI screening",
+            "orderPos": 7,
+            "parentUid": "KC7BOy9SHma",
+            "uid": "nACWSKNweNz"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "1.7",
+            "label": "Post-Test Counseling -Positive Result-Referral Tracking",
+            "orderPos": 8,
+            "parentUid": "KC7BOy9SHma",
+            "uid": "D36u6v7aBqy"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "1.8",
+            "label": "Pediatrics",
+            "orderPos": 9,
+            "parentUid": "KC7BOy9SHma",
+            "uid": "geeIFXZNy1W"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "1.9",
+            "label": "Injection Safety",
+            "orderPos": 10,
+            "parentUid": "KC7BOy9SHma",
+            "uid": "FcLsRxBHHIP"
+          }
+        ],
+        "hierarchicalCode": "1",
+        "label": "HIV Testing Services (HTS)",
+        "orderPos": 1,
+        "parentUid": "e8cEHJZkMVP",
+        "uid": "KC7BOy9SHma"
+      },
+      {
+        "children": [
+          {
+            "children": [],
+            "hierarchicalCode": "10.1",
+            "label": "Routine PITC for Adult TB patients",
+            "orderPos": 76,
+            "parentUid": "ajWh8FSdU1n",
+            "uid": "CiRhGObqGpu"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "10.2",
+            "label": "ART Provision for HIV-Positive Adult TB Patients",
+            "orderPos": 77,
+            "parentUid": "ajWh8FSdU1n",
+            "uid": "QBXkEmFPYD0"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "10.3",
+            "label": "Routine PITC for Pediatric TB Patients",
+            "orderPos": 78,
+            "parentUid": "ajWh8FSdU1n",
+            "uid": "Tne5NmuX8AE"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "10.4",
+            "label": "ART Provision for HIV-Positive Pediatric TB Patients",
+            "orderPos": 79,
+            "parentUid": "ajWh8FSdU1n",
+            "uid": "v8WbxmmjeWk"
+          }
+        ],
+        "hierarchicalCode": "10",
+        "label": "TB Treatment Service Point",
+        "orderPos": 75,
+        "parentUid": "e8cEHJZkMVP",
+        "uid": "ajWh8FSdU1n"
+      },
+      {
+        "children": [
+          {
+            "children": [],
+            "hierarchicalCode": "2.1",
+            "label": "Commodities Management",
+            "orderPos": 15,
+            "parentUid": "xrpTPSvQQg0",
+            "uid": "TZ4WQMhMhxY"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "2.2",
+            "label": "HIV Test mangement",
+            "orderPos": 16,
+            "parentUid": "xrpTPSvQQg0",
+            "uid": "U4Cqh4jz7Ls"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "2.3",
+            "label": "TB infection control",
+            "orderPos": 17,
+            "parentUid": "xrpTPSvQQg0",
+            "uid": "IeJTnE7T9SI"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "2.4",
+            "label": "Waste control",
+            "orderPos": 18,
+            "parentUid": "xrpTPSvQQg0",
+            "uid": "Vb2oKDFWzyL"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "2.5",
+            "label": "Policy Adherence",
+            "orderPos": 19,
+            "parentUid": "xrpTPSvQQg0",
+            "uid": "sdfJIWTAhrX"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "2.6",
+            "label": "Quality Management",
+            "orderPos": 20,
+            "parentUid": "xrpTPSvQQg0",
+            "uid": "cvh0r6U1JHa"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "2.7",
+            "label": "Assessment \u0026 Utilization of Performance Data in QI Activities",
+            "orderPos": 21,
+            "parentUid": "xrpTPSvQQg0",
+            "uid": "MOO2QQTmCwL"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "2.8",
+            "label": "Support and Assessment of Staff Performance",
+            "orderPos": 22,
+            "parentUid": "xrpTPSvQQg0",
+            "uid": "M6Bt8Xiuy0T"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "2.9",
+            "label": "Adolescent friendly services",
+            "orderPos": 23,
+            "parentUid": "xrpTPSvQQg0",
+            "uid": "ajSknqiHMs4"
+          }
+        ],
+        "hierarchicalCode": "2",
+        "label": "HTS/C\u0026T Facility Management",
+        "orderPos": 14,
+        "parentUid": "e8cEHJZkMVP",
+        "uid": "xrpTPSvQQg0"
+      },
+      {
+        "children": [
+          {
+            "children": [],
+            "hierarchicalCode": "3.1",
+            "label": "Quality Management Systems (QMS)",
+            "orderPos": 25,
+            "parentUid": "swvD9P2sQ1N",
+            "uid": "iHpzRZ12qPa"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "3.2",
+            "label": "Laboratory Biosafety",
+            "orderPos": 26,
+            "parentUid": "swvD9P2sQ1N",
+            "uid": "F3D44WH2Je9"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "3.3",
+            "label": "Test SOPs",
+            "orderPos": 27,
+            "parentUid": "swvD9P2sQ1N",
+            "uid": "qJEsBfjODMS"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "3.4",
+            "label": "Quality Testing Monitoring",
+            "orderPos": 28,
+            "parentUid": "swvD9P2sQ1N",
+            "uid": "PFpEEmKVjgc"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "3.5",
+            "label": "Results and Information Management",
+            "orderPos": 29,
+            "parentUid": "swvD9P2sQ1N",
+            "uid": "QsJBk05IqzL"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "3.6",
+            "label": "Testing Interruptions",
+            "orderPos": 30,
+            "parentUid": "swvD9P2sQ1N",
+            "uid": "adwCpb5R7EZ"
+          }
+        ],
+        "hierarchicalCode": "3",
+        "label": "Laboratory",
+        "orderPos": 24,
+        "parentUid": "e8cEHJZkMVP",
+        "uid": "swvD9P2sQ1N"
+      },
+      {
+        "children": [
+          {
+            "children": [],
+            "hierarchicalCode": "4.1",
+            "label": "Testing Staff",
+            "orderPos": 32,
+            "parentUid": "g5XrlxF15nn",
+            "uid": "AAiLsoDEAjl"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "4.2",
+            "label": "Procedures and Policies",
+            "orderPos": 33,
+            "parentUid": "g5XrlxF15nn",
+            "uid": "wCQIknhPcx5"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "4.3",
+            "label": "Quality Assurance",
+            "orderPos": 34,
+            "parentUid": "g5XrlxF15nn",
+            "uid": "t3uIdQBWPqa"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "4.4",
+            "label": "Supplies, Reagents and Equipment",
+            "orderPos": 35,
+            "parentUid": "g5XrlxF15nn",
+            "uid": "yuLEq9KaNSO"
+          }
+        ],
+        "hierarchicalCode": "4",
+        "label": "Point-of-Care Testing (POCT)",
+        "orderPos": 31,
+        "parentUid": "e8cEHJZkMVP",
+        "uid": "g5XrlxF15nn"
+      },
+      {
+        "children": [
+          {
+            "children": [],
+            "hierarchicalCode": "5.1",
+            "label": "ART Eligibility",
+            "orderPos": 37,
+            "parentUid": "tHAPxSWb9CC",
+            "uid": "p7JHkmZzFCP"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "5.11",
+            "label": "Cotrimoxazole",
+            "orderPos": 46,
+            "parentUid": "tHAPxSWb9CC",
+            "uid": "BIYsZ5RyrBO"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "5.12",
+            "label": "Supply Chain reliability ARV",
+            "orderPos": 47,
+            "parentUid": "tHAPxSWb9CC",
+            "uid": "wgo3K3rFhuy"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "5.13",
+            "label": "Supply Chain Reliability-Cotrimoxazole",
+            "orderPos": 48,
+            "parentUid": "tHAPxSWb9CC",
+            "uid": "rZKLQjzD2ns"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "5.14",
+            "label": "Client record keeping",
+            "orderPos": 49,
+            "parentUid": "tHAPxSWb9CC",
+            "uid": "LuI6jS5Pu9U"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "5.15",
+            "label": "Pre-ART register (paper or electronic)",
+            "orderPos": 50,
+            "parentUid": "tHAPxSWb9CC",
+            "uid": "uxJgAB7ntTw"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "5.16",
+            "label": "ART register (paper or electronic)",
+            "orderPos": 51,
+            "parentUid": "tHAPxSWb9CC",
+            "uid": "ywuqv8zOWz3"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "5.17",
+            "label": "Patient Tracking-Pre-ART and ART Patients",
+            "orderPos": 52,
+            "parentUid": "tHAPxSWb9CC",
+            "uid": "XqstFkrhhPz"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "5.18",
+            "label": "Adherence Support-",
+            "orderPos": 53,
+            "parentUid": "tHAPxSWb9CC",
+            "uid": "FRWCreghYvo"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "5.2",
+            "label": "ART Monitoring",
+            "orderPos": 38,
+            "parentUid": "tHAPxSWb9CC",
+            "uid": "dlJ1pO7ohCv"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "5.3",
+            "label": "C\u0026T Counseling visit/routine check-up",
+            "orderPos": 39,
+            "parentUid": "tHAPxSWb9CC",
+            "uid": "YglciTYbEOm"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "5.4",
+            "label": "Routine HIV testing of Children of Adult Patients",
+            "orderPos": 40,
+            "parentUid": "tHAPxSWb9CC",
+            "uid": "BFp1ShQsk1b"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "5.5",
+            "label": "Nutrition",
+            "orderPos": 41,
+            "parentUid": "tHAPxSWb9CC",
+            "uid": "hY4odDwqO62"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "5.6",
+            "label": "TB screening",
+            "orderPos": 42,
+            "parentUid": "tHAPxSWb9CC",
+            "uid": "Ar33HFcJUAD"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "5.7",
+            "label": "Isoniazid Preventive Therapy (IPT)",
+            "orderPos": 43,
+            "parentUid": "tHAPxSWb9CC",
+            "uid": "RUthN89m1qf"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "5.8",
+            "label": "STI Screening \u0026 Management",
+            "orderPos": 44,
+            "parentUid": "tHAPxSWb9CC",
+            "uid": "VXvrw7Co0nb"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "5.9",
+            "label": "Medication dispensing",
+            "orderPos": 45,
+            "parentUid": "tHAPxSWb9CC",
+            "uid": "n3rz6xBIxVx"
+          }
+        ],
+        "hierarchicalCode": "5",
+        "label": "Care and Treatment",
+        "orderPos": 36,
+        "parentUid": "e8cEHJZkMVP",
+        "uid": "tHAPxSWb9CC"
+      },
+      {
+        "children": [
+          {
+            "children": [],
+            "hierarchicalCode": "6.1",
+            "label": "ANC Register-Paper",
+            "orderPos": 55,
+            "parentUid": "zMRnLTtTmfm",
+            "uid": "J6pWZvcyLMm"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "6.2",
+            "label": "ANC Register-Electronic",
+            "orderPos": 56,
+            "parentUid": "zMRnLTtTmfm",
+            "uid": "Zm3Vjbtq54Z"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "6.3",
+            "label": "ART in PMTCT Facilities",
+            "orderPos": 57,
+            "parentUid": "zMRnLTtTmfm",
+            "uid": "c0bbJCbI7c9"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "6.4",
+            "label": "CTX for HIV-infected Pregnant and Breastfeeding Women",
+            "orderPos": 58,
+            "parentUid": "zMRnLTtTmfm",
+            "uid": "R3kRr82kMpv"
+          }
+        ],
+        "hierarchicalCode": "6",
+        "label": "PMTCT-ANC \u0026 Postnatal",
+        "orderPos": 54,
+        "parentUid": "e8cEHJZkMVP",
+        "uid": "zMRnLTtTmfm"
+      },
+      {
+        "children": [
+          {
+            "children": [],
+            "hierarchicalCode": "7.1",
+            "label": "PITC for Maternity Patients",
+            "orderPos": 60,
+            "parentUid": "SZhIVlrR1Ja",
+            "uid": "jyQgaVaXkMn"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "7.2",
+            "label": "ARVs at Labor and Delivery",
+            "orderPos": 61,
+            "parentUid": "SZhIVlrR1Ja",
+            "uid": "hNJmxNZVQtl"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "7.3",
+            "label": "Labor \u0026 Delivery Registers-Paper",
+            "orderPos": 62,
+            "parentUid": "SZhIVlrR1Ja",
+            "uid": "agJZYwrV1oo"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "7.4",
+            "label": "Labor \u0026 Delivery Register-Electronic",
+            "orderPos": 63,
+            "parentUid": "SZhIVlrR1Ja",
+            "uid": "lzZwiZ8GH9s"
+          }
+        ],
+        "hierarchicalCode": "7",
+        "label": "PMTCT Labor and Delivery",
+        "orderPos": 59,
+        "parentUid": "e8cEHJZkMVP",
+        "uid": "SZhIVlrR1Ja"
+      },
+      {
+        "children": [
+          {
+            "children": [],
+            "hierarchicalCode": "8.1",
+            "label": "Early Infant Diagnosis",
+            "orderPos": 65,
+            "parentUid": "MTHNUhMpu6m",
+            "uid": "R8V8xeilFKz"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "8.2",
+            "label": "CTX for HIV-Exposed Infants",
+            "orderPos": 66,
+            "parentUid": "MTHNUhMpu6m",
+            "uid": "m7xUCpS4BFL"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "8.3",
+            "label": "Tracking HIV-Exposed Infants",
+            "orderPos": 67,
+            "parentUid": "MTHNUhMpu6m",
+            "uid": "FrVazsimigZ"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "8.4",
+            "label": "Enrollment of HIV-Infected Infants Identified through Early Infant Diagnosis (EID) Services into ART Services",
+            "orderPos": 68,
+            "parentUid": "MTHNUhMpu6m",
+            "uid": "AypC57kFmr0"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "8.5",
+            "label": "HIV Exposed Infant/Early Infant Diagnosis Registers-Paper",
+            "orderPos": 69,
+            "parentUid": "MTHNUhMpu6m",
+            "uid": "QpxBkBQDG6D"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "8.6",
+            "label": "HIV Exposed Infant/Early Infant Diagnosis Register-Electronic",
+            "orderPos": 70,
+            "parentUid": "MTHNUhMpu6m",
+            "uid": "hY8yUEplxqH"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "8.7",
+            "label": "Supply Chain Reliability (Early Infant Diagnosis)",
+            "orderPos": 71,
+            "parentUid": "MTHNUhMpu6m",
+            "uid": "TmMawtY3HOC"
+          }
+        ],
+        "hierarchicalCode": "8",
+        "label": "HIV Exposed Infants (HEI)",
+        "orderPos": 64,
+        "parentUid": "e8cEHJZkMVP",
+        "uid": "MTHNUhMpu6m"
+      },
+      {
+        "children": [
+          {
+            "children": [],
+            "hierarchicalCode": "9.1",
+            "label": "Capacity to Provide Post-Violence Care Services",
+            "orderPos": 73,
+            "parentUid": "C2JqsR0pJjA",
+            "uid": "w7nIx9HA7pW"
+          },
+          {
+            "children": [],
+            "hierarchicalCode": "9.2",
+            "label": "Availability of Post-Violence Care Services",
+            "orderPos": 74,
+            "parentUid": "C2JqsR0pJjA",
+            "uid": "nz5dR1dFeM1"
+          }
+        ],
+        "hierarchicalCode": "9",
+        "label": "Gender Based Violence (GBV)",
+        "orderPos": 72,
+        "parentUid": "e8cEHJZkMVP",
+        "uid": "C2JqsR0pJjA"
+      }
+    ],
+    "hierarchicalCode": "0",
+    "label": "Overall QA Score",
+    "orderPos": 0,
+    "uid": "e8cEHJZkMVP"
+  }
+]
