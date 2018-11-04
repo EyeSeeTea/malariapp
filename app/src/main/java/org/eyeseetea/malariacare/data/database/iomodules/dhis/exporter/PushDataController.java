@@ -29,14 +29,14 @@ import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.remote.sdk.PushDhisSDKDataSource;
 import org.eyeseetea.malariacare.data.sync.IData;
+import org.eyeseetea.malariacare.domain.boundary.IConnectivityManager;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.entity.pushsummary.PushReport;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
-import org.eyeseetea.malariacare.domain.exception.NetworkException;
 import org.eyeseetea.malariacare.domain.exception.DataToPushNotFoundException;
+import org.eyeseetea.malariacare.domain.exception.NetworkException;
 import org.eyeseetea.malariacare.domain.exception.push.PushDhisException;
 import org.eyeseetea.malariacare.domain.exception.push.PushReportException;
-import org.eyeseetea.malariacare.utils.AUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,9 +48,11 @@ public class PushDataController implements IPushController {
     private Context mContext;
     private PushDhisSDKDataSource mPushDhisSDKDataSource;
     private ConvertToSDKVisitor mConvertToSDKVisitor;
+    private IConnectivityManager mConnectivityManager;
 
-    public PushDataController(Context context) {
+    public PushDataController(Context context, IConnectivityManager connectivityManager) {
         mContext = context;
+        mConnectivityManager = connectivityManager;
         mPushDhisSDKDataSource = new PushDhisSDKDataSource();
         mConvertToSDKVisitor = new ConvertToSDKVisitor(mContext);
     }
@@ -58,7 +60,7 @@ public class PushDataController implements IPushController {
     public void push(final IPushControllerCallback callback) {
 
         Log.d(TAG, "push running");
-        if (!AUtils.isNetworkAvailable()) {
+        if (!mConnectivityManager.isDeviceOnline()) {
             Log.d(TAG, "No network");
             callback.onError(new NetworkException());
         } else {
