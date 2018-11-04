@@ -21,12 +21,13 @@ package org.eyeseetea.malariacare.data.remote.sdk.data;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.boundaries.ISurveyDataSource;
-import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.data.repositories.ICompositeScoreRepository;
 import org.eyeseetea.malariacare.domain.boundary.IConnectivityManager;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IOptionRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IQuestionRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerMetadataRepository;
+import org.eyeseetea.malariacare.domain.entity.CompositeScore;
 import org.eyeseetea.malariacare.domain.entity.Option;
 import org.eyeseetea.malariacare.domain.entity.Question;
 import org.eyeseetea.malariacare.domain.entity.ServerMetadata;
@@ -55,15 +56,18 @@ public class SurveySDKDhisDataSource implements ISurveyDataSource {
     private final IServerMetadataRepository mServerMetadataRepository;
     private final IOptionRepository mOptionRepository;
     private final IQuestionRepository mQuestionRepository;
+    private final ICompositeScoreRepository mCompositeScoreRepository;
     private final IConnectivityManager mConnectivityManager;
 
     public SurveySDKDhisDataSource(IServerMetadataRepository serverMetadataRepository,
             IQuestionRepository questionRepository,
             IOptionRepository optionRepository,
+            ICompositeScoreRepository mCompositeScoreRepository,
             IConnectivityManager connectivityManager) {
         this.mServerMetadataRepository = serverMetadataRepository;
         this.mQuestionRepository = questionRepository;
         this.mOptionRepository = optionRepository;
+        this.mCompositeScoreRepository = mCompositeScoreRepository;
         this.mConnectivityManager = connectivityManager;
     }
 
@@ -85,7 +89,7 @@ public class SurveySDKDhisDataSource implements ISurveyDataSource {
 
 
     @Override
-    public void Save(List<Survey> surveys) throws Exception {
+    public void save(List<Survey> surveys) throws Exception {
         //Here push surveys code
     }
 
@@ -99,7 +103,7 @@ public class SurveySDKDhisDataSource implements ISurveyDataSource {
                 eventFilters.setOrganisationUnitUId(organisationUnit.getUId());
                 eventFilters.setStartDate(filters.getStartDate());
                 eventFilters.setEndDate(filters.getEndDate());
-                eventFilters.setMaxEvents(filters.getMaxEvents());
+                eventFilters.setMaxEvents(filters.getMaxSize());
 
                 D2.events().pull(eventFilters).toBlocking().single();
             }
@@ -110,7 +114,7 @@ public class SurveySDKDhisDataSource implements ISurveyDataSource {
         ServerMetadata serverMetadata = mServerMetadataRepository.getServerMetadata();
         List<Option> options = mOptionRepository.getAll();
         List<Question> questions = mQuestionRepository.getAll();
-        List<CompositeScoreDB> compositeScores = CompositeScoreDB.list();
+        List<CompositeScore> compositeScores = mCompositeScoreRepository.getAll();
 
         SurveyMapper surveyMapper = new SurveyMapper(serverMetadata, compositeScores, questions,
                 options);

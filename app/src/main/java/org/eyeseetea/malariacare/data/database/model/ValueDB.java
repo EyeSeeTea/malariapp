@@ -105,6 +105,10 @@ public class ValueDB extends BaseModel implements VisitableToSDK {
         this.id_value = id_value;
     }
 
+    public Long getId_option_fk() {
+        return id_option_fk;
+    }
+
     public OptionDB getOption() {
         if(option==null){
             if(id_option_fk==null) return null;
@@ -124,6 +128,10 @@ public class ValueDB extends BaseModel implements VisitableToSDK {
     public void setOption(Long id_option){
         this.id_option_fk=id_option;
         this.option=null;
+    }
+
+    public Long getId_question_fk() {
+        return id_question_fk;
     }
 
     public QuestionDB getQuestion() {
@@ -154,6 +162,10 @@ public class ValueDB extends BaseModel implements VisitableToSDK {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public Long getId_survey_fk() {
+        return id_survey_fk;
     }
 
     public SurveyDB getSurvey() {

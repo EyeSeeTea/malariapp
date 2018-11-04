@@ -4,13 +4,15 @@ import android.content.Context;
 
 import org.eyeseetea.malariacare.data.boundaries.ISurveyDataSource;
 import org.eyeseetea.malariacare.data.database.MetadataValidator;
+import org.eyeseetea.malariacare.data.database.datasources.CompositeScoreDataSource;
 import org.eyeseetea.malariacare.data.database.datasources.QuestionLocalDataSource;
 import org.eyeseetea.malariacare.data.database.datasources.SurveyLocalDataSource;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushController;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushDataController;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullDataController;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullMetadataController;
 import org.eyeseetea.malariacare.data.network.ConnectivityManager;
 import org.eyeseetea.malariacare.data.remote.sdk.data.SurveySDKDhisDataSource;
+import org.eyeseetea.malariacare.data.repositories.ICompositeScoreRepository;
 import org.eyeseetea.malariacare.data.repositories.OptionRepository;
 import org.eyeseetea.malariacare.data.repositories.ServerMetadataRepository;
 import org.eyeseetea.malariacare.domain.boundary.IConnectivityManager;
@@ -37,11 +39,12 @@ public class SyncFactory {
                 new ServerMetadataRepository(context);
         IOptionRepository optionRepository = new OptionRepository();
         IQuestionRepository questionRepository = new QuestionLocalDataSource();
+        ICompositeScoreRepository compositeScoreRepository = new CompositeScoreDataSource();
         IConnectivityManager connectivityManager = new ConnectivityManager();
 
         ISurveyDataSource surveyRemoteDataSource =
                 new SurveySDKDhisDataSource(serverMetadataRepository,
-                        questionRepository, optionRepository, connectivityManager);
+                        questionRepository, optionRepository, compositeScoreRepository, connectivityManager);
 
         ISurveyDataSource surveyLocalDataSource = new SurveyLocalDataSource();
 
@@ -61,7 +64,7 @@ public class SyncFactory {
 
     public PushUseCase getPushUseCase(Context context){
         IConnectivityManager connectivityManager = new ConnectivityManager();
-        IPushController pushController = new PushController(context, connectivityManager);
+        IPushController pushController = new PushDataController(context, connectivityManager);
         PushUseCase pushUseCase = new PushUseCase(asyncExecutor, mainExecutor, pushController);
 
         return pushUseCase;

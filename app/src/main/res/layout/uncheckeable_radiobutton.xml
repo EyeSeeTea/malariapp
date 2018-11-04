@@ -23,8 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:button="@drawable/radiobutton"
-        android:paddingEnd="10sp"
-        android:paddingRight="10sp"
+        android:textSize="12dp"
         android:textColor="@color/darkGrey"
         app:tDimension="@string/font_size_level1"
         app:tFontName="@string/medium_font_name" />
