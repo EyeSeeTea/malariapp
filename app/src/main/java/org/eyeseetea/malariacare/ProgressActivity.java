@@ -36,14 +36,17 @@ import android.widget.TextView;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullDemoController;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
-import org.eyeseetea.malariacare.data.repositories.AuthenticationManager;
-import org.eyeseetea.malariacare.domain.entity.Credentials;
+import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
+import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullDemoUseCase;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullUseCase;
 import org.eyeseetea.malariacare.domain.usecase.pull.SurveyFilter;
+import org.eyeseetea.malariacare.factories.AuthenticationFactory;
 import org.eyeseetea.malariacare.factories.SyncFactory;
+import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
+import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 
 import java.util.Calendar;
 
@@ -132,7 +135,10 @@ public class ProgressActivity extends Activity {
     }
 
     private void executeDemoPull() {
-        new PullDemoUseCase(new PullDemoController(this)).execute(new PullDemoUseCase.Callback() {
+        IMainExecutor mainExecutor = new UIThreadExecutor();
+        IAsyncExecutor asyncExecutor = new AsyncExecutor();
+        new PullDemoUseCase(new PullDemoController(this), mainExecutor, asyncExecutor).execute(
+                new PullDemoUseCase.Callback() {
             @Override
             public void onComplete() {
                 finishAndGo(DashboardActivity.class);
@@ -250,8 +256,7 @@ public class ProgressActivity extends Activity {
 
     private void executeLogout() {
         Log.d(TAG, "Logging out...");
-        AuthenticationManager authenticationManager = new AuthenticationManager(this);
-        LogoutUseCase logoutUseCase = new LogoutUseCase(authenticationManager);
+        LogoutUseCase logoutUseCase = new AuthenticationFactory().getLogoutUseCase(this);
 
         logoutUseCase.execute(new LogoutUseCase.Callback() {
             @Override

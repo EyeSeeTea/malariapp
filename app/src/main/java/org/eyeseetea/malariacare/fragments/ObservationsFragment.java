@@ -58,14 +58,15 @@ import org.eyeseetea.malariacare.domain.usecase.GetServerMetadataUseCase;
 import org.eyeseetea.malariacare.domain.usecase.observation.GetObservationBySurveyUidUseCase;
 import org.eyeseetea.malariacare.domain.usecase.observation.SaveObservationUseCase;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.strategies.PlanActionStyleStrategy;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.presentation.presenters.ObservationsPresenter;
 import org.eyeseetea.malariacare.presentation.viewModels.ObservationViewModel;
-import org.eyeseetea.malariacare.strategies.PlanActionStyleStrategy;
 import org.eyeseetea.malariacare.views.CustomEditText;
 import org.eyeseetea.malariacare.views.CustomSpinner;
 import org.eyeseetea.malariacare.views.CustomTextView;
+import org.eyeseetea.sdk.common.FileUtils;
 import org.eyeseetea.sdk.presentation.views.DoubleRectChart;
 
 import java.util.Iterator;
