@@ -1,7 +1,6 @@
 package org.eyeseetea.malariacare.factories;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 
 import org.eyeseetea.malariacare.data.boundaries.IDataLocalDataSource;
 import org.eyeseetea.malariacare.data.boundaries.IDataRemoteDataSource;
@@ -16,34 +15,31 @@ import org.eyeseetea.malariacare.data.remote.sdk.data.ObservationSDKDhisDataSour
 import org.eyeseetea.malariacare.data.remote.sdk.data.SurveySDKDhisDataSource;
 import org.eyeseetea.malariacare.domain.boundary.IConnectivityManager;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
-import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
-import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
-import org.eyeseetea.malariacare.domain.boundary.repositories.IOptionRepository;
-import org.eyeseetea.malariacare.domain.boundary.repositories.IOrgUnitRepository;
-import org.eyeseetea.malariacare.domain.boundary.repositories.IQuestionRepository;
-import org.eyeseetea.malariacare.domain.boundary.repositories.IServerMetadataRepository;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IObservationRepository;
+import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyRepository;
+import org.eyeseetea.malariacare.domain.usecase.MarkAsRetryAllSendingDataUseCase;
 import org.eyeseetea.malariacare.domain.usecase.PushUseCase;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullUseCase;
-import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
-import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 
-public class SyncFactory {
-    private IAsyncExecutor asyncExecutor = new AsyncExecutor();
-    private IMainExecutor mainExecutor = new UIThreadExecutor();
+public class SyncFactory extends AFactory{
+
+    private DataFactory mDataFactory;
     private MetadataFactory metadataFactory = new MetadataFactory();
+
+    public SyncFactory(){
+        mDataFactory = new DataFactory();
+    }
 
     public PullUseCase getPullUseCase(Context context){
         PullMetadataController pullMetadataController = new PullMetadataController();
 
-        IDataRemoteDataSource surveyRemoteDataSource = getSurveyRemoteDataSource(context);
-        IDataLocalDataSource surveyLocalDataSource = getSurveyLocalDataSource();
+        IDataRemoteDataSource surveyRemoteDataSource = mDataFactory.getSurveyRemoteDataSource(context);
+        IDataLocalDataSource surveyLocalDataSource = mDataFactory.getSurveyDataLocalDataSource();
 
         PullDataController pullDataController =
                 new PullDataController(surveyLocalDataSource, surveyRemoteDataSource);
 
         MetadataValidator metadataValidator = new MetadataValidator();
-        IAsyncExecutor asyncExecutor = new AsyncExecutor();
-        IMainExecutor mainExecutor = new UIThreadExecutor();
 
         PullUseCase pullUseCase = new PullUseCase(
                 asyncExecutor, mainExecutor, pullMetadataController,
@@ -54,12 +50,12 @@ public class SyncFactory {
 
     public PushUseCase getPushUseCase(Context context){
         IConnectivityManager connectivityManager = new ConnectivityManager();
-        IDataRemoteDataSource surveyRemoteDataSource = getSurveyRemoteDataSource(context);
-        IDataLocalDataSource surveyLocalDataSource = getSurveyLocalDataSource();
+        IDataRemoteDataSource surveyRemoteDataSource = mDataFactory.getSurveyRemoteDataSource(context);
+        IDataLocalDataSource surveyLocalDataSource = mDataFactory.getSurveyDataLocalDataSource();
 
-        IDataLocalDataSource observationLocalDataSource = getObservationLocalDataSource();
+        IDataLocalDataSource observationLocalDataSource = mDataFactory.getObservationDataLocalDataSource();
         IDataRemoteDataSource observationRemoteDataSource =
-                getObservationRemoteDataSource(context);
+                mDataFactory.getObservationRemoteDataSource(context);
 
         IPushController pushController =
                 new PushDataController(connectivityManager,
@@ -71,40 +67,14 @@ public class SyncFactory {
         return pushUseCase;
     }
 
-    @NonNull
-    private IDataLocalDataSource getSurveyLocalDataSource() {
-        return new SurveyLocalDataSource();
-    }
+    public MarkAsRetryAllSendingDataUseCase getMarkAsRetryAllSendingDataUseCase(){
+        ISurveyRepository surveyRepository = mDataFactory.getSurveyRepository();
+        IObservationRepository observationRepository = mDataFactory.getObservationRepository();
 
-    @NonNull
-    private IDataRemoteDataSource getSurveyRemoteDataSource(Context context) {
+        MarkAsRetryAllSendingDataUseCase markAsRetryAllSendingDataUseCase =
+                new MarkAsRetryAllSendingDataUseCase(asyncExecutor, mainExecutor,
+                        surveyRepository, observationRepository);
 
-        IServerMetadataRepository serverMetadataRepository =
-                metadataFactory.getServerMetadataRepository(context);
-
-        IOptionRepository optionRepository = metadataFactory.getOptionRepository();
-        IQuestionRepository questionRepository = metadataFactory.getQuestionLocalDataSource();
-        IOrgUnitRepository orgUnitRepository = metadataFactory.getOrgUnitRepository();
-        IConnectivityManager connectivityManager = new ConnectivityManager();
-
-        return new SurveySDKDhisDataSource(context, serverMetadataRepository,
-                questionRepository, optionRepository, orgUnitRepository, connectivityManager);
-    }
-
-    @NonNull
-    private IDataLocalDataSource getObservationLocalDataSource() {
-        return new ObservationLocalDataSource();
-    }
-
-    @NonNull
-    private IDataRemoteDataSource getObservationRemoteDataSource(Context context) {
-        IServerMetadataRepository serverMetadataRepository =
-                metadataFactory.getServerMetadataRepository(context);
-
-        IOptionRepository optionRepository = metadataFactory.getOptionRepository();
-
-
-        return new ObservationSDKDhisDataSource(context,getSurveyLocalDataSource(),
-                serverMetadataRepository, optionRepository);
+        return markAsRetryAllSendingDataUseCase;
     }
 }

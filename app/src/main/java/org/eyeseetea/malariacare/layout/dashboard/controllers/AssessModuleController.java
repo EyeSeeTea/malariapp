@@ -502,7 +502,7 @@ public class AssessModuleController extends ModuleController {
     }
 
     private SurveyFragment getSurveyFragment() {
-        return (SurveyFragment) dashboardActivity.getFragmentManager().findFragmentById(
+        return (SurveyFragment) dashboardActivity.getSupportFragmentManager().findFragmentById(
                 R.id.dashboard_details_container);
     }
 

@@ -37,10 +37,14 @@ import android.widget.TextView;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullDemoController;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
+import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.usecase.LoadCredentialsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullDemoUseCase;
+import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
+import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.hisp.dhis.client.sdk.ui.views.FontButton;
 
 public class LoginActivityStrategy {
@@ -61,6 +65,7 @@ public class LoginActivityStrategy {
             loadUserAndCredentialsUseCase.execute();
 
             finishAndGo(DashboardActivity.class);
+
         } else {
             loginActivity.runOnUiThread(new Runnable() {
                 public void run() {
@@ -168,8 +173,11 @@ public class LoginActivityStrategy {
     }
 
     private void executeDemo() {
+        IMainExecutor mainExecutor = new UIThreadExecutor();
+        IAsyncExecutor asyncExecutor = new AsyncExecutor();
         PullDemoController pullController = new PullDemoController(loginActivity);
-        PullDemoUseCase pullUseCase = new PullDemoUseCase(pullController);
+        PullDemoUseCase pullUseCase = new PullDemoUseCase(pullController, mainExecutor,
+                asyncExecutor);
 
         pullUseCase.execute(new PullDemoUseCase.Callback() {
             @Override

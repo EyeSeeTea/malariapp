@@ -22,20 +22,18 @@ package org.eyeseetea.malariacare.domain.usecase.pull;
 
 import java.util.Date;
 
-public class SurveyFilter {
+public class PullSurveyFilter {
 
     public enum SurveysToRetrieve {ALL, COMPLETED, UNSENT, SENT}
 
     private Date startDate;
     private Date endDate;
     private int maxEvents;
-    private SurveysToRetrieve surveysToRetrieve;
 
-    public SurveyFilter(Date startDate, Date endDate, int maxEvents, SurveysToRetrieve surveysToRetrieve) {
+    public PullSurveyFilter(Date startDate, Date endDate, int maxEvents) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.maxEvents = maxEvents;
-        this.surveysToRetrieve = surveysToRetrieve;
     }
 
     public Date getStartDate() {
@@ -50,15 +48,11 @@ public class SurveyFilter {
         return endDate;
     }
 
-    public SurveysToRetrieve getSurveysToRetrieve() {
-        return surveysToRetrieve;
-    }
 
     public static class Builder {
         private Date startDate = null;
         private Date endDate = null;
         private int maxSize = 0;
-        private SurveysToRetrieve surveysToRetrieve = SurveysToRetrieve.ALL;
 
         private Builder() {
         }
@@ -82,13 +76,8 @@ public class SurveyFilter {
             return this;
         }
 
-        public Builder WithSurveysToRetrieve(SurveysToRetrieve surveysToRetrieve) {
-            this.surveysToRetrieve = surveysToRetrieve;
-            return this;
-        }
-
-        public SurveyFilter build() {
-            return new SurveyFilter(startDate, endDate, maxSize, surveysToRetrieve);
+        public PullSurveyFilter build() {
+            return new PullSurveyFilter(startDate, endDate, maxSize);
         }
     }
 }
