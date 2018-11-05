@@ -185,7 +185,7 @@ public class SettingsActivity extends AppCompatActivity implements
     /**
      * Determines whether the simplified settings UI should be shown. This is
      * true if this is forced via {@link #ALWAYS_SIMPLE_PREFS}, or the device
-     * doesn't have newer APIs like {@link PreferenceFragment}, or the device
+     * doesn't have newer APIs like {@link PreferenceFragmentCompat}, or the device
      * doesn't have an extra-large screen. In these cases, a single-pane
      * "simplified" settings UI should be shown.
      */
