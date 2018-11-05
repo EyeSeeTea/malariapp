@@ -2,6 +2,12 @@ package org.eyeseetea.malariacare.domain.entity;
 
 import android.support.annotation.NonNull;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
+import org.eyeseetea.malariacare.domain.exception.CalculateNextScheduledDateException;
+import org.joda.time.DateTime;
+import org.joda.time.Months;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -69,7 +75,7 @@ public class SurveyShould {
 
         List<Question> questions = givenAListOfTwoCompulsoryQuestions();
 
-        Survey.createEmptySurvey(null, "PROGRAM_UID", "ORG_UNIT_UID", "USER_UID", questions);
+        Survey.createEmptySurvey(null, "PROGRAM_UID", "ORG_UNIT_UID", "USER_UID", 0, questions);
     }
 
     @Test
@@ -79,7 +85,7 @@ public class SurveyShould {
 
         List<Question> questions = givenAListOfTwoCompulsoryQuestions();
 
-        Survey.createEmptySurvey("UID", null, "ORG_UNIT_UID", "USER_UID", questions);
+        Survey.createEmptySurvey("UID", null, "ORG_UNIT_UID", "USER_UID", 0, questions);
     }
 
     @Test
@@ -88,7 +94,7 @@ public class SurveyShould {
         thrown.expectMessage("Survey orgUnitUId is required");
 
         List<Question> questions = givenAListOfTwoCompulsoryQuestions();
-        Survey.createEmptySurvey("UID", "PROGRAM_UID", null, "USER_UID", questions);
+        Survey.createEmptySurvey("UID", "PROGRAM_UID", null, "USER_UID", 0, questions);
     }
 
     @Test
@@ -96,9 +102,78 @@ public class SurveyShould {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("Survey userUId is required");
 
-        List<Question> questions = givenAListOfTwoCompulsoryQuestions();
+        Survey.createEmptySurvey("UID", "PROGRAM_UID", "ORG_UNIT_UID", null, 0, givenAListOfTwoCompulsoryQuestions());
+    }
 
-        Survey.createEmptySurvey("UID", "PROGRAM_UID", "ORG_UNIT_UID", null, questions);
+    @Test
+    public void throw_exception_when_calculate_without_completion_date()
+            throws CalculateNextScheduledDateException {
+        thrown.expect(CalculateNextScheduledDateException.class);
+
+        Survey survey = Survey.createEmptySurvey("UID","PROGRAM_UID", "ORG_UNIT_UID", "USER_UID", 0,  givenAListOfTwoCompulsoryQuestions());
+        survey.calculateNextScheduledDate();
+    }
+
+    @Test
+    public void throw_exception_when_calculate_without_score()
+            throws CalculateNextScheduledDateException {
+        thrown.expect(CalculateNextScheduledDateException.class);
+
+        Survey survey = Survey.createEmptySurvey("UID","PROGRAM_UID", "ORG_UNIT_UID", "USER_UID", 0,  givenAListOfTwoCompulsoryQuestions());
+        survey.assignCompletionDate(new Date());
+        survey.calculateNextScheduledDate();
+    }
+
+    @Test
+    public void return_next_schedule_date_with_more_6_months_than_completion_if_score_type_is_a()
+            throws CalculateNextScheduledDateException {
+        Date date = new Date();
+
+        Survey survey = Survey.createEmptySurvey("UID","PROGRAM_UID", "ORG_UNIT_UID", "USER_UID", 0,  givenAListOfTwoCompulsoryQuestions());
+        survey.assignScore(new Score("sesese",99f));
+        survey.assignCompletionDate(date);
+
+        DateTime completionDateTime = new DateTime(survey.getCompletionDate().getTime());
+        DateTime nextScheduledDateTime = new DateTime( survey.calculateNextScheduledDate().getTime());
+
+        Months differenceInMonths = Months.monthsBetween(completionDateTime,nextScheduledDateTime);
+
+        assertThat(differenceInMonths.getMonths(), is(6));
+    }
+
+    @Test
+    public void return_next_schedule_date_with_more_4_months_than_completion_if_score_type_is_bc_and_is_low_productivity()
+            throws CalculateNextScheduledDateException {
+        Date date = new Date();
+
+        Survey survey = Survey.createEmptySurvey("UID","PROGRAM_UID", "ORG_UNIT_UID", "USER_UID", 0,  givenAListOfTwoCompulsoryQuestions());
+        survey.assignScore(new Score("sesese",30f));
+        survey.assignCompletionDate(date);
+
+        DateTime completionDateTime = new DateTime(survey.getCompletionDate().getTime());
+        DateTime nextScheduledDateTime = new DateTime( survey.calculateNextScheduledDate().getTime());
+
+        Months differenceInMonths = Months.monthsBetween(completionDateTime,nextScheduledDateTime);
+
+        assertThat(differenceInMonths.getMonths(), is(4));
+    }
+
+    @Test
+    public void return_next_schedule_date_with_more_2_months_than_completion_if_score_type_is_bc_and_is_not_low_productivity()
+            throws CalculateNextScheduledDateException {
+        Date date = new Date();
+
+        Survey survey = Survey.createEmptySurvey("UID","PROGRAM_UID", "ORG_UNIT_UID", "USER_UID", 9, givenAListOfTwoCompulsoryQuestions());
+        survey.assignScore(new Score("sesese",30f));
+        survey.assignCompletionDate(date);
+
+        DateTime completionDateTime = new DateTime(survey.getCompletionDate().getTime());
+        DateTime nextScheduledDateTime = new DateTime( survey.calculateNextScheduledDate().getTime());
+
+        Months differenceInMonths = Months.monthsBetween(completionDateTime,nextScheduledDateTime);
+
+        assertThat(differenceInMonths.getMonths(), is(2));
+        List<Question> questions = givenAListOfTwoCompulsoryQuestions();
     }
 
     @Test
@@ -543,16 +618,18 @@ public class SurveyShould {
         questions.add(question);
         question = new Question("QuestionUID2", 2, true);
         questions.add(question);
-        return Survey.createEmptySurvey(
-                "UID", "PROGRAM_UID", "ORG_UNIT_UID", "USER_UID", questions);
+        return Survey.createEmptySurvey("UID", "PROGRAM_UID", "ORG_UNIT_UID",
+                "USER_UID", 0, questions);
     }
 
-    private Survey givenAPulledSurveyWithSimpleAndOptionValues(Date creationDate, Date uploadDate, Date scheduledDate, Date completionDate, List<QuestionValue> values, Score score) {
+    private Survey givenAPulledSurveyWithSimpleAndOptionValues(Date creationDate, Date uploadDate,
+                                                               Date scheduledDate, Date completionDate,
+                                                               List<QuestionValue> values, Score score) {
         values.add(QuestionValue.createSimpleValue("UId", "value"));
         values.add(QuestionValue.createOptionValue("UId2", "optionUId", "value2"));
 
-        return Survey.createSentSurvey("UID", "PROGRAM_UID", "ORG_UNIT_UID",
-                "USER_UID", creationDate, uploadDate, scheduledDate, completionDate, values, score);
+        return Survey.createStoredSurvey(SurveyStatus.SENT, "UID", "PROGRAM_UID", "ORG_UNIT_UID",
+                "USER_UID", creationDate, uploadDate, scheduledDate, completionDate, values, score, 0);
     }
 
     private Survey createQuestionTreeWithoutMultiparentChildren() {
@@ -577,7 +654,7 @@ public class SurveyShould {
         questions.add(question5);
         questions.add(question6);
         Survey survey = Survey.createEmptySurvey(
-                "UID", "PROGRAM_UID", "ORG_UNIT_UID", "USER_UID", questions);
+                "UID", "PROGRAM_UID", "ORG_UNIT_UID", "USER_UID", 0, questions);
         return survey;
     }
 
@@ -613,7 +690,7 @@ public class SurveyShould {
         questions.add(question7);
         questions.add(question8);
         Survey survey = Survey.createEmptySurvey(
-                "UID", "PROGRAM_UID", "ORG_UNIT_UID", "USER_UID", questions);
+                "UID", "PROGRAM_UID", "ORG_UNIT_UID", "USER_UID", 0, questions);
         return survey;
     }
 
@@ -621,7 +698,7 @@ public class SurveyShould {
         List<Question> questions = givenQuestionsTreeWithMultipleParents();
 
         Survey survey = Survey.createEmptySurvey(
-                "UID", "PROGRAM_UID", "ORG_UNIT_UID", "USER_UID", questions);
+                "UID", "PROGRAM_UID", "ORG_UNIT_UID", "USER_UID", 0, questions);
 
         return survey;
     }

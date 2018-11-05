@@ -1,5 +1,8 @@
 package org.eyeseetea.malariacare.domain.entity;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -95,8 +98,20 @@ public class CompositeScoreShould {
         new CompositeScore("UID","UID", "LABEL", "HIERARCHICAL_CODE", -1);
     }
 
+    @Test
+    public void return_is_root_equal_to_true_if_hierarchical_code_is_0() {
+        CompositeScore compositeScore =
+                new CompositeScore("","UID", "LABEL", "0", 1);
 
+        assertThat(compositeScore.isRoot(), is(true));
+    }
 
+    @Test
+    public void return_is_root_equal_to_false_if_hierarchical_code_is_not_0() {
+        CompositeScore compositeScore =
+                new CompositeScore("","UID", "LABEL", "1.1", 1);
 
+        assertThat(compositeScore.isRoot(), is(false));
+    }
 
 }

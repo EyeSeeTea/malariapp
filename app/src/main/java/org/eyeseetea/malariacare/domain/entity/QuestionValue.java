@@ -6,6 +6,7 @@ public class QuestionValue {
     private final String questionUId;
     private String optionUId;
     private String value;
+    private boolean conflict;
 
     private QuestionValue(String questionUId, String optionUId, String value){
         this(questionUId, value);
@@ -41,6 +42,15 @@ public class QuestionValue {
         return value;
     }
 
+
+    public void markAsConflict() {
+        this.conflict = true;
+    }
+
+    public boolean isConflict() {
+        return conflict;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -48,6 +58,7 @@ public class QuestionValue {
 
         QuestionValue that = (QuestionValue) o;
 
+        if (conflict != that.conflict) return false;
         if (!questionUId.equals(that.questionUId)) return false;
         if (optionUId != null ? !optionUId.equals(that.optionUId) : that.optionUId != null) {
             return false;
@@ -60,6 +71,7 @@ public class QuestionValue {
         int result = questionUId.hashCode();
         result = 31 * result + (optionUId != null ? optionUId.hashCode() : 0);
         result = 31 * result + value.hashCode();
+        result = 31 * result + (conflict ? 1 : 0);
         return result;
     }
 
@@ -69,6 +81,7 @@ public class QuestionValue {
                 "questionUId='" + questionUId + '\'' +
                 ", optionUId='" + optionUId + '\'' +
                 ", value='" + value + '\'' +
+                ", conflict=" + conflict +
                 '}';
     }
 }

@@ -17,19 +17,21 @@
   ~  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<android.support.v7.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <!-- A 'parent' preference, which enables/disables child preferences (below)
          when checked/unchecked. -->
-    <CheckBoxPreference
+    <android.support.v7.preference.CheckBoxPreference
         android:key="@string/customize_fonts"
         android:title="@string/settings_checkbox_customize_fonts"
-        android:defaultValue="false" />
+        android:defaultValue="false"
+        app:iconSpaceReserved="false" />
 
     <!-- Allows the user to choose a ringtone in the 'notification' category. -->
     <!-- NOTE: This preference will be enabled only when the checkbox above is checked. -->
     <!-- NOTE: RingtonePreference's summary should be set to its value by the activity code. -->
-    <ListPreference
+    <android.support.v7.preference.ListPreference
         android:key="@string/font_sizes"
         android:dependency="@string/customize_fonts"
         android:title="@string/settings_list_font_sizes"
@@ -37,14 +39,17 @@
         android:entries="@array/settings_array_titles_font_sizes"
         android:entryValues="@array/settings_array_values_font_sizes"
         android:negativeButtonText="@null"
-        android:positiveButtonText="@null" />
+        android:icon="@null"
+        android:positiveButtonText="@null"
+        app:iconSpaceReserved="false" />
 
-    <ListPreference
+    <android.support.v7.preference.ListPreference
         android:defaultValue=""
         android:key="@string/language_code"
         android:negativeButtonText="@null"
         android:positiveButtonText="@null"
-        android:title="@string/settings_select_language" />
+        android:title="@string/settings_select_language"
+        app:iconSpaceReserved="false" />
     <!-- NOTE: EditTextPreference accepts EditText attributes. -->
     <!-- NOTE: EditTextPreference's summary should be set to its value by the activity code. -->
     <org.eyeseetea.malariacare.views.ReadonlyPreference
@@ -54,7 +59,8 @@
         android:selectAllOnFocus="true"
         android:inputType="textUri"
         android:singleLine="true"
-        android:maxLines="1" />
+        android:maxLines="1"
+        app:iconSpaceReserved="false" />
 
     <org.eyeseetea.malariacare.views.ReadonlyPreference
         android:key="@string/dhis_user"
@@ -63,7 +69,8 @@
         android:selectAllOnFocus="true"
         android:inputType="text"
         android:singleLine="true"
-        android:maxLines="1" />
+        android:maxLines="1"
+        app:iconSpaceReserved="false" />
 
     <org.eyeseetea.malariacare.views.ReadonlyPreference
         android:key="@string/dhis_password"
@@ -72,9 +79,10 @@
         android:selectAllOnFocus="true"
         android:inputType="textPassword"
         android:singleLine="true"
-        android:maxLines="1" />
+        android:maxLines="1"
+        app:iconSpaceReserved="false" />
 
-    <EditTextPreference
+    <android.support.v7.preference.EditTextPreference
         android:key="@string/dhis_max_items"
         android:title="@string/settings_text_dhis_max_items"
         android:defaultValue="@string/dhis_default_max_items"
@@ -83,9 +91,10 @@
         android:numeric="integer"
         android:singleLine="true"
         android:maxLines="1"
-        android:maxLength="4"/>
+        android:maxLength="4"
+        app:iconSpaceReserved="false" />
 
-    <EditTextPreference
+    <android.support.v7.preference.EditTextPreference
         android:key="@string/monitoring_target"
         android:title="@string/settings_monitoring_target"
         android:defaultValue="@string/default_monitoring_target"
@@ -94,17 +103,20 @@
         android:numeric="integer"
         android:singleLine="true"
         android:maxLines="1"
-        android:maxLength="4"/>
+        android:maxLength="4"
+        app:iconSpaceReserved="false" />
 
-    <CheckBoxPreference
+    <android.support.v7.preference.CheckBoxPreference
         android:key="@string/hide_planning_tab_key"
         android:title="@string/hide_planning_tab_title"
         android:summary="@string/hide_planning_tab_summary"
-        android:defaultValue="false" />
+        android:defaultValue="false"
+        app:iconSpaceReserved="false" />
     
-    <CheckBoxPreference
+    <android.support.v7.preference.CheckBoxPreference
         android:key="@string/developer_option"
         android:title="@string/developer_option_title"
         android:summary="@string/developer_option_summary"
-        android:defaultValue="false" />
-</PreferenceScreen>
+        android:defaultValue="false"
+        app:iconSpaceReserved="false" />
+</android.support.v7.preference.PreferenceScreen>

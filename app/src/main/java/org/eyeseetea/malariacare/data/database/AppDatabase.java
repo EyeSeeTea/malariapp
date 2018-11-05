@@ -28,7 +28,8 @@ import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 import org.eyeseetea.malariacare.data.database.model.HeaderDB;
 import org.eyeseetea.malariacare.data.database.model.MatchDB;
 import org.eyeseetea.malariacare.data.database.model.MediaDB;
-import org.eyeseetea.malariacare.data.database.model.ObsActionPlanDB;
+import org.eyeseetea.malariacare.data.database.model.ObservationDB;
+import org.eyeseetea.malariacare.data.database.model.ObservationValueDB;
 import org.eyeseetea.malariacare.data.database.model.OptionDB;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitLevelDB;
@@ -54,7 +55,7 @@ import org.eyeseetea.malariacare.data.database.model.ValueDB;
 
 public class AppDatabase {
     public static final String NAME = "EyeSeeTeaDB";
-    public static final int VERSION = 16;
+    public static final int VERSION = 17;
 
     // Aliases used for EyeSeeTea DB queries
     public static final String obsActionPlanName = "oap";
@@ -142,7 +143,8 @@ public class AppDatabase {
                 ProgramDB.class,
                 ServerMetadataDB.class,
                 MediaDB.class,
-                ObsActionPlanDB.class
+                ObservationDB.class,
+                ObservationValueDB.class
         );
     }
 }
