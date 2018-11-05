@@ -37,6 +37,7 @@ import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.Pr
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.UserAccountExtended;
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.remote.sdk.PullDhisSDKDataSource;
 import org.eyeseetea.malariacare.data.remote.sdk.SdkQueries;
 import org.eyeseetea.malariacare.domain.boundary.IPullMetadataController;
@@ -64,7 +65,12 @@ public class PullMetadataController implements IPullMetadataController {
 
     @Override
     public void pullMetadata(final IPullMetadataController.Callback callback) {
+        //TODO: jsanchez when we decoupled from dhis metadata review this
+        //should we remove login user in pull process?
+        //In any case if we remove the user table in wipeDatabase then remove also session user
         AppDatabase.wipeDatabase();
+        Session.setUser(null);
+
         this.callback = callback;
 
 

@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface ICompositeScoreRepository {
 
-    List<CompositeScore> getCompositesScoreByProgram(String programUid);
+    List<CompositeScore> getByProgram(String programUid);
 
+    List<CompositeScore> getAll();
 }
