@@ -299,4 +299,5 @@
 <string name="monitor_js_multiple_event_legend" >"(*) ມີການສໍາຫຼວດຫຼາຍກວ່າຫນຶ່ງເດືອນໃນເດືອນດຽວກັນ"</string>
 <string name="health_facility">ສູນການແພດ</string>
 <string name="dialog_pie_chart_label_explanation">"ວົງກົມພາຍນອກສະແດງໃຫ້ທ່ານເຫັນວ່າການສໍາເລັດສົມບູນ.\n\nວົງກົມພາຍໃນສະແດງໃຫ້ເຫັນວ່າທ່ານໄດ້ສໍາເລັດຄໍາຖາມບັງຄັບ, ໂດຍປົກກະຕິຫມາຍດ້ວຍ *. ພຽງແຕ່ເມື່ອມີຄໍາຕອບ 100% ແລ້ວ, ທ່ານສາມາດຫມາຍສໍາເລັດ."</string>
+<string name="login_error_unsupported_server_version">The server version is not supported</string>
 </resources>

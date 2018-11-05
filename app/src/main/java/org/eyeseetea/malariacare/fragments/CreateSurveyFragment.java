@@ -20,7 +20,7 @@
 package org.eyeseetea.malariacare.fragments;
 
 import android.app.AlertDialog;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -323,7 +323,7 @@ public class CreateSurveyFragment extends Fragment {
 
     /**
      * Called when the user clicks the Send button
-     * Gets the survey with the SURVEY_PLANNED state and set the createdate, user, SURVEY_IN_PROGRESS, and reset main score, and save the survey in session
+     * Gets the survey with the SURVEY_PLANNED state and set the createdate, user, SURVEY_IN_PROGRESS, and reset main score, and saveData the survey in session
      */
     public void createSurvey() {
         Log.i(".CreateSurveyActivity", "Saving survey and saving in session");
@@ -335,10 +335,10 @@ public class CreateSurveyFragment extends Fragment {
         ProgramDB program = (ProgramDB)programView.getSelectedItem();
 
 
-        //save  the list of orgUnits
+        //saveData  the list of orgUnits
         orgUnitHierarchy.saveSelectionInPreferences();
 
-        //save the program in the preferents
+        //saveData the program in the preferents
         setLastSelectedProgram(program.getUid());
 
         DashboardActivity.dashboardActivity.onCreateSurvey(orgUnit,program);

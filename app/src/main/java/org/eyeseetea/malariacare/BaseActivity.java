@@ -39,7 +39,7 @@ import android.view.Window;
 import android.widget.Toast;
 
 import org.eyeseetea.malariacare.data.database.iomodules.local.importer.ImportController;
-import org.eyeseetea.malariacare.data.database.model.ObsActionPlanDB;
+import org.eyeseetea.malariacare.data.database.model.ObservationDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.ExportData;
 import org.eyeseetea.malariacare.data.database.utils.LanguageContextWrapper;
@@ -48,9 +48,15 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.repositories.AuthenticationManager;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
+import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
+import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IAuthenticationManager;
+import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
+import org.eyeseetea.malariacare.domain.entity.SurveyStatus;
 import org.eyeseetea.malariacare.domain.usecase.ImportUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
+import org.eyeseetea.malariacare.domain.usecase.MarkAsRetryAllSendingDataUseCase;
+import org.eyeseetea.malariacare.factories.SyncFactory;
 import org.eyeseetea.malariacare.factories.AuthenticationFactory;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.listeners.SurveyLocationListener;
@@ -58,7 +64,6 @@ import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.utils.AUtils;
-import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.List;
 
@@ -86,26 +91,29 @@ public abstract class BaseActivity extends AppCompatActivity {
         initView(savedInstanceState);
 
         mLogoutUseCase = new AuthenticationFactory().getLogoutUseCase(this);
-        checkQuarantineSurveys();
+        checkQuarantineData();
         alarmPush = new AlarmPushReceiver();
         alarmPush.setPushAlarm(this);
     }
 
-    private void checkQuarantineSurveys() {
+
+    private void checkQuarantineData() {
         PreferencesState.getInstance().setPushInProgress(false);
-        List<SurveyDB> surveys = SurveyDB.getAllSendingSurveys();
-        Log.d(TAG + "B&D", "Pending surveys sending: "
-                + surveys.size());
-        for (SurveyDB survey : surveys) {
-            survey.setStatus(Constants.SURVEY_QUARANTINE);
-            survey.save();
-        }
-        List<ObsActionPlanDB> obsActionPlens = ObsActionPlanDB.getAllSendingObsActionPlans();
-        for (ObsActionPlanDB obsActionPlan : obsActionPlens) {
-            //Obs action plan doesn't need quarantine status. This type of element only overwritte the server survey.
-            obsActionPlan.setStatus(Constants.SURVEY_COMPLETED);
-            obsActionPlan.save();
-        }
+
+        MarkAsRetryAllSendingDataUseCase markAsRetryAllSendingDataUseCase =
+                new SyncFactory().getMarkAsRetryAllSendingDataUseCase();
+
+        markAsRetryAllSendingDataUseCase.execute(new MarkAsRetryAllSendingDataUseCase.Callback() {
+            @Override
+            public void onSuccess() {
+                Log.d(TAG , "Updated sending data (surveys and observations) as retry");
+            }
+
+            @Override
+            public void onError(String message) {
+                Log.d(TAG , "Updated sending data (surveys and observations) as retry");
+            }
+        });
     }
 
     /**
@@ -346,7 +354,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     public void prepareLocationListener(SurveyDB survey) {
 
-        locationListener = new SurveyLocationListener(survey.getId_survey());
+        locationListener = new SurveyLocationListener(survey.getEventUid());
         LocationManager locationManager =
                 (LocationManager) LocationMemory.getContext().getSystemService(
                         Context.LOCATION_SERVICE);
