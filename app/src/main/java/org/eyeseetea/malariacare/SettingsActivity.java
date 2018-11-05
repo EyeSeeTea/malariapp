@@ -31,6 +31,7 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
@@ -39,12 +40,14 @@ import android.support.v7.preference.PreferenceManager;
 import android.support.v7.preference.PreferenceScreen;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.View;
 
 import org.eyeseetea.malariacare.data.database.utils.LanguageContextWrapper;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.data.repositories.AuthenticationManager;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
+import org.eyeseetea.malariacare.factories.AuthenticationFactory;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
+import org.eyeseetea.malariacare.views.SimpleDividerItemDecoration;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -182,7 +185,7 @@ public class SettingsActivity extends AppCompatActivity implements
     /**
      * Determines whether the simplified settings UI should be shown. This is
      * true if this is forced via {@link #ALWAYS_SIMPLE_PREFS}, or the device
-     * doesn't have newer APIs like {@link PreferenceFragment}, or the device
+     * doesn't have newer APIs like {@link PreferenceFragmentCompat}, or the device
      * doesn't have an extra-large screen. In these cases, a single-pane
      * "simplified" settings UI should be shown.
      */
@@ -272,7 +275,6 @@ public class SettingsActivity extends AppCompatActivity implements
             // Add 'general' preferences.
             addPreferencesFromResource(R.xml.pref_general);
 
-
             PreferencesState.getInstance().initalizateActivityDependencies();
 
             // fitler the font options by screen size
@@ -324,6 +326,12 @@ public class SettingsActivity extends AppCompatActivity implements
             if (BuildConfig.customFontHidden) {
                 hideFontCustomisationOption(preferenceScreen);
             }
+        }
+
+        @Override
+        public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+            super.onViewCreated(view, savedInstanceState);
+            getListView().addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
         }
     }
 
@@ -426,8 +434,7 @@ class LoginRequiredOnPreferenceClickListener implements Preference.OnPreferenceC
 
     private void logout() {
         Log.d(TAG, "Logging out...");
-        AuthenticationManager authenticationManager = new AuthenticationManager(activity);
-        LogoutUseCase logoutUseCase = new LogoutUseCase(authenticationManager);
+        LogoutUseCase logoutUseCase = new AuthenticationFactory().getLogoutUseCase(activity);
 
         logoutUseCase.execute(new LogoutUseCase.Callback() {
             @Override

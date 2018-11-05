@@ -43,7 +43,7 @@ public class CompositeScoreAdapter extends ATabAdapter {
     }
 
     /**
-     * Factory method to build a scored/non scored layout according to tab type.
+     * AFactory method to build a scored/non scored layout according to tab type.
      *
      * @param tab
      * @param context
