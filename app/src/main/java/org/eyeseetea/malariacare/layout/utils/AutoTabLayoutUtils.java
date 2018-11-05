@@ -459,7 +459,7 @@ public class AutoTabLayoutUtils {
     }
 
     /**
-     * Recalculate num and denum of a quetsion, update them in cache vars and save the new num/denum in the score register associated with the question
+     * Recalculate num and denum of a quetsion, update them in cache vars and saveData the new num/denum in the score register associated with the question
      * @param viewHolder views cache
      * @param question question that change its values
      */

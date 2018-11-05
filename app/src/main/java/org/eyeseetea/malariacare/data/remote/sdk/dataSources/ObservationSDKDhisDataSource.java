@@ -35,7 +35,7 @@ import org.eyeseetea.malariacare.domain.entity.Option;
 import org.eyeseetea.malariacare.domain.entity.ServerMetadata;
 import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.entity.pushsummary.PushReport;
-import org.eyeseetea.malariacare.domain.usecase.pull.SurveyFilter;
+import org.eyeseetea.malariacare.domain.usecase.pull.PullSurveyFilter;
 import org.hisp.dhis.client.sdk.android.api.D2;
 import org.hisp.dhis.client.sdk.models.common.importsummary.ImportSummary;
 import org.hisp.dhis.client.sdk.models.common.state.Action;
@@ -62,7 +62,7 @@ public class ObservationSDKDhisDataSource implements IDataRemoteDataSource {
     }
 
     @Override
-    public List<? extends IData> get(SurveyFilter filters) throws Exception {
+    public List<? extends IData> get(PullSurveyFilter filters) throws Exception {
         // Not used for the moment
         // The app not realize pull of observations from Dhis2
         return null;
@@ -77,7 +77,7 @@ public class ObservationSDKDhisDataSource implements IDataRemoteDataSource {
 
         FromObservationEventMapper eventMapper =
                 new FromObservationEventMapper(mContext, getSafeUsername(),
-                        (List<Survey>) mSurveyLocalDataSource.getAll(),options, serverMetadata);
+                        (List<Survey>) mSurveyLocalDataSource.getAllData(),options, serverMetadata);
 
         List<Event> events = eventMapper.map(observations);
         Set<String> eventUIds = new HashSet<>();

@@ -4,6 +4,7 @@ import static org.eyeseetea.malariacare.domain.common.PositiveOrCeroChecker.isPo
 import static org.eyeseetea.malariacare.domain.common.RequiredChecker.required;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CompositeScore {
     private String uid;
@@ -11,7 +12,9 @@ public class CompositeScore {
     private String hierarchicalCode;
     private int orderPos;
     private String parentUid;
-    private ArrayList<CompositeScore> children;
+    private ArrayList<CompositeScore> children =  new ArrayList<>();
+
+    public static final String ROOT_NODE_CODE = "0";
 
 
     public CompositeScore(String parentUid, String uid, String label, String hierarchicalCode,
@@ -43,8 +46,8 @@ public class CompositeScore {
         return parentUid;
     }
 
-    public ArrayList<CompositeScore> getChildren() {
-        return children;
+    public List<CompositeScore> getChildren() {
+        return new ArrayList<>(children);
     }
 
     public void addChildren(ArrayList<CompositeScore> children) {
@@ -60,6 +63,10 @@ public class CompositeScore {
         children.add(required(child, "ChildUid is required an not empty"));
     }
 
+    public boolean isRoot() {
+        return hierarchicalCode.equals(ROOT_NODE_CODE);
+    }
+
     @Override
     public String toString() {
         return "CompositeScore{" +
@@ -71,4 +78,6 @@ public class CompositeScore {
                 ", children=" + children +
                 '}';
     }
+
+
 }
