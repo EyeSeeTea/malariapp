@@ -50,22 +50,20 @@ public class DataFactory extends AFactory {
 
     @NonNull
     public IDataRemoteDataSource getSurveyRemoteDataSource(Context context) {
-        IServerMetadataRepository serverMetadataRepository =
-                new ServerMetadataRepository(context);
-        IOptionRepository optionRepository = new OptionRepository();
         IQuestionRepository questionRepository = new QuestionLocalDataSource();
         IOrgUnitRepository orgUnitRepository = new OrgUnitRepository();
         ICompositeScoreRepository compositeScoreRepository = new CompositeScoreDataSource();
         IConnectivityManager connectivityManager = new ConnectivityManager();
 
-        return new SurveySDKDhisDataSource(context, serverMetadataRepository,
-                questionRepository, optionRepository, compositeScoreRepository, orgUnitRepository,
+        return new SurveySDKDhisDataSource(context, getServerMetadataRepository(context),
+                questionRepository, getOptionRepository(), compositeScoreRepository, orgUnitRepository,
                 connectivityManager);
     }
 
     @NonNull
     public IDataRemoteDataSource getObservationRemoteDataSource(Context context) {
-        return new ObservationSDKDhisDataSource(context, getSurveyLocalDataSource());
+        return new ObservationSDKDhisDataSource(context, getSurveyLocalDataSource(),
+                getServerMetadataRepository(context), getOptionRepository());
     }
 
     @NonNull
@@ -76,5 +74,15 @@ public class DataFactory extends AFactory {
     @NonNull
     private ObservationLocalDataSource getObservationLocalDataSource() {
         return new ObservationLocalDataSource();
+    }
+
+    @NonNull
+    private IServerMetadataRepository getServerMetadataRepository(Context context) {
+        return new ServerMetadataRepository(context);
+    }
+
+    @NonNull
+    private IOptionRepository getOptionRepository() {
+        return new OptionRepository();
     }
 }

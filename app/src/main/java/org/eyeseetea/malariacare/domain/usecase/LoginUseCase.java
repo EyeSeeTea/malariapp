@@ -27,6 +27,7 @@ import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
 import org.eyeseetea.malariacare.domain.exception.InvalidCredentialsException;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
+import org.hisp.dhis.client.sdk.models.common.UnsupportedServerVersionException;
 
 import java.net.MalformedURLException;
 import java.net.UnknownHostException;
@@ -40,6 +41,8 @@ public class LoginUseCase implements UseCase {
         void onInvalidCredentials();
 
         void onNetworkError();
+
+        void onUnsupportedServerVersion();
     }
 
     private IAuthenticationManager mUserAccountRepository;
@@ -79,6 +82,8 @@ public class LoginUseCase implements UseCase {
                            notifyOnInvalidCredentials();
                         } else if (throwable instanceof NetworkException) {
                             notifyOnNetworkError();
+                        } else if (throwable instanceof UnsupportedServerVersionException){
+                            notifyOnUnsupportedServerVersion();
                         }
                     }
                 });
@@ -114,6 +119,14 @@ public class LoginUseCase implements UseCase {
             @Override
             public void run() {
                 mCallback.onNetworkError();
+            }
+        });
+    }
+    private void notifyOnUnsupportedServerVersion(){
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                mCallback.onUnsupportedServerVersion();
             }
         });
     }

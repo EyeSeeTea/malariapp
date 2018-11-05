@@ -5,10 +5,14 @@ import android.content.Context;
 import org.eyeseetea.malariacare.data.boundaries.IDataLocalDataSource;
 import org.eyeseetea.malariacare.data.boundaries.IDataRemoteDataSource;
 import org.eyeseetea.malariacare.data.database.MetadataValidator;
+import org.eyeseetea.malariacare.data.database.datasources.ObservationLocalDataSource;
+import org.eyeseetea.malariacare.data.database.datasources.SurveyLocalDataSource;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushDataController;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullDataController;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullMetadataController;
 import org.eyeseetea.malariacare.data.network.ConnectivityManager;
+import org.eyeseetea.malariacare.data.remote.sdk.data.ObservationSDKDhisDataSource;
+import org.eyeseetea.malariacare.data.remote.sdk.data.SurveySDKDhisDataSource;
 import org.eyeseetea.malariacare.domain.boundary.IConnectivityManager;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IObservationRepository;
@@ -20,6 +24,7 @@ import org.eyeseetea.malariacare.domain.usecase.pull.PullUseCase;
 public class SyncFactory extends AFactory{
 
     private DataFactory mDataFactory;
+    private MetadataFactory metadataFactory = new MetadataFactory();
 
     public SyncFactory(){
         mDataFactory = new DataFactory();
