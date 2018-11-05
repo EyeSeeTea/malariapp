@@ -24,7 +24,7 @@ import org.eyeseetea.malariacare.data.boundaries.IDataRemoteDataSource;
 import org.eyeseetea.malariacare.domain.boundary.IPullDataController;
 import org.eyeseetea.malariacare.domain.entity.IData;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
-import org.eyeseetea.malariacare.domain.usecase.pull.SurveyFilter;
+import org.eyeseetea.malariacare.domain.usecase.pull.PullSurveyFilter;
 
 import java.util.List;
 
@@ -44,7 +44,7 @@ public class PullDataController implements IPullDataController {
     }
 
     @Override
-    public void pullData(final SurveyFilter filters, final IPullDataController.Callback callback) {
+    public void pullData(final PullSurveyFilter filters, final IPullDataController.Callback callback) {
         this.callback = callback;
 
         try {
@@ -52,7 +52,7 @@ public class PullDataController implements IPullDataController {
 
             List<? extends IData> surveys = mSurveyRemoteDataSource.get(filters);
 
-            mSurveyLocalDataSource.save(surveys);
+            mSurveyLocalDataSource.saveData(surveys);
 
             callback.onComplete();
 

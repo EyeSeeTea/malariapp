@@ -42,24 +42,25 @@ public class ObservationLocalDataSource implements IObservationDataSource, IData
     }
 
     @Override
-    public List<? extends IData> getAll() {
+    public List<? extends IData> getAllData() {
         List<Observation> observations = getObservations(null);
         return observations;
     }
 
     @Override
-    public void save(List<? extends IData> dataList) throws Exception {
+    public void saveData(List<? extends IData> dataList) throws Exception {
         List<Observation> observations = (List<Observation>) dataList;
         saveObservations(observations);
     }
 
     @Override
-    public void save(IData data){
+    public void saveData(IData data){
         Observation observation = (Observation) data;
 
         saveObservation(observation);
     }
 
+    @Override
     public List<Observation> getObservations(ObservationStatus status) {
         List<ObservationDB> observationDBS = getObservationsDB(status);
 
@@ -67,6 +68,12 @@ public class ObservationLocalDataSource implements IObservationDataSource, IData
 
         return observations;
     }
+
+    @Override
+    public void save(List<Observation> observations) {
+        saveObservations(observations);
+    }
+
 
     @Override
     public Observation getObservation(String surveyUId) throws Exception {
@@ -115,10 +122,10 @@ public class ObservationLocalDataSource implements IObservationDataSource, IData
 
         Where where = from.where(ObservationDB_Table.status_observation.isNotNull());
 
-        if (observationStatus == ObservationStatus.COMPLETED){
+        if (observationStatus != null){
             where = from.where(SurveyDB_Table.status.eq(SurveyStatus.SENT.getCode()))
                     .and(ObservationDB_Table.status_observation.eq(
-                            ObservationStatus.COMPLETED.getCode()));
+                            observationStatus.getCode()));
         }
 
         observationDBS = where.queryList();
