@@ -93,7 +93,7 @@ public class AutoTabAdapter extends ATabAdapter {
     boolean readOnly;
 
     /**
-     * Factory that holds common info between selected items
+     * AFactory that holds common info between selected items
      */
     private final AutoTabSelectedItem autoTabSelectedItemFactory;
 
@@ -138,7 +138,7 @@ public class AutoTabAdapter extends ATabAdapter {
     }
 
     /**
-     * Factory method to build a scored/non scored layout according to tab type.
+     * AFactory method to build a scored/non scored layout according to tab type.
      *
      * @param tab
      * @param context

@@ -186,7 +186,7 @@ public class PushDataController implements IPushController {
                         }
                     }
 
-                    dataLocalDataSource.save(data);
+                    dataLocalDataSource.saveData(data);
                 }
 
                 callback.onComplete();
@@ -203,13 +203,13 @@ public class PushDataController implements IPushController {
             item.markAsSending();
         }
 
-        dataLocalDataSource.save(dataList);
+        dataLocalDataSource.saveData(dataList);
     }
 
     private void markDataAsErrorConversionSync(IData failedData,
             IDataLocalDataSource dataLocalDataSource) {
         failedData.markAsErrorConversionSync();
-        dataLocalDataSource.save(failedData);
+        dataLocalDataSource.saveData(failedData);
     }
 
     private void markDataAsRetry(List<? extends IData> dataList,
@@ -217,6 +217,6 @@ public class PushDataController implements IPushController {
         for (IData item :dataList) {
             item.markAsRetrySync();
         }
-        dataLocalDataSource.save(dataList);
+        dataLocalDataSource.saveData(dataList);
     }
 }
