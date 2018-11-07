@@ -19,6 +19,8 @@
 
 package org.eyeseetea.malariacare.layout.dashboard.controllers;
 
+
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -143,7 +145,7 @@ public class ImproveModuleController extends ModuleController {
     }
 
     private void closeFeedbackFragment() {
-        android.app.Fragment fragment = dashboardActivity.getFragmentManager ().findFragmentById(R.id.dashboard_completed_container);
+        Fragment fragment = dashboardActivity.getSupportFragmentManager ().findFragmentById(R.id.dashboard_completed_container);
         if(fragment instanceof  FeedbackFragment) {
             feedbackFragment.unregisterReceiver();
             if(feedbackFragment.getView()!=null){
