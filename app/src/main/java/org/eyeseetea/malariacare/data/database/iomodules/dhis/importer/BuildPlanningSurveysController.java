@@ -22,14 +22,12 @@ package org.eyeseetea.malariacare.data.database.iomodules.dhis.importer;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.data.boundaries.ISurveyDataSource;
-import org.eyeseetea.malariacare.data.database.datasources.SurveyLocalDataSource;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.domain.boundary.IBuildPlannedController;
-import org.eyeseetea.malariacare.domain.boundary.IOrgUnitRepository;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IOrgUnitRepository;
 import org.eyeseetea.malariacare.domain.entity.OrgUnit;
 import org.eyeseetea.malariacare.domain.entity.Survey;
-import org.eyeseetea.malariacare.domain.exception.push.NullEventDateException;
-import org.eyeseetea.malariacare.domain.usecase.pull.SurveyFilter;
+import org.eyeseetea.malariacare.domain.entity.SurveyFilter;
 import org.hisp.dhis.client.sdk.core.common.utils.CodeGenerator;
 
 import java.util.ArrayList;
@@ -45,7 +43,7 @@ public class BuildPlanningSurveysController implements IBuildPlannedController {
 
     public BuildPlanningSurveysController(
             ISurveyDataSource localSurveyDataSource,
-            IOrgUnitRepository orgUnitRepository) {
+            org.eyeseetea.malariacare.domain.boundary.repositories.IOrgUnitRepository orgUnitRepository) {
         this.localSurveyDataSource = localSurveyDataSource;
         this.localOrgUnitDataSource = orgUnitRepository;
     }
@@ -54,10 +52,9 @@ public class BuildPlanningSurveysController implements IBuildPlannedController {
     public void buildPlanningSurveys(final Callback callback) {
         Log.d(TAG, "building planning surveys");
         this.callback = callback;
-        SurveyFilter surveyFilter = SurveyFilter.createFilterToBuildPlanningSurveys();
 
        try {
-           getAndSaveFromExistingCombinations(surveyFilter);
+           getAndSaveFromExistingCombinations();
 
            getAndSaveNotExistantCombinations(callback);
 
@@ -73,14 +70,14 @@ public class BuildPlanningSurveysController implements IBuildPlannedController {
         //Plan non existent combinations
         plannedSurveys.addAll(surveys);
 
-        localSurveyDataSource.Save(plannedSurveys);
+        localSurveyDataSource.save(plannedSurveys);
 
         callback.onComplete();
     }
 
-    private void getAndSaveFromExistingCombinations(SurveyFilter surveyFilter) throws Exception {
+    private void getAndSaveFromExistingCombinations() throws Exception {
         List<Survey> plannedSurveys = new ArrayList<>();
-        List <Survey> surveys = localSurveyDataSource.getSurveys(surveyFilter);
+        List <Survey> surveys = localSurveyDataSource.getSurveys(SurveyFilter.createLastSurveyFilter());
 
         //Plan a copy according to that survey
         if(surveys!=null) {
@@ -89,12 +86,12 @@ public class BuildPlanningSurveysController implements IBuildPlannedController {
                 plannedSurveys.add(buildPlanningSurvey(survey));
             }
         }
-        localSurveyDataSource.Save(plannedSurveys);
+        localSurveyDataSource.save(plannedSurveys);
     }
 
     private Survey buildPlanningSurvey(Survey survey) {
         Survey plannedSurvey = Survey.createPlannedSurvey(survey.getUId(), survey.getProgramUId(), survey.getOrgUnitUId(), survey.getUserUId(),
-                survey.getScheduledDate(), survey.getScore());
+                survey.getScheduledDate(), survey.getScore(), survey.getProductivity());
         return plannedSurvey;
     }
 
@@ -108,7 +105,7 @@ public class BuildPlanningSurveysController implements IBuildPlannedController {
                     continue;
                 } else {
                     //NOT exists. Create a new survey and add to never
-                    nonExistentCombinationList.add(buildPlanningSurvey(programUId, orgUnit.getUid()));
+                    nonExistentCombinationList.add(buildPlanningSurvey(programUId, orgUnit.getUid(), orgUnit.getProductivity(programUId)));
                 }
             }
         }
@@ -116,10 +113,9 @@ public class BuildPlanningSurveysController implements IBuildPlannedController {
     }
 
     private boolean checkIfACombinationExist(OrgUnit orgUnit, String programUId) {
-        SurveyFilter surveyFilter = SurveyFilter.createFilterToBuildPlanningSurveysByOrgUnitAndProgram(orgUnit.getUid(), programUId);
         List<Survey> survey = null;
         try {
-            survey = localSurveyDataSource.getSurveys(surveyFilter);
+            survey = localSurveyDataSource.getSurveys(SurveyFilter.createLastSurveyByOrgUnitAndProgramFilter(orgUnit.getUid(), programUId));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -131,8 +127,9 @@ public class BuildPlanningSurveysController implements IBuildPlannedController {
         return false;
     }
 
-    private Survey buildPlanningSurvey(String programUId, String orgUnitUId) {
-        Survey survey = Survey.createPlannedSurvey(CodeGenerator.generateCode(), programUId, orgUnitUId, Session.getUser().getUid(), null, null);
+    private Survey buildPlanningSurvey(String programUId, String orgUnitUId, int productivity) {
+        Survey survey = Survey.createPlannedSurvey(CodeGenerator.generateCode(), programUId, orgUnitUId, Session.getUser().getUid(),
+                null, null, productivity);
 
         Log.d(TAG, "building not existing combination orguid:"+ orgUnitUId+" proguid:"+programUId + " survey uid: "+survey.getUId());
         return survey;

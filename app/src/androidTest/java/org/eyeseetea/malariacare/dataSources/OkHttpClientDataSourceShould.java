@@ -3,8 +3,8 @@ package org.eyeseetea.malariacare.dataSources;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+import android.support.test.filters.SmallTest;
 import android.support.test.runner.AndroidJUnit4;
-import android.test.suitebuilder.annotation.SmallTest;
 
 import org.eyeseetea.malariacare.BuildConfig;
 import org.eyeseetea.malariacare.data.remote.api.OkHttpClientDataSource;
@@ -18,7 +18,7 @@ import org.junit.runner.RunWith;
 public class OkHttpClientDataSourceShould {
 
     private static final String DHIS_CHECK_EVENT_API =
-            "api/events.json?program=%s&orgUnit=%s&startDate=%s&endDate=%s&skipPaging=true"
+            "/api/events.json?program=%s&orgUnit=%s&startDate=%s&endDate=%s&skipPaging=true"
                     + "&fields=event,orgUnit,program,dataValues";
     private Credentials mCredentials;
 

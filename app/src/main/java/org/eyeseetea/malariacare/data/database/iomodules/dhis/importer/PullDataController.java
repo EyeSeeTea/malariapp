@@ -19,13 +19,14 @@
 
 package org.eyeseetea.malariacare.data.database.iomodules.dhis.importer;
 
+import org.eyeseetea.malariacare.data.boundaries.IDataLocalDataSource;
+import org.eyeseetea.malariacare.data.boundaries.IDataRemoteDataSource;
 import android.util.Log;
 
-import org.eyeseetea.malariacare.data.boundaries.ISurveyDataSource;
 import org.eyeseetea.malariacare.domain.boundary.IPullDataController;
-import org.eyeseetea.malariacare.domain.entity.Survey;
+import org.eyeseetea.malariacare.domain.entity.IData;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
-import org.eyeseetea.malariacare.domain.usecase.pull.SurveyFilter;
+import org.eyeseetea.malariacare.domain.usecase.pull.PullSurveyFilter;
 
 import java.util.List;
 
@@ -34,34 +35,38 @@ public class PullDataController implements IPullDataController {
 
     IPullDataController.Callback callback;
 
-    private ISurveyDataSource remoteSurveyDataSource;
-    private ISurveyDataSource localSurveyDataSource;
+    private IDataLocalDataSource mSurveyLocalDataSource;
+    private IDataRemoteDataSource mSurveyRemoteDataSource;
 
     public PullDataController(
-            ISurveyDataSource localSurveyDataSource,
-            ISurveyDataSource remoteSurveyDataSource) {
+            IDataLocalDataSource surveyLocalDataSource,
+            IDataRemoteDataSource surveyRemoteDataSource) {
 
-        this.localSurveyDataSource = localSurveyDataSource;
-        this.remoteSurveyDataSource = remoteSurveyDataSource;
+        this.mSurveyLocalDataSource = surveyLocalDataSource;
+        this.mSurveyRemoteDataSource = surveyRemoteDataSource;
     }
 
     @Override
-    public void pullData(final SurveyFilter filters, final IPullDataController.Callback callback) {
+    public void pullData(final PullSurveyFilter filters, final IPullDataController.Callback callback) {
         this.callback = callback;
-        Log.d(TAG, "Pull data start");
-       try {
+
+        try {
+            Log.d(TAG, "Pull data start");
             callback.onStep(PullStep.PREPARING_SURVEYS);
 
-            List<Survey> surveys = remoteSurveyDataSource.getSurveys(filters);
+            List<? extends IData> surveys = mSurveyRemoteDataSource.get(filters);
 
+            mSurveyLocalDataSource.saveData(surveys);
             Log.d(TAG, "Pull data downloaded");
-            localSurveyDataSource.Save(surveys);
 
+           mSurveyLocalDataSource.saveData(surveys);
             Log.d(TAG, "Pull data saved");
 
             callback.onComplete();
 
         } catch (Exception e) {
+            Log.d(TAG, "Pull error");
+            e.printStackTrace();
             callback.onError(e);
         }
     }

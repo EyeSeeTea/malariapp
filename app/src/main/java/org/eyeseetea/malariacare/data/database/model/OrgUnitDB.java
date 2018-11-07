@@ -95,6 +95,10 @@ public class OrgUnitDB extends BaseModel {
         this.setOrgUnitLevel(orgUnitLevel);
     }
 
+    public Long getId_org_unit_level_fk() {
+        return id_org_unit_level_fk;
+    }
+
     public Long getId_org_unit() {
         return id_org_unit;
     }
@@ -259,14 +263,6 @@ public class OrgUnitDB extends BaseModel {
 
 
                 OrgUnitDB_Table.name, true).queryList();
-    }
-
-    public List<String> getAllRelatedPrograms() {
-        List<String> uids = new ArrayList<>();
-        for(ProgramDB programDB : getPrograms()){
-            uids.add(programDB.uid_program);
-        }
-        return uids;
     }
 
     public static OrgUnitDB getOrgUnit(String uid) {

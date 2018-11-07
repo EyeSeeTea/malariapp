@@ -77,6 +77,14 @@ public class OrgUnitProgramRelationDB extends BaseModel {
         this.productivity=productivity;
     }
 
+    public Long getId_org_unit_fk() {
+        return id_org_unit_fk;
+    }
+
+    public Long getId_program_fk() {
+        return id_program_fk;
+    }
+
     public OrgUnitDB getOrgUnit() {
         if(orgUnit==null){
             if(id_org_unit_fk==null) return null;
@@ -180,6 +188,11 @@ public class OrgUnitProgramRelationDB extends BaseModel {
                     .where(OrgUnitProgramRelationDB_Table.id_org_unit_fk.eq(idOrgUnit))
                     .and(OrgUnitProgramRelationDB_Table.id_program_fk.eq(idProgram)).querySingle();
             return (orgUnitProgramRelation != null);
+    }
+
+
+    public static List<OrgUnitProgramRelationDB> list() {
+        return new Select().from(OrgUnitProgramRelationDB.class).queryList();
     }
 
     @Override

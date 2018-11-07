@@ -43,8 +43,6 @@ import com.raizlabs.android.dbflow.sql.language.Where;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.data.database.AppDatabase;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.VisitableToSDK;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
@@ -55,7 +53,7 @@ import java.util.Date;
 import java.util.List;
 
 @Table(database = AppDatabase.class, name = "Survey")
-public class SurveyDB extends BaseModel implements VisitableToSDK {
+public class SurveyDB extends BaseModel {
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -129,7 +127,7 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
         this.completion_date = null;
         this.upload_date = null;
         this.scheduled_date = null;
-        //// TODO: 26/07/2018  This action should be make on survey entity creation (SurveyPlanned build or when create a new survey). 
+        //// TODO: 26/07/2018  This action should be make on survey entity creation (SurveyPlanned build or when create a new survey).
         this.uid_event_fk = CodeGenerator.generateCode();
     }
 
@@ -171,6 +169,10 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
         return orgUnit;
     }
 
+    public Long getId_org_unit_fk() {
+        return id_org_unit_fk;
+    }
+
     public void setOrgUnit(OrgUnitDB orgUnit) {
         this.orgUnit = orgUnit;
         this.id_org_unit_fk = (orgUnit!=null)?orgUnit.getId_org_unit():null;
@@ -179,6 +181,10 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
     public void setOrgUnit(Long id_org_unit){
         this.id_org_unit_fk = id_org_unit;
         this.orgUnit = null;
+    }
+
+    public Long getId_program_fk() {
+        return id_program_fk;
     }
 
     public ProgramDB getProgram() {
@@ -200,6 +206,10 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
     public void setProgram(Long id_program){
         this.id_program_fk = id_program;
         this.program = null;
+    }
+
+    public Long getId_user_fk() {
+        return id_user_fk;
     }
 
     public UserDB getUser() {
@@ -312,6 +322,15 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
 
     public boolean isReadOnly() {
         return (isCompleted() || isSent());
+    }
+
+    public Float getMainScoreValue() {
+        float score = 0;
+
+        if (getMainScore() != null)
+            score = getMainScore().getScore();
+
+        return score;
     }
 
     public ScoreDB getMainScore() {
@@ -490,10 +509,6 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
                 .queryList();
     }
 
-    @Override
-    public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) throws ConversionException {
-        IConvertToSDKVisitor.visit(this);
-    }
     /* Returns the last surveys (by date) with status Completed or sent
     * @return
          */
@@ -635,14 +650,6 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
                 .count();
     }
 
-    public void saveConflict(String uid) {
-        for (ValueDB value : getValues()) {
-            if (value.getQuestion().getUid().equals(uid)) {
-                value.setConflict(true);
-                value.save();
-            }
-        }
-    }
 
     public boolean hasConflict() {
         for (ValueDB value : getValues()) {
@@ -651,6 +658,20 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
             }
         }
         return false;
+    }
+
+    public void prepareSurveyUploadedDate() {
+        if (!isSent()) {
+            setUploadDate(new Date());
+            save();
+        }
+    }
+
+    public void setSentSurveyState() {
+        //Change status and saveData mainScore
+        setStatus(Constants.SURVEY_SENT);
+        save();
+        saveMainScore();
     }
 
     public void setCompleteSurveyState(String module) {
@@ -678,7 +699,7 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
         //Clean inner lazy schedulelist
         surveySchedules = null;
 
-        //Move scheduledate and save
+        //Move scheduledate and saveData
         this.scheduled_date = newScheduledDate;
         this.save();
     }
@@ -714,6 +735,7 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
      * Finds a survey with a given orgunit and program
      */
     public static SurveyDB findPlannedByOrgUnitAndProgram(String orgUnitUId, String programUId) {
+        //// TODO: 07/11/2018  move to SurveyLocalDataSource
         return new Select()
                 .from(SurveyDB.class).as(surveyName)
                 .join(OrgUnitDB.class, Join.JoinType.LEFT_OUTER).as(orgUnitName)
@@ -755,6 +777,14 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
                 .from(SurveyDB.class)
                 .where(SurveyDB_Table.id_survey.eq(id)).querySingle();
     }
+
+
+    public static SurveyDB getSurveyByUId(String uid) {
+        return new Select()
+                .from(SurveyDB.class)
+                .where(SurveyDB_Table.uid_event_fk.eq(uid)).querySingle();
+    }
+
 
     public String getFullName() {
         StringBuilder stringBuilder = new StringBuilder();

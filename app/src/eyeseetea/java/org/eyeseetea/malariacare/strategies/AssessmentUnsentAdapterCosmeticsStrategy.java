@@ -4,7 +4,6 @@ import android.util.Log;
 import android.view.View;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.ScoreDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.repositories.SurveyAnsweredRatioRepository;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
@@ -68,11 +67,12 @@ public class AssessmentUnsentAdapterCosmeticsStrategy {
         final DoubleRectChart doubleRectChart =
                 (DoubleRectChart) view;
         if(doubleRectChart!=null){
-            ScoreDB scoreDB = survey.getMainScore();
-            Float score = null;
-            if(scoreDB != null){
-                score = scoreDB.getScore();
+            float score = 0;
+
+            if (survey.getMainScore() != null) {
+                score = survey.getMainScoreValue();
             }
+
             LayoutUtils.drawScore(score, doubleRectChart);
 
         }

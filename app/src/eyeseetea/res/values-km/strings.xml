@@ -137,7 +137,7 @@ evaluation"</string>
 <string name="feedback_show_only_media">"បង្ហាញតែសំណួរដែលមានវីដេអូ / រូបភាព"</string>
 <string name="feedback_show_only_one_or_show_all">"បង្ហាញតែមតិយោបល់ចុងក្រោយក្នុងមួយកម្មវិធី / PUll"</string>
 <string name="feedback_return">"Return to all assessments"</string>
-<string name="quality_of_care">"Quality of Care (QoC) Score:"</string>
+<string name="quality_of_care">"Quality of Care \nOverall Score:"</string>
 <string name="overall_quality_of_care">"Overall Quality of Care (QoC) score:"</string>
 <string name="feedback_info_passed">"PASS"</string>
 <string name="feedback_info_failed">"FAIL"</string>
@@ -232,15 +232,15 @@ evaluation"</string>
 <string name="survey_second_step">"Checking mandatory questions"</string>
 <string name="survey_third_step">"Calculating completeness ratio"</string>
 <string name="survey_fourth_step">"Calculating Score register"</string>
-<string name="error_conflict_message"></string>
+<string name="error_conflict_message">ព្រឹត្តិការណ៍ដែលមាន UID:%1$s ។ ត្រូវបានផ្ទុកឡើងជាមួយ pushConflict នៅក្នុងធាតុទិន្នន័យ UID:%2$s ជាមួយសារ:%3$s ។ សូមទាក់ទងអ្នកគ្រប់គ្រង។</string>
 <string name="dialog_action_logout">"ចេញតម្រូវឱ្យលុបឬផ្ញើទិន្នន័យមិនទាន់អានរបស់អ្នក។ "</string>
 <string name="dialog_action_refresh">"ទិន្នន័យមេតាឱ្យស្រស់តម្រូវឱ្យលុបឬផ្ញើទិន្នន័យមិនទាន់អានរបស់អ្នក។"</string>
 <string name="dialog_incomplete_surveys_before_refresh">"អ្នកមានការស្ទង់មតិមិនបានផ្ញើ %d និងនឹងត្រូវបានលុប។ តើអ្នកចង់បន្តឬ?"</string>
 <string name="dialog_all_surveys_sent_before_refresh">"អ្នកមិនមានការស្ទង់មតិមិនបានផ្ញើ។ តើអ្នកចង់បន្តឬ?"</string>
 <string name="action_button_text">ប្លង់ផែនការ</string>
 <string name="plan_action_title">ការសង្ក្រតនិងផែនការសកម្មភាព</string>
-<string name="plan_action_today_date">បានបញ្ចប់: %s</string>
-<string name="plan_action_next_date">បន្ទាប់: %s</string>
+<string name="plan_action_today_date">%s</string>
+<string name="plan_action_next_date">%s</string>
 <string name="plan_action_description">រៀបរាប់ពីអ្វីដែលបានគេសង្កេតឃើញក្នុងអំឡុងពេលដំណើរទស្សនកិច្ចផែនការសកម្មភាពជាក់លាក់មួយសម្រាប់ការដោះស្រាយគម្លាតនេះ។ ចំណាំផងដែរប្រសើរជាងគម្លាតកំណត់អត្តសញ្ញាណក្នុងអំឡុងដំណើរទស្សនកិច្ចចុងក្រោយនេះជាមួយ</string>
 <string name="plan_action_gasp_title">Gaps:</string>
 <string name="plan_action_action_plan_title">ផែនការសកម្មភាព:</string>
@@ -274,8 +274,6 @@ evaluation"</string>
 <string name="comments">"យោបល់"</string>
 <string name="dates">"កាលបរិច្ឆេទពីមុន"</string>
 <string name="mark_complete">"សម្គាល់បញ្ចប់"</string>
-<string name="plain_text">"អត្ថបទធម្មតា "</string>
-<string name="html_text">"អត្ថបទដែលបានធ្វើទ្រង់ទ្រាយ "</string>
 <string name="schedule_title">"កំណត់កាលវិភាគស្ទង់មតិ"</string>
 <string name="planning_label_date">"New date:"</string>
 <string name="plan_action_edit_text_hint">"ប៉ះដើម្បីសរសេរ"</string>
@@ -285,7 +283,14 @@ evaluation"</string>
 <string name="advanced_options">"ជម្រើសកម្រិតខ្ពស់"</string>
 <string name="simple_options">"ជម្រើសសាមញ្ញ"</string>
 
+<string name="completed_title">"បានបញ្ចប់"</string>
+<string name="completed_next">"បន្ទាប់"</string>
+
 <string name="scheduled">"ព្រុយ"</string>
 <string name="header_schedule">"កាលវិភាគ"</string>
 <string name="header_reschedule">"អ្នកយកព័ត៌មាន"</string>
+<string name="apply_filters">"អនុវត្តតម្រង"</string>
+<string name="filter">"តម្រង"</string>
+<string name="failed_video_image_question_only">"សំណួរវីដេអូ / រូបភាពប៉ុណ្ណោះ"</string>
+<string name="failed_questions_only">"បានបរាជ័យតែប៉ុណ្ណោះសំណួរ"</string>
 </resources>
