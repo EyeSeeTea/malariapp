@@ -106,9 +106,9 @@ public class AssessCompleteGoToImprove {
         IdlingResource idlingResource = new ElapsedTimeIdlingResource(5 * 1000);
         Espresso.registerIdlingResources(idlingResource);
         try {
-            onView(withText(String.valueOf(AUtils.formatDate(completionDate)))).check(matches(isDisplayed()));
+            onView(withText(String.valueOf(AUtils.scheduleFormatDate(completionDate)))).check(matches(isDisplayed()));
         }catch(AmbiguousViewMatcherException e){
-            Log.i(TAG, "Multiple surveys have the same date " + AUtils.formatDate(completionDate));
+            Log.i(TAG, "Multiple surveys have the same date " + AUtils.scheduleFormatDate(completionDate));
         }
         try {
             onView(withText(String.format("%.1f %%", survey.getMainScore()))).check(matches(isDisplayed()));

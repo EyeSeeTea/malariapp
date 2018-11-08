@@ -69,7 +69,7 @@ public class ScheduleListener implements View.OnClickListener {
         //Set current date
         final CustomEditText scheduleDatePickerButton=(CustomEditText)dialog.findViewById(R.id.planning_dialog_picker_button);
         final Date surveyDefaultDate = survey.getScheduledDate();
-        scheduleDatePickerButton.setText(AUtils.formatDate(surveyDefaultDate));
+        scheduleDatePickerButton.setText(AUtils.scheduleFormatDate(surveyDefaultDate));
         //On Click open an specific DatePickerDialog
         scheduleDatePickerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,7 +86,7 @@ public class ScheduleListener implements View.OnClickListener {
                         Calendar newCalendar = Calendar.getInstance();
                         newCalendar.set(year, monthOfYear, dayOfMonth);
                         newScheduledDate = newCalendar.getTime();
-                        scheduleDatePickerButton.setText(AUtils.formatDate(newScheduledDate));
+                        scheduleDatePickerButton.setText(AUtils.scheduleFormatDate(newScheduledDate));
                     }
 
                 },calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
