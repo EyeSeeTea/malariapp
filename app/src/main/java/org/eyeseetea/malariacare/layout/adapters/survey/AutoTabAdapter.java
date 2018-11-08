@@ -532,9 +532,9 @@ public class AutoTabAdapter extends ATabAdapter {
         switch (question.getOutput()) {
             case Constants.DATE:
                 String valueString=ReadWriteDB.readValueQuestion(question, module);
-                Date valueDate= EventExtended.parseLongDate(valueString);
+                String valueDate = AUtils.userFormatDate(EventExtended.parseLongDate(valueString));
                 if(valueDate!=null) {
-                    viewHolder.setText(ReadWriteDB.readValueQuestion(question, module));
+                    viewHolder.setText(valueDate);
                 }
                 break;
             case Constants.SHORT_TEXT:
@@ -773,8 +773,13 @@ public class AutoTabAdapter extends ATabAdapter {
                     newCalendar.set(year, monthOfYear, dayOfMonth);
                     Date newScheduledDate = newCalendar.getTime();
                     if(!isCleared) {
-                        ((CustomButton) v).setText( AUtils.formatDate(newCalendar.getTime()));
-                        ReadWriteDB.saveValuesText(question, AUtils.formatDate(newCalendar.getTime()), module);
+                        ((CustomButton) v).setText( AUtils.userFormatDate(newCalendar.getTime()));
+                        ReadWriteDB.saveValuesText(question, AUtils.formatDateToServer(newCalendar.getTime()), module);
+                    }else{
+                        String date = ReadWriteDB.readValueQuestion(question, module);
+                        if(date!=null && !date.isEmpty()){
+                            ((CustomButton) v).setText( AUtils.userFormatDate(EventExtended.parseShortDate(date)));
+                        }
                     }
                     isCleared =false;
                 }
