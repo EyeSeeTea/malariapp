@@ -3,6 +3,8 @@ buildscript {
         maven { url 'https://maven.fabric.io/public' }
         mavenCentral()
         mavenLocal()
+        google()
+        jcenter()
     }
 
     dependencies {
@@ -23,6 +25,11 @@ repositories {
 android {
     signingConfigs {
         config {}
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     compileSdkVersion cfg.compileSdkVersion
@@ -130,7 +137,6 @@ dependencies {
 
     // App dependencies
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    apply plugin: 'android-apt'
     apply plugin: 'com.github.dcendents.android-maven'
 
     //Android support

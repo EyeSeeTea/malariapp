@@ -3,8 +3,8 @@
 buildscript {
     repositories {
         maven { url "https://raw.github.com/Raizlabs/maven-releases/master/releases" }
-        jcenter()
         google()
+        jcenter()
     }
 
 
@@ -18,9 +18,9 @@ buildscript {
 
 allprojects {
     repositories {
-        jcenter()
         maven { url "https://www.jitpack.io" }
         google()
+        jcenter()
     }
 
     configurations.all {
