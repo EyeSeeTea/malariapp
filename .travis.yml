@@ -17,7 +17,7 @@ android:
   - extra-google-google_play_services
   - extra-google-m2repository
   - extra-android-m2repository
-  - sys-img-armeabi-v7a-android-25
+  - sys-img-armeabi-v7a-android-23
   - extra-android-support
 script:
 - "./gradlew --no-daemon testEyeseeteaDebugUnitTest"
