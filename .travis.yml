@@ -8,16 +8,16 @@ android:
   components:
   - tools
   - platform-tools
-  - build-tools-25.0.3
+  - build-tools-28.0.0
+  - android-28
+  - android-27
+  - android-26
   - android-25
-  - android-23
-  - android-22
-  - android-24
   - extra-android-m2repository
   - extra-google-google_play_services
   - extra-google-m2repository
   - extra-android-m2repository
-  - sys-img-armeabi-v7a-android-23
+  - sys-img-armeabi-v7a-android-22
   - extra-android-support
 script:
 - "./gradlew --no-daemon testEyeseeteaDebugUnitTest"
