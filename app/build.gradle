@@ -122,6 +122,7 @@ configurations {
 dependencies {
     // SDK submodules
     compile project(":core-rules")
+    compile project(':models')
     compile project(":ui-bindings")
     compile project(":EyeSeeTea-sdk")
 
@@ -159,6 +160,11 @@ dependencies {
     // Unit testing dependencies
     testCompile "junit:junit:${libs.jUnitVersion}"
     testCompile "org.mockito:mockito-core:${libs.mockitoVersion}"
+    testCompile "com.fasterxml.jackson.core:jackson-core:${libs.jacksonVersion}"
+    testCompile "com.fasterxml.jackson.core:jackson-databind:${libs.jacksonVersion}"
+    testCompile "com.fasterxml.jackson.core:jackson-annotations:${libs.jacksonVersion}"
+    testCompile "com.fasterxml.jackson.datatype:jackson-datatype-joda:${libs.jacksonVersion}"
+    testCompile "joda-time:joda-time:${libs.jodaTimeVersion}"
 
     // Instrumented tests dependencies
     // Android Testing Support Library's runner and rules
