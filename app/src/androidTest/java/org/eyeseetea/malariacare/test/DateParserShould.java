@@ -2,8 +2,6 @@ package org.eyeseetea.malariacare.test;
 
 import android.support.test.runner.AndroidJUnit4;
 
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
-import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.DateParser;
 import org.junit.Assert;
 import org.junit.Test;
@@ -27,7 +25,7 @@ public class DateParserShould {
 
     @Test
     public void return_string_date_with_human_format_when_convert_a_server_format_string_date() {
-        Date date = dateParser.parseDate(dateServerFormat, DateParser.DHIS2_GMT_DATE_FORMAT);
+        Date date = dateParser.parseDate(dateServerFormat, DateParser.LONG_DATE_FORMAT_WITH_SPECIFIC_UTC_TIME_ZONE);
         Assert.assertThat(dateParser.userFormatDate(date, locale), is(dateHumanFormat));
     }
 

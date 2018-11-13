@@ -94,7 +94,7 @@ public class PullDhisApiDataSource {
             appUser.setCloseDate(null);
         } else {
             DateParser dateParser = new DateParser();
-            appUser.setCloseDate(dateParser.parseDate(closeDate, DateParser.DHIS2_GMT_NEW_DATE_FORMAT));
+            appUser.setCloseDate(dateParser.parseDate(closeDate, DateParser.LONG_DATE_FORMAT));
         }
     }
 
@@ -146,7 +146,7 @@ public class PullDhisApiDataSource {
             throw new ClosedUserDateNotFoundException();
         }
         DateParser dateParser = new DateParser();
-        return dateParser.parseDate(closeDateAsString, DateParser.DHIS2_GMT_NEW_DATE_FORMAT);
+        return dateParser.parseDate(closeDateAsString, DateParser.LONG_DATE_FORMAT);
     }
 
     public static List<EventExtended> pullQuarantineEvents(String url) throws IOException, JSONException {
