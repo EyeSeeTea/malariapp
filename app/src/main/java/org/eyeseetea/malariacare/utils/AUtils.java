@@ -179,62 +179,6 @@ public abstract class AUtils {
         return stringBuilder;
     }
 
-    public static String getEuropeanFormatedDateWithShortYear(Date date) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
-        if(date==null){
-            return "";
-        }
-        return sdf.format(date);
-    }
-
-    public static String getEuropeanFormatedDate(Date date) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        if(date==null){
-            return "";
-        }
-        return sdf.format(date);
-    }
-
-    public static String getShortEuropeanFormatedDate(Date date) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
-        if(date==null){
-            return "";
-        }
-        return sdf.format(date);
-    }
-
-    public static String userFormatDate(Date date) {
-        if (date == null) {
-            return "";
-        }
-        return formatDate(date);
-    }
-
-    public static String scheduleFormatDate(Date date) {
-        if (date == null) {
-            return "-";
-        }
-        return formatDate(date);
-    }
-
-    private static String formatDate(Date date) {
-        Locale locale =
-                PreferencesState.getInstance().getContext().getResources().getConfiguration()
-                        .locale;
-        DateFormat dateFormatter = DateFormat.getDateInstance(DateFormat.DEFAULT, locale);
-        return dateFormatter.format(date);
-    }
-
-    public static String formatDateToServer(Date date) {
-        if (date == null) {
-            return "";
-        }
-
-        return EventExtended.format(date,
-                EventExtended.AMERICAN_DATE_FORMAT);
-    }
-
-
     /**
      * This method check if the Internet conexion is active
      *
