@@ -28,12 +28,13 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.AUtils;
+import org.eyeseetea.malariacare.utils.DateParser;
 import org.eyeseetea.malariacare.views.CustomTextView;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class AssessmentSentAdapter extends
         ADashboardAdapter {
@@ -116,7 +117,10 @@ public class AssessmentSentAdapter extends
 
     private String decorateCompletionDate(SurveyDB survey) {
         Date completionDate = survey.getCompletionDate();
-        return AUtils.getEuropeanFormatedDate(completionDate);
+        DateParser dateParser = new DateParser();
+        Locale locale = getContext().getResources().getConfiguration()
+                .locale;
+        return dateParser.userFormatDate(completionDate, locale);
     }
 
     private int getColorByScore(SurveyDB survey) {

@@ -13,6 +13,7 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.remote.api.PullDhisApiDataSource;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.utils.DateParser;
 import org.json.JSONException;
 
 import java.io.IOException;
@@ -109,9 +110,10 @@ public class SurveyChecker {
 
     private static void changeSurveyStatusFromQuarantineTo(SurveyDB survey, int status) {
         try {
+            DateParser dateParser = new DateParser();
             Log.d(TAG, "Set quarantine survey as " + ((status == Constants.SURVEY_SENT) ? "sent "
                     : "complete ") + survey.getId_survey() + " date "
-                    + EventExtended.format(survey.getCreationDate(),
+                    + dateParser.format(survey.getCreationDate(),
                     EventExtended.DHIS2_GMT_DATE_FORMAT));
         } catch (NullPointerException e) {
             e.printStackTrace();
@@ -134,10 +136,11 @@ public class SurveyChecker {
                 String uid = ServerMetadataDB.findControlDataElementUid(
                         PreferencesState.getInstance().getContext().getString(
                                 R.string.created_on_code));
+                DateParser dateParser = new DateParser();
                 if (dataValue.getDataElement().equals(uid)
                         && dataValue.getValue().equals(
-                        EventExtended.format(survey.getCreationDate(),
-                                EventExtended.DHIS2_GMT_DATE_FORMAT))) {
+                        dateParser.format(survey.getCreationDate(),
+                                DateParser.DHIS2_GMT_DATE_FORMAT))) {
                     Log.d(TAG, "Found survey" + survey.getId_survey() + "date "
                             + survey.getCreationDate() + "dateevent" + dataValue.getValue());
                     return true;

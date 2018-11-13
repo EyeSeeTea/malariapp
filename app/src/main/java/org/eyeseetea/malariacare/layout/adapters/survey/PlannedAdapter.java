@@ -41,8 +41,10 @@ import org.eyeseetea.malariacare.data.database.utils.planning.PlannedItem;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedSurvey;
 import org.eyeseetea.malariacare.data.database.utils.planning.ScheduleListener;
 import org.eyeseetea.malariacare.utils.AUtils;
+import org.eyeseetea.malariacare.utils.DateParser;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by arrizabalaga on 14/09/15.
@@ -284,7 +286,11 @@ public class PlannedAdapter extends BaseAdapter {
 
         //ScheduledDate
         textView = (TextView) rowLayout.findViewById(R.id.planning_survey_schedule_date);
-        textView.setText(AUtils.getEuropeanFormatedDate(plannedSurvey.getNextAssesment()));
+
+        Locale locale = context.getResources().getConfiguration()
+                .locale;
+        DateParser dateParser = new DateParser();
+        textView.setText(dateParser.userFormatDate(plannedSurvey.getNextAssesment(), locale));
         textView.setOnClickListener(new ScheduleListener(plannedSurvey.getSurvey(), context));
 
         ImageView dotsMenu = (ImageView) rowLayout.findViewById(R.id.menu_dots);
