@@ -23,11 +23,10 @@ import android.content.Context;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.boundaries.IDataRemoteDataSource;
-
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.data.repositories.ICompositeScoreRepository;
 import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.data.repositories.ICompositeScoreRepository;
 import org.eyeseetea.malariacare.data.sync.mappers.PushReportMapper;
 import org.eyeseetea.malariacare.domain.boundary.IConnectivityManager;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IOptionRepository;
@@ -42,7 +41,6 @@ import org.eyeseetea.malariacare.domain.entity.Question;
 import org.eyeseetea.malariacare.domain.entity.ServerMetadata;
 import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.entity.pushsummary.PushReport;
-import org.eyeseetea.malariacare.domain.exception.NetworkException;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullSurveyFilter;
 import org.hisp.dhis.client.sdk.android.api.D2;
 import org.hisp.dhis.client.sdk.core.event.EventFilters;
@@ -69,7 +67,6 @@ public class SurveySDKDhisDataSource implements IDataRemoteDataSource {
     private final IQuestionRepository mQuestionRepository;
     private final IOrgUnitRepository mOrgUnitRepository;
     private final ICompositeScoreRepository mCompositeScoreRepository;
-    private final IConnectivityManager mConnectivityManager;
     private final Context mContext;
 
     public SurveySDKDhisDataSource(Context context, IServerMetadataRepository serverMetadataRepository,
@@ -82,23 +79,16 @@ public class SurveySDKDhisDataSource implements IDataRemoteDataSource {
         this.mOptionRepository = optionRepository;
         this.mCompositeScoreRepository = mCompositeScoreRepository;
         this.mOrgUnitRepository = orgUnitRepository;
-        this.mConnectivityManager = connectivityManager;
     }
 
     @Override
     public List<? extends IData> get(PullSurveyFilter filters) throws Exception {
-        boolean isNetworkAvailable = mConnectivityManager.isDeviceOnline();
 
-        if (isNetworkAvailable) {
             pullEvents(filters);
 
             List<Survey> surveys = convertToSurveys();
 
-            return new ArrayList<IData>(surveys);
-
-        } else {
-            throw new NetworkException();
-        }
+            return surveys;
     }
 
 

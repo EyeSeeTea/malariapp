@@ -35,4 +35,6 @@
 <string name="plan_action_provider_title" >"ឈ្មោះក្រុមហ៊ុនផ្ដល់:"</string>
 <string name="dialog_action_plan">"ផែនការសកម្មភាព"</string>
 <string name="filter">"តម្រង"</string>
+<string name="apply_filters">"អនុវត្តតម្រង"</string>
+<string name="login_error_unsupported_server_version">The server version is not supported</string>
 </resources>

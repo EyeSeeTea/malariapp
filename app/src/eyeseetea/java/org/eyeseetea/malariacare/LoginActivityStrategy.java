@@ -117,7 +117,8 @@ public class LoginActivityStrategy {
 
                             @Override
                             public void onUnsupportedServerVersion() {
-                                Log.e(this.getClass().getSimpleName(), "Unsupported Server Version");
+                                Log.e(this.getClass().getSimpleName(),
+                                        "Unsupported Server Version");
                             }
                         });
             }

@@ -37,4 +37,6 @@
 <string name="plan_action_provider_title" >"NOM DU FOURNISSEUR:"</string>
 <string name="dialog_action_plan">"Plan d'action"</string>
 <string name="filter">"filtre"</string>
+<string name="apply_filters">"Appliquer les filtres"</string>
+<string name="login_error_unsupported_server_version">"La version du serveur n'est pas prise en charge"</string>
 </resources>
