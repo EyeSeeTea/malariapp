@@ -50,7 +50,6 @@ public class ImportUseCase implements UseCase {
     }
 
 
-
     public void execute(final Callback callback) {
         mCallback = callback;
         mAsyncExecutor.run(this);

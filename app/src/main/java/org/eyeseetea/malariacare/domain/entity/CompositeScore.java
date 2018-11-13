@@ -12,9 +12,8 @@ public class CompositeScore {
     private String hierarchicalCode;
     private int orderPos;
     private String parentUid;
-    private ArrayList<CompositeScore> children =  new ArrayList<>();
-
     public static final String ROOT_NODE_CODE = "0";
+    private ArrayList<CompositeScore> children = new ArrayList<>();
 
 
     public CompositeScore(String parentUid, String uid, String label, String hierarchicalCode,
