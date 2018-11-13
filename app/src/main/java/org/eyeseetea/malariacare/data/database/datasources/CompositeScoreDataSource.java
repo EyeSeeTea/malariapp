@@ -17,9 +17,18 @@ import java.util.Map;
 
 public class CompositeScoreDataSource implements ICompositeScoreRepository {
     @Override
-    public List<CompositeScore> getCompositesScoreByProgram(String programUid) {
+    public List<CompositeScore> getByProgram(String programUid) {
         ProgramDB programDB = ProgramDB.getProgram(programUid);
         List<CompositeScoreDB> compositeScoreDBS = CompositeScoreDB.listByProgram(programDB);
+
+        List<CompositeScore> compositeScores = map(compositeScoreDBS);
+
+        return compositeScores;
+    }
+
+    @Override
+    public List<CompositeScore> getAll() {
+        List<CompositeScoreDB> compositeScoreDBS = CompositeScoreDB.list();
 
         List<CompositeScore> compositeScores = map(compositeScoreDBS);
 

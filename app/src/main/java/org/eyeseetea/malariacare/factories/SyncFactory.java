@@ -20,6 +20,7 @@ import org.eyeseetea.malariacare.domain.usecase.pull.PullUseCase;
 public class SyncFactory extends AFactory{
 
     private DataFactory mDataFactory;
+    private MetadataFactory metadataFactory = new MetadataFactory();
 
     public SyncFactory(){
         mDataFactory = new DataFactory();

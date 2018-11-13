@@ -3,8 +3,8 @@ package org.eyeseetea.malariacare.dataSources;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+import android.support.test.filters.SmallTest;
 import android.support.test.runner.AndroidJUnit4;
-import android.test.suitebuilder.annotation.SmallTest;
 
 import org.eyeseetea.malariacare.BuildConfig;
 import org.eyeseetea.malariacare.data.remote.api.OkHttpClientDataSource;

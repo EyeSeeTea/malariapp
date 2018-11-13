@@ -19,7 +19,7 @@
 
 package org.eyeseetea.malariacare.layout.dashboard.controllers;
 
-import android.app.FragmentTransaction;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 
