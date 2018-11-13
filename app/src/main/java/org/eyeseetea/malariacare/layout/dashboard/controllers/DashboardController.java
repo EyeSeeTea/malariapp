@@ -40,11 +40,12 @@ import org.eyeseetea.malariacare.data.database.model.SurveyScheduleDB;
 import org.eyeseetea.malariacare.data.database.utils.planning.ScheduleListener;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardSettings;
-import org.eyeseetea.malariacare.utils.AUtils;
+import org.eyeseetea.malariacare.utils.DateParser;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Controller for the dashboard based on modules
@@ -442,7 +443,11 @@ public class DashboardController {
             TextView comment = (TextView) row.findViewById(R.id.first_column);
             TextView date = (TextView) row.findViewById(R.id.second_column);
             comment.setText(surveyScheduleDB.getComment());
-            date.setText(AUtils.getEuropeanFormatedDate(surveyScheduleDB.getPrevious_date()));
+
+            Locale locale = DashboardActivity.dashboardActivity.getResources().getConfiguration()
+                    .locale;
+            DateParser dateParser = new DateParser();
+            date.setText(dateParser.userFormatDate(surveyScheduleDB.getPrevious_date(), locale));
             linearLayout.addView(row );
         }
         final AlertDialog alertDialog = builder.create();

@@ -51,6 +51,7 @@ import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.presentation.presenters.ObsActionPlanPresenter;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.utils.DateParser;
 import org.eyeseetea.malariacare.views.CustomEditText;
 import org.eyeseetea.malariacare.views.CustomSpinner;
 import org.eyeseetea.malariacare.views.CustomTextView;
@@ -458,19 +459,19 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
         String data =
                 PreferencesState.getInstance().getContext().getString(
                         R.string.app_name) + "- \n";
-
+        DateParser dateParser = new DateParser();
         data += getString(R.string.supervision_on) + " " + survey.getOrgUnit().getName() + "/"
                 + survey.getProgram().getName() + "\n";
 
-        data += getString(R.string.on) + " " + EventExtended.format
-                (survey.getCompletionDate(), EventExtended.EUROPEAN_DATE_FORMAT)
+        data += getString(R.string.on) + " " + dateParser.format
+                (survey.getCompletionDate(), DateParser.EUROPEAN_DATE_FORMAT)
                 + "\n";
         int roundedScore = Math.round(survey.getMainScore());
         data += getString(R.string.quality_of_care) + " " + roundedScore + "% \n";
 
         data += String.format(getString(R.string.plan_action_next_date),
-                EventExtended.format(SurveyPlanner.getInstance().findScheduledDateBySurvey(survey),
-                        EventExtended.EUROPEAN_DATE_FORMAT));
+                dateParser.format(SurveyPlanner.getInstance().findScheduledDateBySurvey(survey),
+                        DateParser.EUROPEAN_DATE_FORMAT));
 
         if(obsActionPlan.getProvider()!=null && !obsActionPlan.getProvider().isEmpty()) {
             data += "\n\n" + getString(R.string.plan_action_provider_title) + " " + obsActionPlan.getProvider();

@@ -64,11 +64,13 @@ import org.eyeseetea.malariacare.layout.dashboard.config.MonitorFilter;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.AUtils;
+import org.eyeseetea.malariacare.utils.DateParser;
 import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 public class MonitorFragment extends Fragment implements IModuleFragment {
     List<SurveyDB> surveysForGraphic;
@@ -414,7 +416,11 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
             row = inflater.inflate(R.layout.item_list_row_row, null);
             TextView completionDate = (TextView) row.findViewById(R.id.first_column);
             TextView score = (TextView) row.findViewById(R.id.second_column);
-            completionDate.setText(AUtils.getEuropeanFormatedDate(survey.getCompletionDate()));
+
+            Locale locale = DashboardActivity.dashboardActivity.getResources().getConfiguration()
+                    .locale;
+            DateParser dateParser = new DateParser();
+            completionDate.setText(dateParser.userFormatDate(survey.getCompletionDate(), locale));
             score.setText(Math.round(survey.getMainScore())+"");
             Resources resources = PreferencesState.getInstance().getContext().getResources();
 

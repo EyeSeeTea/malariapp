@@ -15,6 +15,7 @@ import org.eyeseetea.malariacare.data.database.model.QuestionDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.observables.ObservablePush;
+import org.eyeseetea.malariacare.utils.DateParser;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -56,17 +57,18 @@ public class ObsActionPlanPresenter {
         mSurvey = SurveyDB.getSurveyById(surveyId);
 
         if (mView != null) {
+            DateParser dateParser = new DateParser();
             String formattedCompletionDate = "NaN";
             if (mSurvey.getCompletionDate() != null) {
-                formattedCompletionDate = EventExtended.format(mSurvey.getCompletionDate(),
-                        EventExtended.EUROPEAN_DATE_FORMAT);
+                formattedCompletionDate = dateParser.format(mSurvey.getCompletionDate(),
+                        DateParser.EUROPEAN_DATE_FORMAT);
             }
 
             String formattedNextDate = "NaN";
             if (mSurvey != null) {
-                formattedNextDate = EventExtended.format(
+                formattedNextDate = dateParser.format(
                         SurveyPlanner.getInstance().findScheduledDateBySurvey(mSurvey),
-                        EventExtended.EUROPEAN_DATE_FORMAT);
+                        DateParser.EUROPEAN_DATE_FORMAT);
             }
 
             mView.renderHeaderInfo(mSurvey.getOrgUnit().getName(), mSurvey.getMainScore(),

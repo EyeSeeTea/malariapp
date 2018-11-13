@@ -47,6 +47,7 @@ import org.eyeseetea.malariacare.domain.exception.push.PushValueException;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.utils.DateParser;
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
@@ -433,24 +434,25 @@ public class ConvertToSDKVisitor implements
             addOrUpdateDataValue(overallScoreCode, survey.getMainScore().toString());
         }
 
+        DateParser dateParser = new DateParser();
         //It Checks if the dataelement exists, before build and save the datavalue
         //Created date
         if (controlDataElementExistsInServer(createdOnCode)) {
-            addOrUpdateDataValue(createdOnCode, EventExtended.format(survey.getCreationDate(),
-                    EventExtended.DHIS2_GMT_DATE_FORMAT));
+            addOrUpdateDataValue(createdOnCode, dateParser.format(survey.getCreationDate(),
+                    DateParser.DHIS2_GMT_DATE_FORMAT));
         }
 
         //It Checks if the dataelement exists, before build and save the datavalue
         //Created date
         if (controlDataElementExistsInServer(completionDateCode)) {
-            addOrUpdateDataValue(completionDateCode, EventExtended.format(survey.getCompletionDate(),
-                    EventExtended.DHIS2_GMT_DATE_FORMAT));
+            addOrUpdateDataValue(completionDateCode, dateParser.format(survey.getCompletionDate(),
+                    DateParser.DHIS2_GMT_DATE_FORMAT));
         }
 
         //Updated date
         if (controlDataElementExistsInServer(updatedDateCode)) {
-            addOrUpdateDataValue(updatedDateCode, EventExtended.format(survey.getUploadDate(),
-                    EventExtended.DHIS2_GMT_DATE_FORMAT));
+            addOrUpdateDataValue(updatedDateCode, dateParser.format(survey.getUploadDate(),
+                    DateParser.DHIS2_GMT_DATE_FORMAT));
         }
 
         //Updated by user
@@ -501,9 +503,9 @@ public class ConvertToSDKVisitor implements
 
         //Next assessment
         if (controlDataElementExistsInServer(nextAssessmentCode)) {
-            addOrUpdateDataValue(nextAssessmentCode, EventExtended.format(
+            addOrUpdateDataValue(nextAssessmentCode, dateParser.format(
                     SurveyPlanner.getInstance().findScheduledDateBySurvey(survey),
-                    EventExtended.AMERICAN_DATE_FORMAT));
+                    DateParser.AMERICAN_DATE_FORMAT));
         }
     }
 
