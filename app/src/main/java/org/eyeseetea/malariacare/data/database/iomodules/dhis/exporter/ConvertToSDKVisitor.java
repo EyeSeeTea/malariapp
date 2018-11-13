@@ -51,7 +51,6 @@ import org.eyeseetea.malariacare.utils.DateParser;
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
-import java.util.BitSet;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -439,20 +438,20 @@ public class ConvertToSDKVisitor implements
         //Created date
         if (controlDataElementExistsInServer(createdOnCode)) {
             addOrUpdateDataValue(createdOnCode, dateParser.format(survey.getCreationDate(),
-                    DateParser.DHIS2_GMT_DATE_FORMAT));
+                    DateParser.LONG_DATE_FORMAT_WITH_SPECIFIC_UTC_TIME_ZONE));
         }
 
         //It Checks if the dataelement exists, before build and save the datavalue
         //Created date
         if (controlDataElementExistsInServer(completionDateCode)) {
             addOrUpdateDataValue(completionDateCode, dateParser.format(survey.getCompletionDate(),
-                    DateParser.DHIS2_GMT_DATE_FORMAT));
+                    DateParser.LONG_DATE_FORMAT_WITH_SPECIFIC_UTC_TIME_ZONE));
         }
 
         //Updated date
         if (controlDataElementExistsInServer(updatedDateCode)) {
             addOrUpdateDataValue(updatedDateCode, dateParser.format(survey.getUploadDate(),
-                    DateParser.DHIS2_GMT_DATE_FORMAT));
+                    DateParser.LONG_DATE_FORMAT_WITH_SPECIFIC_UTC_TIME_ZONE));
         }
 
         //Updated by user

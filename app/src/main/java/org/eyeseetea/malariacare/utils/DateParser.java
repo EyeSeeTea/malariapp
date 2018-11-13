@@ -8,9 +8,9 @@ import java.util.Locale;
 
 public class DateParser {
     public final static String AMERICAN_DATE_FORMAT = "yyyy-MM-dd";
-    public final static String DHIS2_GMT_NEW_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS";
-    public final static String DHIS2_GMT_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
     public final static String EUROPEAN_DATE_FORMAT = "dd-MM-yyyy";
+    public final static String LONG_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS";
+    public final static String LONG_DATE_FORMAT_WITH_SPECIFIC_UTC_TIME_ZONE = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
 
     public String userFormatDate(Date date, Locale locale) {
         if (date == null) {

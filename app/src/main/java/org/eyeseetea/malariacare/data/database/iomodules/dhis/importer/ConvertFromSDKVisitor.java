@@ -421,7 +421,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         if (dataValue.getDataElement().equals(ServerMetadataDB.findControlDataElementUid(
                 PreferencesState.getInstance().getContext().getString(R.string.created_on_code)))) {
 
-            survey.setCreationDate(dateParser.parseDate(dataValue.getValue(), DateParser.DHIS2_GMT_DATE_FORMAT));
+            survey.setCreationDate(dateParser.parseDate(dataValue.getValue(), DateParser.LONG_DATE_FORMAT_WITH_SPECIFIC_UTC_TIME_ZONE));
             survey.save();
             Log.i(TAG, String.format("Event %s created on %s", survey.getEventUid(),
                     dataValue.getValue()));
@@ -431,7 +431,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         //-> completionOn
         if (dataValue.getDataElement().equals(ServerMetadataDB.findControlDataElementUid(
                 PreferencesState.getInstance().getContext().getString(R.string.completed_on_code)))) {
-            survey.setCompletionDate(dateParser.parseDate(dataValue.getValue(), DateParser.DHIS2_GMT_DATE_FORMAT));
+            survey.setCompletionDate(dateParser.parseDate(dataValue.getValue(), DateParser.LONG_DATE_FORMAT_WITH_SPECIFIC_UTC_TIME_ZONE));
             survey.save();
             Log.i(TAG, String.format("Event %s created on %s", survey.getEventUid(),
                     dataValue.getValue()));
@@ -442,7 +442,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         if (dataValue.getDataElement().equals(ServerMetadataDB.findControlDataElementUid(
                 PreferencesState.getInstance().getContext().getString(
                         R.string.upload_date_code)))) {
-            survey.setUploadDate(dateParser.parseDate(dataValue.getValue(), DateParser.DHIS2_GMT_DATE_FORMAT));
+            survey.setUploadDate(dateParser.parseDate(dataValue.getValue(), DateParser.LONG_DATE_FORMAT_WITH_SPECIFIC_UTC_TIME_ZONE));
             Log.i(TAG, String.format("Event %s uploaded on %s", survey.getEventUid(), dataValue
                     .getValue()));
             return;
