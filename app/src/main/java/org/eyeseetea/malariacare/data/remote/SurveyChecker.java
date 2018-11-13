@@ -114,7 +114,7 @@ public class SurveyChecker {
             Log.d(TAG, "Set quarantine survey as " + ((status == Constants.SURVEY_SENT) ? "sent "
                     : "complete ") + survey.getId_survey() + " date "
                     + dateParser.format(survey.getCreationDate(),
-                    DateParser.DHIS2_GMT_DATE_FORMAT));
+                    DateParser.LONG_DATE_FORMAT_WITH_SPECIFIC_UTC_TIME_ZONE));
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
@@ -138,7 +138,7 @@ public class SurveyChecker {
             DateParser dateParser = new DateParser();
             if (dataValue.getDataElement().equals(uid)
                     && dataValue.getValue().equals(dateParser.format(survey.getCreationDate(),
-                    DateParser.DHIS2_GMT_DATE_FORMAT))) {
+                    DateParser.LONG_DATE_FORMAT_WITH_SPECIFIC_UTC_TIME_ZONE))) {
                 Log.d(TAG, "Found survey" + survey.getId_survey() + "date "
                         + survey.getCreationDate() + "dateevent" + dataValue.getValue());
                 return true;
