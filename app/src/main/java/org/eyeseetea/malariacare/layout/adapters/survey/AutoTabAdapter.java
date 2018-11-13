@@ -61,6 +61,7 @@ import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.layout.utils.QuestionRow;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.utils.DateParser;
 import org.eyeseetea.malariacare.views.CustomButton;
 import org.eyeseetea.malariacare.views.CustomEditText;
 import org.eyeseetea.malariacare.views.CustomRadioButton;
@@ -71,6 +72,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 
 public class AutoTabAdapter extends ATabAdapter {
@@ -532,8 +534,12 @@ public class AutoTabAdapter extends ATabAdapter {
         switch (question.getOutput()) {
             case Constants.DATE:
                 String valueString=ReadWriteDB.readValueQuestion(question, module);
-                String valueDate = AUtils.userFormatDate(EventExtended.parseLongDate(valueString));
-                if(valueDate!=null) {
+                Locale locale = getContext().getResources().getConfiguration()
+                        .locale;
+                DateParser dateParser = new DateParser();
+                if(valueString!=null && !valueString.isEmpty()) {
+                    Date date = dateParser.parseDate(valueString, DateParser.AMERICAN_DATE_FORMAT);
+                    String valueDate = dateParser.userFormatDate(date, locale);
                     viewHolder.setText(valueDate);
                 }
                 break;
@@ -771,14 +777,17 @@ public class AutoTabAdapter extends ATabAdapter {
                 public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                     Calendar newCalendar = Calendar.getInstance();
                     newCalendar.set(year, monthOfYear, dayOfMonth);
-                    Date newScheduledDate = newCalendar.getTime();
+                    DateParser dateParser = new DateParser();
+                    Locale locale = getContext().getResources().getConfiguration()
+                            .locale;
                     if(!isCleared) {
-                        ((CustomButton) v).setText( AUtils.userFormatDate(newCalendar.getTime()));
-                        ReadWriteDB.saveValuesText(question, AUtils.formatDateToServer(newCalendar.getTime()), module);
+                        ((CustomButton) v).setText(dateParser.userFormatDate(newCalendar.getTime(), locale));
+                        ReadWriteDB.saveValuesText(question, dateParser.formatDateToServer(newCalendar.getTime()), module);
                     }else{
                         String date = ReadWriteDB.readValueQuestion(question, module);
                         if(date!=null && !date.isEmpty()){
-                            ((CustomButton) v).setText( AUtils.userFormatDate(EventExtended.parseShortDate(date)));
+                            Date dateParsed = dateParser.parseDate(date, DateParser.AMERICAN_DATE_FORMAT);
+                            ((CustomButton) v).setText(dateParser.userFormatDate(dateParsed, locale));
                         }
                     }
                     isCleared =false;
