@@ -67,7 +67,7 @@ ext {
             timberVersion           : "4.1.0",
             okhttpVersion           : "3.11.0",
             retrofitVersion         : "2.3.0",
-            jacksonVersion          : "2.7.4",
+            jacksonVersion          : "2.9.6",
             jodaTimeVersion         : "2.10",
             jexlVersion             : "2.1.1",
             commonsLang3Version     : "3.3.2",
