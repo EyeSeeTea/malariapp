@@ -50,10 +50,6 @@ import java.util.List;
 public class EventExtended {
 
     private final static String TAG = ".EventExtended";
-    public final static String DHIS2_GMT_NEW_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS";
-    public final static String DHIS2_GMT_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
-    public final static String AMERICAN_DATE_FORMAT = "yyyy-MM-dd";
-    public final static String EUROPEAN_DATE_FORMAT = "dd-MM-yyyy";
 
 
     public static final Event.EventStatus STATUS_ACTIVE = Event.EventStatus.ACTIVE;
