@@ -42,12 +42,16 @@ public class DateParser {
         return dateFormatter.format(date);
     }
 
-    private static String formatDate(Date date, String pattern) {
-        SimpleDateFormat sdf = new SimpleDateFormat();
+    private String formatDate(Date date, String pattern) {
         if(date==null){
             return "";
         }
-        return sdf.format(date);
+        try {
+            return format(date, pattern);
+        }catch (Exception e){
+            e.printStackTrace();
+            return "";
+        }
     }
 
     /**
