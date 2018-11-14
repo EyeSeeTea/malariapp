@@ -9,8 +9,13 @@ import java.util.Locale;
 public class DateParser {
     public final static String AMERICAN_DATE_FORMAT = "yyyy-MM-dd";
     public final static String EUROPEAN_DATE_FORMAT = "dd-MM-yyyy";
+    public final static String EUROPEAN_FORMATTED_DATE_WITH_SHORT_YEAR = "dd/MM/yy";
     public final static String LONG_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS";
     public final static String LONG_DATE_FORMAT_WITH_SPECIFIC_UTC_TIME_ZONE = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
+
+    public static String getEuropeanFormatedDateWithShortYear(Date date) {
+        return formatDate(date, EUROPEAN_FORMATTED_DATE_WITH_SHORT_YEAR);
+    }
 
     public String userFormatDate(Date date, Locale locale) {
         if (date == null) {
@@ -33,6 +38,13 @@ public class DateParser {
         return dateFormatter.format(date);
     }
 
+    private static String formatDate(Date date, String pattern) {
+        SimpleDateFormat sdf = new SimpleDateFormat();
+        if(date==null){
+            return "";
+        }
+        return sdf.format(date);
+    }
 
     /**
      * Turns a given date into a parseable String according to sdk date format
