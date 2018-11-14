@@ -157,10 +157,11 @@ configurations {
 dependencies {
 
     // SDK submodules
-    compile project(":core-rules")
+    compile project(':core')
     compile project(':models')
-    compile project(":ui-bindings")
-    compile project(":EyeSeeTea-sdk")
+    compile project(':ui-bindings')
+    compile project(':EyeSeeTea-sdk')
+    compile project(':dhis2-light-sdk')
 
     // App dependencies
     compile fileTree(include: ['*.jar'], dir: 'libs')

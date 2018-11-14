@@ -8,3 +8,6 @@
 [submodule "bugshaker-android"]
 	path = bugshaker-android
 	url = https://github.com/EyeSeeTea/bugshaker-android.git
+[submodule "dhis2-light-sdk"]
+	path = dhis2-light-sdk
+	url = https://github.com/EyeSeeTea/dhis2-light-sdk
