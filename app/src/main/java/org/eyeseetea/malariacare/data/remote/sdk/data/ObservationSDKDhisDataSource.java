@@ -53,7 +53,8 @@ public class ObservationSDKDhisDataSource implements IDataRemoteDataSource {
     private final IServerMetadataRepository mServerMetadataRepository;
 
     public ObservationSDKDhisDataSource(Context context, IDataLocalDataSource surveyLocalDataSource,
-            IServerMetadataRepository serverMetadataRepository,IOptionRepository optionRepository) {
+            IServerMetadataRepository serverMetadataRepository,
+            IOptionRepository optionRepository) {
         mContext = context;
         mSurveyLocalDataSource = surveyLocalDataSource;
         mOptionRepository = optionRepository;
@@ -76,7 +77,8 @@ public class ObservationSDKDhisDataSource implements IDataRemoteDataSource {
 
         FromObservationEventMapper eventMapper =
                 new FromObservationEventMapper(mContext, getSafeUsername(),
-                        (List<Survey>) mSurveyLocalDataSource.getAllData(),options, serverMetadata);
+                        (List<Survey>) mSurveyLocalDataSource.getAllData(), options,
+                        serverMetadata);
 
         List<Event> events = eventMapper.map(observations);
         Set<String> eventUIds = new HashSet<>();

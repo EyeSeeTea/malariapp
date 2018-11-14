@@ -33,7 +33,6 @@ import org.eyeseetea.malariacare.fragments.FeedbackFragment;
 import org.eyeseetea.malariacare.fragments.ObservationsFragment;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
 import org.eyeseetea.malariacare.layout.dashboard.config.ModuleSettings;
-import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.strategies.ActionBarStrategy;
 import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
 
@@ -153,7 +152,8 @@ public class ImproveModuleController extends ModuleController {
     }
 
     private void closeFeedbackFragment() {
-        Fragment fragment = dashboardActivity.getSupportFragmentManager ().findFragmentById(R.id.dashboard_completed_container);
+        Fragment fragment = dashboardActivity.getSupportFragmentManager().findFragmentById(
+                R.id.dashboard_completed_container);
         if(fragment instanceof  FeedbackFragment) {
             feedbackFragment.unregisterReceiver();
             if(feedbackFragment.getView()!=null){

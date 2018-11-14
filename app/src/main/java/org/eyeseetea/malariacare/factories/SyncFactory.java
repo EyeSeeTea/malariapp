@@ -5,14 +5,10 @@ import android.content.Context;
 import org.eyeseetea.malariacare.data.boundaries.IDataLocalDataSource;
 import org.eyeseetea.malariacare.data.boundaries.IDataRemoteDataSource;
 import org.eyeseetea.malariacare.data.database.MetadataValidator;
-import org.eyeseetea.malariacare.data.database.datasources.ObservationLocalDataSource;
-import org.eyeseetea.malariacare.data.database.datasources.SurveyLocalDataSource;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushDataController;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullDataController;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullMetadataController;
 import org.eyeseetea.malariacare.data.network.ConnectivityManager;
-import org.eyeseetea.malariacare.data.remote.sdk.data.ObservationSDKDhisDataSource;
-import org.eyeseetea.malariacare.data.remote.sdk.data.SurveySDKDhisDataSource;
 import org.eyeseetea.malariacare.domain.boundary.IConnectivityManager;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IObservationRepository;
@@ -35,6 +31,7 @@ public class SyncFactory extends AFactory{
 
         IDataRemoteDataSource surveyRemoteDataSource = mDataFactory.getSurveyRemoteDataSource(context);
         IDataLocalDataSource surveyLocalDataSource = mDataFactory.getSurveyDataLocalDataSource();
+        IConnectivityManager connectivityManager = new ConnectivityManager();
 
         PullDataController pullDataController =
                 new PullDataController(surveyLocalDataSource, surveyRemoteDataSource);
@@ -43,7 +40,7 @@ public class SyncFactory extends AFactory{
 
         PullUseCase pullUseCase = new PullUseCase(
                 asyncExecutor, mainExecutor, pullMetadataController,
-                pullDataController, metadataValidator);
+                pullDataController, metadataValidator, connectivityManager);
 
         return pullUseCase;
     }

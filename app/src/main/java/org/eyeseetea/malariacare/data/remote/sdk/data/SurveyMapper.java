@@ -2,8 +2,6 @@ package org.eyeseetea.malariacare.data.remote.sdk.data;
 
 import android.util.Log;
 
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.CompositeScoreBuilder;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.domain.entity.CompositeScore;
 import org.eyeseetea.malariacare.domain.entity.Option;
 import org.eyeseetea.malariacare.domain.entity.OrgUnit;
@@ -229,8 +227,9 @@ public class SurveyMapper {
         for (CompositeScore compositeScore : compositeScores) {
             compositeScoreMap.put(compositeScore.getUid(), compositeScore);
 
-            if (compositeScore.getChildren() != null && compositeScore.getChildren().size() > 0)
+            if (compositeScore.getChildren() != null && compositeScore.getChildren().size() > 0) {
                 createCompositeScoresMap(compositeScore.getChildren());
+            }
         }
     }
 }

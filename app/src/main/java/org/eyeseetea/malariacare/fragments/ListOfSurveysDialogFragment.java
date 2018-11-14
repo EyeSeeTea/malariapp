@@ -1,7 +1,6 @@
 package org.eyeseetea.malariacare.fragments;
 
 
-
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -22,7 +21,6 @@ import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.sdk.presentation.views.DoubleRectChart;
-
 
 import java.util.ArrayList;
 import java.util.List;
