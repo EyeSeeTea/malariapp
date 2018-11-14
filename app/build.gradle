@@ -3,16 +3,16 @@ buildscript {
         maven { url 'https://maven.fabric.io/public' }
         mavenCentral()
         mavenLocal()
+        google()
+        jcenter()
     }
 
     dependencies {
         classpath 'io.fabric.tools:gradle:1.+'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4'
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
     }
 }
 apply plugin: 'com.android.application'
-apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'io.fabric'
 
 def cfg = rootProject.ext.configuration
@@ -23,8 +23,27 @@ repositories {
 }
 
 android {
+    testOptions {
+        unitTests.all {
+            // All the usual Gradle options.
+            testLogging {
+                events "skipped", "failed", "standardOut", "standardError"
+                exceptionFormat "full"
+                showCauses true
+                showExceptions true
+                showStackTraces true
+                showStandardStreams true
+            }
+        }
+    }
+
     signingConfigs {
         config {}
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     compileSdkVersion cfg.compileSdkVersion
@@ -44,6 +63,11 @@ android {
         signingConfig signingConfigs.config
         useLibrary  'org.apache.http.legacy'
         vectorDrawables.useSupportLibrary = true
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ['targetModuleName': 'EyeSeeTea']
+            }
+        }
     }
     buildTypes {
         release {
@@ -69,6 +93,8 @@ android {
         exclude 'META-INF/dependencies.txt'
         exclude 'META-INF/LGPL2.1'
     }
+
+    flavorDimensions "default"
 
     productFlavors {
         eds {
@@ -108,10 +134,8 @@ android {
         disable 'RtlSymmetry', 'RtlHardcoded'
         checkReleaseBuilds false
     }
-    apt {
-        arguments {
-            targetModuleName 'EyeSeeTea'
-        }
+    configurations.all {
+        resolutionStrategy.force "com.google.code.findbugs:jsr305:${libs.jsr305Version}"
     }
 }
 
@@ -121,14 +145,13 @@ configurations {
 
 dependencies {
     // SDK submodules
-    compile project(":core-rules")
-    compile project(":ui-bindings")
-    compile project(":EyeSeeTea-sdk")
+    compile project(':core')
+    compile project(':models')
+    compile project(':ui-bindings')
+    compile project(':EyeSeeTea-sdk')
 
     // App dependencies
     compile fileTree(include: ['*.jar'], dir: 'libs')
-
-    apply plugin: 'android-apt'
     apply plugin: 'com.github.dcendents.android-maven'
 
     //Android support
@@ -159,10 +182,16 @@ dependencies {
     // Unit testing dependencies
     testCompile "junit:junit:${libs.jUnitVersion}"
     testCompile "org.mockito:mockito-core:${libs.mockitoVersion}"
+    testCompile "com.google.code.gson:gson:${libs.gsonVersion}"
+    testCompile "com.fasterxml.jackson.core:jackson-core:${libs.jacksonVersion}"
+    testCompile "com.fasterxml.jackson.core:jackson-databind:${libs.jacksonVersion}"
+    testCompile "com.fasterxml.jackson.core:jackson-annotations:${libs.jacksonVersion}"
+    testCompile "com.fasterxml.jackson.datatype:jackson-datatype-joda:${libs.jacksonVersion}"
+    testCompile "joda-time:joda-time:${libs.jodaTimeVersion}"
 
     // Instrumented tests dependencies
     // Android Testing Support Library's runner and rules
-    
+
     androidTestCompile "com.android.support.test:runner:${libs.runnerVersion}"
     androidTestCompile "com.android.support.test:rules:${libs.runnerVersion}"
 
@@ -183,7 +212,7 @@ dependencies {
     compile "com.squareup:javapoet:${libs.javapoetVersion}"
 
     //DBFlow
-    apt "com.github.Raizlabs.DBFlow:dbflow-processor:${libs.dbFlowVersion}"
+    annotationProcessor "com.github.Raizlabs.DBFlow:dbflow-processor:${libs.dbFlowVersion}"
     compile "com.github.Raizlabs.DBFlow:dbflow:${libs.dbFlowVersion}"
     compile "com.github.Raizlabs.DBFlow:dbflow-core:${libs.dbFlowVersion}"
     compile "com.github.Raizlabs.DBFlow:dbflow-sqlcipher:${libs.dbFlowVersion}"
