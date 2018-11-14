@@ -15,7 +15,6 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.services.PlannedSurveyService;
-import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.DateParser;
 import org.eyeseetea.sdk.presentation.views.CustomEditText;
 
@@ -91,7 +90,7 @@ public class ScheduleListener implements View.OnClickListener {
                         Calendar newCalendar = Calendar.getInstance();
                         newCalendar.set(year, monthOfYear, dayOfMonth);
                         newScheduledDate = newCalendar.getTime();
-                        scheduleDatePickerButton.setText(formatDate(surveyDefaultDate, context));
+                        scheduleDatePickerButton.setText(formatDate(newScheduledDate, context));
                     }
 
                 },calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
