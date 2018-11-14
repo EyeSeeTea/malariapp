@@ -21,6 +21,7 @@ import org.eyeseetea.malariacare.domain.entity.ScoreType;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.utils.AUtils;
+import org.eyeseetea.malariacare.utils.DateParser;
 import org.eyeseetea.sdk.presentation.views.DoubleRectChart;
 
 
@@ -98,7 +99,8 @@ public class ListOfSurveysDialogFragment extends DialogFragment {
         for (final SurveyDB survey : surveys) {
             row = inflater.inflate(R.layout.survey_list_row, null);
             TextView completionDate = (TextView) row.findViewById(R.id.first_column);
-            completionDate.setText(AUtils.getEuropeanFormatedDate(survey.getCompletionDate()));
+            DateParser dateParser = new DateParser();
+            completionDate.setText(dateParser.getEuropeanFormattedDate(survey.getCompletionDate()));
             if (row.findViewById(R.id.second_column) instanceof DoubleRectChart) {
                 DoubleRectChart mDoubleRectChart = (DoubleRectChart) row.findViewById(
                         R.id.second_column);

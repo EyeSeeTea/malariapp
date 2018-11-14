@@ -13,8 +13,12 @@ public class DateParser {
     public final static String LONG_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS";
     public final static String LONG_DATE_FORMAT_WITH_SPECIFIC_UTC_TIME_ZONE = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
 
-    public static String getEuropeanFormatedDateWithShortYear(Date date) {
+    public String getEuropeanFormattedDateWithShortYear(Date date) {
         return formatDate(date, EUROPEAN_FORMATTED_DATE_WITH_SHORT_YEAR);
+    }
+
+    public String getEuropeanFormattedDate(Date date) {
+        return formatDate(date, EUROPEAN_DATE_FORMAT);
     }
 
     public String userFormatDate(Date date, Locale locale) {

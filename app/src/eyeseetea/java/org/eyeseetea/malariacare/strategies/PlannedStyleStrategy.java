@@ -20,7 +20,6 @@
 package org.eyeseetea.malariacare.strategies;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,7 +36,6 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedHeader;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedSurvey;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
-import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.DateParser;
 import org.eyeseetea.sdk.presentation.views.DoubleRectChart;
 
@@ -101,7 +99,7 @@ public class PlannedStyleStrategy {
 
     public static String formatDate(Date date) {
         DateParser dateParser = new DateParser();
-        return dateParser.getEuropeanFormatedDateWithShortYear(date);
+        return dateParser.getEuropeanFormattedDateWithShortYear(date);
     }
 
     public static String getTitleHeader(String titleHeader, Integer counter) {
