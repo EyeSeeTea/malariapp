@@ -77,14 +77,14 @@ public class PlanningPerOrgUnitAdapter extends ABaseAdapter {
         CustomTextView schedule = (CustomTextView) rowView.findViewById(R.id.schedule);
         DateParser dateParser = new DateParser();
         if (survey.getScheduledDate() != null) {
-            schedule.setText(dateParser.getEuropeanFormattedDate(survey.getScheduledDate(), locale));
+            schedule.setText(dateParser.getEuropeanFormattedDate(survey.getScheduledDate()));
         } else {
             schedule.setText(R.string.assessment_no_schedule_date);
         }
         //set creation date
         if (survey.getCreationDate() != null) {
             CustomTextView dueDate = (CustomTextView) rowView.findViewById(R.id.dueDate);
-            dueDate.setText(dateParser.getEuropeanFormattedDate(survey.getCreationDate(), locale));
+            dueDate.setText(dateParser.getEuropeanFormattedDate(survey.getCreationDate()));
         }
 
         //set row survey name
