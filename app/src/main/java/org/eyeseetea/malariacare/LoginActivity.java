@@ -57,15 +57,14 @@ import org.eyeseetea.malariacare.data.database.utils.LanguageContextWrapper;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.remote.api.UserAccountAPIDataSource;
-import org.eyeseetea.malariacare.data.repositories.AuthenticationManager;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
-import org.eyeseetea.malariacare.domain.boundary.repositories.IAuthenticationManager;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
 import org.eyeseetea.malariacare.domain.enums.NetworkStrategy;
 import org.eyeseetea.malariacare.domain.usecase.GetUserAccountUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
+import org.eyeseetea.malariacare.factories.AuthenticationFactory;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.utils.AUtils;
@@ -81,9 +80,8 @@ public class LoginActivity extends Activity {
     private static final String TAG = ".LoginActivity";
     private static final String IS_LOADING = "state:isLoading";
 
-    public IAuthenticationManager mUserAccountRepository = new AuthenticationManager(this);
-    public LoginUseCase mLoginUseCase = new LoginUseCase(mUserAccountRepository);
-    LogoutUseCase mLogoutUseCase = new LogoutUseCase(mUserAccountRepository);
+    public LoginUseCase mLoginUseCase = new AuthenticationFactory().getLoginUseCase(this);
+    LogoutUseCase mLogoutUseCase = new AuthenticationFactory().getLogoutUseCase(this);
     public LoginActivityStrategy mLoginActivityStrategy = new LoginActivityStrategy(this);
 
     private CircularProgressBar progressBar;
@@ -330,6 +328,12 @@ public class LoginActivity extends Activity {
                 showError(PreferencesState.getInstance().getContext().getString(
                         R.string
                                 .title_error_unexpected));
+            }
+
+            @Override
+            public void onUnsupportedServerVersion() {
+                showError(PreferencesState.getInstance().getContext().getString(
+                        R.string.login_error_unsupported_server_version));
             }
         });
     }

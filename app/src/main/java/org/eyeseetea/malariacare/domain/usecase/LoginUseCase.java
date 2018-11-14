@@ -20,16 +20,109 @@
 package org.eyeseetea.malariacare.domain.usecase;
 
 import org.eyeseetea.malariacare.domain.boundary.IRepositoryCallback;
+import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
+import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IAuthenticationManager;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
 import org.eyeseetea.malariacare.domain.exception.InvalidCredentialsException;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
+import org.hisp.dhis.client.sdk.models.common.UnsupportedServerVersionException;
 
 import java.net.MalformedURLException;
 import java.net.UnknownHostException;
 
-public class LoginUseCase {
+public class LoginUseCase implements UseCase {
+    private IAsyncExecutor mAsyncExecutor;
+
+    private IAuthenticationManager mUserAccountRepository;
+    private IMainExecutor mMainExecutor;
+    private Callback mCallback;
+    private Credentials mCredentials;
+
+    public LoginUseCase(IAuthenticationManager userAccountRepository, IMainExecutor mainExecutor,
+            IAsyncExecutor asyncExecutor) {
+        mUserAccountRepository = userAccountRepository;
+        mMainExecutor = mainExecutor;
+        mAsyncExecutor = asyncExecutor;
+    }
+
+    public void execute(Credentials credentials, final Callback callback) {
+        mCallback = callback;
+        mCredentials = credentials;
+        mAsyncExecutor.run(this);
+    }
+
+    @Override
+    public void run() {
+        mUserAccountRepository.login(mCredentials,
+                new IRepositoryCallback<UserAccount>() {
+                    @Override
+                    public void onSuccess(UserAccount userAccount) {
+                        notifyOnSuccess();
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        if (throwable instanceof MalformedURLException
+                                || throwable instanceof UnknownHostException) {
+                            notifyOnServerURLNotValid();
+                        } else if (throwable instanceof InvalidCredentialsException) {
+                            notifyOnInvalidCredentials();
+                        } else if (throwable instanceof NetworkException) {
+                            notifyOnNetworkError();
+                        } else if (throwable instanceof UnsupportedServerVersionException) {
+                            notifyOnUnsupportedServerVersion();
+                        }
+                    }
+                });
+    }
+
+    private void notifyOnSuccess() {
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                mCallback.onLoginSuccess();
+            }
+        });
+    }
+
+    private void notifyOnServerURLNotValid() {
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                mCallback.onServerURLNotValid();
+            }
+        });
+    }
+
+    private void notifyOnInvalidCredentials() {
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                mCallback.onInvalidCredentials();
+            }
+        });
+    }
+
+    private void notifyOnNetworkError() {
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                mCallback.onNetworkError();
+            }
+        });
+    }
+
+    private void notifyOnUnsupportedServerVersion() {
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                mCallback.onUnsupportedServerVersion();
+            }
+        });
+    }
+
     public interface Callback {
         void onLoginSuccess();
 
@@ -38,35 +131,8 @@ public class LoginUseCase {
         void onInvalidCredentials();
 
         void onNetworkError();
-    }
 
-    private IAuthenticationManager mUserAccountRepository;
-
-    public LoginUseCase(IAuthenticationManager userAccountRepository) {
-        mUserAccountRepository = userAccountRepository;
-    }
-
-    public void execute(Credentials credentials, final Callback callback) {
-        
-        mUserAccountRepository.login(credentials,
-                new IRepositoryCallback<UserAccount>() {
-                    @Override
-                    public void onSuccess(UserAccount userAccount) {
-                        callback.onLoginSuccess();
-                    }
-
-                    @Override
-                    public void onError(Throwable throwable) {
-                        if (throwable instanceof MalformedURLException
-                                || throwable instanceof UnknownHostException) {
-                            callback.onServerURLNotValid();
-                        } else if (throwable instanceof InvalidCredentialsException) {
-                            callback.onInvalidCredentials();
-                        } else if (throwable instanceof NetworkException) {
-                            callback.onNetworkError();
-                        }
-                    }
-                });
+        void onUnsupportedServerVersion();
     }
 
 }

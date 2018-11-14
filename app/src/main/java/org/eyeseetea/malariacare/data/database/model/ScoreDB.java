@@ -27,6 +27,8 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.data.database.AppDatabase;
 
+import java.util.List;
+
 /**
  * Created by adrian on 14/02/15.
  */
@@ -73,6 +75,10 @@ public class ScoreDB extends BaseModel {
         this.id_score = id_score;
     }
 
+    public Long getId_survey_fk() {
+        return id_survey_fk;
+    }
+
     public SurveyDB getSurvey() {
         if(survey==null){
             if(id_survey_fk==null) return null;
@@ -110,6 +116,10 @@ public class ScoreDB extends BaseModel {
         this.score = score;
     }
 
+    public static List<ScoreDB> list() {
+        return new Select().from(ScoreDB.class).queryList();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -143,4 +153,6 @@ public class ScoreDB extends BaseModel {
                 ", score=" + score +
                 '}';
     }
+
+
 }

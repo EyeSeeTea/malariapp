@@ -19,13 +19,13 @@
 
 package org.eyeseetea.malariacare.fragments;
 
-import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -426,7 +426,7 @@ public class SurveyFragment extends Fragment implements DomainEventSubscriber<Va
         }
 
         reloadChart();
-        }
+    }
 
     private void reloadChart() {
         IAsyncExecutor asyncExecutor = new AsyncExecutor();
@@ -454,7 +454,7 @@ public class SurveyFragment extends Fragment implements DomainEventSubscriber<Va
     private void updateChart() {
         final DoublePieChart doublePieChart =
                 ActionBarStrategy.getActionBarPie(DashboardActivity.dashboardActivity);
-        if(doublePieChart!=null) {
+        if (doublePieChart != null) {
             LayoutUtils.updateChart(mSurveyAnsweredRatio,
                     doublePieChart);
         }

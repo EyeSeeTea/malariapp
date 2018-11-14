@@ -25,8 +25,13 @@ import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
+import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
+import org.eyeseetea.malariacare.domain.exception.push.PushValueException;
 import org.eyeseetea.malariacare.domain.usecase.MockedPushSurveysUseCase;
 import org.eyeseetea.malariacare.domain.usecase.PushUseCase;
+import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
+import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.PushService;
 
@@ -54,7 +59,10 @@ public class PushServiceStrategy {
     }
 
     private void executeMockedPush() {
-        MockedPushSurveysUseCase mockedPushSurveysUseCase = new MockedPushSurveysUseCase();
+        IAsyncExecutor asyncExecutor = new AsyncExecutor();
+        IMainExecutor mainExecutor = new UIThreadExecutor();
+        MockedPushSurveysUseCase mockedPushSurveysUseCase = new MockedPushSurveysUseCase(
+                asyncExecutor, mainExecutor);
 
         mockedPushSurveysUseCase.execute(new MockedPushSurveysUseCase.Callback() {
             @Override
@@ -94,10 +102,21 @@ public class PushServiceStrategy {
             }
 
             @Override
-            public void onInformativeError(String message) {
-                Log.e(TAG, "An error has occurred to the conversion in push process"+message);
-                showInDialog(PreferencesState.getInstance().getContext().getString(
-                        R.string.error_message), message);
+            public void onInformativeError(Throwable throwable) {
+                Log.e(TAG, "An error has occurred in push process"+throwable.getMessage());
+
+                if (throwable instanceof PushValueException){
+                    PushValueException pushValueException = (PushValueException) throwable;
+
+                    showInDialog(mPushService.getString(R.string.error_message),
+                            mPushService.getString(R.string.error_conflict_message,
+                                    pushValueException.getSurveyUid(),
+                                    pushValueException.getQuestionUid(),
+                                    pushValueException.getConflictMessage()));
+                } else {
+                    showInDialog(PreferencesState.getInstance().getContext().getString(
+                            R.string.error_message), throwable.getMessage());
+                }
             }
 
             @Override
