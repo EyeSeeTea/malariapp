@@ -286,4 +286,5 @@
 <string name="apply_filters">"ນໍາໃຊ້ຕົວກັ່ນຕອງ"</string>
 <string name="error_unauthorized">"ឈຊື່ຜູ້ໃຊ້ຫຼືລະຫັດຜ່ານທີ່ບໍ່ຖືກຕ້ອງ."</string>
 <string name="title_error_unexpected">"ຜິດພາດຜິດພາດ"</string>
+<string name="login_error_unsupported_server_version">The server version is not supported</string>
 </resources>

@@ -19,13 +19,13 @@
 
 package org.eyeseetea.malariacare.fragments;
 
-import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -209,7 +209,6 @@ public class SurveyFragment extends Fragment implements DomainEventSubscriber<Va
 
     private void initializeSurvey() {
         final SurveyDB survey = Session.getSurveyByModule(moduleName);
-
         surveyAnsweredRatioRepository = new SurveyAnsweredRatioRepository();
         asyncExecutor = new AsyncExecutor();
         mainExecutor = new UIThreadExecutor();
@@ -229,6 +228,7 @@ public class SurveyFragment extends Fragment implements DomainEventSubscriber<Va
                         Log.d(getClass().getName(), "onComplete");
                         mSurveyAnsweredRatio = surveyAnsweredRatio;
                         tabAdapter.notifyDataSetChanged();
+                        updateChart();
                     }
                 });
     }
@@ -406,12 +406,6 @@ public class SurveyFragment extends Fragment implements DomainEventSubscriber<Va
     }
 
     private void runChartUpdate(final ValueChangedEvent valueChangedEvent) {
-
-        final DoublePieChart doublePieChart =
-                ActionBarStrategy.getActionBarPie(DashboardActivity.dashboardActivity);
-        if(doublePieChart!=null){
-            doublePieChart.setVisibility(View.VISIBLE);
-        }
         for (Question question : valueChangedEvent.getQuestions()) {
             if(question.isComputable()) {
                 if (valueChangedEvent.getAction().equals(
@@ -431,6 +425,12 @@ public class SurveyFragment extends Fragment implements DomainEventSubscriber<Va
             }
         }
 
+        reloadChart();
+    }
+
+    private void reloadChart() {
+        IAsyncExecutor asyncExecutor = new AsyncExecutor();
+        IMainExecutor mainExecutor = new UIThreadExecutor();
         SaveSurveyAnsweredRatioUseCase saveSurveyAnsweredRatioUseCase =
                 new SaveSurveyAnsweredRatioUseCase(
                         new SurveyAnsweredRatioRepository(), mainExecutor,
@@ -445,16 +445,22 @@ public class SurveyFragment extends Fragment implements DomainEventSubscriber<Va
                     public void onComplete(
                             SurveyAnsweredRatio surveyAnsweredRatio) {
                         if (surveyAnsweredRatio != null) {
-                            if(doublePieChart!=null) {
-                                LayoutUtils.updateChart(mSurveyAnsweredRatio,
-                                        doublePieChart);
-                            }
+                            updateChart();
                         }
                     }
                 }, mSurveyAnsweredRatio);
-        }
+    }
 
-@Override
+    private void updateChart() {
+        final DoublePieChart doublePieChart =
+                ActionBarStrategy.getActionBarPie(DashboardActivity.dashboardActivity);
+        if (doublePieChart != null) {
+            LayoutUtils.updateChart(mSurveyAnsweredRatio,
+                    doublePieChart);
+        }
+    }
+
+    @Override
 public Class<ValueChangedEvent> subscribedToEventType(){
         return ValueChangedEvent.class;
     }

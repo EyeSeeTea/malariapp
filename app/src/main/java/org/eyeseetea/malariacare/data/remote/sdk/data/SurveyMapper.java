@@ -2,15 +2,16 @@ package org.eyeseetea.malariacare.data.remote.sdk.data;
 
 import android.util.Log;
 
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.CompositeScoreBuilder;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
-import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
+import org.eyeseetea.malariacare.domain.entity.CompositeScore;
 import org.eyeseetea.malariacare.domain.entity.Option;
+import org.eyeseetea.malariacare.domain.entity.OrgUnit;
 import org.eyeseetea.malariacare.domain.entity.Question;
 import org.eyeseetea.malariacare.domain.entity.QuestionValue;
 import org.eyeseetea.malariacare.domain.entity.Score;
 import org.eyeseetea.malariacare.domain.entity.ServerMetadata;
 import org.eyeseetea.malariacare.domain.entity.Survey;
+import org.eyeseetea.malariacare.domain.entity.SurveyStatus;
+import org.eyeseetea.malariacare.utils.DateParser;
 import org.hisp.dhis.client.sdk.models.event.Event;
 import org.hisp.dhis.client.sdk.models.trackedentity.TrackedEntityDataValue;
 
@@ -27,19 +28,21 @@ public class SurveyMapper {
     private final static String TAG = ".SurveyMapper";
 
     private ServerMetadata serverMetadata;
-    private Map<String, CompositeScoreDB> compositeScoreMap;
+    private Map<String, OrgUnit> orgUnitsMap;
+    private Map<String, CompositeScore> compositeScoreMap;
     private Map<String, Question> questionsMap;
     private Map<String, List<Option>> optionsMap;
 
     //TODO: compositeScoreMap on the future should be a domain entity list
     public SurveyMapper(
             ServerMetadata serverMetadata,
-            List<CompositeScoreDB> compositeScores,
+            List<OrgUnit> orgUnits,
+            List<CompositeScore> compositeScores,
             List<Question> questions,
             List<Option> options) {
         this.serverMetadata = serverMetadata;
 
-        createMaps(compositeScores, questions, options);
+        createMaps(orgUnits, compositeScores, questions, options);
     }
 
     public List<Survey> mapSurveys(List<Event> events) {
@@ -67,6 +70,7 @@ public class SurveyMapper {
         String programUid = event.getProgram();
         String userUid = null;
         Score score = null;
+
         //Set dates by default ( to prevent a null value, all take the getEventDate date
         Date creationDate = event.getEventDate().toDate();
         Date completionDate = event.getEventDate().toDate();
@@ -80,13 +84,13 @@ public class SurveyMapper {
         for (TrackedEntityDataValue dataValue : event.getDataValues()) {
 
             if (dataValue.getDataElement().equals(serverMetadata.getCreationDate().getUId())) {
-                creationDate = EventExtended.parseLongDate(dataValue.getValue());
+                creationDate = DateParser.parseLongDate(dataValue.getValue());
             } else if (serverMetadata.getCompletionDate() != null
                     && dataValue.getDataElement().equals(
                     serverMetadata.getCompletionDate().getUId())) {
-                completionDate = EventExtended.parseLongDate(dataValue.getValue());
+                completionDate = DateParser.parseLongDate(dataValue.getValue());
             } else if (dataValue.getDataElement().equals(serverMetadata.getUploadDate().getUId())) {
-                uploadDate = EventExtended.parseLongDate(dataValue.getValue());
+                uploadDate = DateParser.parseLongDate(dataValue.getValue());
             } else if (dataValue.getDataElement().equals(
                     serverMetadata.getNextAssessment().getUId())) {
                 if (dataValue.getValue() != null && !dataValue.getValue().isEmpty()) {
@@ -101,10 +105,10 @@ public class SurveyMapper {
             } else if (dataValue.getDataElement().equals(serverMetadata.getUploadBy().getUId())) {
                 userUid = dataValue.getValue();
             } else if (compositeScoreMap.containsKey(dataValue.getDataElement())) {
-                CompositeScoreDB compositeScore = compositeScoreMap.get(
+                CompositeScore compositeScore = compositeScoreMap.get(
                         dataValue.getDataElement());
 
-                if (CompositeScoreBuilder.isRootScore(compositeScore)) {
+                if (compositeScore.isRoot()) {
                     score = new Score(dataValue.getDataElement(),
                             Float.parseFloat(dataValue.getValue()));
                 }
@@ -117,8 +121,11 @@ public class SurveyMapper {
             }
         }
 
-        Survey survey = Survey.createSentSurvey(eventUid, programUid, orgUnitUid,
-                userUid, creationDate, uploadDate, scheduledDate, completionDate, values, score);
+        int productivity = orgUnitsMap.get(orgUnitUid).getProductivity(programUid);
+
+        Survey survey = Survey.createStoredSurvey(SurveyStatus.SENT, eventUid, programUid,
+                orgUnitUid, userUid, creationDate, uploadDate, scheduledDate, completionDate,
+                values, score, productivity);
 
         return survey;
     }
@@ -144,7 +151,7 @@ public class SurveyMapper {
             } else {
                 //Option -> extract value from code
                 questionValue = QuestionValue.createOptionValue(questionUid, optionUid,
-                       option.getName());
+                        option.getName());
             }
         } else {
             //There is data values assigned by dhis scripts that we should not converting
@@ -155,7 +162,7 @@ public class SurveyMapper {
             //<dataValue created="2017-10-03T08:00:35.269" lastUpdated="2018-04-24T04:00:40.564"
             // value="false" dataElement="iW2zVNwfDK6" providedElsewhere="false"
             // storedBy="script_HNQIS"/>
-            System.out.println( String.format(
+            System.out.println(String.format(
                     "An error occurred converting data value because DataElement does no exists "
                             + "as Question. Event: %s, DataElement: %s)",
                     event.getUId(), dataValue.getDataElement()));
@@ -190,12 +197,15 @@ public class SurveyMapper {
         return null;
     }
 
-    private void createMaps(List<CompositeScoreDB> compositeScores, List<Question> questions,
-            List<Option> options) {
-        compositeScoreMap = new HashMap<>();
-        for (CompositeScoreDB compositeScore : compositeScores) {
-            compositeScoreMap.put(compositeScore.getUid(), compositeScore);
+    private void createMaps(List<OrgUnit> orgUnits, List<CompositeScore> compositeScores,
+            List<Question> questions, List<Option> options) {
+        orgUnitsMap = new HashMap<>();
+        for (OrgUnit orgUnit : orgUnits) {
+            orgUnitsMap.put(orgUnit.getUid(), orgUnit);
         }
+
+        compositeScoreMap = new HashMap<>();
+        createCompositeScoresMap(compositeScores);
 
         optionsMap = new HashMap<>();
         for (Option option : options) {
@@ -210,6 +220,16 @@ public class SurveyMapper {
         questionsMap = new HashMap<>();
         for (Question question : questions) {
             questionsMap.put(question.getUId(), question);
+        }
+    }
+
+    private void createCompositeScoresMap(List<CompositeScore> compositeScores) {
+        for (CompositeScore compositeScore : compositeScores) {
+            compositeScoreMap.put(compositeScore.getUid(), compositeScore);
+
+            if (compositeScore.getChildren() != null && compositeScore.getChildren().size() > 0) {
+                createCompositeScoresMap(compositeScore.getChildren());
+            }
         }
     }
 }
