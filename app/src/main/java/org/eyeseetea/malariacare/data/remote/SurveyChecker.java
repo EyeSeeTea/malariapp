@@ -114,7 +114,7 @@ public class SurveyChecker {
             Log.d(TAG, "Set quarantine survey as " + ((status == Constants.SURVEY_SENT) ? "sent "
                     : "complete ") + survey.getId_survey() + " date "
                     + dateParser.format(survey.getCreationDate(),
-                    EventExtended.DHIS2_GMT_DATE_FORMAT));
+                    DateParser.LONG_DATE_FORMAT_WITH_SPECIFIC_UTC_TIME_ZONE));
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
