@@ -443,11 +443,8 @@ public class DashboardController {
             TextView comment = (TextView) row.findViewById(R.id.first_column);
             TextView date = (TextView) row.findViewById(R.id.second_column);
             comment.setText(surveyScheduleDB.getComment());
-
-            Locale locale = DashboardActivity.dashboardActivity.getResources().getConfiguration()
-                    .locale;
             DateParser dateParser = new DateParser();
-            date.setText(dateParser.userFormatDate(surveyScheduleDB.getPrevious_date(), locale));
+            date.setText(dateParser.getEuropeanFormattedDate(surveyScheduleDB.getPrevious_date()));
             linearLayout.addView(row );
         }
         final AlertDialog alertDialog = builder.create();

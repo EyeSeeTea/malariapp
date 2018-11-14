@@ -286,11 +286,8 @@ public class PlannedAdapter extends BaseAdapter {
 
         //ScheduledDate
         textView = (TextView) rowLayout.findViewById(R.id.planning_survey_schedule_date);
-
-        Locale locale = context.getResources().getConfiguration()
-                .locale;
         DateParser dateParser = new DateParser();
-        textView.setText(dateParser.userFormatDate(plannedSurvey.getNextAssesment(), locale));
+        textView.setText(dateParser.getEuropeanFormattedDate(plannedSurvey.getNextAssesment()));
         textView.setOnClickListener(new ScheduleListener(plannedSurvey.getSurvey(), context));
 
         ImageView dotsMenu = (ImageView) rowLayout.findViewById(R.id.menu_dots);

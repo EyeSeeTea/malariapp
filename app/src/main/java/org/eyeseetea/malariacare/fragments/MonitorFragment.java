@@ -416,11 +416,8 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
             row = inflater.inflate(R.layout.item_list_row_row, null);
             TextView completionDate = (TextView) row.findViewById(R.id.first_column);
             TextView score = (TextView) row.findViewById(R.id.second_column);
-
-            Locale locale = DashboardActivity.dashboardActivity.getResources().getConfiguration()
-                    .locale;
             DateParser dateParser = new DateParser();
-            completionDate.setText(dateParser.userFormatDate(survey.getCompletionDate(), locale));
+            completionDate.setText(dateParser.getEuropeanFormattedDate(survey.getCompletionDate()));
             score.setText(Math.round(survey.getMainScore())+"");
             Resources resources = PreferencesState.getInstance().getContext().getResources();
 

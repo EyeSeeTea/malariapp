@@ -118,9 +118,7 @@ public class AssessmentSentAdapter extends
     private String decorateCompletionDate(SurveyDB survey) {
         Date completionDate = survey.getCompletionDate();
         DateParser dateParser = new DateParser();
-        Locale locale = getContext().getResources().getConfiguration()
-                .locale;
-        return dateParser.userFormatDate(completionDate, locale);
+        return dateParser.getEuropeanFormattedDate(completionDate);
     }
 
     private int getColorByScore(SurveyDB survey) {

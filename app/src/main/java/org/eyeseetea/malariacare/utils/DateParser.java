@@ -12,6 +12,14 @@ public class DateParser {
     public final static String LONG_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS";
     public final static String LONG_DATE_FORMAT_WITH_SPECIFIC_UTC_TIME_ZONE = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
 
+    public static String getEuropeanFormattedDate(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat(EUROPEAN_DATE_FORMAT);
+        if(date==null){
+            return "";
+        }
+        return sdf.format(date);
+    }
+
     public String userFormatDate(Date date, Locale locale) {
         if (date == null) {
             return "";
