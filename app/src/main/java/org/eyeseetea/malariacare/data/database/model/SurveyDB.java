@@ -46,8 +46,6 @@ import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow_Table;
 import org.hisp.dhis.client.sdk.core.common.utils.CodeGenerator;
 
 import java.util.Date;
@@ -155,10 +153,6 @@ public class SurveyDB extends BaseModel {
 
     public String getEventUid() {
         return uid_event_fk;
-    }
-
-    public void setEventUid(EventFlow event) {
-        this.uid_event_fk = event.getUId();
     }
 
     public void setEventUid(String eventuid) {
@@ -768,23 +762,6 @@ public class SurveyDB extends BaseModel {
                 .groupBy( SurveyDB_Table.id_program_fk , SurveyDB_Table.id_org_unit_fk)
                 .having(SurveyDB_Table.completion_date.eq(Method.max(SurveyDB_Table.completion_date)))
                 .querySingle();
-    }
-
-    /**
-     * Get event from a survey if exists.
-     */
-    public EventFlow getEvent() {
-        return new Select().from(EventFlow.class)
-                .where(EventFlow_Table.uId.eq(uid_event_fk)).querySingle();
-    }
-
-    /**
-     * Get event from a survey local id if exist
-     */
-    public EventFlow getEventFromLocalId() {
-        EventFlow event = new Select().from(EventFlow.class)
-                .where(EventFlow_Table.id.eq(id_survey)).querySingle();
-        return event;
     }
 
     public static SurveyDB getSurveyInProgress() {
