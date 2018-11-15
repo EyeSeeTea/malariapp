@@ -94,6 +94,13 @@ public class SurveySDKDhisDataSource implements IDataRemoteDataSource {
 
     @Override
     public Map<String, PushReport> save(List<? extends IData> dataList) throws Exception {
+
+        try{
+            D2.isConfigured();
+        }catch (IllegalArgumentException e){
+            D2.init(mContext);
+        }
+
         List<Survey> surveys = (List<Survey>) dataList;
 
         ServerMetadata serverMetadata = mServerMetadataRepository.getServerMetadata();

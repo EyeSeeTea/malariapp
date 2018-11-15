@@ -70,6 +70,12 @@ public class AuthenticationManagerDhisSDKDataSource implements IAuthenticationMa
     public void login(final Credentials credentials,
             final IDataSourceCallback<UserAccount> callback) {
 
+        try{
+            D2.isConfigured();
+        }catch (IllegalArgumentException e){
+            D2.init(mContext);
+        }
+
         boolean isNetworkAvailable = isNetworkAvailable();
 
         if (!isNetworkAvailable) {
