@@ -43,4 +43,8 @@ public class DateParser {
         String format = AMERICAN_DATE_FORMAT;
         return (date != null) ? new SimpleDateFormat(format).format(date) : null;
     }
+
+    public static String format(Date date, String format) {
+        return (date != null) ? new SimpleDateFormat(format).format(date) : null;
+    }
 }

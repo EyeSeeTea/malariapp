@@ -2,11 +2,19 @@ package org.eyeseetea.malariacare.domain.entity;
 
 import static org.eyeseetea.malariacare.domain.utils.RequiredChecker.required;
 
+import org.eyeseetea.malariacare.domain.exception.CalculateNextScheduledDateException;
+
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class Survey {
+public class Survey implements IData {
+
+    public static final int DEFAULT_PRODUCTIVITY = 0;
+    private final static int TYPE_A_NEXT_DATE = 6;
+    private final static int TYPE_BC_LOW_NEXT_DATE = 4;
+    private final static int TYPE_BC_HIGH_NEXT_DATE = 2;
 
     private final String uId;
     private final String programUId;
@@ -19,32 +27,36 @@ public class Survey {
     private Date scheduledDate;
     private SurveyStatus status;
     private List<QuestionValue> values;
+    private int productivity;
 
-    private Survey(String uId, String programUId, String orgUnitUId, String userUId) {
-        this.uId=required(uId, "Survey uid is required");
-        this.programUId=required(programUId, "Survey programUId is required");
-        this.orgUnitUId=required(orgUnitUId, "Survey orgUnitUId is required");
-        this.userUId=required(userUId, "Survey userUId is required");
+    private Survey(String uId, String programUId, String orgUnitUId, String userUId,int productivity) {
+        this.uId = required(uId, "Survey uid is required");
+        this.programUId = required(programUId, "Survey programUId is required");
+        this.orgUnitUId = required(orgUnitUId, "Survey orgUnitUId is required");
+        this.userUId = required(userUId, "Survey userUId is required");
         this.values = new ArrayList<>();
 
-        creationDate = new Date();
-        status = SurveyStatus.IN_PROGRESS;
+        this.creationDate = new Date();
+        this.status = SurveyStatus.IN_PROGRESS;
+        this.productivity = productivity;
     }
 
     public static Survey createEmptySurvey(String uId, String programUId, String orgUnitUId,
-            String userUId) {
-        Survey survey = new Survey(uId, programUId, orgUnitUId, userUId);
+            String userUId, int productivity) {
+        Survey survey = new Survey(uId, programUId, orgUnitUId, userUId, productivity);
         return survey;
     }
 
-    public static Survey createSentSurvey(String uId, String programUId, String orgUnitUId,
-            String userUId, Date creationDate, Date uploadDate, Date scheduledDate,
-            Date completionDate, List<QuestionValue> values, Score score) {
-        Survey survey = new Survey(uId, programUId, orgUnitUId, userUId);
-        survey.changeStatus(SurveyStatus.SENT);
+    public static Survey createStoredSurvey(SurveyStatus status, String uId, String programUId,
+            String orgUnitUId, String userUId, Date creationDate, Date uploadDate,
+            Date scheduledDate, Date completionDate, List<QuestionValue> values, Score score,
+            int productivity) {
+
+        Survey survey = new Survey(uId, programUId, orgUnitUId, userUId, productivity);
+        survey.changeStatus(status);
         survey.assignCreationDate(creationDate);
-        survey.changeUploadDate(uploadDate);
-        survey.changeScheduledDate(scheduledDate);
+        survey.assignUploadDate(uploadDate);
+        survey.assignScheduledDate(scheduledDate);
         survey.assignCompletionDate(completionDate);
         survey.addQuestionValues(values);
         survey.assignScore(score);
@@ -132,12 +144,101 @@ public class Survey {
         this.completionDate = completionDate;
     }
 
-    public void changeUploadDate(Date uploadDate) {
+    public void assignUploadDate(Date uploadDate) {
         this.uploadDate = uploadDate;
     }
 
-    public void changeScheduledDate(Date scheduledDate) {
+    public void assignScheduledDate(Date scheduledDate) {
         this.scheduledDate = scheduledDate;
+    }
+
+    @Override
+    public String getSurveyUid() {
+        return getUId();
+    }
+
+    public int getProductivity() {
+        return productivity;
+    }
+
+    @Override
+    public void markAsSending() {
+        changeStatus(SurveyStatus.SENDING);
+    }
+
+    @Override
+    public void markAsErrorConversionSync() {
+        changeStatus(SurveyStatus.ERRORCONVERSIONSYNC);
+    }
+
+    @Override
+    public void markAsRetrySync() {
+        changeStatus(SurveyStatus.QUARANTINE);
+    }
+
+    @Override
+    public void markAsSent() {
+        changeStatus(SurveyStatus.SENT);
+    }
+
+    @Override
+    public void markAsConflict() {
+        changeStatus(SurveyStatus.CONFLICT);
+    }
+
+    @Override
+    public void markValueAsConflict(String questionUid) {
+        QuestionValue conflictValue = null;
+
+        for (QuestionValue value : values) {
+            if (value.getQuestionUId().equals(questionUid)) {
+                conflictValue = value;
+                break;
+            }
+        }
+
+        if (conflictValue == null) {
+            throw new IllegalArgumentException("No exists value in survey, questionUid:"
+                    + questionUid);
+        } else {
+            conflictValue.markAsConflict();
+        }
+    }
+
+    public Date calculateNextScheduledDate() throws CalculateNextScheduledDateException {
+
+        if (getCompletionDate() == null) {
+            throw new CalculateNextScheduledDateException(
+                    "It is not possible calculate next schedule date for a non complete survey");
+        }
+
+        if (getScore() == null) {
+            throw new CalculateNextScheduledDateException(
+                    "It is not possible calculate next schedule date for a survey without score");
+        }
+
+        ScoreType scoreType = new ScoreType(getScore().getScore());
+
+        if (scoreType.isTypeA()) {
+            return getInXMonths(getCompletionDate(), TYPE_A_NEXT_DATE);
+        }
+
+        if (isLowProductivity()) {
+            return getInXMonths(getCompletionDate(), TYPE_BC_LOW_NEXT_DATE);
+        }
+
+        return getInXMonths(getCompletionDate(), TYPE_BC_HIGH_NEXT_DATE);
+    }
+
+    private Date getInXMonths(Date date, int numMonths) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.MONTH, numMonths);
+        return calendar.getTime();
+    }
+
+    private boolean isLowProductivity() {
+        return getProductivity() < 5;
     }
 
     @Override
@@ -150,6 +251,7 @@ public class Survey {
         if (!uId.equals(survey.uId)) return false;
         if (!programUId.equals(survey.programUId)) return false;
         if (!orgUnitUId.equals(survey.orgUnitUId)) return false;
+        if (productivity != productivity) return false;
         if (score != null ? !score.equals(survey.score) : survey.score != null) return false;
         if (!userUId.equals(survey.userUId)) return false;
         if (!creationDate.equals(survey.creationDate)) return false;
@@ -174,6 +276,7 @@ public class Survey {
         int result = uId.hashCode();
         result = 31 * result + programUId.hashCode();
         result = 31 * result + orgUnitUId.hashCode();
+        result = 31 * result + productivity;
         result = 31 * result + (score != null ? score.hashCode() : 0);
         result = 31 * result + userUId.hashCode();
         result = 31 * result + creationDate.hashCode();
@@ -191,6 +294,7 @@ public class Survey {
                 "uId='" + uId + '\'' +
                 ", programUId='" + programUId + '\'' +
                 ", orgUnitUId='" + orgUnitUId + '\'' +
+                ", productivity='" + productivity + '\'' +
                 ", score=" + score +
                 ", userUId='" + userUId + '\'' +
                 ", creationDate=" + creationDate +

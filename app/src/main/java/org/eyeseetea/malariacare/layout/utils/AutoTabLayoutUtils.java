@@ -31,6 +31,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.google.common.primitives.Booleans;
 import com.raizlabs.android.dbflow.structure.BaseModel;
@@ -45,7 +46,6 @@ import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomRadioButton;
-import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -75,8 +75,8 @@ public class AutoTabLayoutUtils {
         // Main component in the row: Spinner, EditText or RadioGroup
         public View component;
 
-        public CustomTextView num;
-        public CustomTextView denum;
+        public TextView num;
+        public TextView denum;
         public int type;
 
         /**
@@ -131,11 +131,11 @@ public class AutoTabLayoutUtils {
 
     //Store the views references for each view in the footer
     public static class ScoreHolder {
-        public CustomTextView subtotalscore;
-        public CustomTextView score;
-        public CustomTextView totalNum;
-        public CustomTextView totalDenum;
-        public CustomTextView qualitativeScore;
+        public TextView subtotalscore;
+        public TextView score;
+        public TextView totalNum;
+        public TextView totalDenum;
+        public TextView qualitativeScore;
     }
 
     public static void updateReadOnly(AutoTabViewHolder viewHolder, QuestionRow questionRow, boolean readonly){
@@ -235,7 +235,7 @@ public class AutoTabLayoutUtils {
         else
             rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(position));
 
-        viewHolder.statement = (CustomTextView) rowView.findViewById(R.id.statement);
+        viewHolder.statement = (TextView) rowView.findViewById(R.id.statement);
         viewHolder.component = rowView.findViewById(R.id.answer);
         viewHolder.parentImage = rowView.findViewById(R.id.parent_img);
         viewHolder.parentImageShown = rowView.findViewById(R.id.parent_hide_img);
@@ -298,8 +298,8 @@ public class AutoTabLayoutUtils {
 
     public static void initialiseScorableComponent(View rowView, AutoTabViewHolder viewHolder) {
         // In case the option is selected, we will need to show num/dems
-        viewHolder.num = (CustomTextView) rowView.findViewById(R.id.num);
-        viewHolder.denum = (CustomTextView) rowView.findViewById(R.id.den);
+        viewHolder.num = (TextView) rowView.findViewById(R.id.num);
+        viewHolder.denum = (TextView) rowView.findViewById(R.id.den);
 
         configureViewByPreference(viewHolder);
     }
@@ -459,7 +459,7 @@ public class AutoTabLayoutUtils {
     }
 
     /**
-     * Recalculate num and denum of a quetsion, update them in cache vars and save the new num/denum in the score register associated with the question
+     * Recalculate num and denum of a quetsion, update them in cache vars and saveData the new num/denum in the score register associated with the question
      * @param viewHolder views cache
      * @param question question that change its values
      */

@@ -22,13 +22,13 @@ package org.eyeseetea.malariacare.fragments;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ListFragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.app.ListFragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -48,6 +48,8 @@ import org.eyeseetea.malariacare.data.database.utils.services.BaseServiceBundle;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentSentAdapter;
 import org.eyeseetea.malariacare.layout.listeners.SwipeDismissListViewTouchListener;
 import org.eyeseetea.malariacare.services.SurveyService;
+import org.eyeseetea.malariacare.strategies.DashboardSentFragmentStrategy;
+import org.eyeseetea.malariacare.strategies.FeedbackFragmentStyleStrategy;
 import org.eyeseetea.malariacare.views.CustomRadioButton;
 import org.eyeseetea.malariacare.views.CustomTextView;
 import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
@@ -85,7 +87,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
     static boolean reverse=false;
     DashboardActivity dashboardActivity;
 
-    boolean forceAllSurveys;
+    public boolean forceAllSurveys;
 
     CustomRadioButton customRadioButton;
     /**
@@ -177,23 +179,31 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
     }
 
     private void initCheckBox(View view) {
+        DashboardSentFragmentStrategy.hideFilterSubHeader(view);
+
         customRadioButton = (CustomRadioButton) view.findViewById(
                 R.id.check_show_all_surveys);
+        View.OnClickListener onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clickOnFilter();
+                reloadData();
+            }
+        };
         forceAllSurveys = false;
         PreferencesState.getInstance().setForceAllSentSurveys(forceAllSurveys);
         customRadioButton.setChecked(true);
-        customRadioButton.setOnClickListener(new View.OnClickListener() {
-                                                 @Override
-                                                 public void onClick(View v) {
-                                                             toggleForceAllSurveys();
-                                                             PreferencesState.getInstance().setForceAllSentSurveys(isForceAllSurveys());
-                                                             ((CustomRadioButton) v).setChecked(!isForceAllSurveys());
-                                                             reloadData();
-                                                 }
-                                             }
-        );
+        customRadioButton.setOnClickListener(onClickListener);
 
+        DashboardSentFragmentStrategy.createOptionsDialog(view,onClickListener);
 
+        FeedbackFragmentStyleStrategy.showImproveFilter(view, this);
+    }
+
+    public void clickOnFilter() {
+        toggleForceAllSurveys();
+        PreferencesState.getInstance().setForceAllSentSurveys(isForceAllSurveys());
+        ((CustomRadioButton) customRadioButton).setChecked(!isForceAllSurveys());
     }
 
     public void resetList() {
@@ -493,7 +503,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
         OrgUnitDB orgUnitDB = orgUnitProgramFilterView.getSelectedOrgUnitFilter();
 
         if(orgUnitDB.getName().equals(PreferencesState.getInstance().getContext().getString(
-                        R.string.filter_all_org_units)) ||
+                R.string.filter_all_org_units)) ||
                 orgUnitDB.getUid().equals(survey.getOrgUnit().getUid()))
             return true;
         return false;

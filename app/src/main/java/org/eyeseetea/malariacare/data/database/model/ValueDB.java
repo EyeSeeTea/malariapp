@@ -33,13 +33,11 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.data.database.AppDatabase;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.VisitableToSDK;
 
 import java.util.Date;
 
 @Table(database = AppDatabase.class, name = "Value")
-public class ValueDB extends BaseModel implements VisitableToSDK {
+public class ValueDB extends BaseModel {
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -105,6 +103,10 @@ public class ValueDB extends BaseModel implements VisitableToSDK {
         this.id_value = id_value;
     }
 
+    public Long getId_option_fk() {
+        return id_option_fk;
+    }
+
     public OptionDB getOption() {
         if(option==null){
             if(id_option_fk==null) return null;
@@ -124,6 +126,10 @@ public class ValueDB extends BaseModel implements VisitableToSDK {
     public void setOption(Long id_option){
         this.id_option_fk=id_option;
         this.option=null;
+    }
+
+    public Long getId_question_fk() {
+        return id_question_fk;
     }
 
     public QuestionDB getQuestion() {
@@ -154,6 +160,10 @@ public class ValueDB extends BaseModel implements VisitableToSDK {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public Long getId_survey_fk() {
+        return id_survey_fk;
     }
 
     public SurveyDB getSurvey() {
@@ -252,11 +262,6 @@ public class ValueDB extends BaseModel implements VisitableToSDK {
         return SQLite.selectCountOf()
                 .from(ValueDB.class)
                 .count();
-    }
-
-    @Override
-    public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) {
-        IConvertToSDKVisitor.visit(this);
     }
 
     @Override

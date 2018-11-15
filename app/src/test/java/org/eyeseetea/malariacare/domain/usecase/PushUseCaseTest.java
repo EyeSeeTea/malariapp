@@ -71,7 +71,7 @@ public class PushUseCaseTest {
             }
 
             @Override
-            public void onInformativeError(String message) {
+            public void onInformativeError(Throwable throwable) {
                 callbackInvoked(false);
             }
 

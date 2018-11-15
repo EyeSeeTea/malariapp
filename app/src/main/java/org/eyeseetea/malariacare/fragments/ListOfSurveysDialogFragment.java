@@ -1,10 +1,10 @@
 package org.eyeseetea.malariacare.fragments;
 
 
-import android.app.DialogFragment;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +21,6 @@ import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.sdk.presentation.views.DoubleRectChart;
-
 
 import java.util.ArrayList;
 import java.util.List;

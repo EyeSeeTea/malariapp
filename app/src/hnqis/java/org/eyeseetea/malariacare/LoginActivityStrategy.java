@@ -24,13 +24,18 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullDemoController;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
+import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
+import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.usecase.LoadCredentialsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullDemoUseCase;
+import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
+import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.hisp.dhis.client.sdk.ui.views.FontButton;
 
 public class LoginActivityStrategy {
@@ -69,7 +74,7 @@ public class LoginActivityStrategy {
 
         LoginActivityStrategy.customStyle(loginActivity);
 
-        FontButton demoButton = (FontButton) loginActivity.findViewById(R.id.demo_login_button);
+        Button demoButton = (Button) loginActivity.findViewById(R.id.demo_login_button);
 
         demoButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,6 +103,11 @@ public class LoginActivityStrategy {
                             public void onNetworkError() {
                                 Log.e(this.getClass().getSimpleName(), "Network Error");
                             }
+
+                            @Override
+                            public void onUnsupportedServerVersion() {
+                                Log.e(this.getClass().getSimpleName(), "Unsupported Server Version");
+                            }
                         });
             }
         });
@@ -112,8 +122,11 @@ public class LoginActivityStrategy {
     }
 
     private void executeDemo() {
+        IMainExecutor mainExecutor = new UIThreadExecutor();
+        IAsyncExecutor asyncExecutor = new AsyncExecutor();
         PullDemoController pullController = new PullDemoController(loginActivity);
-        PullDemoUseCase pullUseCase = new PullDemoUseCase(pullController);
+        PullDemoUseCase pullUseCase = new PullDemoUseCase(pullController, mainExecutor,
+                asyncExecutor);
 
         pullUseCase.execute(new PullDemoUseCase.Callback() {
             @Override
@@ -132,6 +145,14 @@ public class LoginActivityStrategy {
         loginActivity.startActivity(new Intent(loginActivity, activityClass));
 
         loginActivity.finish();
+    }
+
+    public void login() {
+
+    }
+
+    public void onLoginError() {
+
     }
 
 }

@@ -124,7 +124,7 @@ evaluation"</string>
 <string name="feedback_show_only_media">"Show only questions containing video/image"</string>
 <string name="feedback_show_only_one_or_show_all">"Show only last feedback per Program/OU"</string>
 <string name="feedback_return">"Return to all assessments"</string>
-<string name="quality_of_care">"Quality of Care (QoC) Score:"</string>
+<string name="quality_of_care">"Quality of Care \nOverall Score:"</string>
 <string name="overall_quality_of_care">"Overall Quality of Care (QoC) score:"</string>
 <string name="feedback_info_passed">"Pass"</string>
 <string name="feedback_info_failed">"Fail"</string>
@@ -232,8 +232,8 @@ evaluation"</string>
 <string name="planing_due_date">"Due date"</string>
 <string name="action_button_text">ACTION PLAN</string>
 <string name="plan_action_title">Observations &amp; Action Plan</string>
-<string name="plan_action_today_date">Completed: %s</string>
-<string name="plan_action_next_date">Next: %s</string>
+<string name="plan_action_today_date">%s</string>
+<string name="plan_action_next_date">%s</string>
 <string name="plan_action_description">Describe what was observed during the visit a specific action plan for addressing gaps. Also note an improvement over a gap identified during the last visit</string>
 <string name="plan_action_gasp_title">Gaps:</string>
 <string name="plan_action_action_plan_title">Action plan:</string>
@@ -270,16 +270,23 @@ evaluation"</string>
 <string name="mark_complete">"Mark complete"</string>
 <string name="mandatory">Mandatory</string>
 <string name="percent">&#37;</string>
-<string name="plain_text">Plain text </string>
-<string name="html_text">Formatted text </string>
 <string name="schedule_title">Schedule survey</string>
 <string name="save">"Save"</string>
 <string name="advanced_options">"Advanced options"</string>
 <string name="simple_options">"Simple Options"</string>
 <string name="plan_action_provider_title" >"Provider Name:"</string>
-<string name="plan_action_edit_text_hint">"tap to write"</string>
 <string name="header_reschedule_title">"Re-schedule"</string>
 
 
 <string name="scheduled">Scheduled</string>
+<string name="completed_title">"Completed"</string>
+<string name="completed_next">"Next"</string>
+<string name="plan_action_edit_text_hint">"tap to write"</string>
+
+<string name="apply_filters">"Apply filters"</string>
+<string name="filter">"Filter"</string>
+<string name="failed_video_image_question_only">"Video/Image questions only"</string>
+<string name="failed_questions_only">"Failed questions only"</string>
+<string name="error_unauthorized">"Wrong username or password."</string>
+<string name="title_error_unexpected">"Unexpected error"</string>
 </resources>

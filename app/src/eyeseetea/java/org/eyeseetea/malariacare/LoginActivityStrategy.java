@@ -37,17 +37,22 @@ import android.widget.TextView;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullDemoController;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
+import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.usecase.LoadCredentialsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullDemoUseCase;
-import org.hisp.dhis.client.sdk.ui.views.FontButton;
+import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
+import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 
 public class LoginActivityStrategy {
 
     protected LoginActivity loginActivity;
 
     private static final String TAG = ".LoginActivityStrategy";
+
+    private Button demoButton;
 
     public LoginActivityStrategy(LoginActivity loginActivity) {
         this.loginActivity = loginActivity;
@@ -61,6 +66,7 @@ public class LoginActivityStrategy {
             loadUserAndCredentialsUseCase.execute();
 
             finishAndGo(DashboardActivity.class);
+
         } else {
             loginActivity.runOnUiThread(new Runnable() {
                 public void run() {
@@ -80,14 +86,14 @@ public class LoginActivityStrategy {
 
         LoginActivityStrategy.customStyle(loginActivity);
 
-        FontButton demoButton = (FontButton) loginActivity.findViewById(R.id.demo_login_button);
+        demoButton = (Button) loginActivity.findViewById(R.id.demo_login_button);
 
         demoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                loginActivity.showProgress();
                 Credentials demoCrededentials = Credentials.createDemoCredentials();
-
+                demoButton.setVisibility(View.GONE);
                 loginActivity.mLoginUseCase.execute(demoCrededentials,
                         new LoginUseCase.Callback() {
                             @Override
@@ -97,17 +103,29 @@ public class LoginActivityStrategy {
 
                             @Override
                             public void onServerURLNotValid() {
+                                loginActivity.hideProgress();
+                                demoButton.setVisibility(View.VISIBLE);
                                 Log.e(this.getClass().getSimpleName(), "Server url not valid");
                             }
 
                             @Override
                             public void onInvalidCredentials() {
+                                loginActivity.hideProgress();
+                                demoButton.setVisibility(View.VISIBLE);
                                 Log.e(this.getClass().getSimpleName(), "Invalid credentials");
                             }
 
                             @Override
                             public void onNetworkError() {
+                                loginActivity.hideProgress();
+                                demoButton.setVisibility(View.VISIBLE);
                                 Log.e(this.getClass().getSimpleName(), "Network Error");
+                            }
+
+                            @Override
+                            public void onUnsupportedServerVersion() {
+                                Log.e(this.getClass().getSimpleName(),
+                                        "Unsupported Server Version");
                             }
                         });
             }
@@ -163,8 +181,11 @@ public class LoginActivityStrategy {
     }
 
     private void executeDemo() {
+        IMainExecutor mainExecutor = new UIThreadExecutor();
+        IAsyncExecutor asyncExecutor = new AsyncExecutor();
         PullDemoController pullController = new PullDemoController(loginActivity);
-        PullDemoUseCase pullUseCase = new PullDemoUseCase(pullController);
+        PullDemoUseCase pullUseCase = new PullDemoUseCase(pullController, mainExecutor,
+                asyncExecutor);
 
         pullUseCase.execute(new PullDemoUseCase.Callback() {
             @Override
@@ -216,5 +237,13 @@ public class LoginActivityStrategy {
         } else {
             textView.setText(idFirstText);
         }
+    }
+
+    public void login() {
+        demoButton.setVisibility(View.GONE);
+    }
+
+    public void onLoginError() {
+        demoButton.setVisibility(View.VISIBLE);
     }
 }
