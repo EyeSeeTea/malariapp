@@ -44,9 +44,9 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
+import org.eyeseetea.malariacare.domain.identifiers.CodeGenerator;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.hisp.dhis.client.sdk.core.common.utils.CodeGenerator;
 
 import java.util.Date;
 import java.util.List;
