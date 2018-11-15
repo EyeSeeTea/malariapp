@@ -65,15 +65,15 @@ public class Survey implements IData {
 
     public static Survey createQuarantineSentSurvey(String uId, String programUId, String orgUnitUId,
                                           String userUId, Date creationDateValue) {
-        Survey survey = new Survey(uId, programUId, orgUnitUId, userUId);
+        Survey survey = new Survey(uId, programUId, orgUnitUId, userUId, 0);
         survey.changeStatus(SurveyStatus.SENT);
         survey.assignCreationDate(creationDateValue);
         return survey;
     }
 
     public static Survey createQuarantineSurvey(String uId, String programUId, String orgUnitUId,
-                                          String userUId, Date creationDate, Date completionDate) {
-        Survey survey = new Survey(uId, programUId, orgUnitUId, userUId);
+                                          String userUId, Date creationDate, Date completionDate, int productivity) {
+        Survey survey = new Survey(uId, programUId, orgUnitUId, userUId,  productivity);
         survey.changeStatus(SurveyStatus.QUARANTINE);
         survey.assignCreationDate(creationDate);
         survey.assignCompletionDate(completionDate);

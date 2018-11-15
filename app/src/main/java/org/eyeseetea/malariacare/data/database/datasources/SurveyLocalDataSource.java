@@ -26,6 +26,7 @@ import org.eyeseetea.malariacare.data.database.model.ValueDB_Table;
 import org.eyeseetea.malariacare.domain.entity.IData;
 import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.entity.SurveyStatus;
+import org.eyeseetea.malariacare.domain.usecase.LocalSurveyFilter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,9 +37,9 @@ public class SurveyLocalDataSource implements ISurveyDataSource, IDataLocalDataS
     private final static String TAG = ".SurveyLocalDataSource";
 
     @Override
-    public List<Survey> getSurveys(SurveyStatus status) {
+    public List<Survey> getSurveys(LocalSurveyFilter status) {
 
-        List<SurveyDB> surveyDBS = getSurveysDB(status);
+        List<SurveyDB> surveyDBS = getSurveysDB(status.getSurveyStatus());
 
         SurveyMapper surveyMapper = new SurveyMapper(
                 OrgUnitDB.list(), ProgramDB.getAllPrograms(), QuestionDB.list(),
@@ -56,7 +57,7 @@ public class SurveyLocalDataSource implements ISurveyDataSource, IDataLocalDataS
 
     @Override
     public List<? extends IData> getDataToSync() throws Exception {
-        List<Survey> surveys = getSurveys(SurveyStatus.COMPLETED);
+        List<Survey> surveys = getSurveys(LocalSurveyFilter.Builder.create().withSurveyStatus(SurveyStatus.COMPLETED).build());
         return surveys;
     }
 
@@ -229,6 +230,7 @@ public class SurveyLocalDataSource implements ISurveyDataSource, IDataLocalDataS
                 surveyDB.getOrgUnit().getUid(),
                 surveyDB.getUser().getUid(),
                 surveyDB.getCreationDate(),
-                surveyDB.getCompletionDate());
+                surveyDB.getCompletionDate(),
+                surveyDB.getProductivity());
     }
 }

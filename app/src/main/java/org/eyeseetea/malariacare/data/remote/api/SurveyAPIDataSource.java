@@ -29,7 +29,7 @@ import org.eyeseetea.malariacare.data.boundaries.ISurveyDataSource;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerMetadataRepository;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.Survey;
-import org.eyeseetea.malariacare.domain.usecase.pull.SurveyFilter;
+import org.eyeseetea.malariacare.domain.usecase.LocalSurveyFilter;
 import org.eyeseetea.malariacare.utils.DateParser;
 import org.hisp.dhis.client.sdk.models.event.Event;
 import org.hisp.dhis.client.sdk.models.trackedentity.TrackedEntityDataValue;
@@ -59,7 +59,7 @@ public class SurveyAPIDataSource extends OkHttpClientDataSource implements ISurv
     }
 
     @Override
-    public List<Survey> getSurveys(SurveyFilter filter) throws Exception {
+    public List<Survey> getSurveys(LocalSurveyFilter filter) throws Exception {
         //Here pull surveys code
         List<Survey> surveys = new ArrayList<>();
         if(filter.isQuarantineSurvey()) {
@@ -70,7 +70,7 @@ public class SurveyAPIDataSource extends OkHttpClientDataSource implements ISurv
 
 
     @Override
-    public void Save(List<Survey> surveys) throws Exception {
+    public void save(List<Survey> surveys) throws Exception {
         //Here push surveys code
     }
 

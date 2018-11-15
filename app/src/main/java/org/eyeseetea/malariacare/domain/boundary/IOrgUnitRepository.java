@@ -20,8 +20,6 @@
 package org.eyeseetea.malariacare.domain.boundary;
 
 import org.eyeseetea.malariacare.domain.entity.OrgUnit;
-import org.eyeseetea.malariacare.domain.entity.Survey;
-import org.eyeseetea.malariacare.domain.usecase.pull.SurveyFilter;
 
 import java.util.List;
 

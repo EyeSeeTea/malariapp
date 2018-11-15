@@ -27,7 +27,6 @@ import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.entity.OrgUnit;
 import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.entity.SurveyStatus;
-import org.eyeseetea.malariacare.domain.usecase.pull.SurveyFilter;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -72,14 +71,14 @@ public class UpdateQuarantineSurveyStatusUseCase implements UseCase{
             return;
         isActive = true;
         Log.d(TAG, "quarantine surveys update start");
-        List<SurveyFilter> filters = getGroupsOfSurveyFilters();
-        for(SurveyFilter filter: filters) {
+        List<LocalSurveyFilter> filters = getGroupsOfSurveyFilters();
+        for(LocalSurveyFilter filter: filters) {
             try {
                 List<Survey> quarantineSurveysInServer = remoteSurveyDataSource.getSurveys(filter);
                 List<Survey> surveys = localSurveyDataSource.getSurveys(filter);
                 updateSurveyStatus(surveys, quarantineSurveysInServer);
 
-                localSurveyDataSource.Save(surveys);
+                localSurveyDataSource.save(surveys);
             } catch (Exception e) {
                 notifyError(e);
                 return;
@@ -89,13 +88,13 @@ public class UpdateQuarantineSurveyStatusUseCase implements UseCase{
     }
 
 
-    private List<SurveyFilter> getGroupsOfSurveyFilters() {
-        List<SurveyFilter> filters = new ArrayList<>();
+    private List<LocalSurveyFilter> getGroupsOfSurveyFilters() {
+        List<LocalSurveyFilter> filters = new ArrayList<>();
         List<OrgUnit> orgUnitList = orgUnitRepository.getAll();
         for (OrgUnit orgUnit:orgUnitList) {
             for (String programUId : orgUnit.getRelatedPrograms()) {
 
-                SurveyFilter getLocalQuarantineSurveysFilter = SurveyFilter.createGetQuarantineSurveys(programUId, orgUnit.getUid());
+                LocalSurveyFilter getLocalQuarantineSurveysFilter = LocalSurveyFilter.createGetQuarantineSurveys(programUId, orgUnit.getUid());
                 List<Survey> quarantineSurveys = null;
                 try {
                     quarantineSurveys = localSurveyDataSource.getSurveys(getLocalQuarantineSurveysFilter);
@@ -111,7 +110,7 @@ public class UpdateQuarantineSurveyStatusUseCase implements UseCase{
                 Date highestCompletionDate = findHighestCompletionDate(quarantineSurveys);
                 Date lowestCompletionDate = findLowestCompletionDate(quarantineSurveys);
 
-                filters.add(SurveyFilter.createCheckQuarantineOnServerFilter(lowestCompletionDate, highestCompletionDate, programUId, orgUnit.getUid()));
+                filters.add(LocalSurveyFilter.createCheckQuarantineOnServerFilter(lowestCompletionDate, highestCompletionDate, programUId, orgUnit.getUid()));
             }
         }
         return filters;

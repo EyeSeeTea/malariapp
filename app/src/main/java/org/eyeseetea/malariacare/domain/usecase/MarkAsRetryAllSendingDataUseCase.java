@@ -49,7 +49,7 @@ public class MarkAsRetryAllSendingDataUseCase implements UseCase{
     }
 
     private void markAsRetrySendingSurveys() throws Exception {
-        List<Survey> surveys = mSurveyRepository.getSurveys(SurveyStatus.SENDING);
+        List<Survey> surveys = mSurveyRepository.getSurveys(LocalSurveyFilter.Builder.create().withSurveyStatus(SurveyStatus.SENDING).build());
 
         if (surveys.size()>0) {
             for (Survey survey : surveys) {

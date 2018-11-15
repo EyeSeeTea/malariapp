@@ -72,13 +72,6 @@ public class SurveyShould {
     }
 
     @Test
-    public void throw_exception_when_create_survey_with_null_uid(){
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("Survey uid is required");
-        Survey.createEmptySurvey(null, "PROGRAM_UID", "ORG_UNIT_UID", "USER_UID");
-    }
-
-    @Test
     public void throw_exception_when_create_survey_with_null_program_uid(){
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("Survey programUId is required");
@@ -178,7 +171,7 @@ public class SurveyShould {
         Date completionDate = new Date();
 
         Survey survey = Survey.createQuarantineSurvey("UID", "PROGRAM_UID", "ORG_UNIT_UID",
-                "USER_UID", creationDate, completionDate);
+                "USER_UID", creationDate, completionDate, 0);
 
         Assert.assertNotNull(survey);
         Assert.assertTrue(survey.getStatus().equals(SurveyStatus.QUARANTINE));
