@@ -33,6 +33,7 @@ public class LocalSurveyFilter {
 
 
     public LocalSurveyFilter(Date startDate, Date endDate, String programUId, String orgUnitUId, SurveyStatus surveyStatus) {
+        validateDates(startDate, endDate);
         this.startDate = startDate;
         this.endDate = endDate;
         this.programUId = programUId;
@@ -67,7 +68,6 @@ public class LocalSurveyFilter {
     public static class Builder {
         private Date startDate = null;
         private Date endDate = null;
-        private Integer maxSize = 0;
         private String orgUnitUId;
         private String programUId;
         private SurveyStatus surveyStatus;
@@ -89,11 +89,6 @@ public class LocalSurveyFilter {
             return this;
         }
 
-        public LocalSurveyFilter.Builder withMaxSize(Integer maxSize) {
-            this.maxSize = maxSize;
-            return this;
-        }
-
         public LocalSurveyFilter.Builder withProgramUId(String programUId) {
             this.programUId = programUId;
             return this;
@@ -110,7 +105,15 @@ public class LocalSurveyFilter {
         }
 
         public LocalSurveyFilter build() {
-            return new LocalSurveyFilter(startDate, endDate, orgUnitUId, programUId, surveyStatus);
+            return new LocalSurveyFilter(startDate, endDate, programUId, orgUnitUId, surveyStatus);
+        }
+    }
+    private static void validateDates(Date startDate, Date endDate) {
+        if(endDate == null || startDate == null){
+            return;
+        }
+        if(endDate.before(startDate)){
+            throw new IllegalArgumentException("End date should be before than start Date");
         }
     }
 }
