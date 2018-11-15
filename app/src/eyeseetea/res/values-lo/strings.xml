@@ -290,4 +290,6 @@
 <string name="filter">"ຕົວກອງ"</string>
 <string name="failed_video_image_question_only">"ຄໍາຖາມວິດີໂອ / ຮູບພາບເທົ່ານັ້ນ"</string>
 <string name="failed_questions_only">"ຄໍາຖາມບໍ່ເທົ່າທຽມ"</string>
+<string name="error_unauthorized">"ឈຊື່ຜູ້ໃຊ້ຫຼືລະຫັດຜ່ານທີ່ບໍ່ຖືກຕ້ອງ."</string>
+<string name="title_error_unexpected">"ຜິດພາດຜິດພາດ"</string>
 </resources>

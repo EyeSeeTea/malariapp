@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<org.hisp.dhis.client.sdk.ui.views.FontButton xmlns:android="http://schemas.android.com/apk/res/android"
+<org.eyeseetea.malariacare.views.CustomButton xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/demo_login_button"
     android:layout_width="wrap_content"
