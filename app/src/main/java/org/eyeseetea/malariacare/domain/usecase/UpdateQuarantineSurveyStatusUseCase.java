@@ -74,11 +74,12 @@ public class UpdateQuarantineSurveyStatusUseCase implements UseCase{
         List<LocalSurveyFilter> filters = getGroupsOfSurveyFilters();
         for(LocalSurveyFilter filter: filters) {
             try {
-                List<Survey> quarantineSurveysInServer = remoteSurveyDataSource.getSurveys(filter);
                 List<Survey> surveys = localSurveyDataSource.getSurveys(filter);
-                updateSurveyStatus(surveys, quarantineSurveysInServer);
-
-                localSurveyDataSource.save(surveys);
+                if(surveys!=null && surveys.size()>0) {
+                    List<Survey> quarantineSurveysInServer = remoteSurveyDataSource.getSurveys(filter);
+                    updateSurveyStatus(surveys, quarantineSurveysInServer);
+                    localSurveyDataSource.save(surveys);
+                }
             } catch (Exception e) {
                 notifyError(e);
                 return;
