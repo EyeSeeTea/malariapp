@@ -281,4 +281,6 @@ clínica"</string>
 <string name="filter">"Filtro"</string>
 <string name="failed_video_image_question_only">"Solo preguntas de video/imagen"</string>
 <string name="failed_questions_only">"Solo preguntas fallidas"</string>
+<string name="error_unauthorized">"Usuario o password incorrectos."</string>
+<string name="title_error_unexpected">"Error inesperado"</string>
 </resources>

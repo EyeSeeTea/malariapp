@@ -184,4 +184,6 @@
     <dimen name="feedback_width_score">80dp</dimen>
     <dimen name="feedback_height_score">40dp</dimen>
 
+
+    <dimen name="progressbar_stroke_width">10dp</dimen>
 </resources>

@@ -24,6 +24,7 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullDemoController;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
@@ -73,7 +74,7 @@ public class LoginActivityStrategy {
 
         LoginActivityStrategy.customStyle(loginActivity);
 
-        FontButton demoButton = (FontButton) loginActivity.findViewById(R.id.demo_login_button);
+        Button demoButton = (Button) loginActivity.findViewById(R.id.demo_login_button);
 
         demoButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,6 +145,14 @@ public class LoginActivityStrategy {
         loginActivity.startActivity(new Intent(loginActivity, activityClass));
 
         loginActivity.finish();
+    }
+
+    public void login() {
+
+    }
+
+    public void onLoginError() {
+
     }
 
 }
