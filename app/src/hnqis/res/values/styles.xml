@@ -83,4 +83,24 @@
         <item name="tDimension">@string/font_size_level4</item>
     </style>
 
+    <style name="EyeSeeLoginLogoTitle">
+        <item name="android:visibility">gone</item>
+    </style>
+    <style name="EyeSeeServerUrl">
+        <item name="android:visibility">visible</item>
+        <item name="android:layout_marginTop">56dp</item>
+    </style>
+    <style name="EyeSeeTeaLoginServerEdittext">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:inputType">textUri</item>
+        <item name="android:singleLine">true</item>
+        <item name="tFontName">@string/font_name_regular</item>
+    </style>
+
+    <style name="EyeSeeLogOutButton">
+        <item name="android:visibility">gone</item>
+    </style>
+    <style name="EyeSeeDemoButton">
+        <item name="android:visibility">gone</item>
+    </style>
 </resources>

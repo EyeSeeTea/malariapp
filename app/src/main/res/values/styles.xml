@@ -115,5 +115,31 @@
     <style name="EyeSeeFilterStyle" parent="EyeSeeDialogButton">
     </style>
 
-
+    <style name="EyeSeeLoginLogoTitle">
+        <item name="android:visibility">visible</item>
+    </style>
+    <style name="EyeSeeServerUrl">
+        <item name="android:visibility">gone</item>
+    </style>
+    <style name="EyeSeeTeaLoginServerEdittext">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">@color/new_grey_text_color</item>
+        <item name="android:inputType">textUri</item>
+        <item name="android:singleLine">true</item>
+        <item name="tFontName">@string/font_name_regular</item>
+    </style>
+    <style name="EyeSeeLogOutButton">
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:background">@drawable/button_selector_red</item>
+        <item name="android:text">@string/clear_and_logout</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:visibility">gone</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:inputType">textCapWords</item>
+        <item name="bFontName">@string/font_name_medium</item>
+    </style>
+    <style name="EyeSeeDemoButton">
+        <item name="android:visibility">visible</item>
+    </style>
 </resources>
