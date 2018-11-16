@@ -47,7 +47,7 @@ public class PushUseCase {
         mPushController.push(new IPushController.IPushControllerCallback() {
             @Override
             public void onComplete(PushController.Kind kind) {
-                System.out.println("PusUseCase Complete");
+                System.out.println("PushUseCase Complete");
 
                 mPushController.changePushInProgress(false);
 
@@ -56,7 +56,7 @@ public class PushUseCase {
 
             @Override
             public void onError(Throwable throwable) {
-                System.out.println("PusUseCase error");
+                System.out.println("PushUseCase error");
 
                 if (throwable instanceof NetworkException) {
                     mPushController.changePushInProgress(false);

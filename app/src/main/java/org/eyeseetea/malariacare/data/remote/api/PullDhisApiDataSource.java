@@ -12,14 +12,13 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.domain.exception.ClosedUserDateNotFoundException;
 import org.eyeseetea.malariacare.domain.exception.PullApiParsingException;
+import org.eyeseetea.malariacare.utils.DateParser;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.net.Proxy;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -92,7 +91,8 @@ public class PullDhisApiDataSource {
         if (closeDate == null || closeDate.equals("")) {
             appUser.setCloseDate(null);
         } else {
-            appUser.setCloseDate(EventExtended.parseNewLongDate(closeDate));
+            DateParser dateParser = new DateParser();
+            appUser.setCloseDate(dateParser.parseDate(closeDate, DateParser.LONG_DATE_FORMAT));
         }
     }
 
@@ -143,7 +143,8 @@ public class PullDhisApiDataSource {
         if (closeDateAsString == null || closeDateAsString.equals("")) {
             throw new ClosedUserDateNotFoundException();
         }
-        return EventExtended.parseNewLongDate(closeDateAsString);
+        DateParser dateParser = new DateParser();
+        return dateParser.parseDate(closeDateAsString, DateParser.LONG_DATE_FORMAT);
     }
 
     public static List<EventExtended> pullQuarantineEvents(String url) throws IOException, JSONException {
@@ -161,10 +162,11 @@ public class PullDhisApiDataSource {
      */
     public static List<EventExtended> getEvents(String program, String orgUnit, Date minDate,
             Date maxDate) throws IOException, JSONException {
-        String startDate = EventExtended.format(minDate, EventExtended.AMERICAN_DATE_FORMAT);
-        String endDate = EventExtended.format(
+        DateParser dateParser = new DateParser();
+        String startDate = dateParser.format(minDate, DateParser.AMERICAN_DATE_FORMAT);
+        String endDate = dateParser.format(
                 new Date(maxDate.getTime() + (8 * 24 * 60 * 60 * 1000)),
-                EventExtended.AMERICAN_DATE_FORMAT);
+                DateParser.AMERICAN_DATE_FORMAT);
         String url = String.format(DHIS_CHECK_EVENT_API, program, orgUnit, startDate,
                 endDate);
         Log.d(TAG, url);

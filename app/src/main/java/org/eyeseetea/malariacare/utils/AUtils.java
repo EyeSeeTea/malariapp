@@ -54,13 +54,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 
 public abstract class AUtils {
 
@@ -170,39 +167,6 @@ public abstract class AUtils {
         }
 
         return stringBuilder;
-    }
-
-
-    public static String getEuropeanFormatedDate(Date date) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        if(date==null){
-            return "";
-        }
-        return sdf.format(date);
-    }
-
-    public static String formatDate(Date date) {
-        if (date == null) {
-            return "-";
-        }
-        Locale locale =
-                PreferencesState.getInstance().getContext().getResources().getConfiguration()
-                        .locale;
-        DateFormat dateFormatter = DateFormat.getDateInstance(DateFormat.DEFAULT, locale);
-        return dateFormatter.format(date);
-    }
-
-    public static String formatDateToServer(Date date) {
-        if (date == null) {
-            return "";
-        }
-        Locale locale =
-                PreferencesState.getInstance().getContext().getResources().getConfiguration()
-                        .locale;
-        DateFormat dateFormatter = DateFormat.getDateInstance(DateFormat.DEFAULT, locale);
-
-
-        return dateFormatter.format(date);
     }
 
 
