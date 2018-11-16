@@ -23,8 +23,8 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import org.eyeseetea.malariacare.data.IDataSourceCallback;
 import org.eyeseetea.malariacare.data.IAuthenticationManagerDataSource;
+import org.eyeseetea.malariacare.data.IDataSourceCallback;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
 import org.eyeseetea.malariacare.domain.exception.InvalidCredentialsException;
@@ -46,6 +46,13 @@ public class AuthenticationManagerDhisSDKDataSource implements IAuthenticationMa
 
     public AuthenticationManagerDhisSDKDataSource(Context context) {
         mContext = context;
+
+        try {
+            D2.isConfigured();
+        } catch (IllegalArgumentException e) {
+            D2.init(mContext);
+        }
+
     }
 
     @Override
@@ -69,12 +76,6 @@ public class AuthenticationManagerDhisSDKDataSource implements IAuthenticationMa
     @Override
     public void login(final Credentials credentials,
             final IDataSourceCallback<UserAccount> callback) {
-
-        try{
-            D2.isConfigured();
-        }catch (IllegalArgumentException e){
-            D2.init(mContext);
-        }
 
         boolean isNetworkAvailable = isNetworkAvailable();
 

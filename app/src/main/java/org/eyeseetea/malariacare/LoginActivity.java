@@ -70,9 +70,9 @@ import fr.castorflex.android.circularprogressbar.CircularProgressBar;
 public class LoginActivity extends AbsLoginActivity {
     private static final String TAG = ".LoginActivity";
 
-    public LoginUseCase mLoginUseCase = new AuthenticationFactory().getLoginUseCase(this);
-    LogoutUseCase mLogoutUseCase = new AuthenticationFactory().getLogoutUseCase(this);
-    public LoginActivityStrategy mLoginActivityStrategy = new LoginActivityStrategy(this);
+    public LoginUseCase mLoginUseCase;
+    public LoginActivityStrategy mLoginActivityStrategy;
+    LogoutUseCase mLogoutUseCase;
 
     private CircularProgressBar progressBar;
     private ViewGroup loginViewsContainer;
@@ -87,6 +87,8 @@ public class LoginActivity extends AbsLoginActivity {
         requestPermissions();
         PreferencesState.getInstance().initalizateActivityDependencies();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        mLoginActivityStrategy = new LoginActivityStrategy(this);
         mLoginActivityStrategy.onCreate();
         if (UserDB.getLoggedUser() != null && !ProgressActivity.PULL_CANCEL
                 && sharedPreferences.getBoolean(
@@ -102,6 +104,8 @@ public class LoginActivity extends AbsLoginActivity {
 
         loginViewsContainer = (CardView) findViewById(R.id.layout_login_views);
 
+        mLoginUseCase = new AuthenticationFactory().getLoginUseCase(this);
+        mLogoutUseCase = new AuthenticationFactory().getLogoutUseCase(this);
     }
 
     private void replaceDhisLogoToHNQISLogo() {

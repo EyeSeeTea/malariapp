@@ -79,6 +79,12 @@ public class SurveySDKDhisDataSource implements IDataRemoteDataSource {
         this.mOptionRepository = optionRepository;
         this.mCompositeScoreRepository = mCompositeScoreRepository;
         this.mOrgUnitRepository = orgUnitRepository;
+
+        try {
+            D2.isConfigured();
+        } catch (IllegalArgumentException e) {
+            D2.init(mContext);
+        }
     }
 
     @Override
@@ -91,15 +97,8 @@ public class SurveySDKDhisDataSource implements IDataRemoteDataSource {
             return surveys;
     }
 
-
     @Override
     public Map<String, PushReport> save(List<? extends IData> dataList) throws Exception {
-
-        try{
-            D2.isConfigured();
-        }catch (IllegalArgumentException e){
-            D2.init(mContext);
-        }
 
         List<Survey> surveys = (List<Survey>) dataList;
 
