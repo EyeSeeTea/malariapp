@@ -300,6 +300,8 @@
 <string name="health_facility">ສູນການແພດ</string>
 <string name="dialog_pie_chart_label_explanation">"ວົງກົມພາຍນອກສະແດງໃຫ້ທ່ານເຫັນວ່າການສໍາເລັດສົມບູນ.\n\nວົງກົມພາຍໃນສະແດງໃຫ້ເຫັນວ່າທ່ານໄດ້ສໍາເລັດຄໍາຖາມບັງຄັບ, ໂດຍປົກກະຕິຫມາຍດ້ວຍ *. ພຽງແຕ່ເມື່ອມີຄໍາຕອບ 100% ແລ້ວ, ທ່ານສາມາດຫມາຍສໍາເລັດ."</string>
 <string name="login_error_unsupported_server_version">ເວີຊັນຂອງເຄື່ອງແມ່ຂ່າຍບໍ່ຖືກສະຫນັບສະຫນູນ</string>
- <string name="dialog_action_plan">ແຜນປະຕິບັດງານ</string>
- <string name="assessment_title_overall_mandatory_completed">"ຂໍ້ມູນທັງຫມົດ / ຖືກບັງຄັບແລ້ວແລ້ວ"</string>
+<string name="dialog_action_plan">ແຜນປະຕິບັດງານ</string>
+<string name="assessment_title_overall_mandatory_completed">"ຂໍ້ມູນທັງຫມົດ / ຖືກບັງຄັບແລ້ວແລ້ວ"</string>
+<string name="error_unauthorized">"ឈຊື່ຜູ້ໃຊ້ຫຼືລະຫັດຜ່ານທີ່ບໍ່ຖືກຕ້ອງ."</string>
+<string name="title_error_unexpected">"ຜິດພາດຜິດພາດ"</string>
 </resources>

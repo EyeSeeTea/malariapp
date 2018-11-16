@@ -36,5 +36,4 @@
 <string name="dialog_action_plan">"Plano de ação"</string>
 <string name="filter">"filtro"</string>
 <string name="apply_filters">"Aplicar filtros"</string>
-<string name="login_error_unsupported_server_version">A versão do servidor não é suportada</string>
 </resources>

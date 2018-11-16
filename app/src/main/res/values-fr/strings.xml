@@ -285,4 +285,6 @@ Mensuelle"</string>
 <string name="login_error_unsupported_server_version">"La version du serveur n'est pas prise en charge"</string>
 <string name="dialog_action_plan">"Plan d'action"</string>
 <string name="assessment_title_overall_mandatory_completed">"Général / Obligatoire terminé"</string>
+<string name="error_unauthorized">"Nom d'utilisateur ou mot de passe incorrect."</string>
+<string name="title_error_unexpected">"Erreur inattendue"</string>
 </resources>

@@ -294,4 +294,6 @@ s
 <string name="login_error_unsupported_server_version">The server version is not supported</string>
 <string name="dialog_action_plan">Action plan</string>
 <string name="assessment_title_overall_mandatory_completed">"Overall / Mandatory completed"</string>
+<string name="error_unauthorized">"Wrong username or password."</string>
+<string name="title_error_unexpected">"Unexpected error"</string>
 </resources>

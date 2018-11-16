@@ -37,5 +37,4 @@
 <string name="dialog_action_plan">"ແຜນການປະຕິບັດງານ"</string>
 <string name="filter">"ຕົວກອງ"</string>
 <string name="apply_filters">"ນໍາໃຊ້ຕົວກັ່ນຕອງ"</string>
-<string name="login_error_unsupported_server_version">The server version is not supported</string>
 </resources>
