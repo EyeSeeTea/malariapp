@@ -45,5 +45,6 @@
     <color name="plan_listview_background">@color/transparent</color>
     <color name="assets_listview_background">@color/white</color>
     <color name="floating_button_tint">#009688</color>
+    <color name="background_textfield_color">@color/background</color>
 
 </resources>

@@ -21,4 +21,5 @@
     <dimen name="left_padding_arrow">50dip</dimen>
     <dimen name="right_padding_arrow">50dip</dimen>
     <dimen name="ic_add_survey_size">24dp</dimen>
+    <dimen name="create_survey_title_top_marging">20dip</dimen>
 </resources>
