@@ -52,13 +52,6 @@ import java.util.List;
 public class EventExtended implements VisitableFromSDK {
 
     private final static String TAG = ".EventExtended";
-    public final static String DHIS2_GMT_NEW_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS";
-    public final static String DHIS2_GMT_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
-    public final static String DHIS2_LONG_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
-    public final static String AMERICAN_DATE_FORMAT = "yyyy-MM-dd";
-    public final static String EUROPEAN_DATE_FORMAT = "dd-MM-yyyy";
-    public final static String MONTH_DATE_FORMAT = "MMMM d',' yyyy";
-
 
 
     public static final Event.EventStatus STATUS_ACTIVE = Event.EventStatus.ACTIVE;
@@ -138,49 +131,6 @@ public class EventExtended implements VisitableFromSDK {
      */
     public Date getDueDate() {
         return (event != null) ? event.getDueDate().toDate() : null;
-    }
-
-    public static Date parseDate(String dateAsString, String format) throws ParseException {
-        return (dateAsString != null) ? new SimpleDateFormat(format).parse(dateAsString) : null;
-    }
-
-    public static Date parseShortDate(String dateAsString) {
-        try {
-            return parseDate(dateAsString, AMERICAN_DATE_FORMAT);
-        } catch (ParseException ex) {
-            ex.printStackTrace();
-            return null;
-        }
-    }
-    public static Date parseLongDate(String dateAsString) {
-        try {
-            return parseDate(dateAsString, DHIS2_GMT_DATE_FORMAT);
-        } catch (ParseException ex) {
-            return parseShortDate(dateAsString);
-        }
-    }
-
-    public static Date parseNewLongDate(String dateAsString) {
-        try {
-            return parseDate(dateAsString, DHIS2_GMT_NEW_DATE_FORMAT);
-        } catch (ParseException ex) {
-            return parseLongDate(dateAsString);
-        }
-    }
-
-    public static String formatLong(Date date) {
-        return format(date, DHIS2_GMT_DATE_FORMAT);
-    }
-
-    public static String formatShort(Date date) {
-        return format(date, AMERICAN_DATE_FORMAT);
-    }
-
-    /**
-     * Turns a given date into a parseable String according to sdk date format
-     */
-    public static String format(Date date, String format) {
-        return (date != null) ? new SimpleDateFormat(format).format(date) : null;
     }
 
     /**
