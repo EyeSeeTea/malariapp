@@ -172,4 +172,17 @@
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/white</item>
     </style>
+    <style name="EyeSeeDateButton">
+        <item name="android:layout_width">0dip</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:layout_weight">0.5</item>
+        <item name="android:paddingRight">@dimen/question_padding_all</item>
+        <item name="android:paddingLeft">@dimen/question_padding_all</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="android:text">@string/empty_string</item>
+        <item name="android:background">@drawable/background_textfield</item>
+        <item name="bFontFamily">@string/normal_font</item>
+    </style>
 </resources>

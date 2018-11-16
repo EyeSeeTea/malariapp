@@ -187,4 +187,5 @@
 
     <dimen name="progressbar_stroke_width">10dp</dimen>
     <dimen name="ic_add_survey_size">36dp</dimen>
+    <dimen name="question_padding_right">0p</dimen>
 </resources>
