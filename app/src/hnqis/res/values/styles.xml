@@ -111,4 +111,31 @@
         <item name="android:layout_weight">0.5</item>
         <item name="android:gravity">center</item>
     </style>
+    <style name="EyeSeeAssessHeader">
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textSize">@dimen/header_light_text_size</item>
+    </style>
+    <style name="EyeSeeViewSeparatorVisibility">
+        <item name="android:visibility">gone</item>
+    </style>
+    <style name="EyeSeeAssessSubHeader">
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">right</item>
+        <item name="android:textSize">@dimen/header_light_text_size</item>
+    </style>
+    <style name="EyeSeeAssessList">
+        <item name="android:background">@color/white</item>
+    </style>
+    <style name="EyeSeeStartButton">
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:layout_alignParentEnd">true</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:layout_margin">12dp</item>
+        <item name="android:background">@color/transparent</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/medium_text_size</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>

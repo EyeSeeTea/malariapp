@@ -44,5 +44,6 @@
     <color name="even_row_background">@color/white_grey</color>
     <color name="plan_listview_background">@color/transparent</color>
     <color name="assets_listview_background">@color/white</color>
+    <color name="floating_button_tint">#009688</color>
 
 </resources>

@@ -153,4 +153,5 @@
     <color name="green_middle">#4B6033</color>
     <color name="assets_listview_background">@color/app_background</color>
     <color name="scoreGrandson">#6fa8dc</color>
+    <color name="floating_button_tint">@color/grey_light_qm</color>
 </resources>
