@@ -185,4 +185,25 @@
         <item name="android:background">@drawable/background_textfield</item>
         <item name="bFontFamily">@string/normal_font</item>
     </style>
+    <style name="EyeSeeDllStatement">
+        <item name="android:layout_weight">0.65</item>
+        <item name="android:padding">5dip</item>
+        <item name="android:paddingLeft">@dimen/question_padding_left</item>
+        <item name="android:text">@string/widget_info_empty_statement</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="tFontName">@string/medium_font_name</item>
+        <item name="tDimension">@string/font_size_level1</item>
+    </style>
+    <style name="EyeSeeDemoLoginButton">
+        <item name="android:layout_width">180dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:background">@drawable/button_blue_selector</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:text">@string/demo_login</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/medium_text_size</item>
+        <item name="bFontName">@string/bold_font_name</item>
+    </style>
 </resources>

@@ -228,4 +228,28 @@
         <item name="android:drawableRight">@drawable/calendarlist_icn</item>
         <item name="bFontFamily">@string/normal_font</item>
     </style>
+
+    <style name="EyeSeeDllStatement">
+        <item name="android:layout_weight">0.5</item>
+        <item name="android:paddingLeft">@dimen/question_padding_left</item>
+        <item name="android:text">@string/widget_info_empty_statement</item>
+        <item name="android:textColor">@color/new_grey_text_color</item>
+        <item name="tFontName">@string/medium_font_name</item>
+        <item name="tDimension">@string/font_size_level1</item>
+    </style>
+
+    <style name="EyeSeeDemoLoginButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:background">@drawable/button_blue_selector</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:text">@string/demo_login</item>
+        <item name="android:textColor">@color/blue_demo_mode</item>
+        <item name="android:inputType">textCapWords</item>
+        <item name="android:layout_below">@+id/layout_login_views</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="bFontName">@string/font_name_regular</item>
+    </style>
 </resources>
