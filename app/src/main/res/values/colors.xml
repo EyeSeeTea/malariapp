@@ -155,5 +155,5 @@
     <color name="scoreGrandson">#6fa8dc</color>
     <color name="floating_button_tint">@color/grey_light_qm</color>
     <color name="background_textfield_color">@color/assess_grey</color>
-
+    <color name="survey_feedback_header_background">@color/white</color>
 </resources>

@@ -371,5 +371,19 @@
     <style name="EyeSeeViewFeedbackSeparatorVisibility">
         <item name="android:visibility">gone</item>
     </style>
-
+    <style name="EyeSeeSpinnerItem">
+        <item name="android:singleLine">true</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:alpha">0.8</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:drawableRight">@drawable/ic_action_dropdown</item>
+        <item name="android:background">@drawable/filter_item_background</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:textSize">14dp</item>
+        <item name="tDimension">@string/font_size_level1</item>
+        <item name="tFontName">@string/medium_font_name</item>
+    </style>
 </resources>

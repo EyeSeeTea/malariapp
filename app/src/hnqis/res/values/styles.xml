@@ -316,5 +316,17 @@
     <style name="EyeSeeViewFeedbackSeparatorVisibility">
         <item name="android:visibility">visible</item>
     </style>
+    <style name="EyeSeeSpinnerItem">
+        <item name="android:singleLine">true</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:alpha">0.8</item>
+        <item name="android:gravity">left|center_vertical</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:textColor">@color/darkGrey</item>
+        <item name="android:textSize">18sp</item>
+        <item name="tFontName">@string/medium_font_name</item>
+    </style>
 
 </resources>
