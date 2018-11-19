@@ -206,4 +206,12 @@
         <item name="android:textSize">@dimen/medium_text_size</item>
         <item name="bFontName">@string/bold_font_name</item>
     </style>
+    <style name="EyeSeePieChartImage">
+        <item name="android:layout_width">16dp</item>
+        <item name="android:layout_height">16dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:src">@drawable/ic_action_check</item>
+        <item name="android:tint">@android:color/white</item>
+        <item name="android:visibility">gone</item>
+    </style>
 </resources>

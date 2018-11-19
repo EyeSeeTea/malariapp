@@ -220,7 +220,7 @@
         <item name="android:paddingRight">@dimen/question_padding_all</item>
         <item name="android:paddingLeft">@dimen/question_padding_all</item>
         <item name="android:layout_marginRight">@dimen/question_margin_right</item>
-        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="android:textAppearance">?android:textAppearanceSmall</item>
         <item name="android:text">@string/empty_string</item>
         <item name="android:singleLine">true</item>
         <item name="android:maxLines">1</item>
@@ -251,5 +251,13 @@
         <item name="android:layout_below">@+id/layout_login_views</item>
         <item name="android:layout_centerHorizontal">true</item>
         <item name="bFontName">@string/font_name_regular</item>
+    </style>
+    <style name="EyeSeePieChartImage">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:src">@drawable/ic_action_check</item>
+        <item name="android:tint">@android:color/white</item>
+        <item name="android:visibility">gone</item>
     </style>
 </resources>

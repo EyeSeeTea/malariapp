@@ -7,24 +7,19 @@
 
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/external_chart"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="@dimen/double_pie_chart_size"
+        android:layout_height="@dimen/double_pie_chart_size"
         android:layout_gravity="center"
         android:background="@color/transparent"/>
 
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/internal_chart"
         android:layout_gravity="center"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="@dimen/double_pie_chart_size"
+        android:layout_height="@dimen/double_pie_chart_size"
         android:background="@color/transparent"/>
 
     <ImageView
         android:id="@+id/completed_mandatory_check"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:src="@drawable/ic_action_check"
-        android:tint="@android:color/white"
-        android:visibility="gone"/>
+        style="@style/EyeSeePieChartImage"/>
 </FrameLayout>
