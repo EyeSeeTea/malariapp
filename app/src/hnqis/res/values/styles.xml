@@ -248,5 +248,73 @@
         <item name="android:paddingTop">@dimen/dashboard_row_padding</item>
         <item name="android:src">@drawable/ic_media_arrow</item>
     </style>
+    <style name="EyeSeeFeedbackQuestionRowImageArrow">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:visibility">gone</item>
+    </style>
+    <style name="EyeSeeFeedbackQuestionLL">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">.80</item>
+    </style>
+    <style name="EyeSeeFeedbackQuestionLabel">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">10dip</item>
+        <item name="android:paddingTop">5dip</item>
+        <item name="android:paddingBottom">5dip</item>
+        <item name="android:text">@string/lorem_ipsum</item>
+        <item name="tFontName">@string/light_font</item>
+        <item name="tDimension">@string/font_size_level1</item>
+    </style>
+    <style name="EyeSeeFeedbackQuestionUid">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">10dip</item>
+        <item name="android:paddingTop">5dip</item>
+        <item name="android:paddingBottom">5dip</item>
+        <item name="android:visibility">gone</item>
+        <item name="android:text">@string/lorem_ipsum</item>
+        <item name="tFontName">@string/light_font</item>
+        <item name="tDimension">@string/font_size_level1</item>
+    </style>
+    <style name="EyeSeeFeedbackQuestionValue">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">.10</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">10dip</item>
+        <item name="android:paddingTop">5dip</item>
+        <item name="android:paddingBottom">5dip</item>
+        <item name="android:capitalize">words</item>
+        <item name="tFontName">@string/bold_font</item>
+        <item name="tDimension">@string/medium_font_name</item>
+    </style>
+    <style name="EyeSeeFeedbackQuestionScore">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">.10</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">10dip</item>
+        <item name="android:paddingTop">5dip</item>
+        <item name="android:paddingBottom">5dip</item>
+        <item name="android:textSize">14dp</item>
+        <item name="android:capitalize">words</item>
+        <item name="tDimension">@string/font_size_level1</item>
+        <item name="tFontName">@string/medium_font_name</item>
+    </style>
+    <style name="EyeSeeFeedbackQuestionContainer">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+    <style name="EyeSeeFeedbackQuestionHtml">
+        <item name="android:background">@color/white</item>
+        <item name="tFontName">@string/light_font</item>
+        <item name="tDimension">@string/font_size_level1</item>
+        <item name="android:textSize">@dimen/feedback_text_size</item>
+    </style>
+    <style name="EyeSeeViewFeedbackSeparatorVisibility">
+        <item name="android:visibility">visible</item>
+    </style>
 
 </resources>

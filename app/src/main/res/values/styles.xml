@@ -297,4 +297,79 @@
         <item name="android:scaleType">centerCrop</item>
         <item name="android:src">@drawable/ic_media_arrow</item>
     </style>
+    <style name="EyeSeeFeedbackQuestionRowImageArrow">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">.06</item>
+        <item name="android:scaleType">centerInside</item>
+    </style>
+    <style name="EyeSeeFeedbackQuestionLL">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">.78</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+    <style name="EyeSeeFeedbackQuestionLabel">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">5dip</item>
+        <item name="android:paddingBottom">5dip</item>
+        <item name="android:textSize">@dimen/feedback_text_size</item>
+        <item name="tFontName">@string/regular_font</item>
+    </style>
+    <style name="EyeSeeFeedbackQuestionUid">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:visibility">gone</item>
+        <item name="android:paddingTop">5dip</item>
+        <item name="android:paddingBottom">5dip</item>
+        <item name="android:text"></item>
+        <item name="tFontName">@string/regular_font</item>
+        <item name="tDimension">@string/font_size_level1</item>
+    </style>
+    <style name="EyeSeeFeedbackQuestionValue">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">.08</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">5dip</item>
+        <item name="android:lines">1</item>
+        <item name="android:capitalize">words</item>
+        <item name="android:paddingBottom">5dip</item>
+        <item name="android:textSize">@dimen/roboto_14</item>
+        <item name="tFontName">@string/bold_font</item>
+        <item name="tDimension">@string/font_size_level1</item>
+    </style>
+    <style name="EyeSeeFeedbackQuestionScore">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">.08</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingRight">5dip</item>
+        <item name="android:paddingTop">5dip</item>
+        <item name="android:paddingBottom">5dip</item>
+        <item name="android:lines">1</item>
+        <item name="android:textSize">@dimen/roboto_14</item>
+        <item name="android:capitalize">words</item>
+        <item name="tFontName">@string/bold_font</item>
+    </style>
+    <style name="EyeSeeFeedbackQuestionContainer">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/feedback_background</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+    <style name="EyeSeeFeedbackQuestionHtml">
+        <item name="android:background">@color/feedback_background</item>
+        <item name="tFontName">@string/font_name_regular</item>
+        <item name="android:textSize">@dimen/feedback_text_size</item>
+    </style>
+    <style name="EyeSeeViewFeedbackSeparatorVisibility">
+        <item name="android:visibility">gone</item>
+    </style>
+
 </resources>
