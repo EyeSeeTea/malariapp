@@ -36,6 +36,7 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedHeader;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedSurvey;
 import org.eyeseetea.malariacare.utils.AUtils;
+import org.eyeseetea.malariacare.utils.DateParser;
 import org.eyeseetea.sdk.presentation.views.DoubleRectChart;
 
 import java.util.Date;
@@ -82,7 +83,8 @@ public class PlannedStyleStrategy {
     }
 
     public static String formatDate(Date date) {
-        return AUtils.getEuropeanFormatedDate(date);
+        DateParser dateParser = new DateParser();
+        return dateParser.getEuropeanFormattedDate(date);
     }
 
     public static String getTitleHeader(String titleHeader, Integer counter) {

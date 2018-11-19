@@ -1,7 +1,7 @@
 package org.eyeseetea.malariacare.data.remote.sdk.data;
 
 import static org.eyeseetea.malariacare.utils.DateParser.AMERICAN_DATE_FORMAT;
-import static org.eyeseetea.malariacare.utils.DateParser.DHIS2_GMT_DATE_FORMAT;
+import static org.eyeseetea.malariacare.utils.DateParser.LONG_DATE_FORMAT_WITH_SPECIFIC_UTC_TIME_ZONE;
 
 import android.content.Context;
 import android.location.Location;
@@ -28,6 +28,7 @@ import org.eyeseetea.malariacare.utils.DateParser;
 import org.hisp.dhis.client.sdk.models.common.Coordinates;
 import org.hisp.dhis.client.sdk.models.event.Event;
 import org.hisp.dhis.client.sdk.models.trackedentity.TrackedEntityDataValue;
+import org.eyeseetea.malariacare.utils.DateParser;
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
@@ -153,25 +154,25 @@ public abstract class EventMapper {
                     String.valueOf(survey.getScore().getScore()));
             event.getDataValues().add(dataValue);
         }
-
+        DateParser dateParser = new DateParser();
         if (mServerMetadata.getCreationDate() != null) {
             TrackedEntityDataValue dataValue = createDataValue(event,
                     mServerMetadata.getCreationDate().getUId(),
-                    DateParser.format(survey.getCreationDate(), DHIS2_GMT_DATE_FORMAT));
+                    dateParser.format(survey.getCreationDate(), LONG_DATE_FORMAT_WITH_SPECIFIC_UTC_TIME_ZONE));
             event.getDataValues().add(dataValue);
         }
 
         if (mServerMetadata.getCompletionDate() != null) {
             TrackedEntityDataValue dataValue = createDataValue(event,
                     mServerMetadata.getCompletionDate().getUId(),
-                    DateParser.format(survey.getCompletionDate(), DHIS2_GMT_DATE_FORMAT));
+                    dateParser.format(survey.getCompletionDate(), LONG_DATE_FORMAT_WITH_SPECIFIC_UTC_TIME_ZONE));
             event.getDataValues().add(dataValue);
         }
 
         if (mServerMetadata.getUploadDate() != null) {
             TrackedEntityDataValue dataValue = createDataValue(event,
                     mServerMetadata.getUploadDate().getUId(),
-                    DateParser.format(survey.getUploadDate(), DHIS2_GMT_DATE_FORMAT));
+                    dateParser.format(survey.getUploadDate(), LONG_DATE_FORMAT_WITH_SPECIFIC_UTC_TIME_ZONE));
             event.getDataValues().add(dataValue);
         }
 
@@ -239,7 +240,7 @@ public abstract class EventMapper {
         if (mServerMetadata.getNextAssessment() != null) {
             TrackedEntityDataValue dataValue = createDataValue(event,
                     mServerMetadata.getNextAssessment().getUId(),
-                    DateParser.format(survey.calculateNextScheduledDate(), AMERICAN_DATE_FORMAT));
+                    dateParser.format(survey.calculateNextScheduledDate(), AMERICAN_DATE_FORMAT));
             event.getDataValues().add(dataValue);
         }
     }
