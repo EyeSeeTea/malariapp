@@ -226,7 +226,7 @@
         <item name="android:maxLines">1</item>
         <item name="android:background">@color/white</item>
         <item name="android:drawableRight">@drawable/calendarlist_icn</item>
-        <item name="bFontFamily">@string/normal_font</item>
+        <item name="bFontName">@string/normal_font</item>
     </style>
 
     <style name="EyeSeeDllStatement">

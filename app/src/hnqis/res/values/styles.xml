@@ -183,7 +183,7 @@
         <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
         <item name="android:text">@string/empty_string</item>
         <item name="android:background">@drawable/background_textfield</item>
-        <item name="bFontFamily">@string/normal_font</item>
+        <item name="bFontName">@string/normal_font</item>
     </style>
     <style name="EyeSeeDllStatement">
         <item name="android:layout_weight">0.65</item>

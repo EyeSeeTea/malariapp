@@ -22,5 +22,5 @@
     <dimen name="right_padding_arrow">50dip</dimen>
     <dimen name="ic_add_survey_size">24dp</dimen>
     <dimen name="create_survey_title_top_marging">20dip</dimen>
-    <dimen name="double_pie_chart_size">50p</dimen>
+    <dimen name="double_pie_chart_size">50dp</dimen>
 </resources>
