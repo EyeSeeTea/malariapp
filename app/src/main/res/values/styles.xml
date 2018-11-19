@@ -260,4 +260,41 @@
         <item name="android:tint">@android:color/white</item>
         <item name="android:visibility">gone</item>
     </style>
+    <style name="EyeSeeFeedbackCSContainer">
+        <item name="android:background">@color/feedbackLightBlue</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+    <style name="EyeSeeFeedbackCSHeader">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">.76</item>
+        <item name="android:weightSum">.74</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
+    <style name="EyeSeeFeedbackCSLabel">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">.60</item>
+        <item name="android:paddingBottom">@dimen/dashboard_row_padding</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:paddingLeft">@dimen/dashboard_row_padding</item>
+        <item name="android:paddingTop">@dimen/dashboard_row_padding</item>
+        <item name="android:text">@string/lorem_ipsum</item>
+        <item name="android:textColor">@color/feedback_cs_color</item>
+        <item name="android:textSize">@dimen/cs_header_title_size</item>
+        <item name="tDimension">@string/font_size_level2</item>
+        <item name="tFontName">@string/medium_font_name</item>
+    </style>
+    <style name="EyeSeeFeedbackCSImage">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">.10</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:background">@null</item>
+        <item name="android:paddingBottom">@dimen/dashboard_row_padding</item>
+        <item name="android:paddingTop">@dimen/dashboard_row_padding</item>
+        <item name="android:scaleType">centerCrop</item>
+        <item name="android:src">@drawable/ic_media_arrow</item>
+    </style>
 </resources>
