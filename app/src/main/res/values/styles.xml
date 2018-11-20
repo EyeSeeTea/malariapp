@@ -486,4 +486,7 @@
         <item name="android:layout_centerHorizontal">true</item>
         <item name="android:layout_alignParentLeft">true</item>
     </style>
+    <style name="EyeSeeMainSpinnerItemBackground">
+        <item name="android:background">@drawable/survey_header_background</item>
+    </style>
 </resources>
