@@ -355,5 +355,23 @@
     <style name="EyeSeePhoneAnswer" parent="EyeSeeTextAnswer">
         <item name="android:inputType">phone</item>
     </style>
+    <style name="EyeSeeRadioStatement">
+        <item name="android:layout_width">0dip</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:layout_weight">0.65</item>
+        <item name="android:padding">5dip</item>
+        <item name="android:paddingLeft">@dimen/question_padding_left</item>
+        <item name="android:textColor">@color/new_grey_text_color</item>
+        <item name="android:text">@string/widget_info_empty_statement</item>
+        <item name="tDimension">@string/font_size_level1</item>
+        <item name="tFontName">@string/medium_font_name</item>
+    </style>
+    <style name="EyeSeeRadioAnswer">
+        <item name="android:layout_width">0dip</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">0.35</item>
+        <item name="android:paddingRight">5dip</item>
+    </style>
 
 </resources>
