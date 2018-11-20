@@ -57,8 +57,15 @@
             android:spinnerMode="dropdown"
             style="@style/EyeSeeCreateSpinner"/>
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             style="@style/EyeSeeCreateSpinnerImage"/>
+        <View
+            style="@style/EyeSeeViewFeedbackSeparatorVisibility"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/new_grey"
+            android:layout_marginRight="6dp"
+            android:layout_marginTop="-10dp"
+            android:layout_marginLeft="100dp"
+            android:layout_below="@+id/program"/>
     </RelativeLayout>
 </merge>

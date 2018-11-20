@@ -69,21 +69,15 @@
         style="@style/EyeSeeAssessList" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="12dp"
-        android:layout_centerVertical="true"
-        android:background="@drawable/fab_background"
-        android:padding="3dp">
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/start_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onNewSurvey"
-            app:backgroundTint="@color/floating_button_tint"
-            app:fabSize="normal"
-            app:srcCompat="@drawable/ic_add_survey"/>
+        style="@style/EyeSeeStartButtonContainer">
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/start_button"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:onClick="onNewSurvey"
+        app:backgroundTint="@color/floating_button_tint"
+        app:fabSize="normal"
+        app:srcCompat="@drawable/ic_add_survey"
+        style="@style/EyeSeeStartButton" />
     </LinearLayout>
 </RelativeLayout>
