@@ -1,24 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
     android:id="@+id/form_header"
-    android:background="@drawable/survey_header_background"
-    android:gravity="center_horizontal">
+    style="@style/EyeSeeMainHeaderContainer">
     <ImageButton
-        android:layout_width="wrap_content"
-        android:paddingLeft="@dimen/left_padding_arrow"
-        android:paddingRight="@dimen/right_padding_arrow"
-        android:layout_height="wrap_content"
         android:id="@+id/previous_tab"
-        android:background="@color/transparent"
-        android:alpha="0"
-        android:src="@drawable/arrow_to_left"
-        android:gravity="center_horizontal"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentLeft="true"  />
+        style="@style/EyeSeeMainHeaderPreviousImage" />
 
     <Spinner
         android:layout_width="match_parent"

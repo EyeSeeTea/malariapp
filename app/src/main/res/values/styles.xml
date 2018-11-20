@@ -466,4 +466,24 @@
         <item name="android:layout_weight">0.5</item>
         <item name="android:padding">5dip</item>
     </style>
+    <style name="EyeSeeMainHeaderContainer">
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:background">@drawable/survey_header_background</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+    <style name="EyeSeeMainHeaderPreviousImage">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:paddingLeft">@dimen/left_padding_arrow</item>
+        <item name="android:paddingRight">@dimen/right_padding_arrow</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/transparent</item>
+        <item name="android:src">@drawable/arrow_to_left</item>
+        <item name="android:alpha">0</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_alignParentLeft">true</item>
+    </style>
 </resources>
