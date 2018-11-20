@@ -23,6 +23,6 @@
 
         <org.eyeseetea.malariacare.views.CustomEditText
             android:id="@+id/answer"
-            style="@style/EyeSeeLongTextAnswer" />
+            style="@style/EyeSeeTextAnswer" />
 
 </LinearLayout>

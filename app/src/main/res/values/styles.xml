@@ -396,7 +396,7 @@
         <item name="tDimension">@string/font_size_level1</item>
         <item name="tFontName">@string/medium_font_name</item>
     </style>
-    <style name="EyeSeeLongTextAnswer">
+    <style name="EyeSeeTextAnswer">
         <item name="android:layout_width">0dip</item>
         <item name="android:layout_height">@dimen/row_size</item>
         <item name="android:layout_weight">0.5</item>
