@@ -396,4 +396,23 @@
         <item name="tDimension">@string/font_size_level1</item>
         <item name="tFontName">@string/medium_font_name</item>
     </style>
+    <style name="EyeSeeLongTextAnswer">
+        <item name="android:layout_width">0dip</item>
+        <item name="android:layout_height">@dimen/row_size</item>
+        <item name="android:layout_weight">0.5</item>
+        <item name="android:layout_marginRight">@dimen/question_margin_right</item>
+        <item name="android:paddingRight">@dimen/question_padding_all</item>
+        <item name="android:paddingLeft">@dimen/question_padding_all</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:textColor">@color/event_text</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:drawableRight">@drawable/editlist_icn</item>
+        <item name="android:background">@color/white</item>
+        <item name="tDimension">@string/font_size_level1</item>
+        <item name="tFontName">@string/medium_font_name</item>
+    </style>
+
+
 </resources>
