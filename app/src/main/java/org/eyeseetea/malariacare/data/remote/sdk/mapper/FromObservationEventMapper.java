@@ -23,7 +23,7 @@ public class FromObservationEventMapper extends EventMapper {
 
     public FromObservationEventMapper(Context context, String username,
             List<Survey> surveys, List<Option> options, ServerMetadata serverMetadata) {
-        super(context,username, options, serverMetadata);
+        super(context, username, options, serverMetadata);
 
         createMaps(surveys);
     }

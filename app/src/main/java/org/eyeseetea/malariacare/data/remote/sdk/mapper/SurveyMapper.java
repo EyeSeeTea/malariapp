@@ -2,8 +2,7 @@ package org.eyeseetea.malariacare.data.remote.sdk.mapper;
 
 import android.util.Log;
 
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.CompositeScoreBuilder;
-import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
+import org.eyeseetea.malariacare.domain.entity.CompositeScore;
 import org.eyeseetea.malariacare.domain.entity.Option;
 import org.eyeseetea.malariacare.domain.entity.OrgUnit;
 import org.eyeseetea.malariacare.domain.entity.Question;
@@ -30,7 +29,7 @@ public class SurveyMapper {
 
     private ServerMetadata serverMetadata;
     private Map<String, OrgUnit> orgUnitsMap;
-    private Map<String, CompositeScoreDB> compositeScoreMap;
+    private Map<String, CompositeScore> compositeScoreMap;
     private Map<String, Question> questionsMap;
     private Map<String, List<Option>> optionsMap;
 
@@ -38,7 +37,7 @@ public class SurveyMapper {
     public SurveyMapper(
             ServerMetadata serverMetadata,
             List<OrgUnit> orgUnits,
-            List<CompositeScoreDB> compositeScores,
+            List<CompositeScore> compositeScores,
             List<Question> questions,
             List<Option> options) {
         this.serverMetadata = serverMetadata;
@@ -106,10 +105,10 @@ public class SurveyMapper {
             } else if (dataValue.getDataElement().equals(serverMetadata.getUploadBy().getUId())) {
                 userUid = dataValue.getValue();
             } else if (compositeScoreMap.containsKey(dataValue.getDataElement())) {
-                CompositeScoreDB compositeScore = compositeScoreMap.get(
+                CompositeScore compositeScore = compositeScoreMap.get(
                         dataValue.getDataElement());
 
-                if (CompositeScoreBuilder.isRootScore(compositeScore)) {
+                if (compositeScore.isRoot()) {
                     score = new Score(dataValue.getDataElement(),
                             Float.parseFloat(dataValue.getValue()));
                 }
@@ -201,7 +200,7 @@ public class SurveyMapper {
         return null;
     }
 
-    private void createMaps(List<OrgUnit> orgUnits, List<CompositeScoreDB> compositeScores,
+    private void createMaps(List<OrgUnit> orgUnits, List<CompositeScore> compositeScores,
             List<Question> questions, List<Option> options) {
         orgUnitsMap = new HashMap<>();
         for (OrgUnit orgUnit : orgUnits) {
@@ -209,9 +208,7 @@ public class SurveyMapper {
         }
 
         compositeScoreMap = new HashMap<>();
-        for (CompositeScoreDB compositeScore : compositeScores) {
-            compositeScoreMap.put(compositeScore.getUid(), compositeScore);
-        }
+        createCompositeScoresMap(compositeScores);
 
         optionsMap = new HashMap<>();
         for (Option option : options) {
@@ -226,6 +223,16 @@ public class SurveyMapper {
         questionsMap = new HashMap<>();
         for (Question question : questions) {
             questionsMap.put(question.getUId(), question);
+        }
+    }
+
+    private void createCompositeScoresMap(List<CompositeScore> compositeScores) {
+        for (CompositeScore compositeScore : compositeScores) {
+            compositeScoreMap.put(compositeScore.getUid(), compositeScore);
+
+            if (compositeScore.getChildren() != null && compositeScore.getChildren().size() > 0) {
+                createCompositeScoresMap(compositeScore.getChildren());
+            }
         }
     }
 }

@@ -12,6 +12,7 @@ import com.google.gson.reflect.TypeToken;
 import org.eyeseetea.malariacare.common.DateTimeTypeAdapter;
 import org.eyeseetea.malariacare.common.DateTypeAdapter;
 import org.eyeseetea.malariacare.common.ResourcesFileReader;
+import org.eyeseetea.malariacare.domain.entity.CompositeScore;
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 import org.eyeseetea.malariacare.data.remote.sdk.mapper.SurveyMapper;
 import org.eyeseetea.malariacare.domain.entity.Option;
@@ -39,7 +40,7 @@ public class SurveyMapperShould {
 
         List<Event> events = givenAnEventsDownloaded("events.json");
         ServerMetadata serverMetadata = givenAServerMetadata();
-        List<CompositeScoreDB> compositeScores = givenACompositeScores();
+        List<CompositeScore> compositeScores = givenACompositeScores();
         List<Question> questions = givenAQuestions();
         List<Option> options = givenAnOptions();
         List<OrgUnit> orgUnits = givenAnOrgUnits();
@@ -56,7 +57,7 @@ public class SurveyMapperShould {
     public void doesNotMapToSurveysIfNotExistsUserCDE() throws IOException {
         List<Event> events = givenAnEventsDownloaded("events_without_user_cde.json");
         ServerMetadata serverMetadata = givenAServerMetadata();
-        List<CompositeScoreDB> compositeScores = givenACompositeScores();
+        List<CompositeScore> compositeScores = givenACompositeScores();
         List<Question> questions = givenAQuestions();
         List<Option> options = givenAnOptions();
         List<OrgUnit> orgUnits = givenAnOrgUnits();
@@ -119,48 +120,14 @@ public class SurveyMapperShould {
         return gson.fromJson(stringJson, listType);
     }
 
-    private List<CompositeScoreDB> givenACompositeScores() {
+    private List<CompositeScore> givenACompositeScores() throws IOException {
+        String stringJson = mFileReader.getStringFromFile("composite_scores.json");
 
-        List<CompositeScoreDB> compositeScoreDBS = new ArrayList<>();
+        Gson gson = createGson();
 
-        CompositeScoreDB compositeScoreDBRoot1 = new CompositeScoreDB();
-        compositeScoreDBRoot1.setId_composite_score(3758L);
-        compositeScoreDBRoot1.setHierarchical_code("0");
-        compositeScoreDBRoot1.setLabel("Overall QA Score");
-        compositeScoreDBRoot1.setUid("pxHcA2H4CU3");
-        compositeScoreDBRoot1.setOrder_pos(0);
-        compositeScoreDBS.add(compositeScoreDBRoot1);
-
-        CompositeScoreDB compositeScoreDBRoot2 = new CompositeScoreDB();
-        compositeScoreDBRoot2.setId_composite_score(3761L);
-        compositeScoreDBRoot2.setHierarchical_code("0");
-        compositeScoreDBRoot2.setLabel("Overall QA Score");
-        compositeScoreDBRoot2.setUid("O4RfbCjbs1H");
-        compositeScoreDBRoot2.setOrder_pos(0);
-        compositeScoreDBS.add(compositeScoreDBRoot2);
-
-        CompositeScoreDB compositeScoreDBRoot3 = new CompositeScoreDB();
-        compositeScoreDBRoot3.setId_composite_score(3769L);
-        compositeScoreDBRoot3.setHierarchical_code("0");
-        compositeScoreDBRoot3.setLabel("Overall QA Score");
-        compositeScoreDBRoot3.setUid("Zsu8EY6iK4L");
-        compositeScoreDBRoot3.setOrder_pos(0);
-        compositeScoreDBS.add(compositeScoreDBRoot3);
-
-        CompositeScoreDB compositeScoreDBRoot4 = new CompositeScoreDB();
-        compositeScoreDBRoot4.setId_composite_score(3774L);
-        compositeScoreDBRoot4.setHierarchical_code("0");
-        compositeScoreDBRoot4.setLabel("Overall QA Score");
-        compositeScoreDBRoot4.setUid("e8cEHJZkMVP");
-        compositeScoreDBRoot4.setOrder_pos(0);
-        compositeScoreDBS.add(compositeScoreDBRoot4);
-
-        //TODO: compositeScoreMap on the future should be a domain entity list
-        // and retrieve from file
-        /*String stringJson = mFileReader.getStringFromFile("composite_scores.json");
-        return mGenericClassParser.parse(stringJson,List.class,CompositeScoreDB.class);*/
-
-        return compositeScoreDBS;
+        Type listType = new TypeToken<ArrayList<CompositeScore>>() {
+        }.getType();
+        return gson.fromJson(stringJson, listType);
     }
 
 

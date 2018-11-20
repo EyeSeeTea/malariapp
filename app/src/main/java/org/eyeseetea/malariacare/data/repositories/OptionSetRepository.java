@@ -2,14 +2,14 @@ package org.eyeseetea.malariacare.data.repositories;
 
 import org.eyeseetea.malariacare.data.boundaries.IMetadataLocalDataSource;
 import org.eyeseetea.malariacare.data.boundaries.IMetadataRemoteDataSource;
-import org.eyeseetea.malariacare.domain.boundary.repositories.IOrgUnitLevelRepository;
-import org.eyeseetea.malariacare.domain.entity.OrgUnitLevel;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IOptionSetRepository;
+import org.eyeseetea.malariacare.domain.entity.OptionSet;
 
 import java.util.List;
 
 public class OptionSetRepository
-        extends AMetadataRepository<OrgUnitLevel>
-        implements IOrgUnitLevelRepository {
+        extends AMetadataRepository<OptionSet>
+        implements IOptionSetRepository {
 
     IMetadataLocalDataSource mOptionSetLocalDataSource;
     IMetadataRemoteDataSource mOptionSetRemoteDataSource;
@@ -22,17 +22,17 @@ public class OptionSetRepository
     }
 
     @Override
-    protected List<OrgUnitLevel> getAllFromCache() throws Exception {
-        return (List<OrgUnitLevel>) mOptionSetLocalDataSource.getAll();
+    protected List<OptionSet> getAllFromCache() throws Exception {
+        return (List<OptionSet>) mOptionSetLocalDataSource.getAll();
     }
 
     @Override
-    protected List<OrgUnitLevel> getAllFromNetworkFirst() throws Exception {
-        List<OrgUnitLevel> remoteOrgUnitLevels = (List<OrgUnitLevel>)
+    protected List<OptionSet> getAllFromNetworkFirst() throws Exception {
+        List<OptionSet> remoteOptionSets = (List<OptionSet>)
                 mOptionSetRemoteDataSource.getAll();
 
-        mOptionSetLocalDataSource.clearAndSave(remoteOrgUnitLevels);
+        mOptionSetLocalDataSource.clearAndSave(remoteOptionSets);
 
-        return remoteOrgUnitLevels;
+        return remoteOptionSets;
     }
 }

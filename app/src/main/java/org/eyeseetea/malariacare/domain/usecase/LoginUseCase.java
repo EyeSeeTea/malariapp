@@ -33,20 +33,9 @@ import java.net.MalformedURLException;
 import java.net.UnknownHostException;
 
 public class LoginUseCase implements UseCase {
-    public interface Callback {
-        void onLoginSuccess();
-
-        void onServerURLNotValid();
-
-        void onInvalidCredentials();
-
-        void onNetworkError();
-
-        void onUnsupportedServerVersion();
-    }
+    private IAsyncExecutor mAsyncExecutor;
 
     private IAuthenticationManager mUserAccountRepository;
-    private IAsyncExecutor mAsyncExecutor;
     private IMainExecutor mMainExecutor;
     private Callback mCallback;
     private Credentials mCredentials;
@@ -79,10 +68,10 @@ public class LoginUseCase implements UseCase {
                                 || throwable instanceof UnknownHostException) {
                             notifyOnServerURLNotValid();
                         } else if (throwable instanceof InvalidCredentialsException) {
-                           notifyOnInvalidCredentials();
+                            notifyOnInvalidCredentials();
                         } else if (throwable instanceof NetworkException) {
                             notifyOnNetworkError();
-                        } else if (throwable instanceof UnsupportedServerVersionException){
+                        } else if (throwable instanceof UnsupportedServerVersionException) {
                             notifyOnUnsupportedServerVersion();
                         }
                     }
@@ -98,7 +87,7 @@ public class LoginUseCase implements UseCase {
         });
     }
 
-    private void notifyOnServerURLNotValid(){
+    private void notifyOnServerURLNotValid() {
         mMainExecutor.run(new Runnable() {
             @Override
             public void run() {
@@ -106,7 +95,8 @@ public class LoginUseCase implements UseCase {
             }
         });
     }
-    private void notifyOnInvalidCredentials(){
+
+    private void notifyOnInvalidCredentials() {
         mMainExecutor.run(new Runnable() {
             @Override
             public void run() {
@@ -114,7 +104,8 @@ public class LoginUseCase implements UseCase {
             }
         });
     }
-    private void notifyOnNetworkError(){
+
+    private void notifyOnNetworkError() {
         mMainExecutor.run(new Runnable() {
             @Override
             public void run() {
@@ -123,7 +114,7 @@ public class LoginUseCase implements UseCase {
         });
     }
 
-    private void notifyOnUnsupportedServerVersion(){
+    private void notifyOnUnsupportedServerVersion() {
         mMainExecutor.run(new Runnable() {
             @Override
             public void run() {
@@ -132,5 +123,16 @@ public class LoginUseCase implements UseCase {
         });
     }
 
+    public interface Callback {
+        void onLoginSuccess();
+
+        void onServerURLNotValid();
+
+        void onInvalidCredentials();
+
+        void onNetworkError();
+
+        void onUnsupportedServerVersion();
+    }
 }
 

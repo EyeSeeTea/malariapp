@@ -64,7 +64,7 @@ public class LogoutUseCase implements UseCase {
                 });
     }
 
-    private void notifyOnLogoutSucces(){
+    private void notifyOnLogoutSucces() {
         mMainExecutor.run(new Runnable() {
             @Override
             public void run() {
@@ -72,7 +72,8 @@ public class LogoutUseCase implements UseCase {
             }
         });
     }
-    private void notifyOnLogoutError(final Throwable throwable){
+
+    private void notifyOnLogoutError(final Throwable throwable) {
         mMainExecutor.run(new Runnable() {
             @Override
             public void run() {

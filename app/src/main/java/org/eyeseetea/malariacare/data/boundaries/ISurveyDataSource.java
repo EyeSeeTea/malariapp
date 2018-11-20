@@ -1,12 +1,11 @@
 package org.eyeseetea.malariacare.data.boundaries;
 
 import org.eyeseetea.malariacare.domain.entity.Survey;
-import org.eyeseetea.malariacare.domain.usecase.pull.SurveyFilter;
+import org.eyeseetea.malariacare.domain.entity.SurveyStatus;
 
 import java.util.List;
 
 public interface ISurveyDataSource{
-    //TODO:Review with next issues to merge
-    List<Survey> getSurveys(SurveyFilter filters) throws Exception;
+    List<Survey> getSurveys(SurveyStatus surveyStatus) throws Exception;
     void save(List<Survey> surveys) throws Exception;
 }

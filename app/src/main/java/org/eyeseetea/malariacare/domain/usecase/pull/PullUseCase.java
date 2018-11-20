@@ -20,13 +20,13 @@
 package org.eyeseetea.malariacare.domain.usecase.pull;
 
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullMetadataController;
+import org.eyeseetea.malariacare.domain.boundary.IConnectivityManager;
 import org.eyeseetea.malariacare.domain.boundary.IMetadataValidator;
 import org.eyeseetea.malariacare.domain.boundary.IPullDataController;
 import org.eyeseetea.malariacare.domain.boundary.IPullMetadataController;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.exception.MetadataException;
-import org.eyeseetea.malariacare.domain.exception.NetworkException;
 import org.eyeseetea.malariacare.domain.usecase.UseCase;
 
 public class PullUseCase implements UseCase {
@@ -50,8 +50,9 @@ public class PullUseCase implements UseCase {
     private final IPullMetadataController mPullMetadataController;
     private final IPullDataController mPullDataController;
     private final IMetadataValidator mMetadataValidator;
+    private final IConnectivityManager mConnectivityManager;
     private Callback mCallback;
-    private SurveyFilter mPullDataFilters;
+    private PullSurveyFilter mPullDataFilters;
     private Boolean pullCanceled = false;
 
     public PullUseCase(
@@ -59,16 +60,18 @@ public class PullUseCase implements UseCase {
             IMainExecutor mainExecutor,
             IPullMetadataController pullMetadataController,
             IPullDataController pullDataController,
-            IMetadataValidator metadataValidator) {
+            IMetadataValidator metadataValidator,
+            IConnectivityManager connectivityManager) {
         mAsyncExecutor = asyncExecutor;
         mMainExecutor = mainExecutor;
         mPullMetadataController = pullMetadataController;
         mPullDataController = pullDataController;
         mMetadataValidator = metadataValidator;
+        mConnectivityManager = connectivityManager;
     }
 
-    public void execute(SurveyFilter surveyFilter, final Callback callback) {
-        mPullDataFilters = surveyFilter;
+    public void execute(PullSurveyFilter pullSurveyFilter, final Callback callback) {
+        mPullDataFilters = pullSurveyFilter;
         mCallback = callback;
 
         mAsyncExecutor.run(this);
@@ -88,31 +91,37 @@ public class PullUseCase implements UseCase {
     }
 
     private void pullMetadata() {
-        mPullMetadataController.pullMetadata(new PullMetadataController.Callback() {
+        boolean isNetworkAvailable = mConnectivityManager.isDeviceOnline();
 
-            @Override
-            public void onComplete() {
-                if(pullCanceled){
-                    notifyCancel();
-                }else {
-                    if(mMetadataValidator.isValid()){
-                        pullData();
+        if (isNetworkAvailable) {
+            mPullMetadataController.pullMetadata(new PullMetadataController.Callback() {
+
+                @Override
+                public void onComplete() {
+                    if (pullCanceled) {
+                        notifyCancel();
                     } else {
-                        notifyError(new MetadataException());
+                        if (mMetadataValidator.isValid()) {
+                            pullData();
+                        } else {
+                            notifyError(new MetadataException());
+                        }
                     }
                 }
-            }
 
-            @Override
-            public void onStep(PullStep step) {
-                notifyOnStep(step);
-            }
+                @Override
+                public void onStep(PullStep step) {
+                    notifyOnStep(step);
+                }
 
-            @Override
-            public void onError(Throwable throwable) {
-                notifyError(throwable);
-            }
-        });
+                @Override
+                public void onError(Throwable throwable) {
+                    notifyError(throwable);
+                }
+            });
+        } else {
+            notifyNetworkError();
+        }
     }
 
     private void pullData() {
@@ -157,13 +166,20 @@ public class PullUseCase implements UseCase {
         });
     }
 
+    private void notifyNetworkError() {
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                mCallback.onNetworkError();
+            }
+        });
+    }
+
     private void notifyError(final Throwable throwable) {
         mMainExecutor.run(new Runnable() {
             @Override
             public void run() {
-                if (throwable instanceof NetworkException) {
-                    mCallback.onNetworkError();
-                } else if (throwable instanceof MetadataException) {
+                if (throwable instanceof MetadataException) {
                     mCallback.onMetadataError();
                 } else {
                     mCallback.onPullError();

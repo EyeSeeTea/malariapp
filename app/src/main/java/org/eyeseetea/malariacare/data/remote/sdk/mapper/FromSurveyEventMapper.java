@@ -14,7 +14,7 @@ import java.util.List;
 public class FromSurveyEventMapper extends EventMapper {
     public FromSurveyEventMapper(Context context, String username,
             List<Option> options, ServerMetadata serverMetadata) {
-        super(context,username,options, serverMetadata);
+        super(context, username, options, serverMetadata);
     }
 
     public List<Event> map(List<Survey> surveys) throws ConversionException {

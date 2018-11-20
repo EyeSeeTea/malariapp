@@ -41,12 +41,12 @@ import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullDemoUseCase;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
+import org.eyeseetea.malariacare.domain.usecase.pull.PullSurveyFilter;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullUseCase;
-import org.eyeseetea.malariacare.domain.usecase.pull.SurveyFilter;
 import org.eyeseetea.malariacare.factories.AuthenticationFactory;
+import org.eyeseetea.malariacare.factories.SyncFactory;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
-import org.eyeseetea.malariacare.factories.SyncFactory;
 
 import java.util.Calendar;
 
@@ -337,11 +337,11 @@ public class ProgressActivity extends Activity {
         Calendar month = Calendar.getInstance();
         month.add(Calendar.MONTH, -NUMBER_OF_MONTHS);
 
-        SurveyFilter surveyFilter = SurveyFilter.Builder.create()
+        PullSurveyFilter pullSurveyFilter = PullSurveyFilter.Builder.create()
                 .withStartDate(month.getTime())
                 .withMaxSize(PreferencesState.getInstance().getMaxEvents()).build();
 
-        mPullUseCase.execute(surveyFilter, new PullUseCase.Callback() {
+        mPullUseCase.execute(pullSurveyFilter, new PullUseCase.Callback() {
             @Override
             public void onComplete() {
                 postFinish();

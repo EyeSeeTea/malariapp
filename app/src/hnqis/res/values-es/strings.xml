@@ -277,5 +277,7 @@ clínica"</string>
 <string name="dialog_action_plan">"Plan de acción"</string>
 <string name="filter">"filtro"</string>
 <string name="apply_filters">"Aplicar filtros"</string>
-<string name="login_error_unsupported_server_version">La versión del servidor no esta soportada</string>
+    <string name="login_error_unsupported_server_version">La versión del servidor no esta soportada</string>
+    <string name="error_unauthorized">"Usuario o password incorrectos."</string>
+    <string name="title_error_unexpected">"Error inesperado"</string>
 </resources>

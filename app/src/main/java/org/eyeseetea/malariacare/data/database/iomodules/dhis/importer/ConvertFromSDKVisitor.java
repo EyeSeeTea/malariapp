@@ -173,7 +173,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
      */
     @Override
     public void visit(OrganisationUnitExtended organisationUnit) {
-        //Create and save OrgUnitLevel
+        //Create and saveData OrgUnitLevel
         OrgUnitLevelDB appOrgUnitLevel = orgUnitLevelMap.get(
                 OrganisationUnitLevelExtended.buildKey(organisationUnit.getLevel()));
         //create the orgUnit

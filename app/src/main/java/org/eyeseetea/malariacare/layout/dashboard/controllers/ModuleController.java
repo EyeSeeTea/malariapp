@@ -20,12 +20,12 @@
 package org.eyeseetea.malariacare.layout.dashboard.controllers;
 
 import android.app.AlertDialog;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
-import android.app.ListFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.ListFragment;
 import android.support.v7.content.res.AppCompatResources;
 import android.view.View;
 
@@ -241,7 +241,7 @@ public abstract class ModuleController {
     }
 
     public FragmentTransaction getFragmentTransaction() {
-        FragmentTransaction ft = dashboardActivity.getFragmentManager().beginTransaction();
+        FragmentTransaction ft = dashboardActivity.getSupportFragmentManager().beginTransaction();
         if (dashboardController.isNavigatingBackwards()) {
             ft.setCustomAnimations(R.animator.anim_slide_in_right, R.animator.anim_slide_out_right);
         } else {
@@ -255,7 +255,7 @@ public abstract class ModuleController {
      * Checks if the given container contains a fragment of the given class
      */
     protected boolean isFragmentActive(Class fragmentClass) {
-        Fragment currentFragment = dashboardActivity.getFragmentManager().findFragmentById(
+        Fragment currentFragment = dashboardActivity.getSupportFragmentManager().findFragmentById(
                 getLayout());
         if (fragmentClass.isInstance(currentFragment)) {
             return true;
