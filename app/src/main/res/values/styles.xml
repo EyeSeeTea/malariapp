@@ -413,6 +413,10 @@
         <item name="tDimension">@string/font_size_level1</item>
         <item name="tFontName">@string/medium_font_name</item>
     </style>
+    <style name="EyeSeePhoneAnswer" parent="EyeSeeTextAnswer">
+        <item name="android:drawableRight">@drawable/phonelist_icn</item>
+        <item name="android:inputType">phone</item>
+    </style>
 
 
 </resources>
