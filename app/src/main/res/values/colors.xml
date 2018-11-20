@@ -156,4 +156,5 @@
     <color name="floating_button_tint">@color/grey_light_qm</color>
     <color name="background_textfield_color">@color/assess_grey</color>
     <color name="survey_feedback_header_background">@color/white</color>
+    <color name="statement_text_color">@color/event_text</color>
 </resources>

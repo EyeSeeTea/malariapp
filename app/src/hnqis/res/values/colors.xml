@@ -48,4 +48,6 @@
     <color name="background_textfield_color">@color/background</color>
     <color name="planning_header_background">#666666</color>
     <color name="survey_feedback_header_background">@color/assess_yellow</color>
+    <color name="statement_text_color">@color/new_grey_text_color</color>
+
 </resources>
