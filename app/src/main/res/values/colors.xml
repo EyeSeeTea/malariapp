@@ -158,4 +158,5 @@
     <color name="survey_feedback_header_background">@color/white</color>
     <color name="statement_text_color">@color/event_text</color>
     <color name="right_parent">@color/green_dark</color>
+    <color name="round_border_color">@color/start_button</color>
 </resources>

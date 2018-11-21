@@ -23,4 +23,5 @@
     <dimen name="ic_add_survey_size">24dp</dimen>
     <dimen name="create_survey_title_top_marging">0dip</dimen>
     <dimen name="double_pie_chart_size">50dp</dimen>
+    <dimen name="round_border_size">5dp</dimen>
 </resources>
