@@ -150,6 +150,9 @@
         <item name="android:layout_gravity">center</item>
         <item name="android:gravity">center</item>
     </style>
+    <style name="EyeSeeProgressImageLogo">
+        <item name="android:src">@drawable/ic_login_logo</item>
+    </style>
     <style name="EyeSeeAssessHeader">
         <item name="android:layout_gravity">left</item>
         <item name="android:paddingLeft">@dimen/row_left_padding</item>

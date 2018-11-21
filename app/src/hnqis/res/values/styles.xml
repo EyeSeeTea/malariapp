@@ -103,6 +103,9 @@
         <item name="android:layout_weight">0.5</item>
         <item name="android:gravity">center</item>
     </style>
+    <style name="EyeSeeProgressImageLogo">
+        <item name="android:src">@drawable/qualityapp_logo</item>
+    </style>
     <style name="EyeSeeAssessHeader">
         <item name="android:layout_gravity">center</item>
         <item name="android:textSize">@dimen/header_light_text_size</item>
