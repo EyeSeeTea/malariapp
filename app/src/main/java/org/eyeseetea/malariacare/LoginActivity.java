@@ -80,9 +80,9 @@ public class LoginActivity extends Activity {
     private static final String TAG = ".LoginActivity";
     private static final String IS_LOADING = "state:isLoading";
 
-    public LoginUseCase mLoginUseCase = new AuthenticationFactory().getLoginUseCase(this);
-    LogoutUseCase mLogoutUseCase = new AuthenticationFactory().getLogoutUseCase(this);
-    public LoginActivityStrategy mLoginActivityStrategy = new LoginActivityStrategy(this);
+    public LoginUseCase mLoginUseCase;
+    public LoginActivityStrategy mLoginActivityStrategy;
+    LogoutUseCase mLogoutUseCase;
 
     private CircularProgressBar progressBar;
     private ViewGroup loginViewsContainer;
@@ -105,6 +105,9 @@ public class LoginActivity extends Activity {
     private Animation layoutTransitionSlideIn;
     private Animation layoutTransitionSlideOut;
 
+    private static boolean isGreaterThanOrJellyBean() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -115,6 +118,8 @@ public class LoginActivity extends Activity {
         requestPermissions();
         PreferencesState.getInstance().initalizateActivityDependencies();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        mLoginActivityStrategy = new LoginActivityStrategy(this);
         mLoginActivityStrategy.onCreate();
         if (UserDB.getLoggedUser() != null && !ProgressActivity.PULL_CANCEL
                 && sharedPreferences.getBoolean(
@@ -124,6 +129,8 @@ public class LoginActivity extends Activity {
         ProgressActivity.PULL_CANCEL = false;
         initViews();
 
+        mLoginUseCase = new AuthenticationFactory().getLoginUseCase(this);
+        mLogoutUseCase = new AuthenticationFactory().getLogoutUseCase(this);
     }
 
     private void initViews() {
@@ -178,10 +185,6 @@ public class LoginActivity extends Activity {
         }
 
         hideProgress();
-    }
-
-    private static boolean isGreaterThanOrJellyBean() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
     }
 
     @Override
@@ -415,6 +418,30 @@ public class LoginActivity extends Activity {
         super.attachBaseContext(context);
     }
 
+    public void showProgress() {
+        Log.d(TAG, "Showing progress");
+        if (layoutTransitionSlideOut != null) {
+            loginViewsContainer.startAnimation(layoutTransitionSlideOut);
+        }
+
+        loginViewsContainer.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    public void hideProgress() {
+        Log.d(TAG, "Hiding progress");
+        if (layoutTransitionSlideIn != null) {
+            loginViewsContainer.startAnimation(layoutTransitionSlideIn);
+        }
+
+        loginViewsContainer.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.GONE);
+    }
+
+    protected interface OnAnimationFinishListener {
+        void onFinish();
+    }
+
     /* since this runnable is intended to be executed on UI (not main) thread, we should
     be careful and not keep any implicit references to activities */
     private static class OnPostAnimationRunnable implements Runnable {
@@ -448,31 +475,6 @@ public class LoginActivity extends Activity {
             return showProgress;
         }
     }
-
-    protected interface OnAnimationFinishListener {
-        void onFinish();
-    }
-
-    public void showProgress() {
-        Log.d(TAG, "Showing progress");
-        if (layoutTransitionSlideOut != null) {
-            loginViewsContainer.startAnimation(layoutTransitionSlideOut);
-        }
-
-        loginViewsContainer.setVisibility(View.GONE);
-        progressBar.setVisibility(View.VISIBLE);
-    }
-
-    public void hideProgress() {
-        Log.d(TAG, "Hiding progress");
-        if (layoutTransitionSlideIn != null) {
-            loginViewsContainer.startAnimation(layoutTransitionSlideIn);
-        }
-
-        loginViewsContainer.setVisibility(View.VISIBLE);
-        progressBar.setVisibility(View.GONE);
-    }
-
 
     private class OnPostAnimationListener implements LayoutTransition.TransitionListener,
             Animation.AnimationListener {

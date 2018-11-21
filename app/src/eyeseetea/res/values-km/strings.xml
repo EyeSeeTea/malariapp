@@ -293,6 +293,6 @@ evaluation"</string>
 <string name="filter">"តម្រង"</string>
 <string name="failed_video_image_question_only">"សំណួរវីដេអូ / រូបភាពប៉ុណ្ណោះ"</string>
 <string name="failed_questions_only">"បានបរាជ័យតែប៉ុណ្ណោះសំណួរ"</string>
-<string name="error_unauthorized">"ឈ្មោះអ្នកប្រើប្រាស់ឬលេខសំងាត់ខុស។"</string>
-<string name="title_error_unexpected">"កំហុសដែលមិននឹកស្មានដល់"</string>
+    <string name="error_unauthorized">"ឈ្មោះអ្នកប្រើប្រាស់ឬលេខសំងាត់ខុស។"</string>
+    <string name="title_error_unexpected">"កំហុសដែលមិននឹកស្មានដល់"</string>
 </resources>

@@ -280,7 +280,7 @@ evaluation"</string>
 <string name="dialog_action_plan">Action plan</string>
 <string name="filter">"filter"</string>
 <string name="apply_filters">"Apply filters"</string>
-<string name="login_error_unsupported_server_version">The server version is not supported</string>
-<string name="error_unauthorized">"Wrong username or password."</string>
-<string name="title_error_unexpected">"Unexpected error"</string>
+    <string name="login_error_unsupported_server_version">The server version is not supported</string>
+    <string name="error_unauthorized">"Wrong username or password."</string>
+    <string name="title_error_unexpected">"Unexpected error"</string>
 </resources>
