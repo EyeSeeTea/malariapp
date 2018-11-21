@@ -487,4 +487,36 @@
         <item name="android:textSize">@dimen/medium_text_size</item>
         <item name="android:textStyle">bold</item>
     </style>
+    <style name="EyeSeeSurveyFirstColumn">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">0.7</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:padding">20dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:lines">1</item>
+        <item name="android:textColor">@color/darkGrey</item>
+        <item name="android:text">@string/comments</item>
+        <item name="android:textSize">@dimen/dialog_log_size</item>
+        <item name="tFontName">@string/font_name_medium</item>
+    </style>
+    <style name="EyeSeeSurveySecondColumn">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">0.3</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:lines">1</item>
+        <item name="android:text">@string/dates</item>
+        <item name="android:textColor">@color/darkGrey</item>
+        <item name="android:textSize">@dimen/dialog_log_size</item>
+        <item name="tFontName">@string/font_name_medium</item>
+    </style>
+    <style name="EyeSeeSurveySpace">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
+    </style>
 </resources>
