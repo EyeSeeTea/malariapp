@@ -72,15 +72,7 @@
         <item name="font_name">@string/font_name_medium</item>
         <item name="tDimension">@string/font_size_level4</item>
     </style>
-    <style name="EyeSeeDialogCancelButton">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/dialog_header_height</item>
-        <item name="android:layout_margin">@dimen/dialog_button_space</item>
-        <item name="android:textSize">@dimen/dialog_button_size</item>
-        <item name="android:background">@color/dialog_button_background_text</item>
-        <item name="android:textColor">@color/dialog_button_text</item>
-        <item name="font_name">@string/font_name_medium</item>
-        <item name="tDimension">@string/font_size_level4</item>
+    <style name="EyeSeeDialogCancelButton" parent="EyeSeeDialogButton">
     </style>
 
     <style name="EyeSeeLoginLogoTitle">
@@ -428,5 +420,13 @@
     </style>
     <style name="EyeSeeMainSpinnerItemBackground">
         <item name="android:background">@color/plan_grey</item>
+    </style>
+    <style name="EyeSeeDialogContainer">
+        <item name="android:background">@android:color/white</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:layout_marginLeft">@dimen/dialog_layout_margins_left_right</item>
+        <item name="android:layout_marginRight">@dimen/dialog_layout_margins_left_right</item>
     </style>
 </resources>

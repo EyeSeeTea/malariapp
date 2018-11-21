@@ -49,10 +49,11 @@
     <style name="EyeSeeTextExtra">
         <item name="android:textAppearance">?android:textAppearanceLarge</item>
     </style>
-
     <style name="EyeSeeDialogTitle">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:layout_centerHorizontal">true</item>
         <item name="android:gravity">center_horizontal</item>
         <item name="android:padding">@dimen/text_dialog_padding</item>
         <item name="android:textSize">@dimen/dialog_tile_row_size</item>
@@ -488,5 +489,15 @@
     </style>
     <style name="EyeSeeMainSpinnerItemBackground">
         <item name="android:background">@drawable/survey_header_background</item>
+    </style>
+    <style name="EyeSeeDialogContainer">
+        <item name="android:background">@android:color/white</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:layout_marginLeft">20dp</item>
+        <item name="android:layout_marginRight">20dp</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:layout_marginBottom">20dp</item>
     </style>
 </resources>
