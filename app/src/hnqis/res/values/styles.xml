@@ -432,4 +432,59 @@
         <item name="android:layout_marginLeft">@dimen/dialog_layout_margins_left_right</item>
         <item name="android:layout_marginRight">@dimen/dialog_layout_margins_left_right</item>
     </style>
+    <style name="EyeSeeCreateSurveySpinnerItem">
+        <item name="android:singleLine">true</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:alpha">0.8</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:gravity">left|center_vertical</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:textColor">@color/darkGrey</item>
+        <item name="android:textSize">18sp</item>
+        <item name="tFontName">@string/medium_font_name</item>
+    </style>
+    <style name="EyeSeeSurveyContainer">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:gravity">top</item>
+    </style>
+    <style name="EyeSeeSurveyHeader">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/assess_yellow</item>
+        <item name="android:textColor">@color/red</item>
+    </style>
+    <style name="EyeSeeSurveyFooter">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentBottom">true</item>
+    </style>
+    <style name="EyeSeeSurveyContent">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_above">@id/form_footer_layout</item>
+        <item name="android:layout_below">@id/header_layout</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:gravity">top</item>
+    </style>
+    <style name="EyeSeeSurveyImage">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:background">@color/transparent</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:layout_marginLeft">-6dp</item>
+        <item name="android:src">@drawable/ic_back</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/medium_text_size</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>

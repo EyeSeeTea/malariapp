@@ -157,4 +157,5 @@
     <color name="background_textfield_color">@color/assess_grey</color>
     <color name="survey_feedback_header_background">@color/white</color>
     <color name="statement_text_color">@color/event_text</color>
+    <color name="right_parent">@color/green_dark</color>
 </resources>
