@@ -63,7 +63,7 @@
     <style name="EyeSeeDialogSubTitle" parent="EyeSeeDialogTitle">
         <item name="android:gravity">center</item>
         <item name="android:layout_gravity">center</item>
-        <item name="android:background">@color/transparent</item>
+        <item name="android:background">@color/dialog_row_background</item>
     </style>
     <style name="EyeSeeDialogButton">
         <item name="android:layout_height">wrap_content</item>
