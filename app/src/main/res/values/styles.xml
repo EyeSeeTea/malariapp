@@ -49,10 +49,11 @@
     <style name="EyeSeeTextExtra">
         <item name="android:textAppearance">?android:textAppearanceLarge</item>
     </style>
-
     <style name="EyeSeeDialogTitle">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:layout_centerHorizontal">true</item>
         <item name="android:gravity">center_horizontal</item>
         <item name="android:padding">@dimen/text_dialog_padding</item>
         <item name="android:textSize">@dimen/dialog_tile_row_size</item>
@@ -63,7 +64,7 @@
     <style name="EyeSeeDialogSubTitle" parent="EyeSeeDialogTitle">
         <item name="android:gravity">center</item>
         <item name="android:layout_gravity">center</item>
-        <item name="android:background">@color/transparent</item>
+        <item name="android:background">@color/dialog_row_background</item>
     </style>
     <style name="EyeSeeDialogButton">
         <item name="android:layout_height">wrap_content</item>
@@ -115,5 +116,490 @@
     <style name="EyeSeeFilterStyle" parent="EyeSeeDialogButton">
     </style>
 
+    <style name="EyeSeeLoginLogoTitle">
+        <item name="android:visibility">visible</item>
+    </style>
+    <style name="EyeSeeServerUrl">
+        <item name="android:visibility">gone</item>
+    </style>
+    <style name="EyeSeeTeaLoginServerEdittext">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">@color/new_grey_text_color</item>
+        <item name="android:inputType">textUri</item>
+        <item name="android:singleLine">true</item>
+        <item name="tFontName">@string/font_name_regular</item>
+    </style>
+    <style name="EyeSeeLogOutButton">
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:background">@drawable/button_selector_red</item>
+        <item name="android:text">@string/clear_and_logout</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:visibility">gone</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:inputType">textCapWords</item>
+        <item name="bFontName">@string/font_name_medium</item>
+    </style>
+    <style name="EyeSeeDemoButton">
+        <item name="android:visibility">visible</item>
+    </style>
+    <style name="EyeSeeProgressActivityLogo">
+        <item name="android:src">@drawable/ic_login_logo</item>
+        <item name="android:layout_width">110dp</item>
+        <item name="android:layout_height">110dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
+    </style>
+    <style name="EyeSeeProgressImageLogo">
+        <item name="android:src">@drawable/ic_login_logo</item>
+    </style>
+    <style name="EyeSeeAssessHeader">
+        <item name="android:layout_gravity">left</item>
+        <item name="android:paddingLeft">@dimen/row_left_padding</item>
+        <item name="android:textSize">@dimen/unsent_rows_text_size</item>
+    </style>
+    <style name="EyeSeeViewSeparatorVisibility">
+        <item name="android:visibility">visible</item>
+    </style>
+    <style name="EyeSeeAssessSubHeader">
+        <item name="android:layout_gravity">right</item>
+        <item name="android:gravity">right</item>
+        <item name="android:paddingRight">50dp</item>
+        <item name="android:textSize">@dimen/unsent_rows_text_size</item>
+    </style>
 
+    <style name="EyeSeeAssessList">
+        <item name="android:divider">@null</item>
+        <item name="android:dividerHeight">0dp</item>
+        <item name="android:background">@color/assets_listview_background</item>
+    </style>
+    <style name="EyeSeeStartButtonContainer">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_marginBottom">12dp</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:background">@drawable/fab_background</item>
+    </style>
+    <style name="EyeSeeStartButton">
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:layout_margin">12dp</item>
+        <item name="android:background">@color/transparent</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:scaleType">center</item>
+    </style>
+    <style name="EyeSeeCreateButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:layout_marginLeft">18dp</item>
+        <item name="android:layout_marginRight">18dp</item>
+        <item name="android:text">@string/create_info_ok</item>
+        <item name="android:textColor">@color/start_button_text</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">22dp</item>
+        <item name="android:background">@drawable/button_round_border</item>
+        <item name="bDimension">@string/font_size_level2</item>
+        <item name="bFontName">@string/medium_font_name</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+    </style>
+    <style name="EyeSeeCreateSpinner">
+        <item name="android:background">@drawable/filter_create_org_background</item>
+        <item name="android:layout_margin">12dp</item>
+    </style>
+    <style name="EyeSeeCreateSpinnerImage">
+        <item name="srcCompat">@drawable/ic_white_arrow</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingRight">20dip</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_alignParentRight">true</item>
+    </style>
+    <style name="EyeSeeSimpleSpinnerItem">
+        <item name="android:singleLine">true</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">14dp</item>
+    </style>
+    <style name="EyeSeeDateAnswer">
+        <item name="android:layout_width">0dip</item>
+        <item name="android:layout_height">@dimen/row_size</item>
+        <item name="android:layout_weight">0.5</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:paddingRight">@dimen/question_padding_all</item>
+        <item name="android:paddingLeft">@dimen/question_padding_all</item>
+        <item name="android:layout_marginRight">@dimen/question_margin_right</item>
+        <item name="android:textAppearance">?android:textAppearanceSmall</item>
+        <item name="android:text">@string/empty_string</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:drawableRight">@drawable/calendarlist_icn</item>
+        <item name="bFontName">@string/normal_font</item>
+    </style>
+
+    <style name="EyeSeeDllStatement">
+        <item name="android:layout_weight">0.5</item>
+        <item name="android:paddingLeft">@dimen/question_padding_left</item>
+        <item name="android:text">@string/widget_info_empty_statement</item>
+        <item name="android:textColor">@color/new_grey_text_color</item>
+        <item name="tFontName">@string/medium_font_name</item>
+        <item name="tDimension">@string/font_size_level1</item>
+    </style>
+    <style name="EyeSeeDemoLoginButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:background">@drawable/button_blue_selector</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:text">@string/demo_login</item>
+        <item name="android:textSize">@dimen/roboto_14</item>
+        <item name="android:textColor">@color/blue_demo_mode</item>
+        <item name="android:inputType">textCapWords</item>
+        <item name="android:layout_below">@+id/layout_login_views</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="bFontName">@string/font_name_regular</item>
+    </style>
+    <style name="EyeSeePieChartImage">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:src">@drawable/ic_action_check</item>
+        <item name="android:tint">@android:color/white</item>
+        <item name="android:visibility">gone</item>
+    </style>
+    <style name="EyeSeeFeedbackCSContainer">
+        <item name="android:background">@color/feedbackLightBlue</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+    <style name="EyeSeeFeedbackCSHeader">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">.76</item>
+        <item name="android:weightSum">.74</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
+    <style name="EyeSeeFeedbackCSLabel">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">.60</item>
+        <item name="android:paddingBottom">@dimen/dashboard_row_padding</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:paddingLeft">@dimen/dashboard_row_padding</item>
+        <item name="android:paddingTop">@dimen/dashboard_row_padding</item>
+        <item name="android:text">@string/lorem_ipsum</item>
+        <item name="android:textColor">@color/feedback_cs_color</item>
+        <item name="android:textSize">@dimen/cs_header_title_size</item>
+        <item name="tDimension">@string/font_size_level2</item>
+        <item name="tFontName">@string/medium_font_name</item>
+    </style>
+    <style name="EyeSeeFeedbackCSImage">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">.10</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:background">@null</item>
+        <item name="android:paddingBottom">@dimen/dashboard_row_padding</item>
+        <item name="android:paddingTop">@dimen/dashboard_row_padding</item>
+        <item name="android:scaleType">centerCrop</item>
+        <item name="android:src">@drawable/ic_media_arrow</item>
+    </style>
+    <style name="EyeSeeFeedbackQuestionRowImageArrow">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">.06</item>
+        <item name="android:scaleType">centerInside</item>
+    </style>
+    <style name="EyeSeeFeedbackQuestionLL">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">.78</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+    <style name="EyeSeeFeedbackQuestionLabel">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">5dip</item>
+        <item name="android:paddingBottom">5dip</item>
+        <item name="android:textSize">@dimen/feedback_text_size</item>
+        <item name="tFontName">@string/regular_font</item>
+    </style>
+    <style name="EyeSeeFeedbackQuestionUid">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:visibility">gone</item>
+        <item name="android:paddingTop">5dip</item>
+        <item name="android:paddingBottom">5dip</item>
+        <item name="android:text"></item>
+        <item name="tFontName">@string/regular_font</item>
+        <item name="tDimension">@string/font_size_level1</item>
+    </style>
+    <style name="EyeSeeFeedbackQuestionValue">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">.08</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">5dip</item>
+        <item name="android:lines">1</item>
+        <item name="android:capitalize">words</item>
+        <item name="android:paddingBottom">5dip</item>
+        <item name="android:textSize">@dimen/roboto_14</item>
+        <item name="tFontName">@string/bold_font</item>
+        <item name="tDimension">@string/font_size_level1</item>
+    </style>
+    <style name="EyeSeeFeedbackQuestionScore">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">.08</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingRight">5dip</item>
+        <item name="android:paddingTop">5dip</item>
+        <item name="android:paddingBottom">5dip</item>
+        <item name="android:lines">1</item>
+        <item name="android:textSize">@dimen/roboto_14</item>
+        <item name="android:capitalize">words</item>
+        <item name="tFontName">@string/bold_font</item>
+    </style>
+    <style name="EyeSeeFeedbackQuestionContainer">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/feedback_background</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+    <style name="EyeSeeFeedbackQuestionHtml">
+        <item name="android:background">@color/feedback_background</item>
+        <item name="tFontName">@string/font_name_regular</item>
+        <item name="android:textSize">@dimen/feedback_text_size</item>
+    </style>
+    <style name="EyeSeeViewFeedbackSeparatorVisibility">
+        <item name="android:visibility">gone</item>
+    </style>
+    <style name="EyeSeeSpinnerItem">
+        <item name="android:singleLine">true</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:alpha">0.8</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:drawableRight">@drawable/ic_action_dropdown</item>
+        <item name="android:background">@drawable/filter_item_background</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:textSize">14dp</item>
+        <item name="tDimension">@string/font_size_level1</item>
+        <item name="tFontName">@string/medium_font_name</item>
+    </style>
+    <style name="EyeSeeTextAnswer">
+        <item name="android:layout_width">0dip</item>
+        <item name="android:layout_height">@dimen/row_size</item>
+        <item name="android:layout_weight">0.5</item>
+        <item name="android:layout_marginRight">@dimen/question_margin_right</item>
+        <item name="android:paddingRight">@dimen/question_padding_all</item>
+        <item name="android:paddingLeft">@dimen/question_padding_all</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:textColor">@color/event_text</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:drawableRight">@drawable/editlist_icn</item>
+        <item name="android:background">@color/white</item>
+        <item name="tDimension">@string/font_size_level1</item>
+        <item name="tFontName">@string/medium_font_name</item>
+    </style>
+    <style name="EyeSeePhoneAnswer" parent="EyeSeeTextAnswer">
+        <item name="android:drawableRight">@drawable/phonelist_icn</item>
+        <item name="android:inputType">phone</item>
+    </style>
+    <style name="EyeSeeRadioStatement">
+        <item name="android:layout_gravity">top|center_horizontal</item>
+        <item name="android:layout_weight">0.5</item>
+        <item name="android:paddingBottom">5dip</item>
+        <item name="android:paddingTop">5dip</item>
+        <item name="android:textColor">@color/event_text</item>
+        <item name="android:layout_width">0dip</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">@dimen/question_padding_left</item>
+        <item name="android:text">@string/widget_info_empty_statement</item>
+        <item name="tDimension">@string/font_size_level1</item>
+        <item name="tFontName">@string/medium_font_name</item>
+    </style>
+    <style name="EyeSeeRadioAnswer">
+        <item name="android:layout_width">0dip</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">0.5</item>
+        <item name="android:paddingRight">5dip</item>
+    </style>
+    <style name="EyeSeeRadioScoredStatement">
+        <item name="android:layout_width">0dip</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">0.4</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:padding">5dip</item>
+        <item name="android:paddingLeft">@dimen/question_padding_left</item>
+        <item name="android:text">@string/widget_info_empty_statement</item>
+        <item name="android:textColor">@color/statement_text_color</item>
+        <item name="tDimension">@string/font_size_level1</item>
+        <item name="tFontName">@string/medium_font_name</item>
+    </style>
+    <style name="EyeSeeRadioScoredAnswer">
+        <item name="android:layout_width">0dip</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">0.30</item>
+    </style>
+    <style name="EyeSeeSwitchContainer">
+        <item name="android:layout_width">0dip</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">0.5</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:padding">5dip</item>
+    </style>
+    <style name="EyeSeeSwitchAnswerContainer">
+        <item name="android:layout_width">0dip</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">0.5</item>
+        <item name="android:padding">5dip</item>
+    </style>
+    <style name="EyeSeeMainHeaderContainer">
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:background">@drawable/survey_header_background</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+    <style name="EyeSeeMainHeaderPreviousImage">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:paddingLeft">@dimen/left_padding_arrow</item>
+        <item name="android:paddingRight">@dimen/right_padding_arrow</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/transparent</item>
+        <item name="android:src">@drawable/arrow_to_left</item>
+        <item name="android:alpha">0</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_alignParentLeft">true</item>
+    </style>
+    <style name="EyeSeeMainSpinnerItemBackground">
+        <item name="android:background">@drawable/survey_header_background</item>
+    </style>
+    <style name="EyeSeeDialogContainer">
+        <item name="android:background">@android:color/white</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
+    <style name="EyeSeeCreateSurveySpinnerItem">
+        <item name="android:singleLine">true</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:alpha">0.8</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:gravity">left|center_vertical</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:textColor">@color/darkGrey</item>
+        <item name="android:drawableRight">@drawable/ic_action_dropdown</item>
+        <item name="android:background">@drawable/spinner_background</item>
+        <item name="android:textSize">18sp</item>
+        <item name="tDimension">@string/font_size_level1</item>
+        <item name="tFontName">@string/medium_font_name</item>
+    </style>
+    <style name="EyeSeeSurveyContainer">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:gravity">top</item>
+    </style>
+    <style name="EyeSeeSurveyProgress">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:padding">5dip</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:layout_alignParentLeft">true</item>
+        <item name="android:layout_alignParentStart">true</item>
+        <item name="android:layout_below">@+id/survey_progress</item>
+    </style>
+    <style name="EyeSeeSurveyHeader">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <style name="EyeSeeSurveyFooter">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:visibility">gone</item>
+    </style>
+    <style name="EyeSeeSurveyContent">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:layout_below">@id/header_layout</item>
+        <item name="android:background">@color/green_dark</item>
+        <item name="android:layout_marginTop">@dimen/header_survey_margin_top</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:gravity">top</item>
+    </style>
+    <style name="EyeSeeSurveyImage">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:visibility">gone</item>
+    </style>
+    <style name="EyeSeeSurveyFirstColumn">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">0.5</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:padding">20dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:lines">1</item>
+        <item name="android:textColor">@color/darkGrey</item>
+        <item name="android:text">@string/comments</item>
+        <item name="android:textSize">@dimen/dialog_tile_row_size</item>
+        <item name="tFontName">@string/regular_font</item>
+    </style>
+    <style name="EyeSeeSurveySecondColumn">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">0.3</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:lines">1</item>
+        <item name="android:text">@string/dates</item>
+        <item name="android:textColor">@color/darkGrey</item>
+        <item name="android:textSize">@dimen/dialog_tile_row_size</item>
+        <item name="tFontName">@string/regular_font</item>
+    </style>
+    <style name="EyeSeeSurveySpace">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">35dp</item>
+        <item name="android:layout_weight">0.2</item>
+    </style>
+    <style name="EyeSeeTabHostImage">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:scaleType">fitCenter</item>
+    </style>
+    <style name="EyeSeeTabHostText">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">fill_parent</item>
+    </style>
 </resources>
