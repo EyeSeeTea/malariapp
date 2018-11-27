@@ -38,6 +38,7 @@ import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.remote.sdk.PullDhisSDKDataSource;
 import org.eyeseetea.malariacare.data.remote.sdk.SdkQueries;
 import org.eyeseetea.malariacare.domain.boundary.IPullMetadataController;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IOptionSetRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IOrgUnitLevelRepository;
 import org.eyeseetea.malariacare.domain.common.ReadPolicy;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
@@ -52,6 +53,7 @@ import java.util.Map;
 public class PullMetadataController implements IPullMetadataController {
 
     private final String TAG = ".PullMetadataController";
+    private final IOptionSetRepository mOptionSetRepository;
 
     PullDhisSDKDataSource pullRemoteDataSource;
     IPullMetadataController.Callback callback;
@@ -60,11 +62,13 @@ public class PullMetadataController implements IPullMetadataController {
 
     IOrgUnitLevelRepository mOrgUnitLevelRepository;
 
-    public PullMetadataController(IOrgUnitLevelRepository orgUnitLevelRepository) {
+    public PullMetadataController(IOrgUnitLevelRepository orgUnitLevelRepository,
+            IOptionSetRepository optionSetRepository) {
         converter = new ConvertFromSDKVisitor();
         pullRemoteDataSource = new PullDhisSDKDataSource();
 
         mOrgUnitLevelRepository = orgUnitLevelRepository;
+        mOptionSetRepository = optionSetRepository
     }
 
     @Override
@@ -73,6 +77,7 @@ public class PullMetadataController implements IPullMetadataController {
         try {
 
             mOrgUnitLevelRepository.getAll(ReadPolicy.NETWORK_FIRST);
+            mOptionSetRepository.getAll(ReadPolicy.NETWORK_FIRST);
 
         } catch (Exception e){
             callback.onError(e);

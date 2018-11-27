@@ -19,6 +19,8 @@
 
 package org.eyeseetea.malariacare.data.remote.sdk.dataSources;
 
+import org.eyeseetea.dhis2.lightsdk.D2Api;
+import org.eyeseetea.dhis2.lightsdk.D2Response;
 import org.eyeseetea.malariacare.data.boundaries.IMetadataRemoteDataSource;
 import org.eyeseetea.malariacare.domain.entity.OptionSet;
 
@@ -26,21 +28,53 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OptionSetSDKDhisDataSource implements IMetadataRemoteDataSource<OptionSet> {
-    @Override
-    public List<OptionSet> getAll() throws Exception {
-        List<org.hisp.dhis.client.sdk.models.optionset.OptionSet> dhisOptionSets =
-                new ArrayList<>();
-        //=D2.optionSets()..pull().toBlocking().single();
 
-        return mapToDomain(dhisOptionSets);
+    private final D2Api d2Api;
+
+    public OptionSetSDKDhisDataSource(D2Api d2Api) {
+        this.d2Api = d2Api;
     }
 
+    @Override
+    public List<OptionSet> getAll() throws Exception {
+
+/*        D2Api d2Api = new D2Api.Builder()
+                .url("some url")
+                .credentials("some username","some password")
+                .build();*/
+
+        D2Response optionSetsResponse = d2Api.optionSets().getAll();
+
+        if (optionSetsResponse.isSuccess()) {
+            D2Response.Success<List<org.eyeseetea.dhis2.lightsdk.optionsets.OptionSet>> success =
+                    (D2Response.Success<List<org.eyeseetea.dhis2.lightsdk.optionsets.OptionSet>>)
+                            optionSetsResponse;
+
+            return mapToDomain(success.getValue());
+        } else {
+            D2Response.Error errorResponse = (D2Response.Error) optionSetsResponse;
+
+            handleError(errorResponse);
+        }
+    }
+
+    private void handleSuccess(
+            List<org.eyeseetea.dhis2.lightsdk.optionsets.OptionSet> dhisOptionSets) {
+
+    }
+
+
+    private void handleError(D2Response.Error errorResponse) {
+
+    }
+
+
     private List<OptionSet> mapToDomain(
-            List<org.hisp.dhis.client.sdk.models.optionset.OptionSet> dhisOptionSets) {
+            List<org.eyeseetea.dhis2.lightsdk.optionsets.OptionSet> dhisOptionSets) {
         List<OptionSet> optionSets = new ArrayList<>();
 
-        for (org.hisp.dhis.client.sdk.models.optionset.OptionSet dhisOptionSet : dhisOptionSets) {
-            optionSets.add(new OptionSet(dhisOptionSet.getUId(), dhisOptionSet.getDisplayName()));
+        for (org.eyeseetea.dhis2.lightsdk.optionsets.OptionSet dhisOptionSet : dhisOptionSets) {
+            optionSets.add(new OptionSet(dhisOptionSet.getId(), dhisOptionSet.getDisplayName()));
         }
 
         return optionSets;
