@@ -25,27 +25,24 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
+
 import org.eyeseetea.malariacare.data.boundaries.ISurveyDataSource;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerMetadataRepository;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.Survey;
-import org.eyeseetea.malariacare.domain.usecase.LocalSurveyFilter;
-import org.eyeseetea.malariacare.utils.DateParser;
+import org.eyeseetea.malariacare.domain.usecase.SurveyFilter;
 import org.hisp.dhis.client.sdk.models.event.Event;
-import org.hisp.dhis.client.sdk.models.trackedentity.TrackedEntityDataValue;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class SurveyAPIDataSource extends OkHttpClientDataSource implements ISurveyDataSource {
 
     private static final String DHIS_CHECK_EVENT_API =
-            "/api/events.json?program=%s&orgUnit=%s&startDate=%s&endDate=%s&skipPaging=true"
-                    + "&fields=event,orgUnit,program,dataValues";
+            "/api/events.json?event=%s";
 
     private static final String TAG = ".PullDhisApiDataSource";
 
@@ -59,11 +56,11 @@ public class SurveyAPIDataSource extends OkHttpClientDataSource implements ISurv
     }
 
     @Override
-    public List<Survey> getSurveys(LocalSurveyFilter filter) throws Exception {
+    public List<Survey> getSurveys(SurveyFilter filter) throws Exception {
         //Here pull surveys code
         List<Survey> surveys = new ArrayList<>();
         if(filter.isQuarantineSurvey()) {
-            surveys = getEventsCompletionDatesOnServer(filter.getProgramUId(), filter.getOrgUnitUId(), filter.getStartDate(), filter.getEndDate());
+            surveys = getEventsCompletionDatesOnServer(filter.getUids());
         }
         return surveys;
     }
@@ -76,32 +73,39 @@ public class SurveyAPIDataSource extends OkHttpClientDataSource implements ISurv
 
 
 
-    private List<Survey> pullQuarantineEvents(String url, String program, String orgUnit) throws IOException, JSONException {
+    private List<Survey> pullQuarantineEvents(String url) throws IOException, JSONException {
         String response = executeCall(url);
         JSONObject events = new JSONObject(response);
         ObjectMapper mapper = new ObjectMapper();
         JsonNode jsonNode = mapper.convertValue(mapper.readTree(events.toString()),
                 JsonNode.class);
-        return existOnServerFromJson(jsonNode, program, orgUnit);
+        return existOnServerFromJson(jsonNode);
     }
 
 
     /**
      * Returns a list of surveys with the correct creation date ( setted from trackedentitydatavalue value)
      */
-    private List<Survey> getEventsCompletionDatesOnServer(String program, String orgUnit, Date minDate,
-                                         Date maxDate) throws IOException, JSONException {
-        String startDate = DateParser.formatAmerican(minDate);
-        String endDate = DateParser.formatAmerican(
-                new Date(maxDate.getTime() + (8 * 24 * 60 * 60 * 1000)));
-        String url = String.format(DHIS_CHECK_EVENT_API, program, orgUnit, startDate,
-                endDate);
+    private List<Survey> getEventsCompletionDatesOnServer(List<String> uids) throws IOException, JSONException {
+        String endpoint = getUidFilter(uids);
+        String url = String.format(DHIS_CHECK_EVENT_API, uids);
         Log.d(TAG, url);
-        return pullQuarantineEvents(url, program, orgUnit);
+        return pullQuarantineEvents(url);
+    }
+
+    private String getUidFilter(List<String> uids) {
+        String endpoint = "";
+        for(int i=0; i<uids.size();i++){
+            endpoint+=uid;
+            if(i!=uids.size()) {
+                endpoint += ";";
+            }
+        }
+        return endpoint;
     }
 
 
-    private static List<Survey> existOnServerFromJson(JsonNode jsonNode, String program, String orgUnit) {
+    private static List<Survey> existOnServerFromJson(JsonNode jsonNode) {
         TypeReference<List<Event>> typeRef =
                 new TypeReference<List<Event>>() {
                 };
@@ -109,25 +113,21 @@ public class SurveyAPIDataSource extends OkHttpClientDataSource implements ISurv
 
         events = getEventsFromJson(jsonNode, typeRef);
 
-        List<Survey> completionList = addSurveysFromEventsWithCreationDate(program, orgUnit, events);
+        List<Survey> completionList = addSurveysFromEventsWithCreationDate(events);
 
         return completionList;
     }
 
-    private static List<Survey> addSurveysFromEventsWithCreationDate(String program, String orgUnit, List<Event> events) {
+    private static List<Survey> addSurveysFromEventsWithCreationDate(List<Event> events) {
         List<Survey> completionList = new ArrayList<>();
         for (Event event : events) {
             if (event.getDataValues() != null && event.getDataValues().size() > 0) {
-                for(TrackedEntityDataValue trackedEntityDataValue: event.getDataValues()){
-                  if(trackedEntityDataValue.getDataElement().equals(uid)){
                       Survey survey = Survey.createQuarantineSentSurvey(event.getUId(),
-                              program,
-                              orgUnit,
-                              trackedEntityDataValue.getStoredBy(),
-                              DateParser.parseLongDate(trackedEntityDataValue.getValue()));
+                              "",
+                              "",
+                              null,
+                              null);
                       completionList.add(survey);
-                  }
-                }
             }
         }
         return completionList;

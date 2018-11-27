@@ -33,6 +33,7 @@ import org.eyeseetea.malariacare.domain.boundary.repositories.IOptionRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IOrgUnitRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IQuestionRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerMetadataRepository;
+import org.eyeseetea.malariacare.domain.common.ReadPolicy;
 import org.eyeseetea.malariacare.domain.entity.CompositeScore;
 import org.eyeseetea.malariacare.domain.entity.IData;
 import org.eyeseetea.malariacare.domain.entity.Option;
@@ -147,7 +148,7 @@ public class SurveySDKDhisDataSource implements IDataRemoteDataSource {
         List<Option> options = mOptionRepository.getAll();
         List<Question> questions = mQuestionRepository.getAll();
         List<CompositeScore> compositeScores = mCompositeScoreRepository.getAll();
-        List<OrgUnit> orgUnits = mOrgUnitRepository.getAll();
+        List<OrgUnit> orgUnits = mOrgUnitRepository.getAll(ReadPolicy.CACHE);
 
         SurveyMapper surveyMapper = new SurveyMapper(serverMetadata, orgUnits,compositeScores, questions,
                 options);

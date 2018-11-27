@@ -26,7 +26,7 @@ import org.eyeseetea.malariacare.data.database.model.ValueDB_Table;
 import org.eyeseetea.malariacare.domain.entity.IData;
 import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.entity.SurveyStatus;
-import org.eyeseetea.malariacare.domain.usecase.LocalSurveyFilter;
+import org.eyeseetea.malariacare.domain.usecase.SurveyFilter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,7 +37,7 @@ public class SurveyLocalDataSource implements ISurveyDataSource, IDataLocalDataS
     private final static String TAG = ".SurveyLocalDataSource";
 
     @Override
-    public List<Survey> getSurveys(LocalSurveyFilter status) {
+    public List<Survey> getSurveys(SurveyFilter status) {
 
         List<SurveyDB> surveyDBS = getSurveysDB(status.getSurveyStatus());
 
@@ -57,7 +57,7 @@ public class SurveyLocalDataSource implements ISurveyDataSource, IDataLocalDataS
 
     @Override
     public List<? extends IData> getDataToSync() throws Exception {
-        List<Survey> surveys = getSurveys(LocalSurveyFilter.Builder.create().withSurveyStatus(SurveyStatus.COMPLETED).build());
+        List<Survey> surveys = getSurveys(SurveyFilter.Builder.create().withSurveyStatus(SurveyStatus.COMPLETED).build());
         return surveys;
     }
 
@@ -204,33 +204,5 @@ public class SurveyLocalDataSource implements ISurveyDataSource, IDataLocalDataS
                 surveyDB.setValues(valuesMap.get(surveyDB.getId_survey()));
             }
         }
-    }
-
-    public List<Survey> mapQuarantineSurveys(List<SurveyDB> surveysDB) {
-
-        List<Survey> surveys = new ArrayList<>();
-
-        for (SurveyDB surveyDB : surveysDB) {
-            try {
-                Survey survey = mapQuarantineSurvey(surveyDB);
-
-                surveys.add(survey);
-            } catch (Exception e) {
-                Log.e(TAG, "An error occurred converting Survey " + surveyDB.getEventUid() +
-                        " to surveyDB:" + e.getMessage());
-            }
-        }
-
-        return surveys;
-    }
-
-    public Survey mapQuarantineSurvey(SurveyDB surveyDB){
-        return Survey.createQuarantineSurvey(surveyDB.getEventUid(),
-                surveyDB.getProgram().getUid(),
-                surveyDB.getOrgUnit().getUid(),
-                surveyDB.getUser().getUid(),
-                surveyDB.getCreationDate(),
-                surveyDB.getCompletionDate(),
-                surveyDB.getProductivity());
     }
 }
