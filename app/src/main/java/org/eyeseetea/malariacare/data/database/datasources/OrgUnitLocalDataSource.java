@@ -1,14 +1,13 @@
 package org.eyeseetea.malariacare.data.database.datasources;
 
-import com.raizlabs.android.dbflow.sql.language.Join;
+import android.support.annotation.NonNull;
+
 import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitLevelDB;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitProgramRelationDB;
-import org.eyeseetea.malariacare.data.database.model.OrgUnitProgramRelationDB_Table;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
-import org.eyeseetea.malariacare.data.database.model.ProgramDB_Table;
-import org.eyeseetea.malariacare.domain.boundary.IOrgUnitRepository;
 import org.eyeseetea.malariacare.domain.entity.OrgUnit;
 
 import java.util.ArrayList;
@@ -16,70 +15,64 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.eyeseetea.malariacare.data.database.AppDatabase.orgUnitProgramRelationAlias;
-import static org.eyeseetea.malariacare.data.database.AppDatabase.orgUnitProgramRelationName;
-import static org.eyeseetea.malariacare.data.database.AppDatabase.programAlias;
-import static org.eyeseetea.malariacare.data.database.AppDatabase.programName;
+public class OrgUnitLocalDataSource {
 
-public class OrgUnitLocalDataSource implements IOrgUnitRepository {
-    private static final Integer DEFAULT_PRODUCTIVITY = 0;
-
-    @Override
     public List<OrgUnit> getAll() {
+
         List<OrgUnit> orgUnits = new ArrayList<>();
 
-        for(OrgUnitDB orgUnitDB : new Select().from(OrgUnitDB.class).queryList()){
-            List<String> programs = getAllRelatedPrograms(orgUnitDB);
-            Map<String,Integer> productivityByOrgUnit = getProductivityByProgram(orgUnitDB);
-            OrgUnit orgUnit = map(orgUnitDB, programs, productivityByOrgUnit);
-            orgUnits.add(orgUnit);
+        List<OrgUnitDB> orgUnitsDB = new Select().from(OrgUnitDB.class).queryList();
+        List<OrgUnitLevelDB> orgUnitLevelsDB = new Select().from(OrgUnitLevelDB.class).queryList();
+        List<OrgUnitProgramRelationDB> orgUnitProgramRelationsDB =
+                new Select().from(OrgUnitProgramRelationDB.class).queryList();
+        List<ProgramDB> programsDB = new Select().from(ProgramDB.class).queryList();
+
+        for (OrgUnitDB orgUnitDB:orgUnitsDB) {
+            orgUnits.add(
+                    mapOrgUnit(orgUnitDB, orgUnitLevelsDB,
+                            orgUnitProgramRelationsDB, programsDB));
         }
+
         return orgUnits;
     }
 
-    private List<String> getAllRelatedPrograms(OrgUnitDB orgUnitDb) {
-        List<String> uids = new ArrayList<>();
-        for(ProgramDB programDB : getPrograms(orgUnitDb)){
-            uids.add(programDB.getUid());
-        }
-        return uids;
-    }
 
-    private static Map<String,Integer> getProductivityByProgram(OrgUnitDB orgUnitDB){
-        Map<String,Integer> productivityByOrgUnit = new HashMap<>();
-        for(ProgramDB program : getPrograms(orgUnitDB)) {
-            OrgUnitProgramRelationDB
-                    orgUnitProgramRelation = new Select().from(OrgUnitProgramRelationDB.class)
-                    .where(OrgUnitProgramRelationDB_Table.id_org_unit_fk.eq(orgUnitDB.getId_org_unit()))
-                    .and(OrgUnitProgramRelationDB_Table.id_program_fk.eq(program.getId_program())).querySingle();
-            int productivity = DEFAULT_PRODUCTIVITY;
-            if(orgUnitProgramRelation != null){
-                productivity = orgUnitProgramRelation.getProductivity();
+    @NonNull
+    private OrgUnit mapOrgUnit(OrgUnitDB orgUnitDB, List<OrgUnitLevelDB> orgUnitLevelsDB,
+            List<OrgUnitProgramRelationDB> orgUnitProgramRelationsDB, List<ProgramDB> programsDB) {
+
+        String orgUnitLevelUid = null;
+        Map<String, Integer> productivityByProgram = new HashMap<>();
+
+        for (OrgUnitLevelDB orgUnitLevelDB:orgUnitLevelsDB ) {
+            if (orgUnitDB.getId_org_unit_level_fk().equals(orgUnitLevelDB.getId_org_unit_level())){
+                orgUnitLevelUid = orgUnitLevelDB.getUid();
+                break;
             }
-            productivityByOrgUnit.put(program.getUid(), productivity);
         }
-        return productivityByOrgUnit;
+
+        for (OrgUnitProgramRelationDB orgUnitProgramRelationDB:orgUnitProgramRelationsDB ) {
+            if (orgUnitProgramRelationDB.getId_org_unit_fk().equals(orgUnitDB.getId_org_unit())){
+                String programUid = getProgramUid (programsDB,
+                        orgUnitProgramRelationDB.getId_program_fk());
+                productivityByProgram.put(programUid, orgUnitProgramRelationDB.getProductivity());
+            }
+        }
+
+        return new OrgUnit(orgUnitDB.getUid(), orgUnitDB.getName(),
+                orgUnitLevelUid, productivityByProgram);
     }
 
-    private static List<ProgramDB> getPrograms(OrgUnitDB orgUnitDB){
-        return new Select().from(ProgramDB.class).as(programName)
-                .join(OrgUnitProgramRelationDB.class, Join.JoinType.LEFT_OUTER).as(orgUnitProgramRelationName)
-                .on(ProgramDB_Table.id_program.withTable(programAlias)
-                        .eq(OrgUnitProgramRelationDB_Table.id_program_fk.withTable(orgUnitProgramRelationAlias))
-                ).where(OrgUnitProgramRelationDB_Table.id_org_unit_fk.withTable(orgUnitProgramRelationAlias).eq(orgUnitDB.getId_org_unit()))
-                .orderBy(ProgramDB_Table.name.withTable(programAlias), true)
-                .queryList();
-    }
+    private String getProgramUid(List<ProgramDB> programsDB, Long id_program_fk) {
+        String programUid = null;
 
-    private OrgUnit map(OrgUnitDB orgUnitDB, List<String> programs, Map<String,Integer> productivityByOrgUnit) {
-        String orgUnitLevel = null;
-        if(orgUnitDB.getOrgUnitLevel()!=null){
-            orgUnitLevel = orgUnitDB.getOrgUnitLevel().getUid();
+        for (ProgramDB programDB:programsDB ) {
+            if (programDB.getId_program().equals(id_program_fk)){
+                programUid = programDB.getUid();
+                break;
+            }
         }
-        OrgUnit orgUnit = new OrgUnit(orgUnitDB.getUid(), orgUnitDB.getName(), orgUnitLevel, productivityByOrgUnit);
 
-        orgUnit.addRelatedPrograms(programs);
-
-        return orgUnit;
+        return programUid;
     }
 }

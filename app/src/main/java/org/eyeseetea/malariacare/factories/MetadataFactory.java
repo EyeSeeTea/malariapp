@@ -3,6 +3,7 @@ package org.eyeseetea.malariacare.factories;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import org.eyeseetea.malariacare.data.database.datasources.OrgUnitLocalDataSource;
 import org.eyeseetea.malariacare.data.database.datasources.QuestionLocalDataSource;
 import org.eyeseetea.malariacare.data.repositories.OptionRepository;
 import org.eyeseetea.malariacare.data.repositories.OrgUnitRepository;
@@ -28,6 +29,6 @@ public class MetadataFactory {
     }
 
     public IOrgUnitRepository getOrgUnitRepository() {
-        return new OrgUnitRepository();
+        return new OrgUnitRepository(new OrgUnitLocalDataSource());
     }
 }

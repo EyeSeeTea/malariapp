@@ -15,7 +15,6 @@ import org.eyeseetea.malariacare.data.remote.sdk.data.SurveySDKDhisDataSource;
 import org.eyeseetea.malariacare.data.repositories.ICompositeScoreRepository;
 import org.eyeseetea.malariacare.data.repositories.ObservationRepository;
 import org.eyeseetea.malariacare.data.repositories.OptionRepository;
-import org.eyeseetea.malariacare.data.repositories.OrgUnitRepository;
 import org.eyeseetea.malariacare.data.repositories.ServerMetadataRepository;
 import org.eyeseetea.malariacare.data.repositories.SurveyRepository;
 import org.eyeseetea.malariacare.domain.boundary.IConnectivityManager;
@@ -27,6 +26,8 @@ import org.eyeseetea.malariacare.domain.boundary.repositories.IServerMetadataRep
 import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyRepository;
 
 public class DataFactory extends AFactory {
+
+    private MetadataFactory metadataFactory = new MetadataFactory();
 
     @NonNull
     public ISurveyRepository getSurveyRepository() {
@@ -51,7 +52,7 @@ public class DataFactory extends AFactory {
     @NonNull
     public IDataRemoteDataSource getSurveyRemoteDataSource(Context context) {
         IQuestionRepository questionRepository = new QuestionLocalDataSource();
-        IOrgUnitRepository orgUnitRepository = new OrgUnitRepository();
+        IOrgUnitRepository orgUnitRepository = metadataFactory.getOrgUnitRepository();
         ICompositeScoreRepository compositeScoreRepository = new CompositeScoreDataSource();
         IConnectivityManager connectivityManager = new ConnectivityManager();
 
