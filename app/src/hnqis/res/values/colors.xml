@@ -44,5 +44,12 @@
     <color name="even_row_background">@color/white_grey</color>
     <color name="plan_listview_background">@color/transparent</color>
     <color name="assets_listview_background">@color/white</color>
+    <color name="floating_button_tint">#009688</color>
+    <color name="background_textfield_color">@color/background</color>
+    <color name="planning_header_background">#666666</color>
+    <color name="survey_feedback_header_background">@color/assess_yellow</color>
+    <color name="statement_text_color">@color/new_grey_text_color</color>
+    <color name="right_parent">@color/parentColor</color>
+    <color name="round_border_color">@color/assess_yellow</color>
 
 </resources>

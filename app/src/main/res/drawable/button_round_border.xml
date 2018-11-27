@@ -24,12 +24,12 @@
 
     <!-- view background color -->
     <solid
-        android:color="@color/start_button" >
+        android:color="@color/round_border_color" >
     </solid>
 
     <!-- Here is the corner radius -->
     <corners
-        android:radius="1dp"   >
+        android:radius="@dimen/round_border_size"   >
     </corners>
 
 </shape>

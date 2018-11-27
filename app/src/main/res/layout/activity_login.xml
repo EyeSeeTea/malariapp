@@ -77,6 +77,7 @@
 
         <org.eyeseetea.malariacare.views.CustomTextView
             android:id="@+id/title"
+            style="@style/EyeSeeLoginLogoTitle"
             android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -99,6 +100,7 @@
             app:cardElevation="4dp"
             app:cardUseCompatPadding="true">
 
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -111,19 +113,15 @@
                     android:id="@+id/edittext_server_url_input_layout"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
-                    android:visibility="gone"
-                    android:layout_marginBottom="8dp">
+                    android:layout_marginBottom="8dp"
+                    style="@style/EyeSeeServerUrl">
 
                     <org.eyeseetea.malariacare.views.CustomEditText
                         android:id="@+id/edittext_server_url"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:gravity="center_vertical"
                         android:hint="@string/server_url"
-                        android:textColor="@color/new_grey_text_color"
-                        android:inputType="textUri"
-                        android:singleLine="true"
-                        app:font="@string/font_name_regular" />
+                        style="@style/EyeSeeTeaLoginServerEdittext"/>
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
@@ -136,12 +134,8 @@
                         android:id="@+id/edittext_username"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:gravity="center_vertical"
                         android:hint="@string/username"
-                        android:inputType="text"
-                        android:singleLine="true"
-                        android:textColor="@color/new_grey_text_color"
-                        app:font="@string/font_name_regular" />
+                        style="@style/EyeSeeTeaLoginServerEdittext" />
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
@@ -158,7 +152,7 @@
                         android:hint="@string/password"
                         android:inputType="textPassword"
                         android:singleLine="true"
-                        app:font="@string/font_name_regular" />
+                        app:font="@string/font_name_regular"/>
                 </android.support.design.widget.TextInputLayout>
 
                 <org.eyeseetea.malariacare.views.CustomButton
@@ -178,21 +172,14 @@
                     android:id="@+id/button_log_out"
                     android:layout_width="196dp"
                     android:layout_height="40dp"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@drawable/button_selector_red"
-                    android:text="@string/clear_and_logout"
-                    android:textAllCaps="true"
-                    android:textColor="@android:color/white"
-                    android:inputType="textCapWords"
-                    android:textSize="17sp"
-                    android:visibility="gone"
-                    app:font="@string/font_name_medium" />
+                    style="@style/EyeSeeLogOutButton"/>
 
                 <org.eyeseetea.malariacare.views.CustomButton xmlns:android="http://schemas.android.com/apk/res/android"
                     xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/demo_advanced_options"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
+                    android:layout_below="@+id/layout_login_views"
                     android:layout_gravity="center_horizontal"
                     android:background="@drawable/button_demo_selector"
                     android:orientation="vertical"
@@ -201,9 +188,8 @@
                     android:textColor="@color/advanced_options_text_color"
                     android:textSize="@dimen/roboto_16"
                     android:inputType="textCapWords"
-                    android:layout_below="@+id/layout_login_views"
                     android:layout_centerHorizontal="true"
-                    app:font="@string/font_name_medium" />
+                    style="@style/EyeSeeDemoButton" />
             </LinearLayout>
 
         </android.support.v7.widget.CardView>
