@@ -2,14 +2,14 @@ package org.eyeseetea.malariacare.data.remote.api.data;
 
 import static org.hamcrest.core.Is.is;
 
-import org.eyeseetea.malariacare.data.remote.api.ApiEndpointMapper;
+import org.eyeseetea.malariacare.data.remote.api.ApiMapper;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ApiEndpointMapperShould {
+public class ApiMapperShould {
     String uid1="uid1";
     String uid2="uid2";
     String uid3="uid3";
@@ -25,7 +25,7 @@ public class ApiEndpointMapperShould {
         uids.add(uid2);
         uids.add(uid3);
         //when
-        String path = ApiEndpointMapper.getFilteredEventPath(uids);
+        String path = ApiMapper.getFilteredEventPath(uids);
 
         //then
         Assert.assertThat(path.equals(expectedPathMultipleUid), is(true));
@@ -37,7 +37,7 @@ public class ApiEndpointMapperShould {
         List<String> uids = new ArrayList<>();
         uids.add(uid1);
         //when
-        String path = ApiEndpointMapper.getFilteredEventPath(uids);
+        String path = ApiMapper.getFilteredEventPath(uids);
 
         //then
         Assert.assertThat(path. equals(expectedPathOneUid), is(true));
@@ -48,7 +48,7 @@ public class ApiEndpointMapperShould {
         //given
         List<String> uids = new ArrayList<>();
         //when
-        String path = ApiEndpointMapper.getFilteredEventPath(uids);
+        String path = ApiMapper.getFilteredEventPath(uids);
 
         //then
         Assert.assertThat(path. equals(expectedEmptyPath), is(true));
