@@ -21,9 +21,6 @@ package org.eyeseetea.malariacare.data.remote.api;
 
 import android.util.Log;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.eyeseetea.malariacare.data.boundaries.ISurveyDataSource;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.Survey;
@@ -60,11 +57,8 @@ public class SurveyAPIDataSource extends OkHttpClientDataSource implements ISurv
 
     private List<Survey> pullQuarantineEvents(String url) throws IOException, JSONException {
         String response = executeCall(url);
-        JSONObject events = new JSONObject(response);
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode jsonNode = mapper.convertValue(mapper.readTree(events.toString()),
-                JsonNode.class);
-        return existOnServerFromJson(jsonNode);
+        JSONObject eventAsJsonObject = new JSONObject(response);
+        return existOnServerFromJson(eventAsJsonObject);
     }
 
     /**
@@ -77,7 +71,7 @@ public class SurveyAPIDataSource extends OkHttpClientDataSource implements ISurv
     }
 
 
-    private static List<Survey> existOnServerFromJson(JsonNode jsonNode) {
-        return ApiMapper.mapSurveysFromJson(jsonNode);
+    private static List<Survey> existOnServerFromJson(JSONObject jsonObject) throws IOException{
+        return ApiMapper.mapSurveysFromJson(jsonObject);
     }
 }

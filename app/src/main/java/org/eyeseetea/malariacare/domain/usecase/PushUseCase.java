@@ -81,7 +81,7 @@ public class PushUseCase implements UseCase{
             mPushController.changePushInProgress(true);
 
 
-            mMainExecutor.run(new Runnable() {
+            mAsyncExecutor.run(new Runnable() {
                 @Override
                 public void run() {
                     launchQuarantineChecker();
@@ -116,17 +116,17 @@ public class PushUseCase implements UseCase{
     private void launchQuarantineChecker() {
         try {
             List<Survey> surveys = mSurveyRepository.getSurveys(SurveyFilter.getQuarantineSurveys());
-        if(surveys!=null && surveys.size()>0) {
-            List<String> uids = new ArrayList<>();
-            for(Survey survey:surveys){
-                uids.add(survey.getUId());
-            }
-            SurveyFilter surveyFilter = SurveyFilter.getSurveysUidsOnServer(uids);
-            List<Survey> quarantineSurveysInServer = mSurveyRepository.getSurveys(surveyFilter);
+            if(surveys!=null && surveys.size()>0) {
+                List<String> uids = new ArrayList<>();
+                for(Survey survey:surveys){
+                    uids.add(survey.getUId());
+                }
+                SurveyFilter surveyFilter = SurveyFilter.getSurveysUidsOnServer(uids);
+                List<Survey> quarantineSurveysInServer = mSurveyRepository.getSurveys(surveyFilter);
 
-            updateSurveyStatus(surveys, quarantineSurveysInServer);
-            mSurveyRepository.save(surveys);
-        }
+                updateSurveyStatus(surveys, quarantineSurveysInServer);
+                mSurveyRepository.save(surveys);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

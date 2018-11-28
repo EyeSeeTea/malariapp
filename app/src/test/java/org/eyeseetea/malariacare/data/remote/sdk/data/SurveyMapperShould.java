@@ -3,14 +3,9 @@ package org.eyeseetea.malariacare.data.remote.sdk.data;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import android.support.annotation.NonNull;
-
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-import org.eyeseetea.malariacare.common.DateTimeTypeAdapter;
-import org.eyeseetea.malariacare.common.DateTypeAdapter;
 import org.eyeseetea.malariacare.common.ResourcesFileReader;
 import org.eyeseetea.malariacare.domain.entity.CompositeScore;
 import org.eyeseetea.malariacare.domain.entity.Option;
@@ -19,13 +14,11 @@ import org.eyeseetea.malariacare.domain.entity.Question;
 import org.eyeseetea.malariacare.domain.entity.ServerMetadata;
 import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.hisp.dhis.client.sdk.models.event.Event;
-import org.joda.time.DateTime;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class SurveyMapperShould {
@@ -70,7 +63,7 @@ public class SurveyMapperShould {
 
     private ServerMetadata givenAServerMetadata() throws IOException {
         String stringJson = mFileReader.getStringFromFile("server_metadata.json");
-        Gson gson = createGson();
+        Gson gson = mFileReader.createGson();
 
         return gson.fromJson(stringJson, ServerMetadata.class);
     }
@@ -78,7 +71,7 @@ public class SurveyMapperShould {
     private List<Survey> givenAnExpectedSurveys() throws IOException {
         String stringJson = mFileReader.getStringFromFile("surveys.json");
 
-        Gson gson = createGson();
+        Gson gson = mFileReader.createGson();
 
         Type listType = new TypeToken<ArrayList<Survey>>(){}.getType();
         return gson.fromJson(stringJson, listType);
@@ -88,7 +81,7 @@ public class SurveyMapperShould {
     private List<Event> givenAnEventsDownloaded(String fileName) throws IOException {
         String stringJson = mFileReader.getStringFromFile(fileName);
 
-        Gson gson = createGson();
+        Gson gson = mFileReader.createGson();
 
         Type listType = new TypeToken<ArrayList<Event>>(){}.getType();
         return gson.fromJson(stringJson, listType);
@@ -96,7 +89,7 @@ public class SurveyMapperShould {
 
     private List<Question> givenAQuestions() throws IOException {
         String stringJson = mFileReader.getStringFromFile("questions.json");
-        Gson gson = createGson();
+        Gson gson = mFileReader.createGson();
 
         Type listType = new TypeToken<ArrayList<Question>>(){}.getType();
         return gson.fromJson(stringJson, listType);
@@ -104,7 +97,7 @@ public class SurveyMapperShould {
 
     private List<Option> givenAnOptions() throws IOException {
         String stringJson = mFileReader.getStringFromFile("options.json");
-        Gson gson = createGson();
+        Gson gson = mFileReader.createGson();
 
         Type listType = new TypeToken<ArrayList<Option>>(){}.getType();
         return gson.fromJson(stringJson, listType);
@@ -112,7 +105,7 @@ public class SurveyMapperShould {
 
     private List<OrgUnit> givenAnOrgUnits() throws IOException {
         String stringJson = mFileReader.getStringFromFile("orgUnits.json");
-        Gson gson = createGson();
+        Gson gson = mFileReader.createGson();
 
         Type listType = new TypeToken<ArrayList<OrgUnit>>(){}.getType();
         return gson.fromJson(stringJson, listType);
@@ -121,24 +114,10 @@ public class SurveyMapperShould {
     private List<CompositeScore> givenACompositeScores() throws IOException {
         String stringJson = mFileReader.getStringFromFile("composite_scores.json");
 
-        Gson gson = createGson();
+        Gson gson = mFileReader.createGson();
 
         Type listType = new TypeToken<ArrayList<CompositeScore>>() {
         }.getType();
         return gson.fromJson(stringJson, listType);
-    }
-
-
-    @NonNull
-    private Gson createGson() {
-        GsonBuilder builder = new GsonBuilder();
-
-        builder.setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
-
-        // Register an adapter to manage the date types as long values
-        builder.registerTypeAdapter(DateTime.class, new DateTimeTypeAdapter());
-        builder.registerTypeAdapter(Date.class, new DateTypeAdapter());
-
-        return builder.create();
     }
 }

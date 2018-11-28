@@ -7,6 +7,7 @@ import com.fasterxml.jackson.datatype.joda.JodaModule;
 
 import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.hisp.dhis.client.sdk.models.event.Event;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,9 +37,17 @@ public class ApiMapper {
         return endpoint;
     }
 
-    private static List<Event> getEventsFromJson(JsonNode jsonNode, TypeReference<List<Event>> typeRef) {
+    private static List<Event> getEventsFromJson(JSONObject jsonObject) throws IOException {
         List<Event> events = new ArrayList<>();
+        TypeReference<List<Event>> typeRef =
+                new TypeReference<List<Event>>() {
+                };
+
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode jsonNode = null;
         try {
+            jsonNode = mapper.convertValue(mapper.readTree(jsonObject.toString()),
+                    JsonNode.class);
             if (jsonNode.has(EVENT)) {
                 ObjectMapper objectMapper = new ObjectMapper().registerModule(new JodaModule());
                 events = objectMapper.
@@ -52,13 +61,9 @@ public class ApiMapper {
         return events;
     }
 
-    public static List<Survey> mapSurveysFromJson(JsonNode jsonNode) {
-        TypeReference<List<Event>> typeRef =
-                new TypeReference<List<Event>>() {
-                };
-        List<Event> events;
+    public static List<Survey> mapSurveysFromJson(JSONObject jsonObject) throws IOException {
 
-        events = getEventsFromJson(jsonNode, typeRef);
+        List<Event> events = getEventsFromJson(jsonObject);
 
         List<Survey> completionList = addSurveysFromEventsWithCreationDate(events);
         return completionList;
