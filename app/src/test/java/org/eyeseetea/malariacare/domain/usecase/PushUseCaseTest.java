@@ -28,9 +28,12 @@ import static org.mockito.Mockito.when;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import org.eyeseetea.malariacare.domain.boundary.IConnectivityManager;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IOrgUnitRepository;
+import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyRepository;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.junit.Test;
 
@@ -39,6 +42,9 @@ import java.util.concurrent.CountDownLatch;
 public class PushUseCaseTest {
 
     IPushController mPushController = mock(IPushController.class);
+    IOrgUnitRepository mOrgUnitRepository = mock(IOrgUnitRepository.class);
+    IConnectivityManager mConnectivityManager = mock(IConnectivityManager.class);
+    ISurveyRepository mSurveyRepository = mock(ISurveyRepository.class);
     Context context = mock(Context.class);
 
     private CountDownLatch lock = new CountDownLatch(1);
@@ -99,7 +105,8 @@ public class PushUseCaseTest {
             }
         };
 
-        return new PushUseCase(asyncExecutor, mainExecutor, mPushController, null, context);
+        return new PushUseCase(asyncExecutor, mainExecutor, mPushController,
+                mOrgUnitRepository, mSurveyRepository, mConnectivityManager);
     }
 
     private void callbackInvoked(boolean inProgressCallback) {

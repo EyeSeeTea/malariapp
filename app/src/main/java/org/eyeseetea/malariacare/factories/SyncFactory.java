@@ -60,13 +60,13 @@ public class SyncFactory extends AFactory{
                         surveyRemoteDataSource, observationRemoteDataSource);
 
         PushUseCase pushUseCase = new PushUseCase(asyncExecutor, mainExecutor, pushController,
-                metadataFactory.getOrgUnitRepository(), mDataFactory.getSurveyRepository(context), connectivityManager);
+                metadataFactory.getOrgUnitRepository(), mDataFactory.getSurveyRepository(), connectivityManager);
 
         return pushUseCase;
     }
 
-    public MarkAsRetryAllSendingDataUseCase getMarkAsRetryAllSendingDataUseCase(Context context){
-        ISurveyRepository surveyRepository = mDataFactory.getSurveyRepository(context);
+    public MarkAsRetryAllSendingDataUseCase getMarkAsRetryAllSendingDataUseCase(){
+        ISurveyRepository surveyRepository = mDataFactory.getSurveyRepository();
         IObservationRepository observationRepository = mDataFactory.getObservationRepository();
 
         MarkAsRetryAllSendingDataUseCase markAsRetryAllSendingDataUseCase =

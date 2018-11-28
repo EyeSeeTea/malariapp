@@ -33,9 +33,8 @@ public class DataFactory extends AFactory {
     private MetadataFactory metadataFactory = new MetadataFactory();
 
     @NonNull
-    public ISurveyRepository getSurveyRepository(Context context) {
-        IServerMetadataRepository serverMetadataRepository = metadataFactory.getServerMetadataRepository(context);
-        ISurveyDataSource apiDataSource = new SurveyAPIDataSource(Session.getCredentials(), serverMetadataRepository);
+    public ISurveyRepository getSurveyRepository() {
+        ISurveyDataSource apiDataSource = new SurveyAPIDataSource(Session.getCredentials());
         return new SurveyRepository(getSurveyLocalDataSource(), apiDataSource);
     }
 

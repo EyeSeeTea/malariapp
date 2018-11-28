@@ -93,7 +93,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         PreferencesState.getInstance().setPushInProgress(false);
 
         MarkAsRetryAllSendingDataUseCase markAsRetryAllSendingDataUseCase =
-                new SyncFactory().getMarkAsRetryAllSendingDataUseCase(this);
+                new SyncFactory().getMarkAsRetryAllSendingDataUseCase();
 
         markAsRetryAllSendingDataUseCase.execute(new MarkAsRetryAllSendingDataUseCase.Callback() {
             @Override

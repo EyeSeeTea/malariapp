@@ -1,12 +1,14 @@
 package org.eyeseetea.malariacare.domain.entity;
 
+import org.eyeseetea.malariacare.domain.common.ReadPolicy;
 import org.eyeseetea.malariacare.domain.usecase.SurveyFilter;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SurveyFilterShould {
 
@@ -15,86 +17,22 @@ public class SurveyFilterShould {
 
     @Test
     public void createFilterGetQuarantine(){
-        String programUId = "programUId";
-        String orgUnitUid = "orgUnitUid";
-
-        SurveyFilter surveyFilter = SurveyFilter.getQuarantineSurveys(programUId, orgUnitUid);
+        SurveyFilter surveyFilter = SurveyFilter.getQuarantineSurveys();
 
         Assert.assertNotNull(surveyFilter);
-        Assert.assertTrue(surveyFilter.getProgramUId().equals(programUId));
-        Assert.assertTrue(surveyFilter.getOrgUnitUId().equals(orgUnitUid));
         Assert.assertTrue(surveyFilter.isQuarantineSurvey());
-        Assert.assertNull(surveyFilter.getStartDate());
-        Assert.assertNull(surveyFilter.getEndDate());
+        Assert.assertTrue(surveyFilter.getReadPolicy().equals(ReadPolicy.CACHE));
     }
 
     @Test
     public void createCheckQuarantineOnServerFilter(){
-        Date startDate = new Date();
-        Date endDate = new Date();
-        String programUId = "programUId";
-        String orgUnitUid = "orgUnitUid";
-        SurveyFilter surveyFilter = SurveyFilter.createCheckQuarantineOnServerFilter(startDate, endDate, programUId, orgUnitUid);
+        List<String> uids = new ArrayList<>();
+        uids.add("uid1");
+        uids.add("uid2");
+        SurveyFilter surveyFilter = SurveyFilter.getSurveysUidsOnServer(uids);
 
         Assert.assertNotNull(surveyFilter);
-        Assert.assertTrue(surveyFilter.getProgramUId().equals(programUId));
-        Assert.assertTrue(surveyFilter.getOrgUnitUId().equals(orgUnitUid));
-        Assert.assertTrue(surveyFilter.getStartDate().equals(startDate));
-        Assert.assertTrue(surveyFilter.getEndDate().equals(endDate));
-        Assert.assertTrue(surveyFilter.isQuarantineSurvey());
-    }
-
-    @Test
-    public void throw_exception_when_create_enddate_after_startdate(){
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("End date should be before than start Date");
-        Date endDate = new Date();
-        Date startDate = new Date();
-        startDate.setTime(startDate.getTime()+1000);
-        String programUId = "programUId";
-        String orgUnitUid = "orgUnitUid";
-        SurveyFilter.createCheckQuarantineOnServerFilter(startDate, endDate, programUId, orgUnitUid);
-    }
-
-    @Test
-    public void throw_exception_when_create_quarantine_from_server_without_program(){
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("programUId is required");
-        SurveyFilter.createCheckQuarantineOnServerFilter(new Date(), new Date(), null,"orgUnitUid");
-    }
-
-    @Test
-    public void throw_exception_when_create_quarantine_from_server_without_orgUnit(){
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("orgUnitUId is required");
-        SurveyFilter.createCheckQuarantineOnServerFilter(new Date(), new Date(), "programUId", null);
-    }
-
-    @Test
-    public void throw_exception_when_create_quarantine_from_server_without_startDate(){
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("startDate is required");
-        SurveyFilter.createCheckQuarantineOnServerFilter(null, new Date(), "programUId", "orgUnitUid");
-    }
-
-    @Test
-    public void throw_exception_when_create_quarantine_from_server_without_enddate(){
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("endDate is required");
-        SurveyFilter.createCheckQuarantineOnServerFilter(new Date(), null, "programUId", "orgUnitUid");
-    }
-
-    @Test
-    public void throw_exception_when_create_quarantine_from_local_without_program(){
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("programUId is required");
-        SurveyFilter.getQuarantineSurveys(null,"orgUnitUid");
-    }
-
-    @Test
-    public void throw_exception_when_create_quarantine_from_local_without_orgunit(){
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("orgUnitUId is required");
-        SurveyFilter.getQuarantineSurveys("programUId", null);
+        Assert.assertTrue(surveyFilter.getUids().equals(uids));
+        Assert.assertTrue(surveyFilter.getReadPolicy().equals(ReadPolicy.NETWORK_NO_CACHE));
     }
 }
