@@ -8,13 +8,11 @@ import org.eyeseetea.malariacare.data.database.MetadataValidator;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushDataController;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullDataController;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullMetadataController;
-import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.network.ConnectivityManager;
 import org.eyeseetea.malariacare.domain.boundary.IConnectivityManager;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IObservationRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyRepository;
-import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.usecase.MarkAsRetryAllSendingDataUseCase;
 import org.eyeseetea.malariacare.domain.usecase.PushUseCase;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullUseCase;
@@ -60,13 +58,15 @@ public class SyncFactory extends AFactory{
                 new PushDataController(connectivityManager,
                         surveyLocalDataSource, observationLocalDataSource,
                         surveyRemoteDataSource, observationRemoteDataSource);
-        PushUseCase pushUseCase = new PushUseCase(asyncExecutor, mainExecutor, pushController, Session.getCredentials(), context);
+
+        PushUseCase pushUseCase = new PushUseCase(asyncExecutor, mainExecutor, pushController,
+                metadataFactory.getOrgUnitRepository(), mDataFactory.getSurveyRepository(context), connectivityManager);
 
         return pushUseCase;
     }
 
-    public MarkAsRetryAllSendingDataUseCase getMarkAsRetryAllSendingDataUseCase(){
-        ISurveyRepository surveyRepository = mDataFactory.getSurveyRepository();
+    public MarkAsRetryAllSendingDataUseCase getMarkAsRetryAllSendingDataUseCase(Context context){
+        ISurveyRepository surveyRepository = mDataFactory.getSurveyRepository(context);
         IObservationRepository observationRepository = mDataFactory.getObservationRepository();
 
         MarkAsRetryAllSendingDataUseCase markAsRetryAllSendingDataUseCase =

@@ -23,8 +23,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
@@ -41,7 +39,6 @@ import org.eyeseetea.malariacare.BuildConfig;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.datasources.UserAccountLocalDataSource;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 import org.eyeseetea.malariacare.data.database.model.HeaderDB;
 import org.eyeseetea.malariacare.data.database.model.QuestionDB;
@@ -61,13 +58,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 
 public abstract class AUtils {
 
@@ -178,23 +171,6 @@ public abstract class AUtils {
 
         return stringBuilder;
     }
-
-    /**
-     * This method check if the Internet conexion is active
-     *
-     * @return return true if all is correct.
-     */
-    public static boolean isNetworkAvailable() {
-        ConnectivityManager cm =
-                (ConnectivityManager) PreferencesState.getInstance().getContext().getSystemService(
-                        Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        if (netInfo == null) {
-            return false;
-        }
-        return netInfo.isConnected();
-    }
-
     /**
      * Shows an alert dialog with a big message inside based on a raw resource HTML formatted
      *
