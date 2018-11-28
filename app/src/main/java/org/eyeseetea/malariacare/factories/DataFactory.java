@@ -5,11 +5,14 @@ import android.support.annotation.NonNull;
 
 import org.eyeseetea.malariacare.data.boundaries.IDataLocalDataSource;
 import org.eyeseetea.malariacare.data.boundaries.IDataRemoteDataSource;
+import org.eyeseetea.malariacare.data.boundaries.ISurveyDataSource;
 import org.eyeseetea.malariacare.data.database.datasources.CompositeScoreDataSource;
 import org.eyeseetea.malariacare.data.database.datasources.ObservationLocalDataSource;
 import org.eyeseetea.malariacare.data.database.datasources.QuestionLocalDataSource;
 import org.eyeseetea.malariacare.data.database.datasources.SurveyLocalDataSource;
+import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.network.ConnectivityManager;
+import org.eyeseetea.malariacare.data.remote.api.SurveyAPIDataSource;
 import org.eyeseetea.malariacare.data.remote.sdk.data.ObservationSDKDhisDataSource;
 import org.eyeseetea.malariacare.data.remote.sdk.data.SurveySDKDhisDataSource;
 import org.eyeseetea.malariacare.data.repositories.ICompositeScoreRepository;
@@ -30,8 +33,10 @@ public class DataFactory extends AFactory {
     private MetadataFactory metadataFactory = new MetadataFactory();
 
     @NonNull
-    public ISurveyRepository getSurveyRepository() {
-        return new SurveyRepository(getSurveyLocalDataSource());
+    public ISurveyRepository getSurveyRepository(Context context) {
+        IServerMetadataRepository serverMetadataRepository = metadataFactory.getServerMetadataRepository(context);
+        ISurveyDataSource apiDataSource = new SurveyAPIDataSource(Session.getCredentials(), serverMetadataRepository);
+        return new SurveyRepository(getSurveyLocalDataSource(), apiDataSource);
     }
 
     @NonNull

@@ -4,6 +4,7 @@ import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IObservationRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyRepository;
+import org.eyeseetea.malariacare.domain.common.ReadPolicy;
 import org.eyeseetea.malariacare.domain.entity.Observation;
 import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
 import org.eyeseetea.malariacare.domain.entity.Survey;
@@ -49,7 +50,9 @@ public class MarkAsRetryAllSendingDataUseCase implements UseCase{
     }
 
     private void markAsRetrySendingSurveys() throws Exception {
-        List<Survey> surveys = mSurveyRepository.getSurveys(LocalSurveyFilter.Builder.create().withSurveyStatus(SurveyStatus.SENDING).build());
+        List<Survey> surveys = mSurveyRepository.getSurveys(SurveyFilter.Builder.create()
+                .withSurveyStatus(SurveyStatus.SENDING)
+                .withReadPolicy(ReadPolicy.CACHE).build());
 
         if (surveys.size()>0) {
             for (Survey survey : surveys) {
