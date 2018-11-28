@@ -6,7 +6,6 @@ import org.eyeseetea.malariacare.common.ResourcesFileReader;
 import org.eyeseetea.malariacare.data.remote.api.ApiMapper;
 import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -66,9 +65,12 @@ public class ApiMapperShould {
         //given
         List<Survey> surveys = new ArrayList<>();
         try {
-            JSONObject jsonObject = givenAJSONObjectofEvent("events_filtered_by_uid.json");
             //when
-            surveys = ApiMapper.mapSurveysFromJson(jsonObject);
+            try {
+                surveys = ApiMapper.mapSurveysFromJson(givenAJSONObjectofEvent("events_filtered_by_uid.json"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -84,10 +86,11 @@ public class ApiMapperShould {
         //given
         List<Survey> surveys = new ArrayList<>();
         try {
-            JSONObject jsonObject = givenAJSONObjectofEvent("events_filtered_by_uid_empty.json");
             //when
-            surveys = ApiMapper.mapSurveysFromJson(jsonObject);
+            surveys = ApiMapper.mapSurveysFromJson(givenAJSONObjectofEvent("events_filtered_by_uid_empty.json"));
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
             e.printStackTrace();
         }
 
@@ -97,14 +100,7 @@ public class ApiMapperShould {
         Assert.assertThat(surveys.get(0).getUId(), is("T7nItoNHhOU"));
     }
 
-    private JSONObject givenAJSONObjectofEvent(String fileName) throws IOException {
-        String stringJson = mFileReader.getStringFromFile(fileName);
-        JSONObject jsonObject = null;
-        try {
-            jsonObject = new JSONObject(stringJson);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return jsonObject;
+    private String givenAJSONObjectofEvent(String fileName) throws IOException {
+        return mFileReader.getStringFromFile(fileName);
     }
 }

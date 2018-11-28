@@ -57,8 +57,7 @@ public class SurveyAPIDataSource extends OkHttpClientDataSource implements ISurv
 
     private List<Survey> pullQuarantineEvents(String url) throws IOException, JSONException {
         String response = executeCall(url);
-        JSONObject eventAsJsonObject = new JSONObject(response);
-        return existOnServerFromJson(eventAsJsonObject);
+        return existOnServerFromJson(response);
     }
 
     /**
@@ -71,7 +70,7 @@ public class SurveyAPIDataSource extends OkHttpClientDataSource implements ISurv
     }
 
 
-    private static List<Survey> existOnServerFromJson(JSONObject jsonObject) throws IOException{
-        return ApiMapper.mapSurveysFromJson(jsonObject);
+    private static List<Survey> existOnServerFromJson(String response) throws IOException, JSONException{
+        return ApiMapper.mapSurveysFromJson(response);
     }
 }

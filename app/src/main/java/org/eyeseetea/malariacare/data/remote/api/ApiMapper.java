@@ -7,6 +7,7 @@ import com.fasterxml.jackson.datatype.joda.JodaModule;
 
 import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.hisp.dhis.client.sdk.models.event.Event;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -61,9 +62,11 @@ public class ApiMapper {
         return events;
     }
 
-    public static List<Survey> mapSurveysFromJson(JSONObject jsonObject) throws IOException {
+    public static List<Survey> mapSurveysFromJson(String response) throws IOException, JSONException {
+        JSONObject eventAsJsonObject = null;
+        eventAsJsonObject = new JSONObject(response);
 
-        List<Event> events = getEventsFromJson(jsonObject);
+        List<Event> events = getEventsFromJson(eventAsJsonObject);
 
         List<Survey> completionList = addSurveysFromEventsWithCreationDate(events);
         return completionList;
