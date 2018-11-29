@@ -8,7 +8,6 @@ import com.fasterxml.jackson.datatype.joda.JodaModule;
 import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.hisp.dhis.client.sdk.models.event.Event;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,6 +19,7 @@ public class ApiMapper {
             "/api/events.json?event=%s";
 
     public static final String EVENT = "events";
+    public static final String SEPARATOR_TOKEN = ";";
 
     public static String getFilteredEventPath(List<String> uids) {
         String endpoint = getUidFilter(uids);
@@ -29,47 +29,40 @@ public class ApiMapper {
 
     private static String getUidFilter(List<String> uids) {
         String endpoint = "";
-        for(int i=0; i<uids.size();i++){
-            endpoint+=uids.get(i);
-            if(i!=uids.size()-1) {
-                endpoint += ";";
-            }
+        for(String uid:uids){
+            endpoint+=uid + SEPARATOR_TOKEN;
+        }
+        //remove last token
+        if(!endpoint.isEmpty()) {
+            endpoint = endpoint.substring(0, endpoint.lastIndexOf(SEPARATOR_TOKEN));
         }
         return endpoint;
     }
 
-    private static List<Event> getEventsFromJson(JSONObject jsonObject) throws IOException {
-        List<Event> events = new ArrayList<>();
+    public static List<Survey> mapSurveysFromJson(String response) throws IOException, JSONException {
+        List<Event> events = getEventsFromResponse(response);
+
+        List<Survey> completionList = addSurveysFromEventsWithCreationDate(events);
+        return completionList;
+    }
+
+    private static List<Event> getEventsFromResponse(String response) throws IOException {
+        List<Event> events;
         TypeReference<List<Event>> typeRef =
                 new TypeReference<List<Event>>() {
                 };
 
         ObjectMapper mapper = new ObjectMapper();
-        JsonNode jsonNode = null;
-        try {
-            jsonNode = mapper.convertValue(mapper.readTree(jsonObject.toString()),
-                    JsonNode.class);
-            if (jsonNode.has(EVENT)) {
-                ObjectMapper objectMapper = new ObjectMapper().registerModule(new JodaModule());
-                events = objectMapper.
-                        readValue(jsonNode.get(EVENT).traverse(), typeRef);
-            } else {
-                events = new ArrayList<>();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        JsonNode jsonNode = mapper.convertValue(mapper.readTree(response),
+                JsonNode.class);
+        if (jsonNode.has(EVENT)) {
+            ObjectMapper objectMapper = new ObjectMapper().registerModule(new JodaModule());
+            events = objectMapper.
+                    readValue(jsonNode.get(EVENT).traverse(), typeRef);
+        } else {
+            events = new ArrayList<>();
         }
         return events;
-    }
-
-    public static List<Survey> mapSurveysFromJson(String response) throws IOException, JSONException {
-        JSONObject eventAsJsonObject = null;
-        eventAsJsonObject = new JSONObject(response);
-
-        List<Event> events = getEventsFromJson(eventAsJsonObject);
-
-        List<Survey> completionList = addSurveysFromEventsWithCreationDate(events);
-        return completionList;
     }
 
     private static List<Survey> addSurveysFromEventsWithCreationDate(List<Event> events) {

@@ -65,20 +65,19 @@ public class ApiMapperShould {
         //given
         List<Survey> surveys = new ArrayList<>();
         try {
+            String response = givenAEventResponse("events_filtered_by_uid.json");
             //when
-            try {
-                surveys = ApiMapper.mapSurveysFromJson(givenAJSONObjectofEvent("events_filtered_by_uid.json"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            surveys = ApiMapper.mapSurveysFromJson(response);
 
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
         //then
         Assert.assertThat(surveys.size(), is(2));
         Assert.assertThat(surveys.get(0).getUId(), is("PpAn7NKUE1P"));
-        Assert.assertThat(surveys.get(0).getUId(), is("T7nItoNHhOU"));
+        Assert.assertThat(surveys.get(1).getUId(), is("T7nItoNHhOU"));
     }
 
     @Test
@@ -86,8 +85,9 @@ public class ApiMapperShould {
         //given
         List<Survey> surveys = new ArrayList<>();
         try {
+            String response = givenAEventResponse("events_filtered_by_uid_empty.json");
             //when
-            surveys = ApiMapper.mapSurveysFromJson(givenAJSONObjectofEvent("events_filtered_by_uid_empty.json"));
+            surveys = ApiMapper.mapSurveysFromJson(response);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (JSONException e) {
@@ -95,12 +95,10 @@ public class ApiMapperShould {
         }
 
         //then
-        Assert.assertThat(surveys.size(), is(2));
-        Assert.assertThat(surveys.get(0).getUId(), is("PpAn7NKUE1P"));
-        Assert.assertThat(surveys.get(0).getUId(), is("T7nItoNHhOU"));
+        Assert.assertThat(surveys.size(), is(0));
     }
 
-    private String givenAJSONObjectofEvent(String fileName) throws IOException {
+    private String givenAEventResponse(String fileName) throws IOException {
         return mFileReader.getStringFromFile(fileName);
     }
 }
