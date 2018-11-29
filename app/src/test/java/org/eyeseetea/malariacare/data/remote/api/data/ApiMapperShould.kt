@@ -21,7 +21,7 @@ class ApiMapperShould {
     private val mFileReader = ResourcesFileReader()
 
     @Test
-    fun return_formatted_endpoint_when_pass_more_than_two_uids() {
+    fun `return a formatted endpoint passing more than two uids`() {
         //given
         val uids = ArrayList<String>()
         uids.add(uid1)
@@ -35,7 +35,7 @@ class ApiMapperShould {
     }
 
     @Test
-    fun return_formatted_endpoint_when_pass_only_one_uid() {
+    fun `return a formatted endpoint passing only one uid`() {
         //given
         val uids = ArrayList<String>()
         uids.add(uid1)
@@ -47,7 +47,7 @@ class ApiMapperShould {
     }
 
     @Test
-    fun return_null_when_pass_empty_list_of_uids() {
+    fun `return a empty path when pass a empty uid list`() {
         //given
         val uids = ArrayList<String>()
         //when
@@ -58,7 +58,7 @@ class ApiMapperShould {
     }
 
     @Test
-    fun return_mapped_surveys_from_api_event_json() {
+    fun `return valid survey list from a api json response with events`() {
         //given
         var surveys: List<Survey> = ArrayList()
         try {
@@ -79,7 +79,7 @@ class ApiMapperShould {
     }
 
     @Test
-    fun return_empty_list_of_surveys_from_empty_api_event_json() {
+    fun `return valid empty survey list from a api response json without events`() {
         //given
         var surveys: List<Survey> = ArrayList()
         try {
