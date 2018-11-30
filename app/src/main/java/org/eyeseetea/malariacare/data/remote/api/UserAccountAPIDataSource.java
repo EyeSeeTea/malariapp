@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.IUserAccountDataSource;
+import org.eyeseetea.malariacare.utils.DateParser;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
 import org.eyeseetea.malariacare.domain.exception.GetUserAccountException;
@@ -84,7 +85,8 @@ public class UserAccountAPIDataSource extends OkHttpClientDataSource implements 
         if (closedDate == null || closedDate.equals("")) {
             return null;
         }
-        return DateParser.parseNewLongDate(closedDate);
+        DateParser dateParser = new DateParser();
+        return dateParser.parseDate(closedDate, DateParser.LONG_DATE_FORMAT);
     }
 
     private static String getName(JsonNode jsonNodeArray) {

@@ -45,13 +45,14 @@ import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullDemoUseCase;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
-import org.hisp.dhis.client.sdk.ui.views.FontButton;
 
 public class LoginActivityStrategy {
 
     protected LoginActivity loginActivity;
 
     private static final String TAG = ".LoginActivityStrategy";
+
+    private Button demoButton;
 
     public LoginActivityStrategy(LoginActivity loginActivity) {
         this.loginActivity = loginActivity;
@@ -81,14 +82,14 @@ public class LoginActivityStrategy {
 
         LoginActivityStrategy.customStyle(loginActivity);
 
-        FontButton demoButton = (FontButton) loginActivity.findViewById(R.id.demo_login_button);
+        demoButton = (Button) loginActivity.findViewById(R.id.demo_login_button);
 
         demoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                loginActivity.showProgress();
                 Credentials demoCrededentials = Credentials.createDemoCredentials();
-
+                demoButton.setVisibility(View.GONE);
                 loginActivity.mLoginUseCase.execute(demoCrededentials,
                         new LoginUseCase.Callback() {
                             @Override
@@ -98,16 +99,22 @@ public class LoginActivityStrategy {
 
                             @Override
                             public void onServerURLNotValid() {
+                                loginActivity.hideProgress();
+                                demoButton.setVisibility(View.VISIBLE);
                                 Log.e(this.getClass().getSimpleName(), "Server url not valid");
                             }
 
                             @Override
                             public void onInvalidCredentials() {
+                                loginActivity.hideProgress();
+                                demoButton.setVisibility(View.VISIBLE);
                                 Log.e(this.getClass().getSimpleName(), "Invalid credentials");
                             }
 
                             @Override
                             public void onNetworkError() {
+                                loginActivity.hideProgress();
+                                demoButton.setVisibility(View.VISIBLE);
                                 Log.e(this.getClass().getSimpleName(), "Network Error");
                             }
 
@@ -226,5 +233,13 @@ public class LoginActivityStrategy {
         } else {
             textView.setText(idFirstText);
         }
+    }
+
+    public void login() {
+        demoButton.setVisibility(View.GONE);
+    }
+
+    public void onLoginError() {
+        demoButton.setVisibility(View.VISIBLE);
     }
 }
