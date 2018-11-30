@@ -4,7 +4,6 @@ import org.eyeseetea.malariacare.common.ResourcesFileReader
 import org.eyeseetea.malariacare.data.remote.api.ApiMapper
 import org.eyeseetea.malariacare.domain.entity.Survey
 import org.hamcrest.core.Is.`is`
-import org.json.JSONException
 import org.junit.Assert
 import org.junit.Test
 import java.io.IOException
@@ -27,6 +26,7 @@ class ApiMapperShould {
         uids.add(uid1)
         uids.add(uid2)
         uids.add(uid3)
+
         //when
         val path = ApiMapper.getFilteredEventPath(uids)
 
@@ -39,6 +39,7 @@ class ApiMapperShould {
         //given
         val uids = ArrayList<String>()
         uids.add(uid1)
+
         //when
         val path = ApiMapper.getFilteredEventPath(uids)
 
@@ -50,6 +51,7 @@ class ApiMapperShould {
     fun `return a empty path when pass a empty uid list`() {
         //given
         val uids = ArrayList<String>()
+
         //when
         val path = ApiMapper.getFilteredEventPath(uids)
 
@@ -61,16 +63,10 @@ class ApiMapperShould {
     fun `return valid survey list from a api json response with events`() {
         //given
         var surveys: List<Survey> = ArrayList()
-        try {
-            val response = givenAEventResponse("events_filtered_by_uid.json")
-            //when
-            surveys = ApiMapper.mapSurveysFromJson(response)
+        val response = givenAEventResponse("events_filtered_by_uid.json")
 
-        } catch (e: JSONException) {
-            e.printStackTrace()
-        } catch (e1: IOException) {
-            e1.printStackTrace()
-        }
+        //when
+        surveys = ApiMapper.mapSurveysFromJson(response)
 
         //then
         Assert.assertThat(surveys.size, `is`(2))
@@ -82,15 +78,10 @@ class ApiMapperShould {
     fun `return valid empty survey list from a api response json without events`() {
         //given
         var surveys: List<Survey> = ArrayList()
-        try {
-            val response = givenAEventResponse("events_filtered_by_uid_empty.json")
-            //when
-            surveys = ApiMapper.mapSurveysFromJson(response)
-        } catch (e: IOException) {
-            e.printStackTrace()
-        } catch (e: JSONException) {
-            e.printStackTrace()
-        }
+        val response = givenAEventResponse("events_filtered_by_uid_empty.json")
+
+        //when
+        surveys = ApiMapper.mapSurveysFromJson(response)
 
         //then
         Assert.assertThat(surveys.size, `is`(0))
