@@ -25,7 +25,7 @@ public class OkHttpClientDataSource {
             IOException {
         final String DHIS_URL= mCredentials.getServerURL() + url.replace(" ", "%20");
 
-        Log.d(TAG, "executeCall Url" + DHIS_URL + "");
+        Log.d(TAG, "executeCall Url " + DHIS_URL + "");
 
         BasicAuthenticator basicAuthenticator = new BasicAuthenticator(mCredentials);
         OkHttpClient client = UnsafeOkHttpsClientFactory.getUnsafeOkHttpClient(basicAuthenticator);
