@@ -102,19 +102,6 @@ public class Session {
         Session.user = user;
     }
 
-    public static Credentials getCredentials() {
-        if (credentials == null) {
-            LoadCredentialsUseCase loadCredentialsUseCase =
-                    new LoadCredentialsUseCase(
-                            PreferencesState.getInstance().getContext());
-            loadCredentialsUseCase.execute();
-            if (credentials == null) {
-                return  null;
-            }
-        }
-        return credentials;
-    }
-
     public static void setCredentials(Credentials credentials) {
         Session.credentials = credentials;
     }

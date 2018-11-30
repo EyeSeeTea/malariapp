@@ -19,37 +19,48 @@
 
 package org.eyeseetea.malariacare.domain.usecase;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-
-import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
+import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
+import org.eyeseetea.malariacare.domain.boundary.repositories.ICredentialsRepository;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 
-public class LoadCredentialsUseCase {
+public class LoadCredentialsUseCase implements UseCase {
 
-    Context mContext;
+    private IAsyncExecutor mAsyncExecutor;
+    private IMainExecutor mMainExecutor;
+    private ICredentialsRepository mCredentialsRepository;
+    private Callback mCallback;
 
-    public LoadCredentialsUseCase(Context context) {
-        mContext = context;
+    public interface Callback {
+        void onSuccess(Credentials credentials);
     }
 
-    public void execute() {
-        loadCredentials();
+    public LoadCredentialsUseCase(IAsyncExecutor asyncExecutor,
+            IMainExecutor mainExecutor,
+            ICredentialsRepository credentialsRepository) {
+        mAsyncExecutor = asyncExecutor;
+        mMainExecutor = mainExecutor;
+        mCredentialsRepository = credentialsRepository;
     }
 
-    private void loadCredentials() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
-                mContext);
-
-        String serverURL = sharedPreferences.getString(mContext.getString(R.string.dhis_url), "");
-        String username = sharedPreferences.getString(mContext.getString(R.string.dhis_user), "");
-        String password = sharedPreferences.getString(mContext.getString(R.string.dhis_password),
-                "");
-
-        Credentials credentials = new Credentials(serverURL, username, password);
-
-        Session.setCredentials(credentials);
+    public void execute(Callback callback) {
+        mCallback = callback;
+        mAsyncExecutor.run(this);
     }
+
+    @Override
+    public void run() {
+        notifyOnSuccess(mCredentialsRepository.getCredentials());
+    }
+
+    private void notifyOnSuccess(final Credentials credentials) {
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                mCallback.onSuccess(credentials);
+            }
+        });
+    }
+
+
 }

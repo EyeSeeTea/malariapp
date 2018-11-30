@@ -24,6 +24,7 @@ import android.util.Log;
 import com.raizlabs.android.dbflow.structure.Model;
 
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.data.database.datasources.CredentialsDataSource;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.DataElementExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.OptionExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.OptionSetExtended;
@@ -53,6 +54,7 @@ import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.Progra
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramStageSectionTabDict;
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramTabDict;
 import org.eyeseetea.malariacare.data.remote.sdk.SdkQueries;
+import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.client.sdk.models.program.ProgramType;
 
@@ -272,7 +274,8 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     @Override
     public void visit(UserAccountExtended userAccount) {
         UserDB appUser = UserDB.getUserByUId(userAccount.getUid());
-
+        CredentialsDataSource credentialsDataSource=new CredentialsDataSource(PreferencesState.getInstance().getContext());
+        Credentials credentials=credentialsDataSource.getCredentials();
 
         if(appUser == null ) {
             appUser = new UserDB();
@@ -280,7 +283,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         appUser.setUid(userAccount.getUId());
         appUser.setName(userAccount.getName());
         //TODO: retrieved user name usign SDK
-        appUser.setUsername(Session.getCredentials().getUsername());
+        appUser.setUsername(credentials.getUsername());
         appUser.setLastUpdated(null);
         appUser.save();
     }

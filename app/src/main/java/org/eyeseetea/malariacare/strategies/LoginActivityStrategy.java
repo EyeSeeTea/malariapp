@@ -53,11 +53,6 @@ public class LoginActivityStrategy {
 
     public void onCreate() {
         if (existsLoggedUser()) {
-            LoadCredentialsUseCase loadCredentialsUseCase =
-                    new LoadCredentialsUseCase(loginActivity);
-
-            loadCredentialsUseCase.execute();
-
             finishAndGo(DashboardActivity.class);
         } else {
             loginActivity.runOnUiThread(new Runnable() {

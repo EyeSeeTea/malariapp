@@ -35,9 +35,10 @@ import android.widget.TextView;
 
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullDemoController;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
+import org.eyeseetea.malariacare.domain.entity.Credentials;
+import org.eyeseetea.malariacare.domain.usecase.LoadCredentialsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullDemoUseCase;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
@@ -103,6 +104,8 @@ public class ProgressActivity extends Activity {
     public PullUseCase mPullUseCase;
     private Handler handler;
     private ProgressActivity mProgressActivity;
+    private Credentials mCredentials;
+    private boolean hasToExecutePull;
 
 
     @Override
@@ -110,7 +113,18 @@ public class ProgressActivity extends Activity {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate");
         PreferencesState.getInstance().initalizateActivityDependencies();
-        initializeDependencies();
+        LoadCredentialsUseCase loadCredentialsUseCase =
+                new AuthenticationFactory().getloadCredentialsUseCase(this);
+        loadCredentialsUseCase.execute(new LoadCredentialsUseCase.Callback() {
+            @Override
+            public void onSuccess(Credentials credentials) {
+                mCredentials = credentials;
+                initializeDependencies(credentials);
+                if(hasToExecutePull){
+                    executePull();
+                }
+            }
+        });
         setContentView(R.layout.activity_progress);
         PULL_CANCEL = false;
         isOnPause = false;
@@ -126,8 +140,8 @@ public class ProgressActivity extends Activity {
         mProgressActivity = this;
     }
 
-    private void initializeDependencies() {
-        if (Session.getCredentials().isDemoCredentials()) {
+    private void initializeDependencies(Credentials credentials) {
+        if (credentials.isDemoCredentials()) {
             executeDemoPull();
         } else {
             mPullUseCase = new SyncFactory().getPullUseCase(getApplicationContext());
@@ -324,7 +338,7 @@ public class ProgressActivity extends Activity {
     }
 
     private int getDoneMessage() {
-        if (Session.getCredentials().isDemoCredentials()) {
+        if (mCredentials.isDemoCredentials()) {
             return R.string.dialog_demo_pull_success;
         }
         return R.string.dialog_pull_success;
@@ -334,87 +348,96 @@ public class ProgressActivity extends Activity {
         annotateFirstPull(false);
         progressBar.setProgress(0);
         progressBar.setMax(MAX_PULL_STEPS);
-        Calendar month = Calendar.getInstance();
-        month.add(Calendar.MONTH, -NUMBER_OF_MONTHS);
 
-        PullSurveyFilter pullSurveyFilter = PullSurveyFilter.Builder.create()
-                .withStartDate(month.getTime())
-                .withMaxSize(PreferencesState.getInstance().getMaxEvents()).build();
+        executePull();
+    }
 
-        mPullUseCase.execute(pullSurveyFilter, new PullUseCase.Callback() {
-            @Override
-            public void onComplete() {
-                postFinish();
-            }
+    private void executePull() {
+        if (mPullUseCase != null) {
+            hasToExecutePull = false;
+            Calendar month = Calendar.getInstance();
+            month.add(Calendar.MONTH, -NUMBER_OF_MONTHS);
+            PullSurveyFilter pullSurveyFilter = PullSurveyFilter.Builder.create()
+                    .withStartDate(month.getTime())
+                    .withMaxSize(PreferencesState.getInstance().getMaxEvents()).build();
 
-            @Override
-            public void onPullError() {
-                showException(getBaseContext().getString(R.string
-                        .dialog_pull_error));
-            }
-
-            @Override
-            public void onCancel() {
-                showException(getBaseContext().getString(R.string
-                        .pull_cancelled));
-            }
-
-            @Override
-            public void onMetadataError() {
-                showException(getBaseContext().getString(R.string
-                        .error_in_pull_conversion));
-            }
-
-            @Override
-            public void onStep(PullStep pullStep) {
-                switch (pullStep) {
-                    case PROGRAMS:
-                        step(PreferencesState.getInstance().getContext().getString(
-                                R.string.progress_pull_downloading));
-                        break;
-                    case EVENTS:
-                        step(PreferencesState.getInstance().getContext().getString(
-                                R.string.progress_push_preparing_events));
-                        break;
-                    case PREPARING_PROGRAMS:
-                        step(PreferencesState.getInstance().getContext().getString(
-                                R.string.progress_pull_preparing_program));
-                        break;
-                    case PREPARING_ANSWERS:
-                        step(PreferencesState.getInstance().getContext().getString(
-                                R.string.progress_pull_preparing_answers));
-                        break;
-                    case PREPARING_ORGANISATION_UNITS:
-                        step(PreferencesState.getInstance().getContext().getString(
-                                R.string.progress_pull_preparing_orgs));
-                        break;
-                    case PREPARING_QUESTIONS:
-                        step(PreferencesState.getInstance().getContext().getString(
-                                R.string.progress_pull_questions));
-                        break;
-                    case PREPARING_RELATIONSHIPS:
-                        step(PreferencesState.getInstance().getContext().getString(
-                                R.string.progress_pull_relationships));
-                        break;
-                    case PREPARING_SURVEYS:
-                        step(PreferencesState.getInstance().getContext().getString(
-                                R.string.progress_pull_surveys));
-                        break;
-                    case VALIDATE_COMPOSITE_SCORES:
-                        step(PreferencesState.getInstance().getContext().getString(
-                                R.string.progress_pull_validating_composite_scores));
-                        break;
+            mPullUseCase.execute(pullSurveyFilter, new PullUseCase.Callback() {
+                @Override
+                public void onComplete() {
+                    postFinish();
                 }
 
-            }
+                @Override
+                public void onPullError() {
+                    showException(getBaseContext().getString(R.string
+                            .dialog_pull_error));
+                }
 
-            @Override
-            public void onNetworkError() {
-                showException(PreferencesState.getInstance().getContext().getString(
-                        org.hisp.dhis.client.sdk.ui.bindings.R.string
-                                .title_error_unexpected));
-            }
-        });
+                @Override
+                public void onCancel() {
+                    showException(getBaseContext().getString(R.string
+                            .pull_cancelled));
+                }
+
+                @Override
+                public void onMetadataError() {
+                    showException(getBaseContext().getString(R.string
+                            .error_in_pull_conversion));
+                }
+
+                @Override
+                public void onStep(PullStep pullStep) {
+                    switch (pullStep) {
+                        case PROGRAMS:
+                            step(PreferencesState.getInstance().getContext().getString(
+                                    R.string.progress_pull_downloading));
+                            break;
+                        case EVENTS:
+                            step(PreferencesState.getInstance().getContext().getString(
+                                    R.string.progress_push_preparing_events));
+                            break;
+                        case PREPARING_PROGRAMS:
+                            step(PreferencesState.getInstance().getContext().getString(
+                                    R.string.progress_pull_preparing_program));
+                            break;
+                        case PREPARING_ANSWERS:
+                            step(PreferencesState.getInstance().getContext().getString(
+                                    R.string.progress_pull_preparing_answers));
+                            break;
+                        case PREPARING_ORGANISATION_UNITS:
+                            step(PreferencesState.getInstance().getContext().getString(
+                                    R.string.progress_pull_preparing_orgs));
+                            break;
+                        case PREPARING_QUESTIONS:
+                            step(PreferencesState.getInstance().getContext().getString(
+                                    R.string.progress_pull_questions));
+                            break;
+                        case PREPARING_RELATIONSHIPS:
+                            step(PreferencesState.getInstance().getContext().getString(
+                                    R.string.progress_pull_relationships));
+                            break;
+                        case PREPARING_SURVEYS:
+                            step(PreferencesState.getInstance().getContext().getString(
+                                    R.string.progress_pull_surveys));
+                            break;
+                        case VALIDATE_COMPOSITE_SCORES:
+                            step(PreferencesState.getInstance().getContext().getString(
+                                    R.string.progress_pull_validating_composite_scores));
+                            break;
+                    }
+
+                }
+
+                @Override
+                public void onNetworkError() {
+                    showException(PreferencesState.getInstance().getContext().getString(
+                            org.hisp.dhis.client.sdk.ui.bindings.R.string
+                                    .title_error_unexpected));
+                }
+            });
+        } else {
+            hasToExecutePull = true;
+        }
     }
 
     /**
