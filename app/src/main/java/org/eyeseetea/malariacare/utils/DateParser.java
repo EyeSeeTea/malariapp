@@ -53,13 +53,6 @@ public class DateParser {
             return "";
         }
     }
-    /**
-     * Turns a given date into a parseable String according to sdk date format
-     */
-    public static String formatAmerican(Date date) {
-        String format = AMERICAN_DATE_FORMAT;
-        return (date != null) ? new SimpleDateFormat(format).format(date) : null;
-    }
 
     /**
      * Turns a given date into a parseable String according to sdk date format

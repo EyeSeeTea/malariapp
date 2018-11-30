@@ -309,12 +309,4 @@ public class OrgUnitDB extends BaseModel {
                 ", id_org_unit_level_fk=" + id_org_unit_level_fk +
                 '}';
     }
-
-    public List<String> getAllRelatedPrograms() {
-        List<String> uids = new ArrayList<>();
-        for(ProgramDB programDB : getPrograms()){
-            uids.add(programDB.uid_program);
-        }
-        return uids;
-    }
 }

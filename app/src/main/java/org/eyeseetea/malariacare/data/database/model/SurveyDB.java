@@ -602,30 +602,6 @@ public class SurveyDB extends BaseModel {
                 .orderBy(OrderBy.fromProperty(SurveyDB_Table.completion_date)).queryList();
     }
 
-
-    public static List<SurveyDB> getAllQuarantineSurveysByProgramAndOrgUnit(String programUid, String orgUnitUid) {
-        return new Select()
-                .from(SurveyDB.class).as(surveyName)
-                .join(OrgUnitDB.class, Join.JoinType.LEFT_OUTER).as(orgUnitName)
-                .on(SurveyDB_Table.id_org_unit_fk.withTable(surveyAlias)
-                        .eq((OrgUnitDB_Table.id_org_unit.withTable(orgUnitAlias))))
-                .join(ProgramDB.class, Join.JoinType.LEFT_OUTER).as(programName)
-                .on(SurveyDB_Table.id_program_fk.withTable(surveyAlias)
-                        .eq((ProgramDB_Table.id_program.withTable(programAlias))))
-                .where(SurveyDB_Table.status.eq(Constants.SURVEY_QUARANTINE))
-                .and(ProgramDB_Table.uid_program.eq(programUid))
-                .and(OrgUnitDB_Table.uid_org_unit.eq(orgUnitUid))
-                .orderBy(OrderBy.fromProperty(SurveyDB_Table.completion_date).descending()).queryList();
-    }
-    /**
-     * Returns all the surveys with status put to "quarantine"
-     */
-    public static int countQuarantineSurveys() {
-        return (int) SQLite.selectCountOf()
-                .from(SurveyDB.class)
-                .where(SurveyDB_Table.status.eq(Constants.SURVEY_QUARANTINE))
-                .count();
-    }
     public static long count(){
         return SQLite.selectCountOf()
                 .from(SurveyDB.class)
