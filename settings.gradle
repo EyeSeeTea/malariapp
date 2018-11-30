@@ -1,4 +1,4 @@
-include ':app', ':core', ':core-android', ':core-rules', ':models', ':ui', ':ui-bindings', ':utils', ':EyeSeeTea-sdk', 'bugshaker', ':library'
+include ':app', ':core', ':core-android', ':core-rules', ':models', ':ui', ':ui-bindings', ':utils', ':EyeSeeTea-sdk', 'bugshaker', ':dhis2-light-sdk'
 project(':core').projectDir = new File(settingsDir, 'sdk/core')
 project(':core-android').projectDir = new File(settingsDir, 'sdk/core-android')
 project(':core-rules').projectDir = new File(settingsDir, 'sdk/core-rules')
@@ -7,4 +7,4 @@ project(':ui').projectDir = new File(settingsDir, 'sdk/ui')
 project(':ui-bindings').projectDir = new File(settingsDir, 'sdk/ui-bindings')
 project(':utils').projectDir = new File(settingsDir, 'sdk/utils')
 project(':bugshaker').projectDir = new File(settingsDir, 'bugshaker-android/bugshaker')
-project(':library').projectDir = new File(settingsDir, 'dhis2-light-sdk/library')
+project(':dhis2-light-sdk').projectDir = new File(settingsDir, 'dhis2-light-sdk/library')
