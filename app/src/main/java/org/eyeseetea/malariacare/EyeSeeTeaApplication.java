@@ -42,7 +42,6 @@ import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.utils.AutoTabLayoutUtils;
 import org.eyeseetea.malariacare.utils.Permissions;
 import org.eyeseetea.malariacare.views.TypefaceCache;
-import org.hisp.dhis.client.sdk.android.api.D2;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -66,7 +65,6 @@ public class EyeSeeTeaApplication extends Application {
         TypefaceCache.getInstance().init(getApplicationContext());
         AutoTabLayoutUtils.init();
 
-        D2.init(this);
         FlowConfig flowConfig = new FlowConfig
                 .Builder(this)
                 .addDatabaseHolder(EyeSeeTeaGeneratedDatabaseHolder.class)

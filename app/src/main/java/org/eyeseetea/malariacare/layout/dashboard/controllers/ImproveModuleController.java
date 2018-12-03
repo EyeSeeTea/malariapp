@@ -162,7 +162,8 @@ public class ImproveModuleController extends ModuleController {
     }
 
     private void closeFeedbackFragment() {
-        Fragment fragment = dashboardActivity.getSupportFragmentManager ().findFragmentById(R.id.dashboard_completed_container);
+        Fragment fragment = dashboardActivity.getSupportFragmentManager().findFragmentById(
+                R.id.dashboard_completed_container);
         if(fragment instanceof  FeedbackFragment) {
             feedbackFragment.unregisterReceiver();
             if(feedbackFragment.getView()!=null){

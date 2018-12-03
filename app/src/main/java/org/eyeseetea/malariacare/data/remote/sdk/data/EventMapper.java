@@ -1,7 +1,7 @@
 package org.eyeseetea.malariacare.data.remote.sdk.data;
 
 import static org.eyeseetea.malariacare.utils.DateParser.AMERICAN_DATE_FORMAT;
-import static org.eyeseetea.malariacare.utils.DateParser.DHIS2_GMT_DATE_FORMAT;
+import static org.eyeseetea.malariacare.utils.DateParser.LONG_DATE_FORMAT_WITH_SPECIFIC_UTC_TIME_ZONE;
 
 import android.content.Context;
 import android.location.Location;
@@ -28,6 +28,7 @@ import org.eyeseetea.malariacare.utils.DateParser;
 import org.hisp.dhis.client.sdk.models.common.Coordinates;
 import org.hisp.dhis.client.sdk.models.event.Event;
 import org.hisp.dhis.client.sdk.models.trackedentity.TrackedEntityDataValue;
+import org.eyeseetea.malariacare.utils.DateParser;
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
@@ -37,12 +38,10 @@ import java.util.Map;
 
 public abstract class EventMapper {
 
-    private final ServerMetadata mServerMetadata;
-    private String TAG = "EventMapper";
-
     protected final Context mContext;
     protected final String mUsername;
-
+    private final ServerMetadata mServerMetadata;
+    private String TAG = "EventMapper";
     private Map<String, Option> optionsMap;
 
     public EventMapper(Context context, String username,
@@ -89,14 +88,14 @@ public abstract class EventMapper {
                 Option option = null;
 
                 if (questionValue.getOptionUId() != null &&
-                        optionsMap.containsKey(questionValue.getOptionUId()) ) {
+                        optionsMap.containsKey(questionValue.getOptionUId())) {
                     option = optionsMap.get(questionValue.getOptionUId());
                 }
 
                 if (option != null) {
                     value = option.getCode();
                 } else {
-                    value= questionValue.getValue();
+                    value = questionValue.getValue();
                 }
 
                 TrackedEntityDataValue dataValue =
@@ -138,7 +137,7 @@ public abstract class EventMapper {
                 dataValue.setDataElement(compositeScore.getUid());
                 dataValue.setEvent(event);
                 dataValue.setStoredBy(mUsername);
-                dataValue.setValue (AUtils.round(
+                dataValue.setValue(AUtils.round(
                         ScoreRegister.getCompositeScore(compositeScore, surveyDB.getId_survey(),
                                 Constants.PUSH_MODULE_KEY)));
                 event.getDataValues().add(dataValue);
@@ -149,50 +148,50 @@ public abstract class EventMapper {
     private void buildControlDataElements(Survey survey,
             Event event) throws CalculateNextScheduledDateException {
 
-        if (mServerMetadata.getOverallScore() != null && survey.getScore() != null){
+        if (mServerMetadata.getOverallScore() != null && survey.getScore() != null) {
             TrackedEntityDataValue dataValue = createDataValue(event,
                     mServerMetadata.getOverallScore().getUId(),
                     String.valueOf(survey.getScore().getScore()));
             event.getDataValues().add(dataValue);
         }
-
-        if (mServerMetadata.getCreationDate() != null){
+        DateParser dateParser = new DateParser();
+        if (mServerMetadata.getCreationDate() != null) {
             TrackedEntityDataValue dataValue = createDataValue(event,
                     mServerMetadata.getCreationDate().getUId(),
-                    DateParser.format(survey.getCreationDate(),DHIS2_GMT_DATE_FORMAT));
+                    dateParser.format(survey.getCreationDate(), LONG_DATE_FORMAT_WITH_SPECIFIC_UTC_TIME_ZONE));
             event.getDataValues().add(dataValue);
         }
 
-        if (mServerMetadata.getCompletionDate() != null){
+        if (mServerMetadata.getCompletionDate() != null) {
             TrackedEntityDataValue dataValue = createDataValue(event,
                     mServerMetadata.getCompletionDate().getUId(),
-                    DateParser.format(survey.getCompletionDate(),DHIS2_GMT_DATE_FORMAT));
+                    dateParser.format(survey.getCompletionDate(), LONG_DATE_FORMAT_WITH_SPECIFIC_UTC_TIME_ZONE));
             event.getDataValues().add(dataValue);
         }
 
-        if (mServerMetadata.getUploadDate() != null){
+        if (mServerMetadata.getUploadDate() != null) {
             TrackedEntityDataValue dataValue = createDataValue(event,
                     mServerMetadata.getUploadDate().getUId(),
-                    DateParser.format(survey.getUploadDate(),DHIS2_GMT_DATE_FORMAT));
+                    dateParser.format(survey.getUploadDate(), LONG_DATE_FORMAT_WITH_SPECIFIC_UTC_TIME_ZONE));
             event.getDataValues().add(dataValue);
         }
 
 
-        if (mServerMetadata.getUploadBy() != null){
+        if (mServerMetadata.getUploadBy() != null) {
             TrackedEntityDataValue dataValue = createDataValue(event,
                     mServerMetadata.getUploadBy().getUId(), mUsername);
             event.getDataValues().add(dataValue);
         }
 
 
-        if (mServerMetadata.getForwardOrder() != null){
+        if (mServerMetadata.getForwardOrder() != null) {
             TrackedEntityDataValue dataValue = createDataValue(event,
                     mServerMetadata.getForwardOrder().getUId(),
                     mContext.getString(R.string.forward_order_value));
             event.getDataValues().add(dataValue);
         }
 
-        if (mServerMetadata.getPushDevice() != null){
+        if (mServerMetadata.getPushDevice() != null) {
             TrackedEntityDataValue dataValue = createDataValue(event,
                     mServerMetadata.getPushDevice().getUId(),
                     Session.getPhoneMetaData().getPhone_metaData() +
@@ -204,44 +203,44 @@ public abstract class EventMapper {
         //init scoreType
         ScoreType scoreType = new ScoreType(survey.getScore().getScore());
 
-        if (mServerMetadata.getMainScoreClass() != null && survey.getScore() != null){
+        if (mServerMetadata.getMainScoreClass() != null && survey.getScore() != null) {
             TrackedEntityDataValue dataValue = createDataValue(event,
                     mServerMetadata.getMainScoreClass().getUId(), scoreType.getType());
             event.getDataValues().add(dataValue);
         }
 
-        if (mServerMetadata.getMainScoreA() != null && survey.getScore() != null){
+        if (mServerMetadata.getMainScoreA() != null && survey.getScore() != null) {
             TrackedEntityDataValue dataValue = createDataValue(event,
                     mServerMetadata.getMainScoreA().getUId(),
                     scoreType.isTypeA() ? "true" : "false");
             event.getDataValues().add(dataValue);
         }
 
-        if (mServerMetadata.getMainScoreB() != null && survey.getScore() != null){
+        if (mServerMetadata.getMainScoreB() != null && survey.getScore() != null) {
             TrackedEntityDataValue dataValue = createDataValue(event,
                     mServerMetadata.getMainScoreB().getUId(),
                     scoreType.isTypeB() ? "true" : "false");
             event.getDataValues().add(dataValue);
         }
 
-        if (mServerMetadata.getMainScoreC() != null && survey.getScore() != null){
+        if (mServerMetadata.getMainScoreC() != null && survey.getScore() != null) {
             TrackedEntityDataValue dataValue = createDataValue(event,
                     mServerMetadata.getMainScoreC().getUId(),
                     scoreType.isTypeC() ? "true" : "false");
             event.getDataValues().add(dataValue);
         }
 
-        if (mServerMetadata.getOverallProductivity() != null ){
+        if (mServerMetadata.getOverallProductivity() != null) {
             TrackedEntityDataValue dataValue = createDataValue(event,
                     mServerMetadata.getOverallProductivity().getUId(),
                     String.valueOf(survey.getProductivity()));
             event.getDataValues().add(dataValue);
         }
 
-        if (mServerMetadata.getNextAssessment() != null){
+        if (mServerMetadata.getNextAssessment() != null) {
             TrackedEntityDataValue dataValue = createDataValue(event,
                     mServerMetadata.getNextAssessment().getUId(),
-                    DateParser.format(survey.calculateNextScheduledDate(), AMERICAN_DATE_FORMAT));
+                    dateParser.format(survey.calculateNextScheduledDate(), AMERICAN_DATE_FORMAT));
             event.getDataValues().add(dataValue);
         }
     }
@@ -254,7 +253,8 @@ public abstract class EventMapper {
         }
     }
 
-    protected TrackedEntityDataValue createDataValue(Event event, String dataElement, String value) {
+    protected TrackedEntityDataValue createDataValue(Event event, String dataElement,
+            String value) {
         TrackedEntityDataValue dataValue = new TrackedEntityDataValue();
         dataValue.setDataElement(dataElement);
         dataValue.setEvent(event);
@@ -263,7 +263,8 @@ public abstract class EventMapper {
         return dataValue;
     }
 
-    private Event buildEvent(String eventUId, String orgUnitUid, String programUid) throws Exception {
+    private Event buildEvent(String eventUId, String orgUnitUid, String programUid)
+            throws Exception {
         Event event = new Event();
         event.setUId(eventUId);
         event.setStatus(Event.EventStatus.COMPLETED);
@@ -299,7 +300,7 @@ public abstract class EventMapper {
 
         //location -> set lat/lng
         Coordinates coordinates =
-                new Coordinates(lastLocation.getLatitude(),lastLocation.getLongitude());
+                new Coordinates(lastLocation.getLatitude(), lastLocation.getLongitude());
 
         event.setCoordinate(coordinates);
     }

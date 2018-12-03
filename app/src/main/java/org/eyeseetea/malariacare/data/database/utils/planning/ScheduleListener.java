@@ -15,12 +15,13 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.services.PlannedSurveyService;
-import org.eyeseetea.malariacare.utils.AUtils;
+import org.eyeseetea.malariacare.utils.DateParser;
 import org.eyeseetea.sdk.presentation.views.CustomEditText;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class ScheduleListener implements View.OnClickListener {
     private AlertDialog mAlertDialog;
@@ -68,8 +69,10 @@ public class ScheduleListener implements View.OnClickListener {
         ((TextView) dialog.findViewById(R.id.schedule_title)).setText(subtitle);
         //Set current date
         final CustomEditText scheduleDatePickerButton=(CustomEditText)dialog.findViewById(R.id.planning_dialog_picker_button);
+
         final Date surveyDefaultDate = survey.getScheduledDate();
-        scheduleDatePickerButton.setText(AUtils.formatDate(surveyDefaultDate));
+        String dateFormatted = formatDate(surveyDefaultDate, context);
+        scheduleDatePickerButton.setText(dateFormatted);
         //On Click open an specific DatePickerDialog
         scheduleDatePickerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,7 +80,7 @@ public class ScheduleListener implements View.OnClickListener {
                 //Init secondary datepicker with current date
                 Calendar calendar = Calendar.getInstance();
                 if(survey.getScheduledDate()!=null){
-                    calendar.setTime(surveyDefaultDate);
+                    calendar.setTime(survey.getScheduledDate());
                 }
                 //Show datepickerdialog -> updates newScheduledDate and button
                 new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
@@ -86,7 +89,7 @@ public class ScheduleListener implements View.OnClickListener {
                         Calendar newCalendar = Calendar.getInstance();
                         newCalendar.set(year, monthOfYear, dayOfMonth);
                         newScheduledDate = newCalendar.getTime();
-                        scheduleDatePickerButton.setText(AUtils.formatDate(newScheduledDate));
+                        scheduleDatePickerButton.setText(formatDate(newScheduledDate, context));
                     }
 
                 },calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
@@ -128,6 +131,17 @@ public class ScheduleListener implements View.OnClickListener {
 
         dialog.show();
         ((EditText) dialog.findViewById(R.id.planning_dialog_comment)).requestFocus();
+    }
+
+    private String formatDate(Date surveyDefaultDate, Context context) {
+        Locale locale = context.getResources().getConfiguration()
+                        .locale;
+        DateParser dateParser = new DateParser();
+        String dateFormatted = dateParser.userFormatDate(surveyDefaultDate, locale);
+        if(dateFormatted.isEmpty()){
+            return "-";
+        }
+        return dateFormatted;
     }
 
     private void reloadData() {

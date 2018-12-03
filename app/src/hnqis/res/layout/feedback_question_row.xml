@@ -96,7 +96,7 @@
             android:paddingTop="5dip"
             android:paddingBottom="5dip"
             android:scaleType="fitCenter"
-             />
+            />
         <org.eyeseetea.malariacare.views.CustomTextView
             android:id="@+id/feedback_score_label"
             android:visibility="invisible"
@@ -132,9 +132,8 @@
             />
     </LinearLayout>
 
-<View
-    android:layout_width="match_parent"
-    android:layout_height="1px"
-    android:background="@color/question_row_divisor"></View>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/question_row_divisor"></View>
 </LinearLayout>
-

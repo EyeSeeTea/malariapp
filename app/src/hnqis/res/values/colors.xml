@@ -63,5 +63,12 @@
     <color name="medium_score_color">@color/assess_yellow</color>
     <color name="low_score_color">@color/darkRed</color>
     <color name="no_score_color">#BEBEBE</color>
+    <color name="floating_button_tint">#009688</color>
+    <color name="background_textfield_color">@color/background</color>
+    <color name="planning_header_background">#666666</color>
+    <color name="survey_feedback_header_background">@color/assess_yellow</color>
+    <color name="statement_text_color">@color/new_grey_text_color</color>
+    <color name="right_parent">@color/parentColor</color>
+    <color name="round_border_color">@color/assess_yellow</color>
 
 </resources>

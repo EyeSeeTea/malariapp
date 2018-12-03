@@ -22,15 +22,14 @@
             android:weightSum="1">
             <org.eyeseetea.malariacare.views.CustomTextView
                 android:id="@+id/idHeader"
+                style="@style/EyeSeeAssessHeader"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.4"
-                android:layout_gravity="left"
                 android:gravity="left"
                 android:text="@string/assessment_title_facility_date"
                 android:ellipsize="end"
                 android:lines="1"
-                android:paddingLeft="@dimen/row_left_padding"
                 android:textColor="@color/planning_header_text"
                 android:textSize="@dimen/unsent_rows_text_size"
                 app:tDimension="@string/font_size_level2"
@@ -38,11 +37,14 @@
             <View
                 android:layout_width="0dp"
                 android:layout_height="@dimen/circle_stroke_width"
-                android:layout_weight="0.2">
+                android:layout_weight="0.2"
+                style="@style/EyeSeeViewSeparatorVisibility"
+                >
             </View>
 
             <org.eyeseetea.malariacare.views.CustomTextView
                 android:id="@+id/nameHeader"
+                style="@style/EyeSeeAssessSubHeader"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.4"
@@ -64,9 +66,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/header"
-        android:divider="@null"
-        android:dividerHeight="0dp"
-        android:background="@color/assets_listview_background" />
+        style="@style/EyeSeeAssessList" />
 
     <org.eyeseetea.malariacare.views.CustomTextView
         android:id="@+id/no_surveys"
@@ -83,26 +83,15 @@
         app:tFontName="@string/medium_font_name"/>
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="12dp"
-        android:layout_centerVertical="true"
-        android:background="@drawable/fab_background"
-        android:padding="3dp">
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/start_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:background="@color/transparent"
-            android:onClick="onNewSurvey"
-            app:srcCompat="@drawable/ic_add_survey"
-            android:scaleType="center"
-            android:textColor="@color/white"
-            app:backgroundTint="@color/grey_light_qm"
-            android:textStyle="bold"
-            app:fabSize="normal" />
+        style="@style/EyeSeeStartButtonContainer">
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/start_button"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:onClick="onNewSurvey"
+        app:backgroundTint="@color/floating_button_tint"
+        app:fabSize="normal"
+        app:srcCompat="@drawable/ic_add_survey"
+        style="@style/EyeSeeStartButton" />
     </LinearLayout>
 </RelativeLayout>

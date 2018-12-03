@@ -75,10 +75,17 @@ public class SettingsActivity extends AppCompatActivity implements
 
     private static final String TAG = ".SettingsActivity";
 
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
-        PreferencesState.getInstance().initalizateActivityDependencies();
+    /**
+     * Determines whether the simplified settings UI should be shown. This is
+     * true if this is forced via {@link #ALWAYS_SIMPLE_PREFS}, or the device
+     * doesn't have newer APIs like {@link PreferenceFragmentCompat}, or the device
+     * doesn't have an extra-large screen. In these cases, a single-pane
+     * "simplified" settings UI should be shown.
+     */
+    private static boolean isSimplePreferences(Context context) {
+        return ALWAYS_SIMPLE_PREFS
+                || Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB
+                || !isXLargeTablet(context);
     }
 
     /**
@@ -126,17 +133,17 @@ public class SettingsActivity extends AppCompatActivity implements
         return newEntries;
     }
 
-    /**
-     * Determines whether the simplified settings UI should be shown. This is
-     * true if this is forced via {@link #ALWAYS_SIMPLE_PREFS}, or the device
-     * doesn't have newer APIs like {@link PreferenceFragmentCompat}, or the device
-     * doesn't have an extra-large screen. In these cases, a single-pane
-     * "simplified" settings UI should be shown.
-     */
-    private static boolean isSimplePreferences(Context context) {
-        return ALWAYS_SIMPLE_PREFS
-                || Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB
-                || !isXLargeTablet(context);
+    static void hideFontCustomisationOption(@NonNull PreferenceScreen preferenceScreen) {
+        Context context = preferenceScreen.getContext();
+
+        Preference customizeFonts = preferenceScreen.findPreference(
+                context.getString(R.string.customize_fonts));
+
+        Preference fontSizes = preferenceScreen.findPreference(
+                context.getString(R.string.font_sizes));
+
+        preferenceScreen.removePreference(customizeFonts);
+        preferenceScreen.removePreference(fontSizes);
     }
 
 
@@ -198,6 +205,53 @@ public class SettingsActivity extends AppCompatActivity implements
             restartActivity();
         }
 
+    }
+
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_settings);
+        PreferencesState.getInstance().initalizateActivityDependencies();
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
+
+        //Reload changes into PreferencesState
+        PreferencesState.getInstance().reloadPreferences();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Class callerActivityClass = getCallerActivity();
+        Intent returnIntent=new Intent(this,callerActivityClass);
+        returnIntent.putExtra(getString(R.string.show_announcement_key), false);
+        startActivity(returnIntent);
+    }
+
+    private Class getCallerActivity() {
+        //FIXME Not working as it should the intent param is always null
+        Intent creationIntent = getIntent();
+        if (creationIntent == null) {
+            return DashboardActivity.class;
+        }
+        Class callerActivity = (Class) creationIntent.getSerializableExtra(
+                BaseActivity.SETTINGS_CALLER_ACTIVITY);
+        if (callerActivity == null) {
+            return DashboardActivity.class;
+        }
+
+        return callerActivity;
     }
 
     /**
@@ -277,60 +331,6 @@ public class SettingsActivity extends AppCompatActivity implements
             super.onViewCreated(view, savedInstanceState);
             getListView().addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
         }
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
-
-        //Reload changes into PreferencesState
-        PreferencesState.getInstance().reloadPreferences();
-    }
-
-    @Override
-    public void onBackPressed() {
-        Class callerActivityClass = getCallerActivity();
-        Intent returnIntent=new Intent(this,callerActivityClass);
-        returnIntent.putExtra(getString(R.string.show_announcement_key), false);
-        startActivity(returnIntent);
-    }
-
-    private Class getCallerActivity() {
-        //FIXME Not working as it should the intent param is always null
-        Intent creationIntent = getIntent();
-        if (creationIntent == null) {
-            return DashboardActivity.class;
-        }
-        Class callerActivity = (Class) creationIntent.getSerializableExtra(
-                BaseActivity.SETTINGS_CALLER_ACTIVITY);
-        if (callerActivity == null) {
-            return DashboardActivity.class;
-        }
-
-        return callerActivity;
-    }
-
-    static void hideFontCustomisationOption(@NonNull PreferenceScreen preferenceScreen) {
-        Context context = preferenceScreen.getContext();
-
-        Preference customizeFonts = preferenceScreen.findPreference(
-                context.getString(R.string.customize_fonts));
-
-        Preference fontSizes = preferenceScreen.findPreference(
-                context.getString(R.string.font_sizes));
-
-        preferenceScreen.removePreference(customizeFonts);
-        preferenceScreen.removePreference(fontSizes);
     }
 
     @Override

@@ -2,8 +2,6 @@ package org.eyeseetea.malariacare.data.remote.sdk.data;
 
 import android.util.Log;
 
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.CompositeScoreBuilder;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.domain.entity.CompositeScore;
 import org.eyeseetea.malariacare.domain.entity.Option;
 import org.eyeseetea.malariacare.domain.entity.OrgUnit;
@@ -11,6 +9,7 @@ import org.eyeseetea.malariacare.domain.entity.Question;
 import org.eyeseetea.malariacare.domain.entity.QuestionValue;
 import org.eyeseetea.malariacare.domain.entity.Score;
 import org.eyeseetea.malariacare.domain.entity.ServerMetadata;
+import org.eyeseetea.malariacare.utils.DateParser;
 import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.entity.SurveyStatus;
 import org.eyeseetea.malariacare.utils.DateParser;
@@ -85,14 +84,15 @@ public class SurveyMapper {
 
         for (TrackedEntityDataValue dataValue : event.getDataValues()) {
 
+            DateParser dateParser = new DateParser();
             if (dataValue.getDataElement().equals(serverMetadata.getCreationDate().getUId())) {
-                creationDate = DateParser.parseLongDate(dataValue.getValue());
+                creationDate = dateParser.parseDate(dataValue.getValue(), DateParser.LONG_DATE_FORMAT_WITH_SPECIFIC_UTC_TIME_ZONE);
             } else if (serverMetadata.getCompletionDate() != null
                     && dataValue.getDataElement().equals(
                     serverMetadata.getCompletionDate().getUId())) {
-                completionDate = DateParser.parseLongDate(dataValue.getValue());
+                completionDate = dateParser.parseDate(dataValue.getValue(), DateParser.LONG_DATE_FORMAT_WITH_SPECIFIC_UTC_TIME_ZONE);
             } else if (dataValue.getDataElement().equals(serverMetadata.getUploadDate().getUId())) {
-                uploadDate = DateParser.parseLongDate(dataValue.getValue());
+                uploadDate = dateParser.parseDate(dataValue.getValue(), DateParser.LONG_DATE_FORMAT_WITH_SPECIFIC_UTC_TIME_ZONE);
             } else if (dataValue.getDataElement().equals(
                     serverMetadata.getNextAssessment().getUId())) {
                 if (dataValue.getValue() != null && !dataValue.getValue().isEmpty()) {
@@ -229,8 +229,9 @@ public class SurveyMapper {
         for (CompositeScore compositeScore : compositeScores) {
             compositeScoreMap.put(compositeScore.getUid(), compositeScore);
 
-            if (compositeScore.getChildren() != null && compositeScore.getChildren().size() > 0)
+            if (compositeScore.getChildren() != null && compositeScore.getChildren().size() > 0) {
                 createCompositeScoresMap(compositeScore.getChildren());
+            }
         }
     }
 }

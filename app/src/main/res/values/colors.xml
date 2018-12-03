@@ -153,6 +153,12 @@
     <color name="green_middle">#4B6033</color>
     <color name="assets_listview_background">@color/app_background</color>
     <color name="scoreGrandson">#6fa8dc</color>
+    <color name="floating_button_tint">@color/grey_light_qm</color>
+    <color name="background_textfield_color">@color/assess_grey</color>
+    <color name="survey_feedback_header_background">@color/white</color>
+    <color name="statement_text_color">@color/event_text</color>
+    <color name="right_parent">@color/green_dark</color>
+    <color name="round_border_color">@color/start_button</color>
 
     <color name="na_text_color">@color/black</color>
     <color name="low_score_color">@color/darkRed</color>

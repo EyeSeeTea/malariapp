@@ -112,7 +112,7 @@
         android:summary="@string/hide_planning_tab_summary"
         android:defaultValue="false"
         app:iconSpaceReserved="false" />
-    
+
     <android.support.v7.preference.CheckBoxPreference
         android:key="@string/developer_option"
         android:title="@string/developer_option_title"
