@@ -53,7 +53,7 @@ public class AlarmPushReceiver extends BroadcastReceiver {
     public static void isDoneSuccess() {
         Log.i(TAG, "isDoneSuccess");
         setFail(false);
-        DashboardActivity.reloadDashboard();
+        DashboardActivity.dashboardActivity.reloadActiveTab();
         ObservablePush.getInstance().pushFinish();
     }
 

@@ -45,6 +45,7 @@ import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 import org.eyeseetea.malariacare.data.database.model.QuestionDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.data.repositories.ObservationRepository;
 import org.eyeseetea.malariacare.data.repositories.ServerMetadataRepository;
@@ -430,15 +431,11 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
             }
         } else if (mDoubleRectChart != null) {
             LayoutUtils.drawScore(mainScore, mDoubleRectChart);
-
-
-            mCompletionDateTextView.setText(
-                    String.format(getString(R.string.plan_action_today_date), completionDate));
-
-            mNextDateTextView.setText(
-                    String.format(getString(R.string.plan_action_next_date), nextDate));
-
         }
+        mCompletionDateTextView.setText(
+                String.format(getString(R.string.plan_action_today_date), completionDate));
+        mNextDateTextView.setText(
+                String.format(getString(R.string.plan_action_next_date), nextDate));
     }
 
     @Override
@@ -553,7 +550,8 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
         }
         data += "\n\n" + getString(R.string.see_full_assessment) + "\n";
         if (survey.isSent()) {
-            data += "https://apps.psi-mis.org/hnqis/feedback?eventId=" + survey.getEventUid() + "\n";
+            data += String.format(getActivity().getString(R.string.feedback_url),
+                    survey.getEventUid(), Session.getCredentials().getServerURL());
         } else {
             data += getString(R.string.url_not_available) + "\n";
         }

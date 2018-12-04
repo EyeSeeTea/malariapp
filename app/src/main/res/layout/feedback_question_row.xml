@@ -30,6 +30,20 @@
         <ImageView
             android:id="@+id/feedback_question_arrow"
             style="@style/EyeSeeFeedbackQuestionRowImageArrow"/>
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".06"
+            android:scaleType="centerInside"/>
+
+        <org.eyeseetea.malariacare.views.CustomTextView
+            android:id="@+id/feedback_question_mandatory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:paddingRight="15dp"
+            android:text="*"
+            android:visibility="invisible"
+            android:textColor="@color/black" />
         <LinearLayout
             android:orientation="vertical"
             style="@style/EyeSeeFeedbackQuestionLL">

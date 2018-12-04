@@ -272,21 +272,33 @@ clínica"</string>
 <string name="plan_action_edit_text_hint">"Toque para escribir"</string>
 <string name="planning_label_date">"Nueva fecha:"</string>
 <string name="header_reschedule_title">"Re-programar"</string>
-
-<string name="scheduled">Programada</string>
-
 <string name="completed_title">"Completado"</string>
 <string name="completed_next">"Próxima"</string>
 <string name="apply_filters">"Aplicar filtros"</string>
 <string name="filter">"Filtro"</string>
 <string name="failed_video_image_question_only">"Solo preguntas de video/imagen"</string>
 <string name="failed_questions_only">"Solo preguntas fallidas"</string>
+<string name="assess_no_surveys">"No hay encuesta(s) activa(s) en este momento para la selección que ha realizado. Haga clic en + para comenzar una nueva encuesta"</string>
+<string name="improve_no_surveys">"No se completaron encuestas para la selección que ha realizado."</string>
+<string name="scheduled">Programado</string>
+<string name="reschedule_title_multiple_survey">"%1$d número de encuestas que se reprogramarán para la OU %2$s"</string>
+<string name="feedback_progress_bar_text">Cargando puntuaciones de encuestas ... por favor espere</string>
 <string name="monitor_no_surveys_to_show">"No hay encuesta que mostrar"</string>
+<string name="health_facility">Centro Médico</string>
+<string name="monitor_js_multiple_event_legend" >"(*)Hay más de una encuesta en el mismo mes"</string>
+<string name="dialog_pie_chart_label_explanation">"El círculo exterior muestra el nivel de completado.\n\nEl círculo interior muestra el nivel de completado de las preguntas obligatorias, normalmente marcadas con un *. Solo cuando se complete el 100% de las preguntas obligatorias, puede 'Marcar completa'"</string>
+<string name="survey_not_assigned_facility">"Esta encuesta no está asignada a esta instalación. Por favor, selecciona otra encuesta."</string>
+<string-array name="languages_strings">
+    <item>Definido por el Sistema</item>
+    <item>Inglés</item>
+    <item>Francés</item>
+    <item>Español</item>
+    <item>Portugués</item>
+    <item>Khmer</item>
+    <item>Lao</item>
+</string-array>
 <string name="header_schedule">"Programar"</string>
 <string name="mandatory">Obligatorio</string>
-<string name="monitor_js_multiple_event_legend" >"(*)Hay más de una encuesta en el mismo mes"</string>
-<string name="health_facility">Centro Médico</string>
-<string name="dialog_pie_chart_label_explanation">"El círculo exterior muestra el nivel de completado.\n\nEl círculo interior muestra el nivel de completado de las preguntas obligatorias, normalmente marcadas con un *. Solo cuando se complete el 100% de las preguntas obligatorias, puede 'Marcar completa'"</string>
 <string name="login_error_unsupported_server_version">La versión del servidor no esta soportada</string>
 <string name="dialog_action_plan">"Plan de acción"</string>
 <string name="assessment_title_overall_mandatory_completed">"General / Obligatorio completado"</string>

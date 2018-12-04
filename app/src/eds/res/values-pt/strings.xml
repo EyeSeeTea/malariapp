@@ -219,4 +219,6 @@ Passo 2: Localize a identificação do paciente do passo 1) no Registo de Farmá
 <string name="install_file_manager">Instale um Gerenciador de Arquivos.</string>
 <string name="get_db_file_dialog">Selecione um arquivo db válido.</string>
 <string name="start">Começar</string>
+<string name="assess_no_surveys">"Nenhuma pesquisa ativa (s) neste momento para a seleção que você fez. Clique em + para iniciar uma nova pesquisa"</string>
+<string name="improve_no_surveys">"Nenhuma pesquisa concluída (s) para a seleção que você fez."</string>
 </resources>

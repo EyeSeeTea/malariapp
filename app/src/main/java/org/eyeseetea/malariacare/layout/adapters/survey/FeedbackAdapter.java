@@ -173,8 +173,7 @@ public class FeedbackAdapter extends BaseAdapter {
         String pattern = "^[0-9]+[.][0-9]+.*"; // the format "1.1" for the second level header
         textView.setText(feedback.getLabel());
 
-        //CompositeScore title
-        FeedbackFragmentStyleStrategy.drawFeedbackScore(rowLayout, feedback, idSurvey, module);
+        FeedbackFragmentStyleStrategy.drawFeedbackScore(rowLayout, feedback, idSurvey, module, context);
 
         rowLayout.setTag(feedback);
         rowLayout.setOnClickListener(new View.OnClickListener() {
@@ -242,18 +241,17 @@ public class FeedbackAdapter extends BaseAdapter {
             textView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         }
 
-        String compulsoryMark="";
+        TextView compulsoryMark = (TextView) rowLayout.findViewById(
+                R.id.feedback_question_mandatory);
         if(feedback.getQuestion().getCompulsory()) {
-            int red = PreferencesState.getInstance().getContext().getResources().getColor(
-                    R.color.darkRed);
-            String appNameColorString = String.format("%X", red).substring(2);
-            compulsoryMark = String.format("<font color=\"#%s\"><b>", appNameColorString) + "*  "
-                    + "</b></font>";
+            compulsoryMark.setVisibility(View.VISIBLE);
+        } else {
+            compulsoryMark.setVisibility(View.INVISIBLE);
         }
 
         String label= StringEscapeUtils.escapeHtml4(feedback.getLabel());
 
-        textView.setText(Html.fromHtml(compulsoryMark + label));
+        textView.setText(Html.fromHtml(label));
 
         if(PreferencesState.getInstance().isDevelopOptionActive()){
             textView=(TextView)rowLayout.findViewById(R.id.feedback_uid);
@@ -268,11 +266,8 @@ public class FeedbackAdapter extends BaseAdapter {
         textView.setText(feedback.getOption());
 
         //Score label
-        textView=(TextView)rowLayout.findViewById(R.id.feedback_score_label);
-        if(feedback.hasGrade()) {
-            textView.setText(context.getString(feedback.getGrade()));
-            textView.setTextColor(context.getResources().getColor(feedback.getColor()));
-        }
+        FeedbackFragmentStyleStrategy.drawRowResult(rowLayout, feedback, context);
+
 
         //Feedback
         textView=(TextView)rowLayout.findViewById(R.id.feedback_feedback_html);

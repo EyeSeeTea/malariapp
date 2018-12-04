@@ -284,24 +284,39 @@ evaluation"</string>
 <string name="completed_title">"បានបញ្ចប់"</string>
 <string name="completed_next">"បន្ទាប់"</string>
 
-<string name="scheduled">"ព្រុយ"</string>
 <string name="header_schedule">"កាលវិភាគ"</string>
 <string name="header_reschedule">"អ្នកយកព័ត៌មាន"</string>
 <string name="apply_filters">"អនុវត្តតម្រង"</string>
 <string name="filter">"តម្រង"</string>
 <string name="failed_video_image_question_only">"សំណួរវីដេអូ / រូបភាពប៉ុណ្ណោះ"</string>
 <string name="failed_questions_only">"បានបរាជ័យតែប៉ុណ្ណោះសំណួរ"</string>
-<string name="monitor_no_surveys_to_show">"គ្មានការស្ទង់មតិដើម្បីបង្ហាញ"</string>
 <string name="import_data_option_title">"នាំចូលមូលដ្ឋានទិន្នន័យ"</string>
 <string name="planing_due_date">"កាលបរិច្ឆេទ​កំណត់"</string>
 <string name="save">"រក្សាទុក"</string>
 <string name="mandatory">ចាំបាច់</string>
-<string name="monitor_js_multiple_event_legend" >"(*) ការស្ទង់មតិច្រើនជាងមួយមាននៅក្នុងខែដដែល"</string>
-<string name="health_facility">មជ្ឈមណ្ឌលវេជ្ជសាស្ត្រ</string>
-<string name="dialog_pie_chart_label_explanation">"រង្វង់ខាងក្រៅបង្ហាញអ្នកអំពីការបញ្ចប់ជារួម។\n\nរង្វង់ខាងក្នុងបង្ហាញអ្នកអំពីការបញ្ចប់សំណួរដែលចាំបាច់ជាធម្មតាត្រូវបានសម្គាល់ដោយ * ។ នៅពេលតែ 100% នៃសំណួរចាំបាច់ត្រូវបានបញ្ចប់អ្នកអាចសម្គាល់បានពេញលេញ"</string>
 <string name="login_error_unsupported_server_version">កំណែម៉ាស៊ីនមេមិនត្រូវបានគាំទ្រទេ</string>
-<string name="dialog_action_plan">"ផែនការសកម្មភាព"</string>
-<string name="assessment_title_overall_mandatory_completed">"ទូទៅ / ដែលត្រូវការ"</string>
 <string name="error_unauthorized">"ឈ្មោះអ្នកប្រើប្រាស់ឬលេខសំងាត់ខុស។"</string>
 <string name="title_error_unexpected">"កំហុសដែលមិននឹកស្មានដល់"</string>
+<string name="assess_no_surveys">"មិនមានការស្ទង់មតិសកម្មនៅពេលនេះសម្រាប់ការជ្រើសរើសដែលអ្នកបានធ្វើ។ ចុចលើ + ដើម្បីចាប់ផ្តើមការស្ទង់មតិថ្មី"</string>
+<string name="improve_no_surveys">"គ្មានការស្ទង់មតិសម្រាប់ការជ្រើសរើសដែលអ្នកបានធ្វើទេ។"</string>
+<string name="scheduled">កំណត់ពេល</string>
+<string name="reschedule_title_multiple_survey">"ការស្ទង់មតិចំនួន %1$d ដែលត្រូវបានកំណត់ឡើងវិញសម្រាប់ OU %2$s"</string>
+<string name="feedback_progress_bar_text">កំពុងដំណើរការពិន្ទុស្ទង់មតិ ... សូមរង់ចាំ</string>
+<string name="assessment_title_overall_mandatory_completed">"ជារួម / ចាំបាច់ត្រូវបានបញ្ចប់"</string>
+<string name="monitor_no_surveys_to_show">"គ្មានការស្ទង់មតិដើម្បីបង្ហាញ"</string>
+<string name="dialog_action_plan">"ផែនការសកម្មភាព"</string>
+<string name="health_facility">មជ្ឈមណ្ឌលវេជ្ជសាស្ត្រ</string>
+<string name="monitor_js_multiple_event_legend" >"(*) ការស្ទង់មតិច្រើនជាងមួយមាននៅក្នុងខែដដែល"</string>
+<string name="dialog_pie_chart_label_explanation">"រង្វង់ខាងក្រៅបង្ហាញអ្នកអំពីការបញ្ចប់ជារួម។\n\nរង្វង់ខាងក្នុងបង្ហាញអ្នកអំពីការបញ្ចប់សំណួរដែលចាំបាច់ជាធម្មតាត្រូវបានសម្គាល់ដោយ * ។ នៅពេលតែ 100% នៃសំណួរចាំបាច់ត្រូវបានបញ្ចប់អ្នកអាចសម្គាល់បានពេញលេញ"</string>
+<string name="survey_not_assigned_facility">"ការស្ទង់មតិនេះមិនត្រូវបានកំណត់ទៅកន្លែងនេះទេ។ សូមជ្រើសរើសការស្ទង់មតិផ្សេងទៀត។"</string>
+
+<string-array name="languages_strings">
+    <item>បានកំណត់ប្រព័ន្ធ</item>
+    <item>អង់គ្លេស</item>
+    <item>ភាសាបារាំង</item>
+    <item>អេស្ប៉ាញ</item>
+    <item>ព័រទុយហ្គាល់</item>
+    <item>ភាសាខ្មែរ</item>
+    <item>ឡាវ</item>
+</string-array>
 </resources>
