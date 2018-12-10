@@ -33,6 +33,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
@@ -59,11 +60,12 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
     private SurveyReceiver surveyReceiver;
     private List<SurveyDB> surveys;
     protected AssessmentUnsentAdapter adapter;
-    private static int selectedPosition = 0;
     DashboardActivity dashboardActivity;
 
     OrgUnitProgramFilterView orgUnitProgramFilterView;
     FloatingActionButton startButton;
+    TextView noSurveysText;
+    ListView listView;
 
     public DashboardUnsentFragment() {
         this.surveys = new ArrayList();
@@ -99,6 +101,8 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
                     }
                 });
         View view =  inflater.inflate(R.layout.assess_listview, null);
+
+        noSurveysText = (TextView) view.findViewById(R.id.no_surveys);
         startButton = (FloatingActionButton) view.findViewById(R.id.start_button);
         return view;
     }
@@ -150,10 +154,13 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
         || program.getName().equals(
                 PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments))){
             startButton.setVisibility(View.VISIBLE);
+            noSurveysText.setText(R.string.assess_no_surveys);
         }else if (survey != null || !OrgUnitProgramRelationDB.existProgramAndOrgUnitRelation(program.getId_program(), orgUnit.getId_org_unit())){
             startButton.setVisibility(View.INVISIBLE);
+            noSurveysText.setText(R.string.survey_not_assigned_facility);
         }else{
             startButton.setVisibility(View.VISIBLE);
+            noSurveysText.setText(R.string.assess_no_surveys);
         }
     }
 
@@ -177,6 +184,7 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
     public void removeSurveyFromAdapter(SurveyDB survey) {
         adapter.remove(survey);
         adapter.notifyDataSetChanged();
+        showOrHiddenList(adapter.getItemList().isEmpty());
     }
 
     @Override
@@ -214,22 +222,13 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
      * Initializes the listview component, adding a listener for swiping right
      */
     private void initListView() {
+        listView = getListView();
         if (PreferencesState.getInstance().isVerticalDashboard()) {
             CustomTextView title = (CustomTextView) getActivity().findViewById(
                     R.id.titleInProgress);
             title.setText(adapter.getTitle());
         }
         setListAdapter(adapter);
-    }
-
-    @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        //Discard clicks on header|footer (which is attendend on onNewSurvey via super)
-        selectedPosition = position;
-
-        final SurveyDB survey = (SurveyDB) adapter.getItem(selectedPosition);
-        dashboardActivity.onSurveySelected(survey);
-
     }
 
     /**
@@ -309,6 +308,17 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
                 surveyDB =newListSurveys.get(0);
             }
             showOrHiddenButton(surveyDB);
+            showOrHiddenList(newListSurveys.isEmpty());
+        }
+    }
+
+    private void showOrHiddenList(boolean hasSurveys) {
+        if(hasSurveys){
+            noSurveysText.setVisibility(View.VISIBLE);
+            listView.setVisibility(View.GONE);
+        }else {
+            listView.setVisibility(View.VISIBLE);
+            noSurveysText.setVisibility(View.GONE);
         }
     }
 

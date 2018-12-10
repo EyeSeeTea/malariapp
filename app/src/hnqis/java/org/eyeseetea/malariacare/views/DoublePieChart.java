@@ -32,10 +32,10 @@ import java.util.ArrayList;
 public class DoublePieChart extends FrameLayout {
     private PieChart centerPie, outsidePie;
     private View doublePieContainer;
+    private static final int HIGH_VALUE = 99;
+    private static final int MIDDLE_VALUE = 80;
     private int highColor, middleColor, lowColor,
             mandatoryHighColor, mandatoryMiddleColor, mandatoryLowColor;
-    private static final int HIGH_VALUE = 90;
-    private static final int MIDDLE_VALUE = 50;
 
     public DoublePieChart(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
@@ -97,7 +97,7 @@ public class DoublePieChart extends FrameLayout {
     }
 
     protected void createPie(PieChart mChart, int percentage,
-                             int highColor, int middleColor, int lowColor, boolean hole) {
+            int highColor, int middleColor, int lowColor, boolean hole) {
         Log.d("percentage", "percentage: " + percentage);
         mChart.setUsePercentValues(true);
         mChart.getDescription().setEnabled(false);
@@ -116,8 +116,8 @@ public class DoublePieChart extends FrameLayout {
         mChart.setDrawCenterText(false);
 
         // enable rotation of the chart by touch
-        mChart.setRotationEnabled(true);
-        mChart.setHighlightPerTapEnabled(true);
+        //        mChart.setRotationEnabled(true);
+        //        mChart.setHighlightPerTapEnabled(true);
 
         setData(mChart, percentage, highColor, middleColor, lowColor);
 

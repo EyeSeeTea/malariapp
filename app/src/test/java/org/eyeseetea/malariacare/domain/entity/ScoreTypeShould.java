@@ -1,12 +1,12 @@
 package org.eyeseetea.malariacare.domain.entity;
 
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
 
 public class ScoreTypeShould {
 
@@ -23,6 +23,8 @@ public class ScoreTypeShould {
         assertThat(scoreType.getType().equals(scoreType.HighKey), is(true));
         assertThat(scoreType.getType().equals(scoreType.MediumKey), is(false));
         assertThat(scoreType.getType().equals(scoreType.LowKey), is(false));
+        assertThat(scoreType.getClassification().equals(ScoreType.Classification.HIGH),
+                is(true));
     }
 
     @Test
@@ -35,6 +37,8 @@ public class ScoreTypeShould {
         assertThat(scoreType.getType().equals(scoreType.HighKey), is(true));
         assertThat(scoreType.getType().equals(scoreType.MediumKey), is(false));
         assertThat(scoreType.getType().equals(scoreType.LowKey), is(false));
+        assertThat(scoreType.getClassification().equals(ScoreType.Classification.HIGH),
+                is(true));
     }
 
     @Test
@@ -47,6 +51,8 @@ public class ScoreTypeShould {
         assertThat(scoreType.getType().equals(scoreType.HighKey), is(false));
         assertThat(scoreType.getType().equals(scoreType.MediumKey), is(true));
         assertThat(scoreType.getType().equals(scoreType.LowKey), is(false));
+        assertThat(scoreType.getClassification().equals(ScoreType.Classification.MEDIUM),
+                is(true));
     }
 
     @Test
@@ -59,6 +65,8 @@ public class ScoreTypeShould {
         assertThat(scoreType.getType().equals(scoreType.HighKey), is(false));
         assertThat(scoreType.getType().equals(scoreType.MediumKey), is(true));
         assertThat(scoreType.getType().equals(scoreType.LowKey), is(false));
+        assertThat(scoreType.getClassification().equals(ScoreType.Classification.MEDIUM),
+                is(true));
     }
 
     @Test
@@ -71,6 +79,8 @@ public class ScoreTypeShould {
         assertThat(scoreType.getType().equals(scoreType.HighKey), is(false));
         assertThat(scoreType.getType().equals(scoreType.MediumKey), is(false));
         assertThat(scoreType.getType().equals(scoreType.LowKey), is(true));
+        assertThat(scoreType.getClassification().equals(ScoreType.Classification.LOW),
+                is(true));
     }
 
     @Test
@@ -83,6 +93,8 @@ public class ScoreTypeShould {
         assertThat(scoreType.getType().equals(scoreType.HighKey), is(false));
         assertThat(scoreType.getType().equals(scoreType.MediumKey), is(false));
         assertThat(scoreType.getType().equals(scoreType.LowKey), is(true));
+        assertThat(scoreType.getClassification().equals(ScoreType.Classification.NO_SCORE),
+                is(true));
     }
 
     @Test
@@ -92,4 +104,5 @@ public class ScoreTypeShould {
 
         ScoreType scoreType = new ScoreType(null);
     }
+
 }

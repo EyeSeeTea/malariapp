@@ -250,6 +250,7 @@ public class DashboardActivity extends BaseActivity {
         super.onResume();
         getSurveysFromService();
         DriveRestController.getInstance().syncMedia();
+        DashboardActivity.dashboardActivity.reloadActiveTab();
     }
 
     @Override
@@ -313,7 +314,6 @@ public class DashboardActivity extends BaseActivity {
         dashboardController.onFeedbackSelected(survey);
     }
 
-
     public void onPlanPerOrgUnitMenuClicked(SurveyDB survey) {
         dashboardController.onPlanPerOrgUnitMenuClicked(survey);
     }
@@ -324,6 +324,7 @@ public class DashboardActivity extends BaseActivity {
     public void onNewSurvey(View view) {
         dashboardController.onNewSurvey();
     }
+
     /**
      * Create new survey from CreateSurveyFragment
      */
@@ -417,5 +418,9 @@ public class DashboardActivity extends BaseActivity {
 
     public void onPlannedSurvey(SurveyDB survey, View.OnClickListener scheduleClickListener) {
         dashboardController.onPlannedSurvey(survey, scheduleClickListener);
+    }
+
+    public void reloadActiveTab() {
+        dashboardController.reloadActiveModule();
     }
 }

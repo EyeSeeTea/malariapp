@@ -130,18 +130,20 @@ public class SurveyChecker {
      */
     private static boolean surveyDateExistsInEventTimeCaptureControlDE(SurveyDB survey,
             EventExtended event) {
-        for (DataValueExtended dataValue : DataValueExtended.getExtendedList(
-                event.getDataValuesInMemory())) {
-            String uid = ServerMetadataDB.findControlDataElementUid(
-                    PreferencesState.getInstance().getContext().getString(
-                            R.string.created_on_code));
-            DateParser dateParser = new DateParser();
-            if (dataValue.getDataElement().equals(uid)
-                    && dataValue.getValue().equals(dateParser.format(survey.getCreationDate(),
-                    DateParser.LONG_DATE_FORMAT_WITH_SPECIFIC_UTC_TIME_ZONE))) {
-                Log.d(TAG, "Found survey" + survey.getId_survey() + "date "
-                        + survey.getCreationDate() + "dateevent" + dataValue.getValue());
-                return true;
+        if(event.getDataValuesInMemory()!=null) {
+            for (DataValueExtended dataValue : DataValueExtended.getExtendedList(
+                    event.getDataValuesInMemory())) {
+                String uid = ServerMetadataDB.findControlDataElementUid(
+                        PreferencesState.getInstance().getContext().getString(
+                                R.string.created_on_code));
+                DateParser dateParser = new DateParser();
+                if (dataValue.getDataElement().equals(uid)
+                        && dataValue.getValue().equals(dateParser.format(survey.getCreationDate(),
+                        DateParser.LONG_DATE_FORMAT_WITH_SPECIFIC_UTC_TIME_ZONE))) {
+                    Log.d(TAG, "Found survey" + survey.getId_survey() + "date "
+                            + survey.getCreationDate() + "dateevent" + dataValue.getValue());
+                    return true;
+                }
             }
         }
         return false;

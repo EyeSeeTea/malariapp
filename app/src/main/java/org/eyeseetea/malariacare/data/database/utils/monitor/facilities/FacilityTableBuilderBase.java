@@ -57,17 +57,17 @@ public class FacilityTableBuilderBase {
     }
     public static void setColor(WebView webView){
         //noinspection ResourceType
-        String color=PreferencesState.getInstance().getContext().getResources().getString(R.color.lightGreen);
+        String color=PreferencesState.getInstance().getContext().getResources().getString(R.color.high_score_color);
         String injectColor=String.format(JAVASCRIPT_SET_GREEN,"{color:'"+getHtmlCodeColor(color)+"'}");
         Log.d(TAG, injectColor);
         webView.loadUrl(injectColor);
         //noinspection ResourceType
-        color=PreferencesState.getInstance().getContext().getResources().getString(R.color.darkRed);
+        color=PreferencesState.getInstance().getContext().getResources().getString(R.color.low_score_color);
         injectColor=String.format(JAVASCRIPT_SET_RED,"{color:'"+getHtmlCodeColor(color)+"'}");
         Log.d(TAG, injectColor);
         webView.loadUrl(injectColor);
         //noinspection ResourceType
-        color=PreferencesState.getInstance().getContext().getResources().getString(R.color.assess_yellow);
+        color=PreferencesState.getInstance().getContext().getResources().getString(R.color.medium_score_color);
         injectColor = String.format(JAVASCRIPT_SET_YELLOW,"{color:'"+getHtmlCodeColor(color)+"'}");
         Log.d(TAG,injectColor);
         webView.loadUrl(injectColor);

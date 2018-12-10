@@ -75,43 +75,43 @@ public class PlannedItemBuilder {
         surveyMap = new HashMap<>();
         Context ctx=PreferencesState.getInstance().getContext();
         if(AppSettingsBuilder.isPlanInnerHeader()) {
-            buildPlannedItemsWithInnerHeaders(ctx);
+            buildPlannedItemsWithInnerHeaders();
         }else{
-            buildPlannedItemsWithoutInnerHeaders(ctx);
+            buildPlannedItemsWithoutInnerHeaders();
         }
     }
-    public void buildPlannedItemsWithoutInnerHeaders(Context ctx){
+    public void buildPlannedItemsWithoutInnerHeaders(){
         never = new ArrayList<>();
-        never.add(PlannedHeader.buildNeverHeader(ctx));
+        never.add(PlannedHeader.buildNeverHeader());
 
         overdue = new ArrayList<>();
-        overdue.add(PlannedHeader.buildOverdueHeader(ctx));
+        overdue.add(PlannedHeader.buildOverdueHeader());
 
         next30 = new ArrayList<>();
-        next30.add(PlannedHeader.buildNext30Header(ctx));
+        next30.add(PlannedHeader.buildNext30Header());
 
         future = new ArrayList<>();
-        future.add(PlannedHeader.buildFutureHeader(ctx));
+        future.add(PlannedHeader.buildFutureHeader());
     }
 
-    public void buildPlannedItemsWithInnerHeaders(Context ctx){
+    public void buildPlannedItemsWithInnerHeaders(){
         never = new ArrayList<>();
-        PlannedHeader plannedHeader = PlannedHeader.buildNeverHeader(ctx);
+        PlannedHeader plannedHeader = PlannedHeader.buildNeverHeader();
         never.add(plannedHeader);
         never.add(new PlannedSurveyHeader(plannedHeader));
 
         overdue = new ArrayList<>();
-        plannedHeader = PlannedHeader.buildOverdueHeader(ctx);
+        plannedHeader = PlannedHeader.buildOverdueHeader();
         overdue.add(plannedHeader);
         overdue.add(new PlannedSurveyHeader(plannedHeader));
 
         next30 = new ArrayList<>();
-        plannedHeader = PlannedHeader.buildNext30Header(ctx);
+        plannedHeader = PlannedHeader.buildNext30Header();
         next30.add(plannedHeader);
         next30.add(new PlannedSurveyHeader(plannedHeader));
 
         future = new ArrayList<>();
-        plannedHeader = PlannedHeader.buildFutureHeader(ctx);
+        plannedHeader = PlannedHeader.buildFutureHeader();
         future.add(plannedHeader);
         future.add(new PlannedSurveyHeader(plannedHeader));
     }
