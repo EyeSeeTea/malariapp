@@ -53,10 +53,13 @@ import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IObservationRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerMetadataRepository;
+import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
 import org.eyeseetea.malariacare.domain.usecase.GetServerMetadataUseCase;
+import org.eyeseetea.malariacare.domain.usecase.LoadCredentialsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.observation.GetObservationBySurveyUidUseCase;
 import org.eyeseetea.malariacare.domain.usecase.observation.SaveObservationUseCase;
+import org.eyeseetea.malariacare.factories.AuthenticationFactory;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
@@ -454,18 +457,27 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
     }
 
     @Override
-    public void shareByText(ObservationViewModel observationViewModel, SurveyDB survey,
-            List<QuestionDB> criticalQuestions, List<CompositeScoreDB> compositeScoresTree) {
-        String data = extractTextData(observationViewModel, survey, criticalQuestions,
-                compositeScoresTree);
+    public void shareByText(final ObservationViewModel observationViewModel, final SurveyDB survey,
+            final List<QuestionDB> criticalQuestions, final List<CompositeScoreDB> compositeScoresTree) {
 
-        Intent sendIntent = new Intent();
-        sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT, data);
-        sendIntent.setType("text/plain");
-        getActivity().startActivity(sendIntent);
+        LoadCredentialsUseCase loadCredentialsUseCase =
+                new AuthenticationFactory().getloadCredentialsUseCase(getActivity());
+        loadCredentialsUseCase.execute(new LoadCredentialsUseCase.Callback() {
+            @Override
+            public void onSuccess(Credentials credentials) {
 
-        System.out.println("data:" + data);
+                String data = extractTextData(observationViewModel, survey, criticalQuestions,
+                        compositeScoresTree,credentials);
+
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, data);
+                sendIntent.setType("text/plain");
+                getActivity().startActivity(sendIntent);
+
+                System.out.println("data:" + data);
+            }
+        });
     }
 
     @Override
@@ -486,7 +498,7 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
     }
 
     private String extractTextData(ObservationViewModel observationViewModel, SurveyDB survey,
-            List<QuestionDB> criticalQuestions, List<CompositeScoreDB> compositeScoresTree) {
+            List<QuestionDB> criticalQuestions, List<CompositeScoreDB> compositeScoresTree,Credentials credentials) {
         String data =
                 PreferencesState.getInstance().getContext().getString(
                         R.string.app_name) + "- \n";
@@ -551,7 +563,7 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
         data += "\n\n" + getString(R.string.see_full_assessment) + "\n";
         if (survey.isSent()) {
             data += String.format(getActivity().getString(R.string.feedback_url),
-                    survey.getEventUid(), Session.getCredentials().getServerURL());
+                    survey.getEventUid(), credentials.getServerURL());
         } else {
             data += getString(R.string.url_not_available) + "\n";
         }
