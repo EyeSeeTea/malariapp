@@ -34,6 +34,7 @@ import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.usecase.LoadCredentialsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullDemoUseCase;
+import org.eyeseetea.malariacare.factories.AuthenticationFactory;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 
@@ -49,12 +50,15 @@ public class LoginActivityStrategy {
 
     public void onCreate() {
         if (existsLoggedUser()) {
-            LoadCredentialsUseCase loadUserAndCredentialsUseCase =
-                    new LoadCredentialsUseCase(loginActivity);
+            LoadCredentialsUseCase loadUserAndCredentialsUseCase =new AuthenticationFactory().getloadCredentialsUseCase(loginActivity);
 
-            loadUserAndCredentialsUseCase.execute();
+            loadUserAndCredentialsUseCase.execute(new LoadCredentialsUseCase.Callback() {
+                @Override
+                public void onSuccess(Credentials credentials) {
+                    finishAndGo(DashboardActivity.class);
+                }
+            });
 
-            finishAndGo(DashboardActivity.class);
         } else {
             loginActivity.runOnUiThread(new Runnable() {
                 public void run() {
