@@ -168,6 +168,12 @@ public class OrgUnitProgramRelationDB extends BaseModel {
         return orgUnitProgramRelation.getProductivity();
     }
 
+    public static List<OrgUnitProgramRelationDB> getAll() {
+        return new Select()
+                .from(OrgUnitProgramRelationDB.class)
+                .queryList();
+    }
+
     public long getId_orgunit_program_relation() {
         return id_orgunit_program_relation;
     }

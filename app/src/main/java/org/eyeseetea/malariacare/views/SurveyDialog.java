@@ -5,6 +5,8 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
@@ -36,7 +38,7 @@ public final class SurveyDialog extends AlertDialog {
             @Nullable final View.OnClickListener completeListener,
             @Nullable final View.OnClickListener deleteListener,
             @Nullable final View.OnClickListener cancelListener,
-            @StringRes int bodyTextId) {
+            @StringRes int bodyTextId, boolean  completeEnabled) {
 
         super(context);
 
@@ -53,7 +55,7 @@ public final class SurveyDialog extends AlertDialog {
         initBodyText(bodyTextId);
 
         initButtons(context, survey, editListener, completeListener, deleteListener,
-                cancelListener);
+                cancelListener, completeEnabled);
 
         initPieChart(context, survey, getSurveyAnsweredRatioUseCase);
 
@@ -89,9 +91,13 @@ public final class SurveyDialog extends AlertDialog {
                         if (surveyAnsweredRatio != null) {
                             overall.setText(surveyAnsweredRatio.getTotalStatus() +
                                     context.getString(R.string.percent));
+                            overall.setBackgroundColor(chart.getOverAllColorByPercentage(
+                                    surveyAnsweredRatio.getTotalStatus(), context));
 
                             mandatory.setText(surveyAnsweredRatio.getMandatoryStatus() +
                                     context.getString(R.string.percent));
+                            mandatory.setBackgroundColor(chart.getMandatoryColorByPercentage(
+                                    surveyAnsweredRatio.getMandatoryStatus(), context));
 
                             chart.createDoublePie(surveyAnsweredRatio.getMandatoryStatus(),
                                     surveyAnsweredRatio.getTotalStatus());
@@ -106,11 +112,12 @@ public final class SurveyDialog extends AlertDialog {
             @Nullable final View.OnClickListener editListener,
             @Nullable final View.OnClickListener completeListener,
             @Nullable final View.OnClickListener deleteListener,
-            @Nullable final View.OnClickListener cancelListener) {
+            @Nullable final View.OnClickListener cancelListener,
+            @Nullable final boolean completeEnabled) {
 
         initEditButton(editListener);
 
-        initMarkCompleteButton(completeListener);
+        initMarkCompleteButton(completeListener, completeEnabled);
 
         initDeleteButton(context, survey, deleteListener);
 
@@ -171,9 +178,13 @@ public final class SurveyDialog extends AlertDialog {
         }
     }
 
-    private void initMarkCompleteButton(@Nullable final View.OnClickListener completeListener) {
+    private void initMarkCompleteButton(@Nullable final View.OnClickListener completeListener,
+            @Nullable final boolean completeEnabled) {
         final Button markComplete = (Button) rootView.findViewById(R.id.mark_completed);
-
+        if(!completeEnabled) {
+            markComplete.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+            markComplete.setEnabled(false);
+        }
         if (completeListener != null) {
             markComplete.setOnClickListener(
                     new View.OnClickListener() {
@@ -229,6 +240,7 @@ public final class SurveyDialog extends AlertDialog {
         private View.OnClickListener completeListener;
         private View.OnClickListener deleteListener;
         private View.OnClickListener cancelListener;
+        private boolean completeEnabled = true;
         private @StringRes
         int bodyTextId;
 
@@ -242,8 +254,9 @@ public final class SurveyDialog extends AlertDialog {
             return this;
         }
 
-        public Builder completeButton(View.OnClickListener completeListener) {
+        public Builder completeButton(View.OnClickListener completeListener, boolean completeEnabled) {
             this.completeListener = completeListener;
+            this.completeEnabled = completeEnabled;
             return this;
         }
 
@@ -276,7 +289,7 @@ public final class SurveyDialog extends AlertDialog {
 
             return new SurveyDialog(context, survey, getSurveyAnsweredRatioUseCase,
                     editListener, completeListener, deleteListener,
-                    cancelListener, bodyTextId);
+                    cancelListener, bodyTextId, completeEnabled);
         }
 
         private GetSurveyAnsweredRatioUseCase defaultGetSurveyAnsweredRatioUseCase() {

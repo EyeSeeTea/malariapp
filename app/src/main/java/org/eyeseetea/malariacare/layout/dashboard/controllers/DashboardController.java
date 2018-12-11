@@ -399,7 +399,6 @@ public class DashboardController {
                     public void onClick(View v) {
                         openFeedback(survey, true);
 
-
                         alertDialog.dismiss();
                     }
                 }
@@ -721,5 +720,10 @@ public class DashboardController {
         for (int i = 0; i < tabHost.getTabWidget().getChildCount(); i++) {
             tabHost.getTabWidget().getChildAt(i).setBackgroundColor(resources.getColor(R.color.transparent));
         }
+    }
+
+    public void reloadActiveModule() {
+            ModuleController currentModuleController = getCurrentModule();
+            currentModuleController.onTabChanged();
     }
 }

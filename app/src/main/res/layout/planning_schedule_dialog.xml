@@ -44,6 +44,7 @@
         android:layout_centerHorizontal="true"
         android:background="@color/transparent"
         android:drawableRight="@drawable/ic_pencil_edit_wrapped"
+        android:focusable="false"
         android:editable="false"
         android:gravity="center"
         android:layout_gravity="center"

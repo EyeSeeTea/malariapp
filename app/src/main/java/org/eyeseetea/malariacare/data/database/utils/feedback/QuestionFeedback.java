@@ -209,7 +209,7 @@ public class QuestionFeedback implements Feedback {
     public int getColor() {
         int textColor;
         if (this.getOption() == null || this.getOption().isEmpty()) {
-            textColor = R.color.amber;
+            textColor = R.color.na_text_color;
         } else {
             textColor = (this.isPassed() && value != null && !this.value.getConflict()) ? R.color.green : R.color.red;
         }
