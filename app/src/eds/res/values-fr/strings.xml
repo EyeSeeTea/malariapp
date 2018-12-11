@@ -217,4 +217,6 @@ Mensuelle"</string>
 <string name="install_file_manager">"Veuillez installer un gestionnaire de fichiers."</string>
 <string name="get_db_file_dialog">"Sélectionnez un fichier db valide"</string>
 <string name="start">"Début"</string>
+<string name="assess_no_surveys">"Aucune enquête active en ce moment pour la sélection que vous avez faite. Cliquez sur + pour commencer une nouvelle enquête"</string>
+<string name="improve_no_surveys">"Aucune enquête réalisée pour la sélection que vous avez faite."</string>
 </resources>

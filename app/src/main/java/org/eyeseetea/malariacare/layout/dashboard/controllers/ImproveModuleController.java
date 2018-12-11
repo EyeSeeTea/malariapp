@@ -34,7 +34,6 @@ import org.eyeseetea.malariacare.fragments.ObservationsFragment;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
 import org.eyeseetea.malariacare.layout.dashboard.config.ModuleSettings;
 import org.eyeseetea.malariacare.strategies.ActionBarStrategy;
-import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
 
 import java.util.List;
 
@@ -43,7 +42,7 @@ public class ImproveModuleController extends ModuleController {
     FeedbackFragment feedbackFragment;
     ObservationsFragment mObservationsFragment;
 
-    OrgUnitProgramFilterView orgUnitProgramFilterView;
+    private boolean isSurveyFeedbackOpen;
 
     public ImproveModuleController(ModuleSettings moduleSettings){
         super(moduleSettings);
@@ -96,6 +95,16 @@ public class ImproveModuleController extends ModuleController {
         }
 
         super.onTabChanged();
+        if (!isSurveyFeedbackOpen) {
+            if (fragment == null || !fragment.isAdded()) {
+                reloadFragment();
+            }
+            if (isFragmentActive(FeedbackFragment.class) || isFragmentActive(
+                    ObservationsFragment.class)) {
+                return;
+            }
+            super.onTabChanged();
+        }
     }
 
     public void onBackPressed() {
@@ -104,7 +113,7 @@ public class ImproveModuleController extends ModuleController {
             super.onBackPressed();
             return;
         }
-
+        isSurveyFeedbackOpen = false;
         closeFeedbackFragment();
     }
 
@@ -122,6 +131,7 @@ public class ImproveModuleController extends ModuleController {
         feedbackFragment.setModuleName(getSimpleName());
         replaceFragment(R.id.dashboard_completed_container, feedbackFragment);
         ActionBarStrategy.setActionBarForSurveyFeedback(dashboardActivity, survey);
+        isSurveyFeedbackOpen = true;
 
         if(modifyFilter) {
             UpdateFiltersBySurvey(survey);

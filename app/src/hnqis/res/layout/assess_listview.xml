@@ -22,42 +22,33 @@
             android:weightSum="1">
             <org.eyeseetea.malariacare.views.CustomTextView
                 android:id="@+id/idHeader"
-                style="@style/EyeSeeAssessHeader"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.4"
+                android:layout_gravity="center"
                 android:gravity="left"
                 android:text="@string/assessment_title_facility_date"
                 android:ellipsize="end"
                 android:lines="1"
                 android:textColor="@color/planning_header_text"
-                android:textSize="@dimen/unsent_rows_text_size"
+                android:textSize="@dimen/header_light_text_size"
                 app:tDimension="@string/font_size_level2"
-                app:tFontName="@string/medium_font_name"  />
-            <View
-                android:layout_width="0dp"
-                android:layout_height="@dimen/circle_stroke_width"
-                android:layout_weight="0.2"
-                style="@style/EyeSeeViewSeparatorVisibility"
-                >
-            </View>
+                app:tFontName="@string/medium_font_name" />
 
             <org.eyeseetea.malariacare.views.CustomTextView
                 android:id="@+id/nameHeader"
-                style="@style/EyeSeeAssessSubHeader"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.4"
-                android:layout_gravity="right"
-                android:gravity="right"
+                android:layout_weight="0.6"
+                android:layout_gravity="center"
                 android:ellipsize="end"
                 android:lines="1"
-                android:paddingRight="50dp"
-                android:text="@string/assessment_title_state"
+                android:gravity="right"
+                android:text="@string/assessment_title_overall_mandatory_completed"
                 android:textColor="@color/planning_header_text"
-                android:textSize="@dimen/unsent_rows_text_size"
+                android:textSize="@dimen/header_light_text_size"
                 app:tDimension="@string/font_size_level2"
-                app:tFontName="@string/medium_font_name"/>
+                app:tFontName="@string/medium_font_name" />
         </LinearLayout>
     </RelativeLayout>
 
@@ -66,7 +57,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/header"
-        style="@style/EyeSeeAssessList" />
+        android:background="@color/white" />
 
     <org.eyeseetea.malariacare.views.CustomTextView
         android:id="@+id/no_surveys"
@@ -80,18 +71,24 @@
         android:textColor="@color/text_dark_grey"
         android:textSize="@dimen/text_size_medium"
         app:tDimension="@string/font_size_level2"
-        app:tFontName="@string/medium_font_name"/>
+        app:tFontName="@string/medium_font_name"
+        android:layout_margin="16dp"/>
 
-    <LinearLayout
-        style="@style/EyeSeeStartButtonContainer">
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/start_button"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="12dp"
+        android:background="@color/transparent"
+        android:gravity="center_horizontal"
         android:onClick="onNewSurvey"
-        app:backgroundTint="@color/floating_button_tint"
-        app:fabSize="normal"
-        app:srcCompat="@drawable/ic_add_survey"
-        style="@style/EyeSeeStartButton" />
-    </LinearLayout>
+        android:src="@drawable/ic_add"
+        android:textColor="@color/white"
+        android:textSize="@dimen/medium_text_size"
+        android:textStyle="bold"
+        app:fabSize="normal" />
 </RelativeLayout>

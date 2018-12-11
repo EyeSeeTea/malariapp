@@ -146,7 +146,7 @@ public class AssessModuleController extends ModuleController {
                         if (action.equals(
                                 Action.PRESS_BACK_BUTTON)) {
                             surveyFragment.hideProgress();
-                            boolean isDialogShown = onSurveyBackPressed(surveyAnsweredRatio);
+                            boolean isDialogShown = onSurveyBackPressed(surveyAnsweredRatio, survey);
                             if (!isDialogShown) {
                                 //Confirm closing
                                 if (survey.isCompleted() || survey.isSent()) {
@@ -163,7 +163,7 @@ public class AssessModuleController extends ModuleController {
                             if (surveyAnsweredRatio.getCompulsoryAnswered()
                                     == surveyAnsweredRatio.getTotalCompulsory()
                                     && surveyAnsweredRatio.getTotalCompulsory() != 0) {
-                                askToSendCompulsoryCompletedSurvey();
+                                askToSendCompulsoryCompletedSurvey(survey);
                             }
                             surveyFragment.hideProgress();
                             closeSurveyFragment();
@@ -279,23 +279,20 @@ public class AssessModuleController extends ModuleController {
 
                             @Override
                             public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
-                                if (surveyAnsweredRatio.isCompulsoryCompleted()) {
-                                    SurveyDialog.Builder builder = SurveyDialog.newBuilder(
-                                            dashboardActivity, survey);
+                                SurveyDialog.Builder builder = SurveyDialog.newBuilder(
+                                        dashboardActivity, survey);
 
-                                    final View.OnClickListener completeButtonListener =
-                                            new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    onMarkAsCompleted(survey);
-                                                }
-                                            };
+                                final View.OnClickListener completeButtonListener =
+                                        new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                onMarkAsCompleted(survey);
+                                            }
+                                        };
 
-                                    builder.completeButton(completeButtonListener)
-                                            .bodyTextID(R.string.dialog_pie_chart_label_explanation)
-                                            .build();
-
-                                }
+                                builder.completeButton(completeButtonListener, surveyAnsweredRatio.isCompulsoryCompleted())
+                                        .bodyTextID(R.string.dialog_pie_chart_label_explanation)
+                                        .build();
                             }
                         });
             }
@@ -339,11 +336,11 @@ public class AssessModuleController extends ModuleController {
     /**
      * It is called when the user press back in a surveyFragment
      */
-    private boolean onSurveyBackPressed(SurveyAnsweredRatio surveyAnsweredRatio) {
+    private boolean onSurveyBackPressed(SurveyAnsweredRatio surveyAnsweredRatio, SurveyDB surveyDB) {
         //Completed or Mandatory ok -> ask to send
         if (surveyAnsweredRatio.getCompulsoryAnswered() == surveyAnsweredRatio.getTotalCompulsory()
                 && surveyAnsweredRatio.getTotalCompulsory() != 0) {
-            askToSendCompulsoryCompletedSurvey();
+            askToSendCompulsoryCompletedSurvey(surveyDB);
             return true;
         }
         return false;
@@ -357,13 +354,13 @@ public class AssessModuleController extends ModuleController {
      * This dialog is called when the user have a survey open, with compulsory questions completed,
      * and close this survey, or when the user change of tab
      */
-    private void askToSendCompulsoryCompletedSurvey() {
+    private void askToSendCompulsoryCompletedSurvey(final SurveyDB surveyDB) {
         new AlertDialog.Builder(dashboardActivity)
                 .setMessage(R.string.dialog_question_complete_survey)
                 .setNegativeButton(R.string.dialog_complete_option,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int arg1) {
-                                confirmSendCompleteSurvey();
+                                confirmSendCompleteSurvey(surveyDB);
                             }
                         })
                 .setPositiveButton(R.string.dialog_continue_later_option,
@@ -405,27 +402,14 @@ public class AssessModuleController extends ModuleController {
     /**
      * This dialog is called to confirm before set a survey as complete
      */
-    private void confirmSendCompleteSurvey() {
+    private void confirmSendCompleteSurvey(final SurveyDB surveyDB) {
         //if you select complete_option, this dialog will showed.
         new AlertDialog.Builder(dashboardActivity)
                 .setMessage(R.string.dialog_are_you_sure_complete_survey)
                 .setNegativeButton(android.R.string.no, null)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
-                        SurveyDB survey = Session.getSurveyByModule(getSimpleName());
-                        survey.setCompleteSurveyState(getSimpleName());
-
-                        if (!survey.isInProgress()) {
-                            alertOnCompleteGoToFeedback(survey);
-                        }
-
-                        dashboardController.setNavigatingBackwards(true);
-                        closeSurveyFragment();
-                        if (DashboardOrientation.VERTICAL.equals(
-                                dashboardController.getOrientation())) {
-                            dashboardController.reloadVertical();
-                        }
-                        dashboardController.setNavigatingBackwards(false);
+                        completeAndCloseSurvey(surveyDB);
                     }
                 }).create().show();
     }
@@ -466,23 +450,28 @@ public class AssessModuleController extends ModuleController {
                         R.string.dialog_info_ask_for_completion), survey.getProgram().getName()))
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
-                        //Change state
-                        survey.setCompleteSurveyState(getSimpleName());
-                        if (!survey.isInProgress()) {
-                            alertOnCompleteGoToFeedback(survey);
-                        }
-
-                        //Remove from list
-                        ((DashboardUnsentFragment) fragment).removeSurveyFromAdapter(survey);
-                        //Reload sent surveys
-                        ((DashboardUnsentFragment) fragment).reloadToSend();
-
-
+                        completeAndCloseSurvey(survey);
                     }
                 })
                 .setNegativeButton(R.string.cancel, null)
                 .setCancelable(true)
                 .create().show();
+    }
+
+    private void completeAndCloseSurvey(SurveyDB survey) {
+        survey.setCompleteSurveyState(getSimpleName());
+
+        if (!survey.isInProgress()) {
+            alertOnCompleteGoToFeedback(survey);
+        }
+
+        dashboardController.setNavigatingBackwards(true);
+        closeSurveyFragment();
+        if (DashboardOrientation.VERTICAL.equals(
+                dashboardController.getOrientation())) {
+            dashboardController.reloadVertical();
+        }
+        dashboardController.setNavigatingBackwards(false);
     }
 
     private void alertOnComplete(SurveyDB survey) {
@@ -546,7 +535,7 @@ public class AssessModuleController extends ModuleController {
         };
 
         final SurveyDialog surveyDialog =  builder.editButton(editButtonListener)
-                .completeButton(completeButtonListener)
+                .completeButton(completeButtonListener, true)
                 .deleteButton(deleteButtonListener)
                 .build();
 
