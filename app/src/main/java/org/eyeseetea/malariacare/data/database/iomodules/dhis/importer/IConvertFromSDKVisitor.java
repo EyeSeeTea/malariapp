@@ -20,8 +20,6 @@
 package org.eyeseetea.malariacare.data.database.iomodules.dhis.importer;
 
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.DataElementExtended;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.DataValueExtended;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.OptionExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.OptionSetExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.OrganisationUnitExtended;
