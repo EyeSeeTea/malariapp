@@ -10,8 +10,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 
-import org.eyeseetea.malariacare.data.database.model.MediaDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.domain.entity.Media;
 import org.eyeseetea.malariacare.layout.adapters.downloaded_media.DownloadedMediaAdapter;
 import org.eyeseetea.malariacare.presentation.presenters.DownloadedMediaPresenter;
 import org.eyeseetea.malariacare.strategies.ActionBarStrategy;
@@ -30,7 +30,6 @@ public class DownloadedMediaActivity extends BaseActivity implements DownloadedM
         setTheme(R.style.EyeSeeTheme);
         setContentView(R.layout.downloaded_media_activity);
         setActivityActionBar();
-        PreferencesState.getInstance().initalizateActivityDependencies();
         initRecyclerView();
         initializePresenter();
     }
@@ -48,7 +47,7 @@ public class DownloadedMediaActivity extends BaseActivity implements DownloadedM
     }
 
     @Override
-    public void openVideo(MediaDB media) {
+    public void openVideo(Media media) {
         Intent videoIntent = new Intent(DashboardActivity.dashboardActivity,
                 VideoActivity.class);
         videoIntent.putExtra(VideoActivity.VIDEO_PATH_PARAM, media.getFilename());
@@ -56,7 +55,7 @@ public class DownloadedMediaActivity extends BaseActivity implements DownloadedM
     }
 
     @Override
-    public void openImage(MediaDB media) {
+    public void openImage(Media media) {
         Intent implicitIntent = new Intent();
         implicitIntent.setAction(Intent.ACTION_VIEW);
         File file = new File(media.getFilename());
@@ -87,7 +86,7 @@ public class DownloadedMediaActivity extends BaseActivity implements DownloadedM
     }
 
     @Override
-    public void showMediaItems(final List<MediaDB> mediaList) {
+    public void showMediaItems(final List<Media> mediaList) {
         DownloadedMediaAdapter downloadedMediaAdapter = new DownloadedMediaAdapter(mediaList,
                 getBaseContext());
         mList.setAdapter(downloadedMediaAdapter);

@@ -1,7 +1,8 @@
 package org.eyeseetea.malariacare.presentation.presenters;
 
-import org.eyeseetea.malariacare.data.database.model.MediaDB;
-import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.domain.entity.Media;
+import org.eyeseetea.malariacare.domain.usecase.observation.GetMediasUseCase;
+import org.eyeseetea.malariacare.factories.MediaFactory;
 
 import java.util.List;
 
@@ -16,7 +17,15 @@ public class DownloadedMediaPresenter {
     }
 
     private void loadMedia() {
-        mView.showMediaItems(MediaDB.getAllInLocal());
+        MediaFactory mediaFactory = new MediaFactory();
+        GetMediasUseCase getMediasUseCase = mediaFactory.getGetMediasUseCase();
+        getMediasUseCase.execute(new GetMediasUseCase.Callback() {
+            @Override
+            public void onSuccess(List<Media> medias) {
+                mView.showMediaItems(medias);
+            }
+        });
+
     }
 
     public void detachView() {
@@ -24,7 +33,7 @@ public class DownloadedMediaPresenter {
     }
 
 
-    public void onMediaClick(MediaDB media) {
+    public void onMediaClick(Media media) {
         if (media.isVideo()) {
             mView.openVideo(media);
         } else if (media.isPicture()) {
@@ -41,15 +50,15 @@ public class DownloadedMediaPresenter {
     }
 
     public interface View {
-        void openVideo(MediaDB mediaDB);
+        void openVideo(Media media);
 
-        void openImage(MediaDB mediaDB);
+        void openImage(Media media);
 
         void returnToDashboardActivity();
 
         boolean returnToDashboardAndReturn();
 
-        void showMediaItems(List<MediaDB> mediaList);
+        void showMediaItems(List<Media> mediaList);
     }
 
 }
