@@ -28,9 +28,9 @@ public class DownloadedMediaActivity extends BaseActivity implements DownloadedM
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTheme(R.style.EyeSeeTheme);
+        setContentView(R.layout.downloaded_media_activity);
         setActivityActionBar();
         PreferencesState.getInstance().initalizateActivityDependencies();
-        setContentView(R.layout.downloaded_media_activity);
         initRecyclerView();
         initializePresenter();
     }
