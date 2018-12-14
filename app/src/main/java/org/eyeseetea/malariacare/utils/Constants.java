@@ -24,6 +24,7 @@ public class Constants {
 
 
 
+    public static final String SYSTEM_DEFINED_LANGUAGE = "system_defined";
     public static final String DEFAULT_SELECT_OPTION = "";
 
     public static final int MAX_INT_CHARS = 5;

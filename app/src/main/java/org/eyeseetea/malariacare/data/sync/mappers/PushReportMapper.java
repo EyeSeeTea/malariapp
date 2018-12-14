@@ -28,7 +28,6 @@ public class PushReportMapper {
 
     public static PushReport mapFromImportSummaryToPushReport(ImportSummary importSummary,
             String importSummaryKey) {
-        PushReport pushReport = new PushReport();
         List<PushConflict> conflictList = new ArrayList<>();
         if (importSummary.getConflicts() != null) {
             for (Conflict conflict : importSummary.getConflicts()) {
@@ -36,28 +35,29 @@ public class PushReportMapper {
                         new PushConflict(conflict.getObject(), conflict.getValue()));
             }
         }
-        pushReport.setPushConflicts(conflictList);
-        pushReport.setDescription(importSummary.getDescription());
-        pushReport.setHref(importSummary.getHref());
+        String description = importSummary.getDescription();
+        String href = importSummary.getHref();
 
         ImportCount importCount = importSummary.getImportCount();
+        PushedValuesCount pushedValuesCount = null;
         if(importCount!=null) {
-            pushReport.setPushedValuesCount(
-                    new PushedValuesCount(importCount.getImported(), importCount.getUpdated(),
-                            importCount.getIgnored(), importCount.getDeleted()));
+            pushedValuesCount = new PushedValuesCount(importCount.getImported(),
+                    importCount.getUpdated(), importCount.getIgnored(), importCount.getDeleted());
 
         }
-        pushReport.setReference(importSummary.getReference());
+        String reference = importSummary.getReference();
+        PushReport.Status status = null;
         if (importSummary.getStatus() == ImportSummary.Status.ERROR) {
-            pushReport.setStatus(PushReport.Status.ERROR);
+            status = PushReport.Status.ERROR;
         }
         if (importSummary.getStatus() == ImportSummary.Status.OK) {
-            pushReport.setStatus(PushReport.Status.OK);
+            status = PushReport.Status.OK;
         }
         if (importSummary.getStatus() == ImportSummary.Status.SUCCESS) {
-            pushReport.setStatus(PushReport.Status.SUCCESS);
+            status = PushReport.Status.SUCCESS;
         }
-        pushReport.setEventUid(importSummaryKey);
-        return pushReport;
+
+        return new PushReport(importSummaryKey, status, description, pushedValuesCount, reference,
+                href, conflictList);
     }
 }

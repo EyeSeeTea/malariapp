@@ -1,5 +1,7 @@
 package org.eyeseetea.malariacare.domain.entity.pushsummary;
 
+import static org.eyeseetea.malariacare.domain.utils.RequiredChecker.required;
+
 import java.util.List;
 
 public class PushReport {
@@ -22,22 +24,28 @@ public class PushReport {
         // explicit empty constructor
     }
 
+    public PushReport(String eventUid,
+            Status status, String description,
+            PushedValuesCount pushedValuesCount, String reference, String href,
+            List<PushConflict> pushConflicts) {
+        this.eventUid = required(eventUid,"EventUid is required");
+        this.status = required(status,"Status is required");
+        this.description = description;
+        mPushedValuesCount = pushedValuesCount;
+        this.reference = reference;
+        this.href = href;
+        mPushConflicts = pushConflicts;
+    }
 
     public Status getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
-    }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
     public PushedValuesCount getPushedValues() {
         return mPushedValuesCount;
@@ -47,36 +55,17 @@ public class PushReport {
         return reference;
     }
 
-    public void setReference(String reference) {
-        this.reference = reference;
-    }
-
     public String getHref() {
         return href;
     }
 
-    public void setHref(String href) {
-        this.href = href;
-    }
 
     public List<PushConflict> getPushConflicts() {
         return mPushConflicts;
     }
 
-    public void setPushConflicts(List<PushConflict> pushConflicts) {
-        this.mPushConflicts = pushConflicts;
-    }
-
-    public void setPushedValuesCount(PushedValuesCount pushedValuesCount) {
-        this.mPushedValuesCount = pushedValuesCount;
-    }
-
     public String getEventUid() {
         return eventUid;
-    }
-
-    public void setEventUid(String eventUid) {
-        this.eventUid = eventUid;
     }
 
     public enum Status {
