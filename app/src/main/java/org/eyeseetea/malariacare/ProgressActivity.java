@@ -114,7 +114,7 @@ public class ProgressActivity extends Activity {
         Log.d(TAG, "onCreate");
         PreferencesState.getInstance().initalizateActivityDependencies();
         LoadCredentialsUseCase loadCredentialsUseCase =
-                new AuthenticationFactory().getloadCredentialsUseCase(this);
+                new AuthenticationFactory().getLoadCredentialsUseCase(this);
         loadCredentialsUseCase.execute(new LoadCredentialsUseCase.Callback() {
             @Override
             public void onSuccess(Credentials credentials) {

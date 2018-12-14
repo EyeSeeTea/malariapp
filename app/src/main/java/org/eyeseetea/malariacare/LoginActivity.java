@@ -324,7 +324,7 @@ public class LoginActivity extends Activity {
 
     private void getCredentials() {
         LoadCredentialsUseCase loadCredentialsUseCase =
-                new AuthenticationFactory().getloadCredentialsUseCase(this);
+                new AuthenticationFactory().getLoadCredentialsUseCase(this);
         loadCredentialsUseCase.execute(new LoadCredentialsUseCase.Callback() {
             @Override
             public void onSuccess(Credentials credentials) {

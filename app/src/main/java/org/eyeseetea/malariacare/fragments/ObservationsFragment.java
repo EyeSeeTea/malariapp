@@ -45,7 +45,6 @@ import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 import org.eyeseetea.malariacare.data.database.model.QuestionDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.data.repositories.ObservationRepository;
 import org.eyeseetea.malariacare.data.repositories.ServerMetadataRepository;
@@ -461,7 +460,7 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
             final List<QuestionDB> criticalQuestions, final List<CompositeScoreDB> compositeScoresTree) {
 
         LoadCredentialsUseCase loadCredentialsUseCase =
-                new AuthenticationFactory().getloadCredentialsUseCase(getActivity());
+                new AuthenticationFactory().getLoadCredentialsUseCase(getActivity());
         loadCredentialsUseCase.execute(new LoadCredentialsUseCase.Callback() {
             @Override
             public void onSuccess(Credentials credentials) {

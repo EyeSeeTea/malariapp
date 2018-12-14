@@ -23,8 +23,9 @@ import android.content.Context;
 
 import org.eyeseetea.malariacare.data.IAuthenticationManagerDataSource;
 import org.eyeseetea.malariacare.data.IDataSourceCallback;
+import org.eyeseetea.malariacare.data.boundaries.ICredentialsDataSource;
 import org.eyeseetea.malariacare.data.database.datasources.AuthenticationManagerLocalDataSource;
-import org.eyeseetea.malariacare.data.database.datasources.CredentialsDataSource;
+import org.eyeseetea.malariacare.data.database.datasources.CredentialsLocalDataSource;
 import org.eyeseetea.malariacare.data.remote.sdk.AuthenticationManagerDhisSDKDataSource;
 import org.eyeseetea.malariacare.domain.boundary.IRepositoryCallback;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IAuthenticationManager;
@@ -41,7 +42,8 @@ public class AuthenticationManager implements IAuthenticationManager {
 
         userAccountLocalDataSource = new AuthenticationManagerLocalDataSource(context);
         userAccountRemoteDataSource = new AuthenticationManagerDhisSDKDataSource(context);
-        mCredentialsRepository = new CredentialsDataSource(context);
+        ICredentialsDataSource credentialsDataSource = new CredentialsLocalDataSource(context);
+        mCredentialsRepository = new CredentialsRepository(credentialsDataSource);
     }
 
     @Override

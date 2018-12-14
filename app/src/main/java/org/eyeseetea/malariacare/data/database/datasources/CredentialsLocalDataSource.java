@@ -5,13 +5,14 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.data.boundaries.ICredentialsDataSource;
 import org.eyeseetea.malariacare.domain.boundary.repositories.ICredentialsRepository;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 
-public class CredentialsDataSource implements ICredentialsRepository {
+public class CredentialsLocalDataSource implements ICredentialsDataSource {
     private Context mContext;
 
-    public CredentialsDataSource(Context context) {
+    public CredentialsLocalDataSource(Context context) {
         mContext = context;
     }
 

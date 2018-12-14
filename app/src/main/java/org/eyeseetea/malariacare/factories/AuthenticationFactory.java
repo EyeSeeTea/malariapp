@@ -2,8 +2,10 @@ package org.eyeseetea.malariacare.factories;
 
 import android.content.Context;
 
-import org.eyeseetea.malariacare.data.database.datasources.CredentialsDataSource;
+import org.eyeseetea.malariacare.data.boundaries.ICredentialsDataSource;
+import org.eyeseetea.malariacare.data.database.datasources.CredentialsLocalDataSource;
 import org.eyeseetea.malariacare.data.repositories.AuthenticationManager;
+import org.eyeseetea.malariacare.data.repositories.CredentialsRepository;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IAuthenticationManager;
@@ -32,8 +34,10 @@ public class AuthenticationFactory {
         return logoutUseCase;
     }
 
-    public LoadCredentialsUseCase getloadCredentialsUseCase(Context context) {
-        ICredentialsRepository credentialsRepository = new CredentialsDataSource(context);
+    public LoadCredentialsUseCase getLoadCredentialsUseCase(Context context) {
+        ICredentialsDataSource credentialsDataSource = new CredentialsLocalDataSource(context);
+        ICredentialsRepository credentialsRepository = new CredentialsRepository(
+                credentialsDataSource);
         return new LoadCredentialsUseCase(mAsyncExecutor, mMainExecutor, credentialsRepository);
     }
 

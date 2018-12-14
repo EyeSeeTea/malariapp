@@ -50,15 +50,7 @@ public class LoginActivityStrategy {
 
     public void onCreate() {
         if (existsLoggedUser()) {
-            LoadCredentialsUseCase loadUserAndCredentialsUseCase =new AuthenticationFactory().getloadCredentialsUseCase(loginActivity);
-
-            loadUserAndCredentialsUseCase.execute(new LoadCredentialsUseCase.Callback() {
-                @Override
-                public void onSuccess(Credentials credentials) {
                     finishAndGo(DashboardActivity.class);
-                }
-            });
-
         } else {
             loginActivity.runOnUiThread(new Runnable() {
                 public void run() {

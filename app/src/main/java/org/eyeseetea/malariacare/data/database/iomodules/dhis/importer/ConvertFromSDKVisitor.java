@@ -24,7 +24,8 @@ import android.util.Log;
 import com.raizlabs.android.dbflow.structure.Model;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.datasources.CredentialsDataSource;
+import org.eyeseetea.malariacare.data.boundaries.ICredentialsDataSource;
+import org.eyeseetea.malariacare.data.database.datasources.CredentialsLocalDataSource;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.DataElementExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.OptionExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.OptionSetExtended;
@@ -48,12 +49,12 @@ import org.eyeseetea.malariacare.data.database.model.ServerMetadataDB;
 import org.eyeseetea.malariacare.data.database.model.TabDB;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramCompositeScoreDict;
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramQuestionDict;
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramStageSectionTabDict;
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramTabDict;
 import org.eyeseetea.malariacare.data.remote.sdk.SdkQueries;
+import org.eyeseetea.malariacare.data.repositories.CredentialsRepository;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.client.sdk.models.program.ProgramType;
@@ -274,8 +275,11 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     @Override
     public void visit(UserAccountExtended userAccount) {
         UserDB appUser = UserDB.getUserByUId(userAccount.getUid());
-        CredentialsDataSource credentialsDataSource=new CredentialsDataSource(PreferencesState.getInstance().getContext());
-        Credentials credentials=credentialsDataSource.getCredentials();
+        ICredentialsDataSource credentialsLocalDataSource = new CredentialsLocalDataSource(
+                PreferencesState.getInstance().getContext());
+        CredentialsRepository credentialsRepository = new CredentialsRepository(
+                credentialsLocalDataSource);
+        Credentials credentials = credentialsRepository.getCredentials();
 
         if(appUser == null ) {
             appUser = new UserDB();

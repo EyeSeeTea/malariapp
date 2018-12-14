@@ -24,7 +24,6 @@ import android.util.Log;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
@@ -51,7 +50,7 @@ public class PushServiceStrategy {
 
     public void push(PushUseCase pushUseCase) {
         this.pushUseCase = pushUseCase;
-       LoadCredentialsUseCase loadCredentialsUseCase=new  AuthenticationFactory().getloadCredentialsUseCase(mPushService);
+       LoadCredentialsUseCase loadCredentialsUseCase=new  AuthenticationFactory().getLoadCredentialsUseCase(mPushService);
        loadCredentialsUseCase.execute(new LoadCredentialsUseCase.Callback() {
            @Override
            public void onSuccess(Credentials credentials) {
