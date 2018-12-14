@@ -12,6 +12,8 @@ import android.widget.AdapterView;
 
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.domain.entity.Media;
+import org.eyeseetea.malariacare.domain.usecase.observation.GetMediasUseCase;
+import org.eyeseetea.malariacare.factories.MediaFactory;
 import org.eyeseetea.malariacare.layout.adapters.downloaded_media.DownloadedMediaAdapter;
 import org.eyeseetea.malariacare.presentation.presenters.DownloadedMediaPresenter;
 import org.eyeseetea.malariacare.strategies.ActionBarStrategy;
@@ -42,7 +44,9 @@ public class DownloadedMediaActivity extends BaseActivity implements DownloadedM
     }
 
     private void initializePresenter() {
-        mDownloadedMediaPresenter = new DownloadedMediaPresenter();
+        MediaFactory mediaFactory = new MediaFactory();
+        GetMediasUseCase getMediasUseCase = mediaFactory.getGetMediasUseCase();
+        mDownloadedMediaPresenter = new DownloadedMediaPresenter(getMediasUseCase);
         mDownloadedMediaPresenter.attachView(this);
     }
 

@@ -8,8 +8,13 @@ import java.util.List;
 
 public class DownloadedMediaPresenter {
 
-    View mView;
+    private View mView;
+    private GetMediasUseCase mGetMediasUseCase;
 
+    public DownloadedMediaPresenter(
+            GetMediasUseCase getMediasUseCase) {
+        mGetMediasUseCase = getMediasUseCase;
+    }
 
     public void attachView(final View view) {
         mView = view;
@@ -17,9 +22,7 @@ public class DownloadedMediaPresenter {
     }
 
     private void loadMedia() {
-        MediaFactory mediaFactory = new MediaFactory();
-        GetMediasUseCase getMediasUseCase = mediaFactory.getGetMediasUseCase();
-        getMediasUseCase.execute(new GetMediasUseCase.Callback() {
+        mGetMediasUseCase.execute(new GetMediasUseCase.Callback() {
             @Override
             public void onSuccess(List<Media> medias) {
                 mView.showMediaItems(medias);
