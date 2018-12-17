@@ -104,6 +104,9 @@ public class Permissions {
     public void requestPermission(String permission, int code) {
         if(!hasPermissions(activity, new String[]{permission})) {
             ActivityCompat.requestPermissions(activity, new String[]{permission}, code);
+        } else if (hasNextPermission()) {
+            removePermission(code);
+            requestNextPermission();
         }
     }
     public static boolean hasPermissions(Context context, String... permissions) {
