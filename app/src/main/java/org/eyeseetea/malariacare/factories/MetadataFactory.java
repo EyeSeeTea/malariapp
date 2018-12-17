@@ -5,18 +5,23 @@ import android.support.annotation.NonNull;
 
 import org.eyeseetea.malariacare.data.boundaries.IMetadataLocalDataSource;
 import org.eyeseetea.malariacare.data.boundaries.IMetadataRemoteDataSource;
+import org.eyeseetea.malariacare.data.database.datasources.OptionSetLocalDataSource;
 import org.eyeseetea.malariacare.data.database.datasources.OrgUnitLevelLocalDataSource;
 import org.eyeseetea.malariacare.data.database.datasources.QuestionLocalDataSource;
+import org.eyeseetea.malariacare.data.remote.sdk.dataSources.OptionSetD2LightSDKDataSource;
 import org.eyeseetea.malariacare.data.remote.sdk.dataSources.OrgUnitLevelSDKDhisDataSource;
 import org.eyeseetea.malariacare.data.repositories.OptionRepository;
+import org.eyeseetea.malariacare.data.repositories.OptionSetRepository;
 import org.eyeseetea.malariacare.data.repositories.OrgUnitLevelRepository;
 import org.eyeseetea.malariacare.data.repositories.OrgUnitRepository;
 import org.eyeseetea.malariacare.data.repositories.ServerMetadataRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IOptionRepository;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IOptionSetRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IOrgUnitLevelRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IOrgUnitRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IQuestionRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerMetadataRepository;
+import org.eyeseetea.malariacare.domain.entity.OptionSet;
 import org.eyeseetea.malariacare.domain.entity.OrgUnitLevel;
 
 public class MetadataFactory {
@@ -48,5 +53,17 @@ public class MetadataFactory {
                 new OrgUnitLevelRepository(orgUnitLocalDataSource,orgUnitLevelRemoteDataSource);
 
         return orgUnitLevelRepository;
+    }
+
+    public IOptionSetRepository getOptionSetRepository(Context context) {
+        IMetadataLocalDataSource<OptionSet> optionSetLocalDataSource =
+                new OptionSetLocalDataSource();
+        IMetadataRemoteDataSource <OptionSet> optionSetRemoteDataSource =
+                new OptionSetD2LightSDKDataSource(context);
+
+        IOptionSetRepository optionSetRepository =
+                new OptionSetRepository(optionSetLocalDataSource,optionSetRemoteDataSource);
+
+        return optionSetRepository;
     }
 }

@@ -30,12 +30,12 @@ import org.eyeseetea.malariacare.domain.exception.ServerException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OptionSetLightSDKDataSource
-        extends Dhis2LightSDKDataSource
+public class OptionSetD2LightSDKDataSource
+        extends D2LightSDKDataSource
         implements IMetadataRemoteDataSource<OptionSet> {
 
 
-    public OptionSetLightSDKDataSource(Context context) {
+    public OptionSetD2LightSDKDataSource(Context context) {
         super(context);
     }
 

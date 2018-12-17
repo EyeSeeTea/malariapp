@@ -8,12 +8,12 @@ import org.eyeseetea.dhis2.lightsdk.D2Api;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 
-public class Dhis2LightSDKDataSource {
+public class D2LightSDKDataSource {
 
     protected D2Api d2Api;
     private Context context;
 
-    public Dhis2LightSDKDataSource(Context context) {
+    public D2LightSDKDataSource(Context context) {
         this.context = context;
     }
 
@@ -25,6 +25,8 @@ public class Dhis2LightSDKDataSource {
                 .url(credentials.getServerURL())
                 .credentials(credentials.getUsername(), credentials.getPassword())
                 .build();
+
+        return d2Api;
     }
 
 

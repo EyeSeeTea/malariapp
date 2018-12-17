@@ -14,6 +14,7 @@ import org.eyeseetea.malariacare.data.network.ConnectivityManager;
 import org.eyeseetea.malariacare.domain.boundary.IConnectivityManager;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IObservationRepository;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IOptionSetRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IOrgUnitLevelRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyRepository;
 import org.eyeseetea.malariacare.domain.usecase.MarkAsRetryAllSendingDataUseCase;
@@ -30,7 +31,7 @@ public class SyncFactory extends AFactory{
     }
 
     public PullUseCase getPullUseCase(Context context){
-        PullMetadataController pullMetadataController = getPullMetadataController();
+        PullMetadataController pullMetadataController = getPullMetadataController(context);
 
         IDataRemoteDataSource surveyRemoteDataSource = mDataFactory.getSurveyRemoteDataSource(context);
         IDataLocalDataSource surveyLocalDataSource = mDataFactory.getSurveyDataLocalDataSource();
@@ -49,11 +50,14 @@ public class SyncFactory extends AFactory{
     }
 
     @NonNull
-    private PullMetadataController getPullMetadataController() {
+    private PullMetadataController getPullMetadataController(Context context) {
         IOrgUnitLevelRepository orgUnitLevelRepository =
                 metadataFactory.getOrgUnitLevelRepository();
 
-        return new PullMetadataController(orgUnitLevelRepository, null);
+        IOptionSetRepository optionSetRepository =
+                metadataFactory.getOptionSetRepository(context);
+
+        return new PullMetadataController(orgUnitLevelRepository, optionSetRepository);
     }
 
     public PushUseCase getPushUseCase(Context context){
