@@ -19,31 +19,30 @@
 
 package org.eyeseetea.malariacare.data.remote.sdk.dataSources;
 
-import org.eyeseetea.dhis2.lightsdk.D2Api;
+import android.content.Context;
+
 import org.eyeseetea.dhis2.lightsdk.D2Response;
 import org.eyeseetea.malariacare.data.boundaries.IMetadataRemoteDataSource;
 import org.eyeseetea.malariacare.domain.entity.OptionSet;
+import org.eyeseetea.malariacare.domain.exception.NetworkException;
+import org.eyeseetea.malariacare.domain.exception.ServerException;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class OptionSetSDKDhisDataSource implements IMetadataRemoteDataSource<OptionSet> {
+public class OptionSetLightSDKDataSource
+        extends Dhis2LightSDKDataSource
+        implements IMetadataRemoteDataSource<OptionSet> {
 
-    private final D2Api d2Api;
 
-    public OptionSetSDKDhisDataSource(D2Api d2Api) {
-        this.d2Api = d2Api;
+    public OptionSetLightSDKDataSource(Context context) {
+        super(context);
     }
 
     @Override
     public List<OptionSet> getAll() throws Exception {
 
-/*        D2Api d2Api = new D2Api.Builder()
-                .url("some url")
-                .credentials("some username","some password")
-                .build();*/
-
-        D2Response optionSetsResponse = d2Api.optionSets().getAll();
+        D2Response optionSetsResponse = getD2Api().optionSets().getAll().execute();
 
         if (optionSetsResponse.isSuccess()) {
             D2Response.Success<List<org.eyeseetea.dhis2.lightsdk.optionsets.OptionSet>> success =
@@ -56,18 +55,26 @@ public class OptionSetSDKDhisDataSource implements IMetadataRemoteDataSource<Opt
 
             handleError(errorResponse);
         }
+
+        return null;
     }
 
-    private void handleSuccess(
-            List<org.eyeseetea.dhis2.lightsdk.optionsets.OptionSet> dhisOptionSets) {
+    private void handleError(D2Response.Error errorResponse) throws Exception {
+        //TODO: for the moment throw exceptions here
+        //on the future we will return Algebraic data type object (Result = Success | Error)
+        if (errorResponse instanceof D2Response.Error.NetworkConnection) {
+            throw new NetworkException();
+        } else if (errorResponse instanceof D2Response.Error.HttpError){
+            D2Response.Error.HttpError httpError = (D2Response.Error.HttpError) errorResponse;
 
+            String message = "";
+
+            if (httpError.getErrorBody() != null)
+                message = httpError.getErrorBody().getMessage();
+
+            throw new ServerException(httpError.getHttpStatusCode(), message);
+        }
     }
-
-
-    private void handleError(D2Response.Error errorResponse) {
-
-    }
-
 
     private List<OptionSet> mapToDomain(
             List<org.eyeseetea.dhis2.lightsdk.optionsets.OptionSet> dhisOptionSets) {

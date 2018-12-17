@@ -68,7 +68,7 @@ public class PullMetadataController implements IPullMetadataController {
         pullRemoteDataSource = new PullDhisSDKDataSource();
 
         mOrgUnitLevelRepository = orgUnitLevelRepository;
-        mOptionSetRepository = optionSetRepository
+        mOptionSetRepository = optionSetRepository;
     }
 
     @Override

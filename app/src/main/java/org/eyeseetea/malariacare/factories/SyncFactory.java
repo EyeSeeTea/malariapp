@@ -3,6 +3,7 @@ package org.eyeseetea.malariacare.factories;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import org.eyeseetea.dhis2.lightsdk.D2Api;
 import org.eyeseetea.malariacare.data.boundaries.IDataLocalDataSource;
 import org.eyeseetea.malariacare.data.boundaries.IDataRemoteDataSource;
 import org.eyeseetea.malariacare.data.database.MetadataValidator;
@@ -52,7 +53,7 @@ public class SyncFactory extends AFactory{
         IOrgUnitLevelRepository orgUnitLevelRepository =
                 metadataFactory.getOrgUnitLevelRepository();
 
-        return new PullMetadataController(orgUnitLevelRepository);
+        return new PullMetadataController(orgUnitLevelRepository, null);
     }
 
     public PushUseCase getPushUseCase(Context context){
