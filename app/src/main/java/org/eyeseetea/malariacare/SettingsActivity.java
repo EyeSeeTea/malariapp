@@ -75,10 +75,17 @@ public class SettingsActivity extends AppCompatActivity implements
 
     private static final String TAG = ".SettingsActivity";
 
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
-        PreferencesState.getInstance().initalizateActivityDependencies();
+    /**
+     * Determines whether the simplified settings UI should be shown. This is
+     * true if this is forced via {@link #ALWAYS_SIMPLE_PREFS}, or the device
+     * doesn't have newer APIs like {@link PreferenceFragmentCompat}, or the device
+     * doesn't have an extra-large screen. In these cases, a single-pane
+     * "simplified" settings UI should be shown.
+     */
+    private static boolean isSimplePreferences(Context context) {
+        return ALWAYS_SIMPLE_PREFS
+                || Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB
+                || !isXLargeTablet(context);
     }
 
     /**
@@ -86,64 +93,8 @@ public class SettingsActivity extends AppCompatActivity implements
      */
     private static void setLanguageOptions(Preference preference) {
         ListPreference listPreference = (ListPreference) preference;
-
-        HashMap<String, String> languages = getAppLanguages(R.string.system_defined);
-
-        CharSequence[] newEntries = new CharSequence[languages.size() + 1];
-        CharSequence[] newValues = new CharSequence[languages.size() + 1];
-        int i = 0;
-        newEntries[i] = PreferencesState.getInstance().getContext().getString(
-                R.string.system_defined);
-        newValues[i] = "";
-        for (String language : languages.keySet()) {
-            i++;
-            String languageCode = languages.get(language);
-            String firstLetter = language.substring(0, 1).toUpperCase();
-            language = firstLetter + language.substring(1, language.length());
-            newEntries[i] = language;
-            newValues[i] = languageCode;
-        }
-
-        listPreference.setEntries(newEntries);
-        listPreference.setEntryValues(newValues);
-    }
-
-    /**
-     * This method finds the existing app translations
-     * * @param stringId this string id should be different in all value-xx/string.xml files. Else
-     * the language can be ignored
-     */
-    public static HashMap<String, String> getAppLanguages(int stringId) {
-        HashMap<String, String> languages = new HashMap<>();
-        Context context = PreferencesState.getInstance().getContext();
-        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
-        Resources r = context.getResources();
-        Configuration c = r.getConfiguration();
-        Locale currentLocale = c.locale;
-        if (currentLocale.getLanguage().isEmpty()) {
-            currentLocale = new Locale(PreferencesState.getInstance().getPhoneLanguage());
-        }
-        String[] loc = r.getAssets().getLocales();
-        for (int i = 0; i < loc.length; i++) {
-            c.locale = new Locale(loc[i]);
-            Resources res = new Resources(context.getAssets(), metrics, c);
-            String s1 = res.getString(stringId);
-
-            String language = new Locale(loc[i]).getDisplayLanguage(currentLocale);
-            c.locale = new Locale("");
-            Resources res2 = new Resources(context.getAssets(), metrics, c);
-            String s2 = res2.getString(stringId);
-
-            //Compare with the default language
-            if (!s1.equals(s2)) {
-                languages.put(language, loc[i]);
-            }
-            Locale defaultLocale = new Locale(BuildConfig.defaultLocale);
-            languages.put(defaultLocale.getDisplayLanguage(currentLocale),
-                    defaultLocale.getLanguage());
-
-        }
-        return languages;
+        listPreference.setEntries(R.array.languages_strings);
+        listPreference.setEntryValues(R.array.languages_codes);
     }
 
     private void restartActivity() {
@@ -182,17 +133,17 @@ public class SettingsActivity extends AppCompatActivity implements
         return newEntries;
     }
 
-    /**
-     * Determines whether the simplified settings UI should be shown. This is
-     * true if this is forced via {@link #ALWAYS_SIMPLE_PREFS}, or the device
-     * doesn't have newer APIs like {@link PreferenceFragmentCompat}, or the device
-     * doesn't have an extra-large screen. In these cases, a single-pane
-     * "simplified" settings UI should be shown.
-     */
-    private static boolean isSimplePreferences(Context context) {
-        return ALWAYS_SIMPLE_PREFS
-                || Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB
-                || !isXLargeTablet(context);
+    static void hideFontCustomisationOption(@NonNull PreferenceScreen preferenceScreen) {
+        Context context = preferenceScreen.getContext();
+
+        Preference customizeFonts = preferenceScreen.findPreference(
+                context.getString(R.string.customize_fonts));
+
+        Preference fontSizes = preferenceScreen.findPreference(
+                context.getString(R.string.font_sizes));
+
+        preferenceScreen.removePreference(customizeFonts);
+        preferenceScreen.removePreference(fontSizes);
     }
 
 
@@ -254,6 +205,53 @@ public class SettingsActivity extends AppCompatActivity implements
             restartActivity();
         }
 
+    }
+
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_settings);
+        PreferencesState.getInstance().initalizateActivityDependencies();
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
+
+        //Reload changes into PreferencesState
+        PreferencesState.getInstance().reloadPreferences();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Class callerActivityClass = getCallerActivity();
+        Intent returnIntent=new Intent(this,callerActivityClass);
+        returnIntent.putExtra(getString(R.string.show_announcement_key), false);
+        startActivity(returnIntent);
+    }
+
+    private Class getCallerActivity() {
+        //FIXME Not working as it should the intent param is always null
+        Intent creationIntent = getIntent();
+        if (creationIntent == null) {
+            return DashboardActivity.class;
+        }
+        Class callerActivity = (Class) creationIntent.getSerializableExtra(
+                BaseActivity.SETTINGS_CALLER_ACTIVITY);
+        if (callerActivity == null) {
+            return DashboardActivity.class;
+        }
+
+        return callerActivity;
     }
 
     /**
@@ -333,60 +331,6 @@ public class SettingsActivity extends AppCompatActivity implements
             super.onViewCreated(view, savedInstanceState);
             getListView().addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
         }
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
-
-        //Reload changes into PreferencesState
-        PreferencesState.getInstance().reloadPreferences();
-    }
-
-    @Override
-    public void onBackPressed() {
-        Class callerActivityClass = getCallerActivity();
-        Intent returnIntent=new Intent(this,callerActivityClass);
-        returnIntent.putExtra(getString(R.string.show_announcement_key), false);
-        startActivity(returnIntent);
-    }
-
-    private Class getCallerActivity() {
-        //FIXME Not working as it should the intent param is always null
-        Intent creationIntent = getIntent();
-        if (creationIntent == null) {
-            return DashboardActivity.class;
-        }
-        Class callerActivity = (Class) creationIntent.getSerializableExtra(
-                BaseActivity.SETTINGS_CALLER_ACTIVITY);
-        if (callerActivity == null) {
-            return DashboardActivity.class;
-        }
-
-        return callerActivity;
-    }
-
-    static void hideFontCustomisationOption(@NonNull PreferenceScreen preferenceScreen) {
-        Context context = preferenceScreen.getContext();
-
-        Preference customizeFonts = preferenceScreen.findPreference(
-                context.getString(R.string.customize_fonts));
-
-        Preference fontSizes = preferenceScreen.findPreference(
-                context.getString(R.string.font_sizes));
-
-        preferenceScreen.removePreference(customizeFonts);
-        preferenceScreen.removePreference(fontSizes);
     }
 
     @Override

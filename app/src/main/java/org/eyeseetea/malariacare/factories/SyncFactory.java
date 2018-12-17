@@ -38,6 +38,7 @@ public class SyncFactory extends AFactory{
         IDataLocalDataSource surveyLocalDataSource = mDataFactory.getSurveyDataLocalDataSource();
         IOrgUnitRepository orgUnitLocalDataSource = new OrgUnitLocalDataSource();
         IBuildPlannedController buildPlannedController = new BuildPlanningSurveysController((ISurveyDataSource)surveyLocalDataSource, orgUnitLocalDataSource);
+        IConnectivityManager connectivityManager = new ConnectivityManager();
 
         PullDataController pullDataController =
                 new PullDataController(surveyLocalDataSource, surveyRemoteDataSource);
@@ -45,7 +46,8 @@ public class SyncFactory extends AFactory{
         MetadataValidator metadataValidator = new MetadataValidator();
         PullUseCase pullUseCase = new PullUseCase(
                 asyncExecutor, mainExecutor, pullMetadataController,
-                pullDataController, buildPlannedController, metadataValidator);
+                pullDataController, buildPlannedController, metadataValidator,
+                connectivityManager);
 
         return pullUseCase;
     }

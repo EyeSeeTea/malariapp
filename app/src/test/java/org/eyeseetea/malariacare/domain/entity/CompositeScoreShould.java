@@ -101,7 +101,7 @@ public class CompositeScoreShould {
     @Test
     public void return_is_root_equal_to_true_if_hierarchical_code_is_0() {
         CompositeScore compositeScore =
-                new CompositeScore("","UID", "LABEL", "0", 1);
+                new CompositeScore("", "UID", "LABEL", "0", 1);
 
         assertThat(compositeScore.isRoot(), is(true));
     }
@@ -109,7 +109,7 @@ public class CompositeScoreShould {
     @Test
     public void return_is_root_equal_to_false_if_hierarchical_code_is_not_0() {
         CompositeScore compositeScore =
-                new CompositeScore("","UID", "LABEL", "1.1", 1);
+                new CompositeScore("", "UID", "LABEL", "1.1", 1);
 
         assertThat(compositeScore.isRoot(), is(false));
     }

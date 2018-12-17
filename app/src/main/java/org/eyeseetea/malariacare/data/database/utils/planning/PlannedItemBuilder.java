@@ -40,6 +40,7 @@ import java.util.Map;
  * Created by arrizabalaga on 16/12/15.
  */
 public class PlannedItemBuilder {
+
     private enum Type { NEVER, NEXT, OVERDUE, FUTURE }
     /**
      * Builds an ordered list of planned items (header + surveys)
@@ -48,10 +49,10 @@ public class PlannedItemBuilder {
     public List<PlannedItem> buildPlannedItems(Context context){
         Context ctx = context;
         boolean hasInnerHeader = AppSettingsBuilder.isPlanInnerHeader();
-        List<PlannedItem> never = buildNeverList(hasInnerHeader, context, Type.NEVER);
-        List<PlannedItem> overdue = buildNeverList(hasInnerHeader, context, Type.OVERDUE);
-        List<PlannedItem> next30 = buildNeverList(hasInnerHeader, context, Type.NEXT);
-        List<PlannedItem> future = buildNeverList(hasInnerHeader, context, Type.FUTURE);
+        List<PlannedItem> never = buildNeverList(hasInnerHeader, Type.NEVER);
+        List<PlannedItem> overdue = buildNeverList(hasInnerHeader, Type.OVERDUE);
+        List<PlannedItem> next30 = buildNeverList(hasInnerHeader, Type.NEXT);
+        List<PlannedItem> future = buildNeverList(hasInnerHeader, Type.FUTURE);
 
         //Find its place according to scheduleddate
         for(SurveyDB survey: SurveyDB.findPlannedOrInProgress()){
@@ -75,21 +76,21 @@ public class PlannedItemBuilder {
         return plannedItems;
     }
 
-    private List<PlannedItem> buildNeverList(boolean hasInnerHeader, Context ctx, Type type) {
+    private List<PlannedItem> buildNeverList(boolean hasInnerHeader, Type type) {
         List<PlannedItem> plannedItems = new ArrayList<>();
         PlannedHeader plannedHeader = null;
         switch (type) {
             case NEVER:
-                plannedHeader = PlannedHeader.buildNeverHeader(ctx);
+                plannedHeader = PlannedHeader.buildNeverHeader();
                 break;
             case OVERDUE:
-                plannedHeader = PlannedHeader.buildOverdueHeader(ctx);
+                plannedHeader = PlannedHeader.buildOverdueHeader();
                 break;
             case NEXT:
-                plannedHeader = PlannedHeader.buildNext30Header(ctx);
+                plannedHeader = PlannedHeader.buildNext30Header();
                 break;
             case FUTURE:
-                plannedHeader = PlannedHeader.buildFutureHeader(ctx);
+                plannedHeader = PlannedHeader.buildFutureHeader();
                 break;
         }
         plannedItems.add(plannedHeader);

@@ -1,21 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <org.eyeseetea.malariacare.views.CustomTextView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@android:id/text1"
-    android:singleLine="true"
-    android:layout_width="match_parent"
-    android:layout_height="48dp"
-    android:alpha="0.8"
-    android:ellipsize="marquee"
-    android:textAlignment="gravity"
-    android:gravity="center"
-    android:textColor="@color/white"
-    android:drawableRight="@drawable/ic_action_dropdown"
-    android:background="@drawable/filter_item_background"
-    android:textSize="14dp"
-    app:tDimension="@string/font_size_level1"
-    app:tFontName="@string/medium_font_name"
-    android:padding="8dp"/>
+    style="@style/EyeSeeSpinnerItem"/>
 
 <!--Putting text size in sp because tSize and tDimension not working well
  in different phones-->

@@ -18,88 +18,57 @@
   ~  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:appCompat="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <LinearLayout
-        android:orientation="horizontal" android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:weightSum="1">
 
         <ImageView
             android:id="@+id/feedback_question_arrow"
+            style="@style/EyeSeeFeedbackQuestionRowImageArrow"/>
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight=".06"
             android:scaleType="centerInside"/>
+
+        <org.eyeseetea.malariacare.views.CustomTextView
+            android:id="@+id/feedback_question_mandatory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:paddingRight="15dp"
+            android:text="*"
+            android:visibility="invisible"
+            android:textColor="@color/black" />
         <LinearLayout
             android:orientation="vertical"
-            android:layout_gravity="center_vertical"
-            android:gravity="center_vertical"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight=".78">
+            style="@style/EyeSeeFeedbackQuestionLL">
 
             <org.eyeseetea.malariacare.views.CustomTextView
                 android:id="@+id/feedback_question_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="5dip"
-                android:paddingBottom="5dip"
-                android:textSize="@dimen/feedback_text_size"
-                app:tFontName="@string/regular_font"
+                style="@style/EyeSeeFeedbackQuestionLabel"
                 />
             <org.eyeseetea.malariacare.views.CustomTextView
                 android:id="@+id/feedback_uid"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="5dip"
-                android:paddingBottom="5dip"
-                android:text="@string/empty_string"
-                android:visibility="gone"
-                app:tDimension="@string/font_size_level1"
-                app:tFontName="@string/regular_font"
+                style="@style/EyeSeeFeedbackQuestionUid"
                 />
         </LinearLayout>
         <org.eyeseetea.malariacare.views.CustomTextView
             android:id="@+id/feedback_option_value"
-            android:layout_width="0dp"
-            android:layout_weight=".08"
-            android:layout_gravity="center_vertical"
-            android:gravity="center_vertical"
-            android:layout_height="wrap_content"
-            android:paddingTop="5dip"
-            android:lines="1"
-            android:capitalize="words"
-            android:paddingBottom="5dip"
-            android:textSize="@dimen/roboto_14"
-            app:tDimension="@string/font_size_level1"
-            app:tFontName="@string/bold_font"
+            style="@style/EyeSeeFeedbackQuestionValue"
             />
         <org.eyeseetea.malariacare.views.CustomTextView
             android:id="@+id/feedback_score_label"
-            android:layout_width="0dp"
-            android:layout_weight=".08"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:layout_height="wrap_content"
-            android:paddingRight="5dip"
-            android:paddingTop="5dip"
-            android:paddingBottom="5dip"
-            android:lines="1"
-            android:capitalize="words"
-            android:textSize="@dimen/roboto_14"
-            app:tFontName="@string/bold_font"
+            style="@style/EyeSeeFeedbackQuestionScore"
              />
     </LinearLayout>
     <LinearLayout
         android:id="@+id/feedback_container"
-        android:layout_width="match_parent"
-        android:background="@color/feedback_background"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        style="@style/EyeSeeFeedbackQuestionContainer">
         <View
             android:id="@+id/feedback_separator"
             android:layout_width="fill_parent"
@@ -107,6 +76,7 @@
             android:background="@color/darkGrey"/>
         <org.eyeseetea.malariacare.views.CustomTextView
             android:id="@+id/feedback_feedback_html"
+            style="@style/EyeSeeFeedbackQuestionHtml"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/feedback_question_row_left_padding"
@@ -114,10 +84,13 @@
             android:paddingBottom="5dip"
             android:textColor="@color/black"
             android:text="@string/lorem_ipsum"
-            android:background="@color/feedback_background"
-            android:textSize="@dimen/feedback_text_size"
-            app:tFontName="@string/font_name_regular"
             />
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/darkGrey"
+        style="@style/EyeSeeViewFeedbackSeparatorVisibility"></View>
 </LinearLayout>
 

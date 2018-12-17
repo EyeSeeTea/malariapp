@@ -56,7 +56,8 @@ public class DataFactory extends AFactory {
         IConnectivityManager connectivityManager = new ConnectivityManager();
 
         return new SurveySDKDhisDataSource(context, getServerMetadataRepository(context),
-                questionRepository, getOptionRepository(), compositeScoreRepository, orgUnitRepository,
+                questionRepository, getOptionRepository(), compositeScoreRepository,
+                orgUnitRepository,
                 connectivityManager);
     }
 

@@ -5,13 +5,11 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.raizlabs.android.dbflow.config.DHIS2GeneratedDatabaseHolder;
-import com.raizlabs.android.dbflow.config.DatabaseDefinition;
 import com.raizlabs.android.dbflow.config.EyeSeeTeaGeneratedDatabaseHolder;
 import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
 
 import org.eyeseetea.malariacare.data.database.AppDatabase;
-import org.eyeseetea.malariacare.data.database.utils.PopulateDB;
 import org.eyeseetea.sdk.common.DatabaseUtils;
 import org.eyeseetea.sdk.common.FileUtils;
 

@@ -36,6 +36,7 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedHeader;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedSurvey;
 import org.eyeseetea.malariacare.utils.AUtils;
+import org.eyeseetea.malariacare.utils.DateParser;
 import org.eyeseetea.sdk.presentation.views.DoubleRectChart;
 
 import java.util.Date;
@@ -61,8 +62,7 @@ public class PlannedStyleStrategy {
             mImg.setColorFilter(PreferencesState.getInstance().getContext().getResources().getColor(
                     R.color.white));
         } else {
-            if (mPlannedHeader.getTitleHeader().contains(
-                    context.getString(R.string.dashboard_title_planned_type_never))) {
+            if (mPlannedHeader.getTitleHeader()==R.string.dashboard_title_planned_type_never) {
                 mColor = PreferencesState.getInstance().getContext().getResources().getColor(
                         R.color.white);
                 Typeface font = Typeface.createFromAsset(context.getAssets(),
@@ -82,7 +82,8 @@ public class PlannedStyleStrategy {
     }
 
     public static String formatDate(Date date) {
-        return AUtils.getEuropeanFormatedDate(date);
+        DateParser dateParser = new DateParser();
+        return dateParser.getEuropeanFormattedDate(date);
     }
 
     public static String getTitleHeader(String titleHeader, Integer counter) {

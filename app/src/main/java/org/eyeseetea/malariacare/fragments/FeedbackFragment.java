@@ -21,12 +21,12 @@ package org.eyeseetea.malariacare.fragments;
 
 import static org.eyeseetea.malariacare.services.SurveyService.PREPARE_FEEDBACK_ACTION_ITEMS;
 
-import android.support.v4.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -35,7 +35,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import org.eyeseetea.malariacare.DashboardActivity;
@@ -66,7 +65,7 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
     /**
      * Progress dialog shown while loading
      */
-    private ProgressBar progressBar;
+    private RelativeLayout progressBarContainer;
 
     /**
      * Checkbox that toggle between all|failed questions
@@ -158,7 +157,7 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
      */
     private void prepareUI(String module) {
         //Get progress
-        progressBar = (ProgressBar) llLayout.findViewById(R.id.survey_progress);
+        progressBarContainer = (RelativeLayout) llLayout.findViewById(R.id.survey_progress_container);
 
         //Set adapter and list
         feedbackAdapter = new FeedbackAdapter(getActivity(),
@@ -203,7 +202,7 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
      * Stops progress view and shows real data
      */
     private void stopProgress() {
-        this.progressBar.setVisibility(View.GONE);
+        this.progressBarContainer.setVisibility(View.GONE);
         this.feedbackListView.setVisibility(View.VISIBLE);
     }
 
@@ -212,8 +211,7 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
      */
     private void startProgress() {
         this.feedbackListView.setVisibility(View.GONE);
-        this.progressBar.setVisibility(View.VISIBLE);
-        this.progressBar.setEnabled(true);
+        this.progressBarContainer.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -277,9 +275,11 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "onReceive");
-            List<Feedback> feedbackList = (List<Feedback>) Session.popServiceValue(
-                    PREPARE_FEEDBACK_ACTION_ITEMS);
-            loadItems(feedbackList);
+            if (SurveyService.PREPARE_FEEDBACK_ACTION.equals(intent.getAction())) {
+                List<Feedback> feedbackList = (List<Feedback>) Session.popServiceValue(
+                        PREPARE_FEEDBACK_ACTION_ITEMS);
+                loadItems(feedbackList);
+            }
         }
     }
 
