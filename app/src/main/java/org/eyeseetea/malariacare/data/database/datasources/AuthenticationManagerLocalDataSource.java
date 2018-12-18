@@ -93,4 +93,5 @@ public class AuthenticationManagerLocalDataSource implements IAuthenticationMana
         editor.commit();
         PreferencesState.getInstance().reloadServerUrl();
     }
+
 }

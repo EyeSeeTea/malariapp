@@ -32,6 +32,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import org.eyeseetea.malariacare.data.database.datasources.UserAccountLocalDataSource;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
@@ -40,12 +41,14 @@ import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.metadata.PhoneMetaData;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.data.remote.api.UserAccountAPIDataSource;
-import org.eyeseetea.malariacare.data.database.datasources.UserAccountLocalDataSource;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
+import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
 import org.eyeseetea.malariacare.domain.enums.NetworkStrategy;
+import org.eyeseetea.malariacare.domain.usecase.GetCredentialsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.GetUserAccountUseCase;
 import org.eyeseetea.malariacare.drive.DriveRestController;
+import org.eyeseetea.malariacare.factories.AuthenticationFactory;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.DashboardController;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.ImproveModuleController;
@@ -71,13 +74,39 @@ public class DashboardActivity extends BaseActivity {
 
         handler = new Handler(Looper.getMainLooper());
         dashboardActivity = this;
+
+        GetCredentialsUseCase getCredentialsUseCase =
+                new AuthenticationFactory().getLoadCredentialsUseCase(this);
+        getCredentialsUseCase.execute(new GetCredentialsUseCase.Callback() {
+            @Override
+            public void onSuccess(Credentials credentials) {
+                getUserAccount(credentials);
+            }
+        });
+
+        loadPhoneMetadata();
+
+        //get dashboardcontroller from settings.json
+        dashboardController = AppSettingsBuilder.getInstance().getDashboardController();
+
+        //layout according to config
+        setContentView(dashboardController.getLayout());
+
+        //delegate modules initialization
+        dashboardController.onCreate(this, savedInstanceState);
+
+        reloadDashboard();
+    }
+
+    private void getUserAccount(Credentials credentials) {
+
         if (getIntent().getBooleanExtra(getString(R.string.show_announcement_key), true)
-                && !Session.getCredentials().isDemoCredentials()) {
+                && !credentials.isDemoCredentials()) {
             GetUserAccountUseCase getUserAccountUseCase = new GetUserAccountUseCase(
                     new AsyncExecutor(),
                     new UIThreadExecutor(),
                     new UserAccountRepository(
-                            new UserAccountAPIDataSource(Session.getCredentials()),
+                            new UserAccountAPIDataSource(credentials),
                             new UserAccountLocalDataSource())
             );
 
@@ -94,24 +123,16 @@ public class DashboardActivity extends BaseActivity {
                         }
                     });
         }
+    }
 
-        loadPhoneMetadata();
-
-        //get dashboardcontroller from settings.json
-        dashboardController = AppSettingsBuilder.getInstance().getDashboardController();
-
-        //layout according to config
-        setContentView(dashboardController.getLayout());
-
-        //delegate modules initialization
-        dashboardController.onCreate(this, savedInstanceState);
-
-        if (!Session.getCredentials().isDemoCredentials()) {
+    private void initDriveRestController(Credentials credentials) {
+        if (!credentials.isDemoCredentials()) {
             //Media: init drive credentials
             DriveRestController.getInstance().init(this);
         }
-        reloadDashboard();
     }
+
+
 
     private void announcementAndUserClosedActions(UserAccount userAccount) {
         if (userAccount.shouldDisplayAnnouncement()) {

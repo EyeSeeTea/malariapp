@@ -55,12 +55,12 @@ import org.eyeseetea.malariacare.data.database.datasources.UserAccountLocalDataS
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.LanguageContextWrapper;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.remote.api.UserAccountAPIDataSource;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
 import org.eyeseetea.malariacare.domain.enums.NetworkStrategy;
+import org.eyeseetea.malariacare.domain.usecase.GetCredentialsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.GetUserAccountUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
@@ -287,26 +287,7 @@ public class LoginActivity extends Activity {
             @Override
             public void onLoginSuccess() {
                 hideProgress();
-                GetUserAccountUseCase getUserAccountUseCase = new GetUserAccountUseCase(
-                        new AsyncExecutor(),
-                        new UIThreadExecutor(),
-                        new UserAccountRepository(
-                                new UserAccountAPIDataSource(Session.getCredentials()),
-                                new UserAccountLocalDataSource())
-                );
-
-                getUserAccountUseCase.execute(NetworkStrategy.NETWORK_FIRST,
-                        new GetUserAccountUseCase.Callback() {
-                            @Override
-                            public void onSuccess(UserAccount userAccount) {
-                                onGetUserSuccess(userAccount.isClosed());
-                            }
-
-                            @Override
-                            public void onError() {
-                                System.out.println("Error pulling closed user date.");
-                            }
-                        });
+                getCredentials();
             }
 
             @Override
@@ -339,6 +320,41 @@ public class LoginActivity extends Activity {
                         R.string.login_error_unsupported_server_version));
             }
         });
+    }
+
+    private void getCredentials() {
+        GetCredentialsUseCase getCredentialsUseCase =
+                new AuthenticationFactory().getLoadCredentialsUseCase(this);
+        getCredentialsUseCase.execute(new GetCredentialsUseCase.Callback() {
+            @Override
+            public void onSuccess(Credentials credentials) {
+                getUserAccount(credentials);
+            }
+        });
+
+    }
+
+    private void getUserAccount(Credentials credentials) {
+        GetUserAccountUseCase getUserAccountUseCase = new GetUserAccountUseCase(
+                new AsyncExecutor(),
+                new UIThreadExecutor(),
+                new UserAccountRepository(
+                        new UserAccountAPIDataSource(credentials),
+                        new UserAccountLocalDataSource())
+        );
+
+        getUserAccountUseCase.execute(NetworkStrategy.NETWORK_FIRST,
+                new GetUserAccountUseCase.Callback() {
+                    @Override
+                    public void onSuccess(UserAccount userAccount) {
+                        onGetUserSuccess(userAccount.isClosed());
+                    }
+
+                    @Override
+                    public void onError() {
+                        System.out.println("Error pulling closed user date.");
+                    }
+                });
     }
 
     public void showError(String message) {
