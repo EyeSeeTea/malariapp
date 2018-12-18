@@ -9,6 +9,48 @@ public class SurveyAnswerRatioShould {
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
+    @Test
+    public void return_100_when_get_compulsory_answered_percentage_after_fill_all_the_compulsory_questions(){
+        //given
+        int total = 10;
+        int totalAnswered = 0;
+        int totalCompulsoryAnswered = 15;
+        int totalCompulsory = 15;
+
+        //when
+        SurveyAnsweredRatio answeredRatio = givenAAnsweredRatio(total, totalCompulsory, totalAnswered, totalCompulsoryAnswered);
+        //then
+        Assert.assertTrue(answeredRatio.getCompulsoryAnsweredPercentage()==100);
+    }
+
+    @Test
+    public void return_100_when_get_answered_percentage_after_fill_all_the_normal_questions(){
+        //given
+        int total = 10;
+        int totalAnswered = 10;
+        int totalCompulsoryAnswered = 0;
+        int totalCompulsory = 15;
+
+        //when
+        SurveyAnsweredRatio answeredRatio = givenAAnsweredRatio(total, totalCompulsory, totalAnswered, totalCompulsoryAnswered);
+        //then
+        Assert.assertTrue(answeredRatio.getAnsweredPercentage()==100);
+    }
+
+    @Test
+    public void return_0_percentages_when_havent_filled_questions(){
+        //given
+        int total = 0;
+        int totalAnswered = 1;
+        int totalCompulsoryAnswered = 1;
+        int totalCompulsory = 0;
+
+        //when
+        SurveyAnsweredRatio answeredRatio = givenAAnsweredRatio(total, totalCompulsory, totalAnswered, totalCompulsoryAnswered);
+        //then
+        Assert.assertTrue(answeredRatio.getAnsweredPercentage()==0);
+        Assert.assertTrue(answeredRatio.getCompulsoryAnsweredPercentage()==0);
+    }
 
     @Test
     public void create_answered_ratio_and_check_default_values(){
