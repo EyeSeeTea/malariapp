@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <org.eyeseetea.malariacare.views.CustomTextView
+        android:id="@+id/feedback_score_label"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_weight=".22"
+        android:background="@color/white"
+        android:gravity="right"
+        android:paddingBottom="@dimen/dashboard_row_padding"
+        android:paddingLeft="@dimen/dashboard_row_padding"
+        android:paddingTop="@dimen/dashboard_row_padding"
+        android:text="@string/lorem_ipsum"
+        android:textSize="16dp"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:typeface="sans"
+        app:tDimension="@string/font_size_level2"
+        app:tFontName="@string/medium_font_name" />
+</merge>

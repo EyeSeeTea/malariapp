@@ -22,6 +22,7 @@ package org.eyeseetea.malariacare.data.database.utils.planning;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitProgramRelationDB;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.Session;
@@ -30,6 +31,7 @@ import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Helper that creates a 'next' planned survey from a given survey or from a orgUnit + program
@@ -151,12 +153,15 @@ public class SurveyPlanner {
     /**
      * Plans a new survey according to the last surveys that has been sent for each combo orgunit +
      * program
+     * This method is only used in the pull.
      */
     public void buildNext() {
         //Plan a copy according to that survey
         for (SurveyDB survey : SurveyDB.listLastByOrgUnitProgram()) {
             buildNext(survey);
         }
+        //Plan non existant combinations
+        buildNonExistentCombinations();
 
     }
 
@@ -171,15 +176,18 @@ public class SurveyPlanner {
         if (eventDate == null) {
             return null;
         }
-
+        Float score = 0f;
+        if(survey.getMainScore()!=null){
+            survey.getMainScore().getScore();
+        }
         //Load main score
         Log.d(TAG, String.format(
                 "finding scheduledDate for a survey with: eventDate: %s, score: %f , "
                         + "lowProductivity: %b",
-                eventDate.toString(), survey.getMainScore().getScore(), survey.isLowProductivity()));
+                eventDate.toString(), score, survey.isLowProductivity()));
 
         //A -> 6 months
-        ScoreType scoreType = new ScoreType(survey.getMainScore().getScore());
+        ScoreType scoreType = new ScoreType(score);
         if (scoreType.isTypeA()) {
             return getInXMonths(eventDate, TYPE_A_NEXT_DATE);
         }
@@ -201,6 +209,19 @@ public class SurveyPlanner {
         calendar.setTime(date);
         calendar.add(Calendar.MONTH, numMonths);
         return calendar.getTime();
+    }
+
+    private void buildNonExistentCombinations() {
+        List<OrgUnitProgramRelationDB> orgUnitProgramRelations = OrgUnitProgramRelationDB.getAll();
+        for (OrgUnitProgramRelationDB orgUnitProgramRelation : orgUnitProgramRelations) {
+            SurveyDB survey = SurveyDB.findPlannedByOrgUnitAndProgram(orgUnitProgramRelation.getOrgUnit(), orgUnitProgramRelation.getProgram());
+            //Already built
+            if (survey != null) {
+                continue;
+            }
+            //NOT exists. Create a new survey and add to never
+            buildNext(orgUnitProgramRelation.getOrgUnit(), orgUnitProgramRelation.getProgram());
+        }
     }
 
 }

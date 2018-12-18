@@ -41,6 +41,7 @@ import org.eyeseetea.malariacare.BuildConfig;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.datasources.UserAccountLocalDataSource;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 import org.eyeseetea.malariacare.data.database.model.HeaderDB;
 import org.eyeseetea.malariacare.data.database.model.QuestionDB;
@@ -177,55 +178,6 @@ public abstract class AUtils {
 
         return stringBuilder;
     }
-
-    public static String getEuropeanFormatedDateWithShortYear(Date date) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
-        if(date==null){
-            return "";
-        }
-        return sdf.format(date);
-    }
-
-    public static String getEuropeanFormatedDate(Date date) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        if(date==null){
-            return "";
-        }
-        return sdf.format(date);
-    }
-
-    public static String getShortEuropeanFormatedDate(Date date) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
-        if(date==null){
-            return "";
-        }
-        return sdf.format(date);
-    }
-
-    public static String formatDate(Date date) {
-        if (date == null) {
-            return "-";
-        }
-        Locale locale =
-                PreferencesState.getInstance().getContext().getResources().getConfiguration()
-                        .locale;
-        DateFormat dateFormatter = DateFormat.getDateInstance(DateFormat.DEFAULT, locale);
-        return dateFormatter.format(date);
-    }
-
-    public static String formatDateToServer(Date date) {
-        if (date == null) {
-            return "";
-        }
-        Locale locale =
-                PreferencesState.getInstance().getContext().getResources().getConfiguration()
-                        .locale;
-        DateFormat dateFormatter = DateFormat.getDateInstance(DateFormat.DEFAULT, locale);
-
-
-        return dateFormatter.format(date);
-    }
-
 
     /**
      * This method check if the Internet conexion is active

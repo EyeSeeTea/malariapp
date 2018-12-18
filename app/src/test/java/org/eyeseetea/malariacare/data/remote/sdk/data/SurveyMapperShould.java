@@ -123,7 +123,8 @@ public class SurveyMapperShould {
 
         Gson gson = createGson();
 
-        Type listType = new TypeToken<ArrayList<CompositeScore>>(){}.getType();
+        Type listType = new TypeToken<ArrayList<CompositeScore>>() {
+        }.getType();
         return gson.fromJson(stringJson, listType);
     }
 

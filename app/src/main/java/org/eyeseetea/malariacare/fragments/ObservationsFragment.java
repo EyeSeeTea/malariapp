@@ -20,13 +20,13 @@
 package org.eyeseetea.malariacare.fragments;
 
 import android.app.AlertDialog;
-import android.support.v4.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -41,11 +41,11 @@ import android.widget.RelativeLayout;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.datasources.ObservationLocalDataSource;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 import org.eyeseetea.malariacare.data.database.model.QuestionDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.data.repositories.ObservationRepository;
 import org.eyeseetea.malariacare.data.repositories.ServerMetadataRepository;
@@ -58,15 +58,15 @@ import org.eyeseetea.malariacare.domain.usecase.GetServerMetadataUseCase;
 import org.eyeseetea.malariacare.domain.usecase.observation.GetObservationBySurveyUidUseCase;
 import org.eyeseetea.malariacare.domain.usecase.observation.SaveObservationUseCase;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
-import org.eyeseetea.malariacare.strategies.PlanActionStyleStrategy;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.presentation.presenters.ObservationsPresenter;
 import org.eyeseetea.malariacare.presentation.viewModels.ObservationViewModel;
+import org.eyeseetea.malariacare.utils.DateParser;
+import org.eyeseetea.malariacare.strategies.PlanActionStyleStrategy;
 import org.eyeseetea.malariacare.views.CustomEditText;
 import org.eyeseetea.malariacare.views.CustomSpinner;
 import org.eyeseetea.malariacare.views.CustomTextView;
-import org.eyeseetea.sdk.common.FileUtils;
 import org.eyeseetea.sdk.presentation.views.DoubleRectChart;
 
 import java.util.Iterator;
@@ -431,15 +431,11 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
             }
         } else if (mDoubleRectChart != null) {
             LayoutUtils.drawScore(mainScore, mDoubleRectChart);
-
-
-            mCompletionDateTextView.setText(
-                    String.format(getString(R.string.plan_action_today_date), completionDate));
-
-            mNextDateTextView.setText(
-                    String.format(getString(R.string.plan_action_next_date), nextDate));
-
         }
+        mCompletionDateTextView.setText(
+                String.format(getString(R.string.plan_action_today_date), completionDate));
+        mNextDateTextView.setText(
+                String.format(getString(R.string.plan_action_next_date), nextDate));
     }
 
     @Override
@@ -494,19 +490,19 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
         String data =
                 PreferencesState.getInstance().getContext().getString(
                         R.string.app_name) + "- \n";
-
+        DateParser dateParser = new DateParser();
         data += getString(R.string.supervision_on) + " " + survey.getOrgUnit().getName() + "/"
                 + survey.getProgram().getName() + "\n";
 
-        data += getString(R.string.on) + " " + EventExtended.format
-                (survey.getCompletionDate(), EventExtended.EUROPEAN_DATE_FORMAT)
+        data += getString(R.string.on) + " " + dateParser.format
+                (survey.getCompletionDate(), DateParser.EUROPEAN_DATE_FORMAT)
                 + "\n";
         int roundedScore = Math.round(survey.getMainScore().getScore());
         data += getString(R.string.quality_of_care) + " " + roundedScore + "% \n";
 
         data += String.format(getString(R.string.plan_action_next_date),
-                EventExtended.format(SurveyPlanner.getInstance().findScheduledDateBySurvey(survey),
-                        EventExtended.EUROPEAN_DATE_FORMAT));
+                dateParser.format(SurveyPlanner.getInstance().findScheduledDateBySurvey(survey),
+                        DateParser.EUROPEAN_DATE_FORMAT));
 
         if(observationViewModel.getProvider()!=null && !observationViewModel.getProvider().isEmpty()) {
             data += "\n\n" + getString(R.string.plan_action_provider_title) + " " + observationViewModel.getProvider();
@@ -554,7 +550,8 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
         }
         data += "\n\n" + getString(R.string.see_full_assessment) + "\n";
         if (survey.isSent()) {
-            data += "https://apps.psi-mis.org/hnqis/feedback?eventId=" + survey.getEventUid() + "\n";
+            data += String.format(getActivity().getString(R.string.feedback_url),
+                    survey.getEventUid(), Session.getCredentials().getServerURL());
         } else {
             data += getString(R.string.url_not_available) + "\n";
         }

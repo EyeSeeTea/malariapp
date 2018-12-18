@@ -18,6 +18,7 @@ import org.eyeseetea.malariacare.domain.usecase.observation.SaveObservationUseCa
 import org.eyeseetea.malariacare.observables.ObservablePush;
 import org.eyeseetea.malariacare.presentation.mapper.ObservationMapper;
 import org.eyeseetea.malariacare.presentation.viewModels.ObservationViewModel;
+import org.eyeseetea.malariacare.utils.DateParser;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -125,16 +126,17 @@ public class ObservationsPresenter {
         mSurvey = SurveyDB.getSurveyByUId(mSurveyUid);
 
         if (mView != null) {
+            DateParser dateParser = new DateParser();
             String formattedCompletionDate = "NaN";
             if (mSurvey.getCompletionDate() != null) {
-                formattedCompletionDate = EventExtended.format(mSurvey.getCompletionDate(),
-                        EventExtended.EUROPEAN_DATE_FORMAT);
+                formattedCompletionDate = dateParser.format(mSurvey.getCompletionDate(),
+                        DateParser.EUROPEAN_DATE_FORMAT);
             }
 
             String formattedNextDate = "NaN";
             if (mSurvey.getScheduledDate() != null) {
-                formattedNextDate = EventExtended.format(mSurvey.getScheduledDate(),
-                        EventExtended.EUROPEAN_DATE_FORMAT);
+                formattedNextDate = dateParser.format(mSurvey.getScheduledDate(),
+                        DateParser.EUROPEAN_DATE_FORMAT);
             }
 
             float score = mSurvey.getMainScore() == null? 0f: mSurvey.getMainScore().getScore();

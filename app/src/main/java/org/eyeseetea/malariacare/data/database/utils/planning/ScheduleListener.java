@@ -9,17 +9,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.services.PlannedSurveyService;
-import org.eyeseetea.malariacare.utils.AUtils;
+import org.eyeseetea.malariacare.utils.DateParser;
 import org.eyeseetea.sdk.presentation.views.CustomEditText;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class ScheduleListener implements View.OnClickListener {
     private AlertDialog mAlertDialog;
@@ -52,10 +54,25 @@ public class ScheduleListener implements View.OnClickListener {
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.planning_schedule_dialog);
         dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
-
+        String subtitle;
+        if(plannedSurveys==null) {
+            subtitle = survey.getProgram().getName() + "\n" + survey.getOrgUnit().getName();
+        }else{
+            if(plannedSurveys.size()>1) {
+                subtitle = String.format(
+                        context.getString(R.string.reschedule_title_multiple_survey),
+                        plannedSurveys.size(), plannedSurveys.get(0).getOrgUnit().getName());
+            }else{
+                subtitle = survey.getProgram().getName() + "\n" + survey.getOrgUnit().getName();
+            }
+        }
+        ((TextView) dialog.findViewById(R.id.schedule_title)).setText(subtitle);
         //Set current date
         final CustomEditText scheduleDatePickerButton=(CustomEditText)dialog.findViewById(R.id.planning_dialog_picker_button);
-        scheduleDatePickerButton.setText(AUtils.formatDate(survey.getScheduledDate()));
+
+        final Date surveyDefaultDate = survey.getScheduledDate();
+        String dateFormatted = formatDate(surveyDefaultDate, context);
+        scheduleDatePickerButton.setText(dateFormatted);
         //On Click open an specific DatePickerDialog
         scheduleDatePickerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,7 +89,7 @@ public class ScheduleListener implements View.OnClickListener {
                         Calendar newCalendar = Calendar.getInstance();
                         newCalendar.set(year, monthOfYear, dayOfMonth);
                         newScheduledDate = newCalendar.getTime();
-                        scheduleDatePickerButton.setText(AUtils.formatDate(newScheduledDate));
+                        scheduleDatePickerButton.setText(formatDate(newScheduledDate, context));
                     }
 
                 },calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
@@ -94,8 +111,8 @@ public class ScheduleListener implements View.OnClickListener {
             public void onClick(View v) {
                 //Check fields are ok
                 String comment = ((EditText) dialog.findViewById(R.id.planning_dialog_comment)).getText().toString();
-                if (!validateFields(newScheduledDate, comment)) {
-                    return;
+                if (newScheduledDate == null) {
+                    newScheduledDate = surveyDefaultDate;
                 }
                 //Reschedule survey
                 if(plannedSurveys==null) {
@@ -113,6 +130,18 @@ public class ScheduleListener implements View.OnClickListener {
         });
 
         dialog.show();
+        ((EditText) dialog.findViewById(R.id.planning_dialog_comment)).requestFocus();
+    }
+
+    private String formatDate(Date surveyDefaultDate, Context context) {
+        Locale locale = context.getResources().getConfiguration()
+                        .locale;
+        DateParser dateParser = new DateParser();
+        String dateFormatted = dateParser.userFormatDate(surveyDefaultDate, locale);
+        if(dateFormatted.isEmpty()){
+            return "-";
+        }
+        return dateFormatted;
     }
 
     private void reloadData() {
@@ -124,10 +153,6 @@ public class ScheduleListener implements View.OnClickListener {
         surveysIntent.putExtra(PlannedSurveyService.SERVICE_METHOD, PlannedSurveyService.PLANNED_SURVEYS_ACTION);
         PreferencesState.getInstance().getContext().getApplicationContext().startService(surveysIntent);
 
-    }
-
-    private boolean validateFields(Date newDate,String comment){
-        return newDate!=null;
     }
 
 
