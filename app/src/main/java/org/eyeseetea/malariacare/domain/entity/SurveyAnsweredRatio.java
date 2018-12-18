@@ -77,6 +77,18 @@ public class SurveyAnsweredRatio {
         return new SurveyAnsweredRatio(total,0,totalCompulsory,0);
     }
 
+    public int getAnsweredPercentage(){
+        if(answered == 0 || total == 0)
+            return 0;
+        return answered*100/total;
+    }
+
+    public int getCompulsoryAnsweredPercentage(){
+        if(compulsoryAnswered == 0 || totalCompulsory == 0)
+            return 0;
+        return compulsoryAnswered*100/totalCompulsory;
+    }
+
     public int getAnswered() {
         return answered;
     }
