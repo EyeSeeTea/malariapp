@@ -195,7 +195,7 @@ dependencies {
 
     // Unit testing dependencies
     testCompile "junit:junit:${libs.jUnitVersion}"
-    testCompile "org.mockito:mockito-core:${libs.mockitoVersion}"
+    testCompile "org.mockito:mockito-android:${libs.mockitoVersion}"
     testCompile "com.google.code.gson:gson:${libs.gsonVersion}"
     testCompile project(":models")
     testCompile project(":core")
