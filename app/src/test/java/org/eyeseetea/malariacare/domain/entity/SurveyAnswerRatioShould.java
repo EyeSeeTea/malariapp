@@ -40,9 +40,9 @@ public class SurveyAnswerRatioShould {
     @Test
     public void return_0_percentages_when_havent_filled_questions(){
         //given
-        int total = 0;
-        int totalAnswered = 1;
-        int totalCompulsoryAnswered = 1;
+        int total = 1;
+        int totalAnswered = 0;
+        int totalCompulsoryAnswered = 0;
         int totalCompulsory = 0;
 
         //when
