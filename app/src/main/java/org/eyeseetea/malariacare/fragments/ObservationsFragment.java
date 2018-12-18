@@ -54,8 +54,8 @@ import org.eyeseetea.malariacare.domain.boundary.repositories.IObservationReposi
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerMetadataRepository;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
+import org.eyeseetea.malariacare.domain.usecase.GetCredentialsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.GetServerMetadataUseCase;
-import org.eyeseetea.malariacare.domain.usecase.LoadCredentialsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.observation.GetObservationBySurveyUidUseCase;
 import org.eyeseetea.malariacare.domain.usecase.observation.SaveObservationUseCase;
 import org.eyeseetea.malariacare.factories.AuthenticationFactory;
@@ -459,9 +459,9 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
     public void shareByText(final ObservationViewModel observationViewModel, final SurveyDB survey,
             final List<QuestionDB> criticalQuestions, final List<CompositeScoreDB> compositeScoresTree) {
 
-        LoadCredentialsUseCase loadCredentialsUseCase =
+        GetCredentialsUseCase getCredentialsUseCase =
                 new AuthenticationFactory().getLoadCredentialsUseCase(getActivity());
-        loadCredentialsUseCase.execute(new LoadCredentialsUseCase.Callback() {
+        getCredentialsUseCase.execute(new GetCredentialsUseCase.Callback() {
             @Override
             public void onSuccess(Credentials credentials) {
 

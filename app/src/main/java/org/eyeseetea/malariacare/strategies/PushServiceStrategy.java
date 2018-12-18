@@ -28,7 +28,7 @@ import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.exception.push.PushValueException;
-import org.eyeseetea.malariacare.domain.usecase.LoadCredentialsUseCase;
+import org.eyeseetea.malariacare.domain.usecase.GetCredentialsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.MockedPushSurveysUseCase;
 import org.eyeseetea.malariacare.domain.usecase.PushUseCase;
 import org.eyeseetea.malariacare.factories.AuthenticationFactory;
@@ -50,8 +50,8 @@ public class PushServiceStrategy {
 
     public void push(PushUseCase pushUseCase) {
         this.pushUseCase = pushUseCase;
-       LoadCredentialsUseCase loadCredentialsUseCase=new  AuthenticationFactory().getLoadCredentialsUseCase(mPushService);
-       loadCredentialsUseCase.execute(new LoadCredentialsUseCase.Callback() {
+       GetCredentialsUseCase getCredentialsUseCase =new  AuthenticationFactory().getLoadCredentialsUseCase(mPushService);
+       getCredentialsUseCase.execute(new GetCredentialsUseCase.Callback() {
            @Override
            public void onSuccess(Credentials credentials) {
                if (credentials.isDemoCredentials()) {

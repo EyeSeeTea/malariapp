@@ -24,7 +24,7 @@ import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.boundary.repositories.ICredentialsRepository;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 
-public class LoadCredentialsUseCase implements UseCase {
+public class GetCredentialsUseCase implements UseCase {
 
     private IAsyncExecutor mAsyncExecutor;
     private IMainExecutor mMainExecutor;
@@ -35,7 +35,7 @@ public class LoadCredentialsUseCase implements UseCase {
         void onSuccess(Credentials credentials);
     }
 
-    public LoadCredentialsUseCase(IAsyncExecutor asyncExecutor,
+    public GetCredentialsUseCase(IAsyncExecutor asyncExecutor,
             IMainExecutor mainExecutor,
             ICredentialsRepository credentialsRepository) {
         mAsyncExecutor = asyncExecutor;

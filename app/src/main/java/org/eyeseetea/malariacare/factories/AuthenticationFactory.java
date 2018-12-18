@@ -10,7 +10,7 @@ import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IAuthenticationManager;
 import org.eyeseetea.malariacare.domain.boundary.repositories.ICredentialsRepository;
-import org.eyeseetea.malariacare.domain.usecase.LoadCredentialsUseCase;
+import org.eyeseetea.malariacare.domain.usecase.GetCredentialsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
@@ -34,11 +34,11 @@ public class AuthenticationFactory {
         return logoutUseCase;
     }
 
-    public LoadCredentialsUseCase getLoadCredentialsUseCase(Context context) {
+    public GetCredentialsUseCase getLoadCredentialsUseCase(Context context) {
         ICredentialsDataSource credentialsDataSource = new CredentialsLocalDataSource(context);
         ICredentialsRepository credentialsRepository = new CredentialsRepository(
                 credentialsDataSource);
-        return new LoadCredentialsUseCase(mAsyncExecutor, mMainExecutor, credentialsRepository);
+        return new GetCredentialsUseCase(mAsyncExecutor, mMainExecutor, credentialsRepository);
     }
 
 

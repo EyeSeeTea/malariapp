@@ -51,7 +51,7 @@ import org.eyeseetea.malariacare.data.remote.api.UserAccountAPIDataSource;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
-import org.eyeseetea.malariacare.domain.usecase.LoadCredentialsUseCase;
+import org.eyeseetea.malariacare.domain.usecase.GetCredentialsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.SaveUserAccountUseCase;
 import org.eyeseetea.malariacare.factories.AuthenticationFactory;
 import org.eyeseetea.malariacare.layout.utils.QuestionRow;
@@ -322,9 +322,9 @@ public abstract class AUtils {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         userAccount.acceptAnnouncement();
-                        LoadCredentialsUseCase loadCredentialsUseCase =
+                        GetCredentialsUseCase getCredentialsUseCase =
                                 new AuthenticationFactory().getLoadCredentialsUseCase(context);
-                        loadCredentialsUseCase.execute(new LoadCredentialsUseCase.Callback() {
+                        getCredentialsUseCase.execute(new GetCredentialsUseCase.Callback() {
                             @Override
                             public void onSuccess(Credentials credentials) {
                                 saveUserAccount(credentials, context, userAccount);

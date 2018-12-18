@@ -38,7 +38,7 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
-import org.eyeseetea.malariacare.domain.usecase.LoadCredentialsUseCase;
+import org.eyeseetea.malariacare.domain.usecase.GetCredentialsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullDemoUseCase;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
@@ -113,9 +113,9 @@ public class ProgressActivity extends Activity {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate");
         PreferencesState.getInstance().initalizateActivityDependencies();
-        LoadCredentialsUseCase loadCredentialsUseCase =
+        GetCredentialsUseCase getCredentialsUseCase =
                 new AuthenticationFactory().getLoadCredentialsUseCase(this);
-        loadCredentialsUseCase.execute(new LoadCredentialsUseCase.Callback() {
+        getCredentialsUseCase.execute(new GetCredentialsUseCase.Callback() {
             @Override
             public void onSuccess(Credentials credentials) {
                 mCredentials = credentials;

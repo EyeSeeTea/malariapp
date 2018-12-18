@@ -60,8 +60,8 @@ import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
 import org.eyeseetea.malariacare.domain.enums.NetworkStrategy;
+import org.eyeseetea.malariacare.domain.usecase.GetCredentialsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.GetUserAccountUseCase;
-import org.eyeseetea.malariacare.domain.usecase.LoadCredentialsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.factories.AuthenticationFactory;
@@ -323,9 +323,9 @@ public class LoginActivity extends Activity {
     }
 
     private void getCredentials() {
-        LoadCredentialsUseCase loadCredentialsUseCase =
+        GetCredentialsUseCase getCredentialsUseCase =
                 new AuthenticationFactory().getLoadCredentialsUseCase(this);
-        loadCredentialsUseCase.execute(new LoadCredentialsUseCase.Callback() {
+        getCredentialsUseCase.execute(new GetCredentialsUseCase.Callback() {
             @Override
             public void onSuccess(Credentials credentials) {
                 getUserAccount(credentials);
