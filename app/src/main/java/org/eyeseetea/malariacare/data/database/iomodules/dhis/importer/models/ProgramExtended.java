@@ -117,7 +117,7 @@ public class ProgramExtended implements VisitableFromSDK {
      * @return
      */
     public  String findOrganisationUnitAttributeValueByCode(String code){
-        String value = AttributeValueExtended.findAttributeValueByCode(code, getAttributeValues());
+        String value = AttributeValueExtended.findAttributeValuefromDataElementCode(code, getUid()).getValue();
 
         if(value==null){
             return "";

@@ -10,6 +10,7 @@ import com.raizlabs.android.dbflow.structure.database.transaction.ITransaction;
 
 import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.ProgramExtended;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeValueFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
@@ -32,6 +33,7 @@ import org.hisp.dhis.client.sdk.android.api.persistence.flow.UserAccountFlow;
 import org.hisp.dhis.client.sdk.models.program.ProgramType;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -158,4 +160,17 @@ public class SdkQueries {
     }
 
 
+    public static HashMap<String, HashMap<String, AttributeValueFlow>> createHashMapCodeAndReferenceForAttributeValues() {
+        HashMap<String, HashMap<String, AttributeValueFlow>> attributes = new HashMap<>();
+        List<AttributeValueFlow> attributeValueFlows = new Select().from(AttributeValueFlow.class).queryList();
+        for (AttributeValueFlow attributeValueFlow : attributeValueFlows){
+            HashMap<String, AttributeValueFlow> attributesValues = new HashMap<>();
+            if(attributes.containsKey(attributeValueFlow.getAttribute().getCode())){
+                attributesValues = attributes.get(attributeValueFlow.getAttribute().getCode());
+            }
+            attributesValues.put(attributeValueFlow.getReference(), attributeValueFlow);
+            attributes.put(attributeValueFlow.getAttribute().getCode(), attributesValues);
+        }
+        return attributes;
+    }
 }

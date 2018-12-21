@@ -124,7 +124,7 @@ public class CompositeScoreBuilder {
      * @return
      */
     public int findAnswerOutput(DataElementExtended dataElementExtended){
-        String typeQuestion= AttributeValueExtended.findAttributeValueByCode(ATTRIBUTE_QUESTION_TYPE_CODE, dataElementExtended.getDataElementFlow().getAttributeValueFlow());
+        String typeQuestion= AttributeValueExtended.findAttributeValuefromDataElementCode(ATTRIBUTE_QUESTION_TYPE_CODE, dataElementExtended.getDataElementFlow().getUId()).getValue();
 
         //Not found -> error type question
         if(typeQuestion==null  || typeQuestion.equals(getCompositeScoreCode())){
@@ -143,7 +143,7 @@ public class CompositeScoreBuilder {
         }
 
         //Find the value of the attribute 'DECompositiveScore' for this dataElement
-        return AttributeValueExtended.findAttributeValueByCode(ATTRIBUTE_COMPOSITE_SCORE_CODE, dataElementExtended.getDataElementFlow().getAttributeValueFlow());
+        return AttributeValueExtended.findAttributeValuefromDataElementCode(ATTRIBUTE_COMPOSITE_SCORE_CODE, dataElementExtended.getDataElementFlow().getUId()).getValue();
     }
 
     private String getCompositeScoreCode(){

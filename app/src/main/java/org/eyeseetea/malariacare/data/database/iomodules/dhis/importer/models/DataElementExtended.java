@@ -33,6 +33,7 @@ import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.Visitable
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 import org.eyeseetea.malariacare.data.remote.sdk.SdkQueries;
 import org.eyeseetea.malariacare.utils.AUtils;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeValueFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow_Table;
@@ -44,6 +45,7 @@ import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageSection
 import org.hisp.dhis.client.sdk.models.dataelement.ValueType;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -245,9 +247,8 @@ public class DataElementExtended implements VisitableFromSDK {
      * @return value
      */
     public String getValue(String attributeCode) {
-        AttributeValueFlow attributeValue =
-                AttributeValueExtended.findAttributeValuefromDataElementCode(attributeCode,
-                        getAttributeValues());
+        AttributeValueFlow attributeValue = AttributeValueExtended.findAttributeValuefromDataElementCode(attributeCode,
+                        getUid());
         if (attributeValue != null) {
             return attributeValue.getValue();
         }
@@ -281,8 +282,8 @@ public class DataElementExtended implements VisitableFromSDK {
      * value
      */
     private boolean isOfType(String optionElementTypeCode) {
-        String typeElement = AttributeValueExtended.findAttributeValueByCode(
-                ATTRIBUTE_ELEMENT_TYPE_CODE, getAttributeValues());
+        String typeElement = AttributeValueExtended.findAttributeValuefromDataElementCode(
+                ATTRIBUTE_ELEMENT_TYPE_CODE, getUid()).getValue();
 
         if (typeElement == null) {
             Log.w(TAG,
