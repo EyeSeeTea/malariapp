@@ -137,10 +137,6 @@ public class QuestionBuilder {
         listMedia = new ArrayList<>();
     }
 
-    public List<MediaDB> getListMedia(){
-        return this.listMedia;
-    }
-
     /**
      * Registers a Question in builder
      *

@@ -214,18 +214,6 @@ public class CompositeScoreBuilder {
     }
 
     /**
-     * Tells if the composite score corresponds to a root score
-     * @param compositeScore
-     * @return
-     */
-    public static boolean isRootScore(CompositeScoreDB compositeScore){
-        if(compositeScore==null){
-            return false;
-        }
-        return CompositeScoreBuilder.ROOT_NODE_CODE.equals(compositeScore.getHierarchical_code());
-    }
-
-    /**
      * Find the associated programStage (tabgroup) given a dataelement UID and program
      * @param dataElementUID
      * @return
