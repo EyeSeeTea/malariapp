@@ -36,15 +36,10 @@ import java.util.List;
  */
 public class AttributeValueExtended {
 
-
     AttributeValueFlow attributeValueFlow;
 
     public AttributeValueExtended(AttributeValueFlow attributeValueFlow) {
         this.attributeValueFlow = attributeValueFlow;
-    }
-
-    public AttributeValueExtended(AttributeValueExtended attributeValueFlow) {
-        this.attributeValueFlow = attributeValueFlow.getAttribute();
     }
 
     public String getUid() {
@@ -55,10 +50,6 @@ public class AttributeValueExtended {
     public AttributeValueFlow getAttribute() {
         return attributeValueFlow;
     }
-
-    public AttributeValueExtended() {
-    }
-
 
     /**
      * Finds the value of an attribute with the given code in a dataElement

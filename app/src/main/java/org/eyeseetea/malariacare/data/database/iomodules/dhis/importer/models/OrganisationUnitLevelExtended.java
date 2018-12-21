@@ -38,8 +38,6 @@ import java.util.List;
 public class OrganisationUnitLevelExtended implements VisitableFromSDK {
     OrganisationUnitLevelFlow organisationUnitLevel;
 
-    public OrganisationUnitLevelExtended(){}
-
     public OrganisationUnitLevelExtended(OrganisationUnitLevelFlow organisationUnitLevel){
         this.organisationUnitLevel = organisationUnitLevel;
     }
@@ -47,10 +45,6 @@ public class OrganisationUnitLevelExtended implements VisitableFromSDK {
     @Override
     public void accept(IConvertFromSDKVisitor visitor) {
         visitor.visit(this);
-    }
-
-    public OrganisationUnitLevelFlow getOrganisationUnitLevel() {
-        return organisationUnitLevel;
     }
 
     /**

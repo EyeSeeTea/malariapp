@@ -67,15 +67,10 @@ public class OrganisationUnitExtended implements VisitableFromSDK {
      */
     private OrgUnitDB appOrgUnit;
 
-    public OrganisationUnitExtended(){}
-
     public OrganisationUnitExtended(OrganisationUnitFlow orgUnit){
         this.organisationUnit = orgUnit;
     }
 
-    public OrganisationUnitExtended(OrganisationUnitExtended orgUnit){
-        this.organisationUnit = orgUnit.getOrganisationUnit();
-    }
     @Override
     public void accept(IConvertFromSDKVisitor visitor) {
         visitor.visit(this);
@@ -153,23 +148,6 @@ public class OrganisationUnitExtended implements VisitableFromSDK {
      */
     public OrgUnitDB getAppOrgUnit() {
         return appOrgUnit;
-    }
-
-    public static List<OrganisationUnitFlow> getAllOrganisationUnits() {
-        return new Select().from(OrganisationUnitFlow.class).queryList();
-    }
-
-    /**
-     * Get an OU given its id
-     * @param id
-     * @return
-     */
-    public static OrganisationUnitFlow getOrganisationUnit(String id){
-        return new Select()
-                .from(OrganisationUnitFlow.class)
-                .where(OrganisationUnitFlow_Table.uId
-                        .eq(id))
-                .querySingle();
     }
 
     public int getLevel() {

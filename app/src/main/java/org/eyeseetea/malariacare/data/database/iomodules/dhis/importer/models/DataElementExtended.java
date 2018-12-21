@@ -19,18 +19,11 @@
 
 package org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models;
 
-import static org.eyeseetea.malariacare.data.database.AppDatabase.programFlowAlias;
-import static org.eyeseetea.malariacare.data.database.AppDatabase.programFlowName;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.programStageDataElementFlowAlias;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.programStageDataElementFlowName;
-import static org.eyeseetea.malariacare.data.database.AppDatabase.programStageFlowAlias;
-import static org.eyeseetea.malariacare.data.database.AppDatabase.programStageFlowName;
-import static org.eyeseetea.malariacare.data.database.AppDatabase.programStageSectionFlowAlias;
-import static org.eyeseetea.malariacare.data.database.AppDatabase.programStageSectionFlowName;
 
 import android.util.Log;
 
-import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
@@ -45,14 +38,9 @@ import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionSetFlow;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramFlow;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageDataElementFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageDataElementFlow_Table;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageFlow;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageSectionFlow;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageSectionFlow_Table;
 import org.hisp.dhis.client.sdk.models.dataelement.ValueType;
 
 import java.util.ArrayList;
@@ -183,10 +171,6 @@ public class DataElementExtended implements VisitableFromSDK {
         this.dataElement = dataElement;
     }
 
-    public DataElementExtended(DataElementExtended dataElement) {
-        this.dataElement = dataElement.getDataElementFlow();
-    }
-
     @Override
     public void accept(IConvertFromSDKVisitor visitor) {
         visitor.visit(this);
@@ -310,59 +294,6 @@ public class DataElementExtended implements VisitableFromSDK {
         return typeElement.equals(optionElementTypeCode);
     }
 
-
-    /**
-     * Find the associated programStage (tabgroup)
-     */
-    public String findProgramUID() {
-        return DataElementExtended.findProgramUIDByDataElementUID(dataElement.getUId());
-    }
-
-    /**
-     * Find the associated program given a dataelement UID
-     */
-    public static String findProgramUIDByDataElementUID(String dataElementUID) {
-        //Find the right 'uid' of the dataelement program
-        ProgramFlow program = new Select().from(ProgramFlow.class).as(programFlowName)
-                .join(ProgramStageFlow.class, Join.JoinType.LEFT_OUTER).as(programStageFlowName)
-                .on(ProgramFlow_Table.uId.withTable(programFlowAlias)
-                        .eq(ProgramStageFlow_Table.program.withTable(programStageFlowAlias)))
-                .join(ProgramStageDataElementFlow.class, Join.JoinType.LEFT_OUTER).as(
-                        programStageDataElementFlowName)
-                .on(ProgramStageDataElementFlow_Table.programStage.withTable(
-                        programStageDataElementFlowAlias)
-                        .eq(ProgramStageFlow_Table.uId.withTable(programStageFlowAlias)))
-                .where(ProgramStageDataElementFlow_Table.dataElement.withTable(
-                        programStageDataElementFlowAlias).eq(dataElementUID))
-                .querySingle();
-        if (program == null) {
-            return null;
-        }
-        return program.getUId();
-    }
-
-    /**
-     * Find the associated programStageSection (tab)UID given a dataelement UID
-     */
-    public static String findProgramStageSectionUIDByDataElementUID(String dataElementUID) {
-        //Find the right 'uid' of the dataelement program
-        ProgramStageSectionFlow programSS = new Select().from(ProgramStageSectionFlow.class).as(
-                programStageSectionFlowName)
-                .join(ProgramStageDataElementFlow.class, Join.JoinType.LEFT_OUTER).as(
-                        programStageDataElementFlowName)
-                .on(ProgramStageSectionFlow_Table.uId.withTable(programStageSectionFlowAlias)
-                        .eq(ProgramStageDataElementFlow_Table.programStageSection.withTable(
-                                programStageDataElementFlowAlias)))
-                .where(ProgramStageDataElementFlow_Table.dataElement.withTable(
-                        programStageDataElementFlowAlias).eq(dataElementUID))
-                .querySingle();
-        if (programSS == null) {
-            return null;
-        }
-        return programSS.getUId();
-    }
-
-
     /**
      * Find the associated programStageSection (tab)UID given a dataelement UID
      */
@@ -409,46 +340,6 @@ public class DataElementExtended implements VisitableFromSDK {
             }
         }
         return null;
-    }
-
-    /**
-     * Find the associated ProgramStageDataElement (tab) given a dataelement UID
-     */
-    public static ProgramStageDataElementFlow findProgramStageDataElementByDataElementUID(
-            String dataElementUID) {
-        //Find the right 'uid' of the dataelement program
-        ProgramStageDataElementFlow programDE = new Select().from(
-                ProgramStageDataElementFlow.class).as(programStageDataElementFlowName)
-                .where(ProgramStageDataElementFlow_Table.dataElement.withTable(
-                        programStageDataElementFlowAlias).eq(dataElementUID))
-                .querySingle();
-        if (programDE == null) {
-            return null;
-        }
-        return programDE;
-    }
-
-    /**
-     * Find the order from dataelement in programStage
-     */
-    public static String findProgramStageSectionOrderDataElementOrderByDataElementUID(
-            String dataElementUID) {
-        //Find the right 'uid' of the dataelement program
-        ProgramStageSectionFlow programSS = new Select().from(ProgramStageSectionFlow.class).as(
-                programStageSectionFlowName)
-                .join(ProgramStageDataElementFlow.class, Join.JoinType.LEFT_OUTER).as(
-                        programStageDataElementFlowName)
-                .on(ProgramStageDataElementFlow_Table.programStageSection.withTable(
-                        programStageDataElementFlowAlias)
-                        .eq(ProgramStageSectionFlow_Table.uId
-                                .withTable(programStageSectionFlowAlias)))
-                .where(ProgramStageDataElementFlow_Table.dataElement.withTable(
-                        programStageDataElementFlowAlias).eq(dataElementUID))
-                .querySingle();
-        if (programSS == null) {
-            return null;
-        }
-        return programSS.getSortOrder() + "";
     }
 
     public Integer findOrder() {

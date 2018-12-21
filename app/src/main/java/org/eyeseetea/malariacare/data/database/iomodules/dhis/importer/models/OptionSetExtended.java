@@ -34,47 +34,20 @@ import java.util.List;
  * Created by arrizabalaga on 6/11/15.
  */
 public class OptionSetExtended implements VisitableFromSDK {
-
-    private final static String KEY_PREFFIX="@";
-
     /**
      * Code for optionset that holds options x each Type of Element
      */
     public final static String OPTION_SET_DATAELEMENT_TYPE_NAME="DB - DE Type";
 
-    /**
-     * Code for optionset that holds options x each Type of Question
-     */
-    public final static String OPTION_SET_QUESTION_TYPE_NAME="DB - Question Type";
-
     OptionSetFlow optionSet;
-
-    public OptionSetExtended(){}
 
     public OptionSetExtended(OptionSetFlow optionSet){
         this.optionSet=optionSet;
-    }
-    public OptionSetExtended(OptionSetExtended optionSet){
-        this.optionSet=optionSet.getOptionSet();
     }
 
     @Override
     public void accept(IConvertFromSDKVisitor visitor) {
         visitor.visit(this);
-    }
-
-    public OptionSetFlow getOptionSet() {
-        return optionSet;
-    }
-
-    /**
-     * Returns a sintetic UID for a given answer and an output
-     * @param uid
-     * @param output
-     * @return
-     */
-    public static String getKeyWithOutput(String uid,int output){
-        return uid+KEY_PREFFIX+output;
     }
 
 
@@ -94,14 +67,6 @@ public class OptionSetExtended implements VisitableFromSDK {
      */
     public static OptionSetFlow findOptionSetForDataElementType(){
         return findOptionSetByName(OPTION_SET_DATAELEMENT_TYPE_NAME);
-    }
-
-    /**
-     * Returns the optionSet that holds info for 'DB - Question Type'.
-     * @return
-     */
-    public static OptionSetFlow findOptionSetForQuestionType(){
-        return findOptionSetByName(OPTION_SET_QUESTION_TYPE_NAME);
     }
 
     public String getName() {

@@ -32,8 +32,6 @@ import java.util.List;
 public class UserAccountExtended implements VisitableFromSDK {
     UserAccountFlow userAccount;
 
-    public UserAccountExtended(){}
-
     public UserAccountExtended(UserAccountFlow userAccount){
         this.userAccount=userAccount;
     }

@@ -33,8 +33,6 @@ import java.util.List;
 public class ProgramStageSectionExtended implements VisitableFromSDK {
     ProgramStageSectionFlow programStageSection;
 
-    public ProgramStageSectionExtended(){}
-
     public ProgramStageSectionExtended(ProgramStageSectionFlow programStageSection){
         this.programStageSection=programStageSection;
     }
@@ -73,9 +71,5 @@ public class ProgramStageSectionExtended implements VisitableFromSDK {
             extendedsList.add(new ProgramStageSectionExtended(flowPojo));
         }
         return extendedsList;
-    }
-
-    public List<ProgramStageDataElementExtended> getProgramStageDataElements() {
-        return null;
     }
 }

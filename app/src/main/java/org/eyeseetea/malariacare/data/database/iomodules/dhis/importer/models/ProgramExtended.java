@@ -23,10 +23,10 @@ import static org.eyeseetea.malariacare.data.database.AppDatabase.attributeFlowA
 import static org.eyeseetea.malariacare.data.database.AppDatabase.attributeFlowName;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.attributeValueFlowAlias;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.attributeValueFlowName;
-import static org.eyeseetea.malariacare.data.database.AppDatabase.optionFlowAlias;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.programFlowAlias;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.programFlowName;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.raizlabs.android.dbflow.sql.language.Join;
@@ -69,8 +69,6 @@ public class ProgramExtended implements VisitableFromSDK {
      * Reference to app program (useful to create relationships with orgunits)
      */
     ProgramDB appProgram;
-
-    public ProgramExtended(){}
 
     public ProgramExtended(ProgramFlow program){
         this.program=program;
@@ -127,26 +125,20 @@ public class ProgramExtended implements VisitableFromSDK {
         return value;
     }
 
-    public static ProgramExtended getProgramByDataElement(String dataElementUid) {
-        ProgramExtended program = null;
-        List<ProgramExtended> programs = getAllPrograms(PreferencesState.getInstance().getContext().getString(
-                R.string.pull_program_code));
-        for (ProgramExtended program1 : programs) {
-            for (ProgramStageExtended programStage : program1.getProgramStages()) {
-                for (ProgramStageSectionExtended programStageSection : programStage.getProgramStageSections()) {
-                    for (ProgramStageDataElementExtended programStageDataElement : programStageSection.getProgramStageDataElements()) {
-                        if (programStageDataElement.getDataElement().getUid().equals(dataElementUid)) {
-                            return program1;
-                        }
-                    }
-                }
-            }
+    public static List<ProgramExtended> getAllPrograms(String pullProgramCode){
+        List<ProgramFlow>  programFlows = getProgramFlowsFromAttribute(pullProgramCode);
+        List<ProgramExtended> programsExtended = new ArrayList<>();
+        for(ProgramFlow programFlow : programFlows){
+            //a new query is required to load the correct values (a dbflow bug override some values, for example the program name with the attribute name)
+            programsExtended.add(new ProgramExtended(getProgram(programFlow.getUId())));
         }
-        return program;
+        return programsExtended;
     }
 
-    public static List<ProgramExtended> getAllPrograms(String pullProgramCode){
-        List<ProgramFlow>  programFlows = new Select().from(ProgramFlow.class).as(programFlowName)
+    @NonNull
+    //this method has some fields override by other joins (dbflow error). Its only use to know the uid
+    private static List<ProgramFlow> getProgramFlowsFromAttribute(String pullProgramCode) {
+        return new Select().from(ProgramFlow.class).as(programFlowName)
                 .join(AttributeValueFlow.class, Join.JoinType.LEFT_OUTER).as(attributeValueFlowName)
                 .on(AttributeValueFlow_Table.reference.withTable(attributeValueFlowAlias).eq(
                         ProgramFlow_Table.uId.withTable(programFlowAlias)))
@@ -155,11 +147,6 @@ public class ProgramExtended implements VisitableFromSDK {
                         AttributeValueFlow_Table.attribute.withTable(attributeValueFlowAlias)))
                 .where(AttributeFlow_Table.code.withTable(attributeFlowAlias).is(PreferencesState.getInstance().getContext().getString(R.string.program_type_code)))
                 .and(AttributeValueFlow_Table.value.is(pullProgramCode)).queryList();
-        List<ProgramExtended> programsExtended = new ArrayList<>();
-        for(ProgramFlow programFlow : programFlows){
-            programsExtended.add(new ProgramExtended(getProgram(programFlow.getUId())));
-        }
-        return programsExtended;
     }
 
     public static ProgramFlow getProgram(String uId){
@@ -169,7 +156,7 @@ public class ProgramExtended implements VisitableFromSDK {
 
 
     public List<ProgramStageExtended> getProgramStages() {
-        return ProgramStageExtended.getExtendedList(SdkQueries.getProgramStages(program));
+        return ProgramStageExtended.getProgramStagesAsExtended(SdkQueries.getProgramStages(program));
     }
 
     public String getUid() {

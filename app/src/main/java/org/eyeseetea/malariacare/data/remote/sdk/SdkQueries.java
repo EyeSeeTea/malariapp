@@ -1,36 +1,20 @@
 package org.eyeseetea.malariacare.data.remote.sdk;
 
-import static org.eyeseetea.malariacare.data.database.AppDatabase.attributeFlowAlias;
-import static org.eyeseetea.malariacare.data.database.AppDatabase.attributeFlowName;
-import static org.eyeseetea.malariacare.data.database.AppDatabase.attributeValueFlowAlias;
-import static org.eyeseetea.malariacare.data.database.AppDatabase.attributeValueFlowName;
-import static org.eyeseetea.malariacare.data.database.AppDatabase.programFlowAlias;
-import static org.eyeseetea.malariacare.data.database.AppDatabase.programFlowName;
-
 import com.raizlabs.android.dbflow.config.DatabaseDefinition;
 import com.raizlabs.android.dbflow.config.FlowManager;
-import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.OrderBy;
-import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.Model;
 import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
 import com.raizlabs.android.dbflow.structure.database.transaction.ITransaction;
 
-import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.ProgramExtended;
-import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
-import org.hisp.dhis.client.sdk.android.api.D2;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeFlow;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeValueFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionSetFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitFlow;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitLevelFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitLevelFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitToProgramRelationFlow;
@@ -44,10 +28,7 @@ import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageSectionFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageSectionFlow_Table;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeValueFlow_Table;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.UserAccountFlow;
-import org.hisp.dhis.client.sdk.models.event.Event;
 import org.hisp.dhis.client.sdk.models.program.ProgramType;
 
 import java.util.ArrayList;
@@ -65,13 +46,6 @@ public class SdkQueries {
         return uids;
     }
 
-
-    private static OrganisationUnitFlow getOrganisationUnit(String organisationUnitUId) {
-        return new Select().from(OrganisationUnitFlow.class).where(
-                OrganisationUnitFlow_Table.uId.eq(organisationUnitUId)).querySingle();
-
-    }
-
     public static ProgramFlow getProgram(String assignedProgramID) {
         return new Select().from(ProgramFlow.class).where(
                 ProgramFlow_Table.uId.eq(assignedProgramID)).querySingle();
@@ -83,11 +57,6 @@ public class SdkQueries {
 
     public static UserAccountFlow getUserAccount() {
         return new Select().from(UserAccountFlow.class).querySingle();
-    }
-
-    public static DataElementFlow getDataElement(DataElementFlow dataElement) {
-        return new Select().from(DataElementFlow.class).where(DataElementFlow_Table.uId.
-                is(dataElement.getUId())).querySingle();
     }
 
     public static DataElementFlow getDataElement(String UId) {
@@ -117,29 +86,25 @@ public class SdkQueries {
         List<String> assignedProgramUids = SdkQueries.getAssignedProgramUids(programAttribute);
         List<ProgramFlow> programs = new ArrayList<ProgramFlow>();
         for (OrganisationUnitToProgramRelationFlow oupr : organisationUnitProgramRelationships) {
-            if (oupr.getProgram() == null) {
-                continue;
-            }
-            if(!assignedProgramUids.contains(oupr.getProgram().getUId())){
-                continue;
-            }
-            if (programType != null) {
-                for (ProgramType kind : programType) {
-                    List<ProgramFlow> plist = new Select().from(ProgramFlow.class).where(
-                            ProgramFlow_Table.uId.is(oupr.getProgram().getUId()))
-                            .and(
-                                    ProgramFlow_Table.programType.is(kind)).queryList();
-                    programs.addAll(plist);
-                }
-            }
+            addProgramsWithValidProgramTypes(assignedProgramUids, programs, oupr, programType);
         }
         return programs;
     }
 
-    public static List<EventFlow> getEvents(String organisationUnitUId, String programUId) {
-        return new Select().from(EventFlow.class).where(
-                EventFlow_Table.orgUnit.eq(organisationUnitUId))
-                .and(EventFlow_Table.program.eq(programUId)).queryList();
+    private static void addProgramsWithValidProgramTypes(List<String> assignedProgramUids, List<ProgramFlow> programs, OrganisationUnitToProgramRelationFlow oupr, ProgramType[] programType) {
+        if (checkNulls(assignedProgramUids, oupr, programType)) {
+            for(ProgramType programtypename : programType){
+                if(oupr.getProgram().getProgramType().equals(programtypename)) {
+                    programs.add(oupr.getProgram());
+                }
+            }
+        }
+    }
+
+    private static boolean checkNulls(List<String> assignedProgramUids, OrganisationUnitToProgramRelationFlow oupr, ProgramType[] programType) {
+        return oupr.getProgram() != null
+                && assignedProgramUids.contains(oupr.getProgram().getUId())
+                && programType != null;
     }
 
     public static List<EventFlow> getEvents() {
@@ -171,10 +136,6 @@ public class SdkQueries {
                 }
             }
         });
-    }
-
-    public static Event getEvent(String uId) {
-        return D2.events().get(uId).toBlocking().first();
     }
 
     public static List<ProgramStageSectionFlow> getProgramStageSectionFromProgramStage(String uId) {

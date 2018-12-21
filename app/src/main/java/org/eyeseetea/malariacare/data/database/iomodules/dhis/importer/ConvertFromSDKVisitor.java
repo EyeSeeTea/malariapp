@@ -85,9 +85,6 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     CompositeScoreBuilder compositeScoreBuilder;
     QuestionBuilder questionBuilder;
     public static List<Model> questions;
-
-    private final String ATTRIBUTE_PRODUCTIVITY_CODE = "OUProductivity";
-    private final String SDKDateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
     public ProgramExtended actualProgram;
 
     public ConvertFromSDKVisitor() {
@@ -154,7 +151,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         programMapObjects.put(appProgram.getUid(), appProgram);
 
         //Visit children
-        for (ProgramStageSectionExtended pss : programStage.getProgramStageSections()) {
+        for (ProgramStageSectionExtended pss : programStage.getProgramStageSectionsAsExtended()) {
             new ProgramStageSectionExtended(pss).accept(this);
         }
     }

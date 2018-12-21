@@ -39,13 +39,6 @@ public class ProgramStageDataElementExtended {
     public ProgramStageDataElementExtended(ProgramStageDataElementFlow programStageDataElementFlow){
         this.programStageDataElementFlow = programStageDataElementFlow;
     }
-    public ProgramStageDataElementExtended(ProgramStageDataElementExtended programStageDataElementExtended){
-        this.programStageDataElementFlow = programStageDataElementExtended.getProgramStageDataElementFlow();
-    }
-
-    public ProgramStageDataElementFlow getProgramStageDataElementFlow() {
-        return programStageDataElementFlow;
-    }
 
     public Boolean getCompulsory() {
         return programStageDataElementFlow.isCompulsory();

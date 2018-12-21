@@ -223,7 +223,7 @@ public class PullMetadataController implements IPullMetadataController {
         List<DataElementExtended> dataElements = new ArrayList<>();
         for (ProgramStageExtended programStage : program.getProgramStages()) {
             for (ProgramStageDataElementExtended programStageDataElement :
-                    programStage.getProgramStageDataElements()) {
+                    programStage.getProgramStageDataElementsAsExtended()) {
                 //The ProgramStageDataElement without Dataelement uid is not correctly
                 // configured.
                 if (hasProgramStageDataElementAConfigurationError(programStageDataElement)) continue;

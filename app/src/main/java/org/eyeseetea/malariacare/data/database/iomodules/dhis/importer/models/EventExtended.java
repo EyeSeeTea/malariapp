@@ -24,22 +24,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
-import com.raizlabs.android.dbflow.sql.language.Select;
 
-import org.eyeseetea.malariacare.data.remote.sdk.SdkQueries;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow_Table;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.FailedItemFlow;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.FailedItemFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.TrackedEntityDataValueFlow;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.TrackedEntityDataValueFlow_Table;
 import org.hisp.dhis.client.sdk.models.event.Event;
-import org.hisp.dhis.client.sdk.models.trackedentity.TrackedEntityDataValue;
 import org.joda.time.DateTime;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -51,26 +42,12 @@ public class EventExtended {
 
     private final static String TAG = ".EventExtended";
 
-
-    public static final Event.EventStatus STATUS_ACTIVE = Event.EventStatus.ACTIVE;
-    public static final Event.EventStatus STATUS_COMPLETED = Event.EventStatus.COMPLETED;
-    public static final Event.EventStatus STATUS_FUTURE_VISIT = Event.EventStatus.SCHEDULED;
-    public static final Event.EventStatus STATUS_SKIPPED = Event.EventStatus.SKIPPED;
-
     List<TrackedEntityDataValueFlow> dataValuesInMemory;
 
     EventFlow event;
 
     public EventExtended(EventFlow event) {
         this.event = event;
-    }
-
-    public EventExtended(EventExtended event) {
-        this.event = event.getEvent();
-    }
-
-    public EventExtended() {
-        event = new EventFlow();
     }
 
     public List<TrackedEntityDataValueFlow> getDataValuesInMemory() {
@@ -100,23 +77,6 @@ public class EventExtended {
         }
         return event.getCreated().toDate();
     }
-    /**
-     * Returns the survey.completionDate associated with this event (lastUpdated field)
-     */
-    public Date getLastUpdated() {
-        if (event == null) {
-            return null;
-        }
-
-        return event.getLastUpdated().toDate();
-    }
-
-    /**
-     * Returns the survey.eventDate associated with this event (eventDate field)
-     */
-    public Date getEventDate() {
-        return (event.getEventDate() != null) ? event.getEventDate().toDate() : null;
-    }
 
     /**
      * Returns the survey.eventDate associated with this event (dueDate field)
@@ -125,115 +85,18 @@ public class EventExtended {
         return (event != null) ? event.getDueDate().toDate() : null;
     }
 
-    /**
-     * Checks whether the given event contains errors in SDK FailedItemExtended table or has been
-     * successful.
-     * If not return null, it is becouse this item had a conflict.
-     */
-    public static FailedItemFlow hasConflict(long localId) {
-        return new Select()
-                .from(FailedItemFlow.class)
-                .where(FailedItemFlow_Table.itemId
-                        .is(localId)).querySingle();
-    }
-
-    public EventFlow removeDataValues() {
-        //Remove all dataValues
-        List<TrackedEntityDataValueFlow> dataValues = new Select().from(
-                TrackedEntityDataValueFlow.class)
-                .where(TrackedEntityDataValueFlow_Table.event.eq(event.getUId()))
-                .queryList();
-        if (dataValues != null) {
-            for (int i = dataValues.size() - 1; i >= 0; i--) {
-                TrackedEntityDataValueFlow dataValue = dataValues.get(i);
-                dataValue.delete();
-                dataValues.remove(i);
-            }
-        }
-        //// TODO: 15/11/2016
-        //event.setDataValues(null);
-        event.save();
-        return event;
-    }
-
     public static long count() {
         return SQLite.selectCountOf()
                 .from(EventFlow.class)
                 .count();
     }
 
-    public static List<EventFlow> getAllEvents() {
-        return new Select().from(EventFlow.class).queryList();
-    }
-
-    public static EventFlow getEvent(String eventUid) {
-        return new Select()
-                .from(EventFlow.class)
-                .where(EventFlow_Table.uId.eq(eventUid))
-                .querySingle();
-    }
-
-    public void setOrganisationUnitId(String uid) {
-        event.setOrgUnit(uid);
-    }
-
-    public void setProgramId(String uid) {
-        event.setProgram(uid);
-    }
-
-    public void setProgramStageId(String uid) {
-        event.setProgramStage(uid);
-    }
-
-    public void setLastUpdated(DateTime dateTime) {
-        event.setLastUpdated(dateTime);
-    }
-
-    public void setEventDate(DateTime dateTime) {
-        event.setEventDate(dateTime);
-    }
-
     public void setDueDate(DateTime dateTime) {
         event.setDueDate(dateTime);
     }
 
-    public long getLocalId() {
-        return event.getId();
-    }
-
     public String getUid() {
         return event.getUId();
-    }
-
-    public String getOrganisationUnitId() {
-        return event.getOrgUnit();
-    }
-
-    public String getProgramStageId() {
-        return event.getProgramStage();
-    }
-
-    public List<DataValueExtended> getDataValues() {
-        Event eventModel = SdkQueries.getEvent(event.getUId());
-        List<TrackedEntityDataValue> trackedEntityDataValues = eventModel.getDataValues();
-        List<DataValueExtended> dataValueExtendeds = new ArrayList<>();
-        for (TrackedEntityDataValue trackedEntityDataValue : trackedEntityDataValues) {
-            dataValueExtendeds.add(new DataValueExtended(
-                    TrackedEntityDataValueFlow.MAPPER.mapToDatabaseEntity(trackedEntityDataValue)));
-        }
-        return dataValueExtendeds;
-    }
-
-    public String getProgramId() {
-        return event.getProgram();
-    }
-
-    public void setLatitude(double latitude) {
-        event.setLatitude(latitude);
-    }
-
-    public void setLongitude(double longitude) {
-        event.setLongitude(longitude);
     }
 
     public void save() {
@@ -251,10 +114,6 @@ public class EventExtended {
 
     public void setCreationDate(Date creationDate) {
         event.setCreated(new DateTime(creationDate));
-    }
-
-    public void setEventUid(String eventUid) {
-        event.setUId(eventUid);
     }
 
     public static List<EventExtended> fromJsonToEvents(JsonNode jsonNode) {

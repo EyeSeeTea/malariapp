@@ -58,9 +58,6 @@ public class OptionExtended implements VisitableFromSDK {
 
     OptionFlow option;
 
-    public OptionExtended() {
-    }
-
     public OptionExtended(OptionFlow option) {
         this.option = option;
     }
