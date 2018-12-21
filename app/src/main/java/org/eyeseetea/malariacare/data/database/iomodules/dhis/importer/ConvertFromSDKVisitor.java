@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.data.database.iomodules.dhis.importer;
 
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.raizlabs.android.dbflow.structure.Model;
@@ -104,7 +105,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         questions = new ArrayList<>();
     }
 
-    public void saveBatch() {
+    public void saveQuestionsInBatch() {
         List<Model> models = new ArrayList<>();
         models.addAll(questions);
         SdkQueries.saveBatch(models);
@@ -477,36 +478,24 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     /**
      * Builds the orgunit hierarchy whenever is possible
      */
-    public boolean buildOrgUnitHierarchy(
+    public void assignOrgUnitParents(
             List<OrganisationUnitExtended> assignedOrganisationsUnits) {
 
         for (OrganisationUnitExtended organisationUnit : assignedOrganisationsUnits) {
 
             OrgUnitDB appOrgUnit = orgUnitDict.get(organisationUnit.getId());
+
             String parentUID = organisationUnit.getParent();
-            //FIXME: review this algorithm
-            if (parentUID == null) {
-                //path format=/VaXGMQY18R2/TyoXRBeZ12K/TeqzAowss4n/Doa9u6qkSO3/qeENMD3x6y7
-                //path[0] is ""
-                //path [1] is the last parent "VaXGMQY18R2"
-                String path = organisationUnit.getPath();
-                String[] pathUids = path.split("/");
-                if (pathUids.length > 2 && !pathUids[1].equals(organisationUnit.getId())) {
-                    for (int i = 2; i < pathUids.length; i++) {
-                        if (pathUids[i].equals(organisationUnit.getId())) {
-                            parentUID = pathUids[i - 1];
-                            Log.d(TAG, organisationUnit.getId() + " parent " + parentUID);
-                        }
-                    }
-                }
-            }
-            //No parent nothing to do
+
+            parentUID = getOrganisationUnitParentUidFromPath(organisationUnit, parentUID);
+
+            //No parent nothing to do, its a root organisation unit
             if (parentUID == null) {
                 Log.i(TAG, String.format("%s is a root orgUnit", appOrgUnit.getName()));
                 continue;
             }
 
-            //Find parent
+            //Find DBFLOW parent
             OrgUnitDB parentOrgUnit = orgUnitDict.get(parentUID);
 
             //Due to server permissions parent unit might not be loaded
@@ -517,10 +506,30 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             }
 
             appOrgUnit.setOrgUnit(parentOrgUnit.getId_org_unit());
+            //// TODO: 21/12/2018 WE CAN SAVE THIS IN BATCH
             appOrgUnit.save();
         }
-        return true;
+    }
 
+    @Nullable
+    private String getOrganisationUnitParentUidFromPath(OrganisationUnitExtended organisationUnit, String parentUID) {
+        //FIXME: review this algorithm
+        if (parentUID == null) {
+            //path format=/VaXGMQY18R2/TyoXRBeZ12K/TeqzAowss4n/Doa9u6qkSO3/qeENMD3x6y7
+            //path[0] is ""
+            //path [1] is the last parent "VaXGMQY18R2"
+            String path = organisationUnit.getPath();
+            String[] pathUids = path.split("/");
+            if (pathUids.length > 2 && !pathUids[1].equals(organisationUnit.getId())) {
+                for (int i = 2; i < pathUids.length; i++) {
+                    if (pathUids[i].equals(organisationUnit.getId())) {
+                        parentUID = pathUids[i - 1];
+                        Log.d(TAG, organisationUnit.getId() + " parent " + parentUID);
+                    }
+                }
+            }
+        }
+        return parentUID;
     }
 
 }

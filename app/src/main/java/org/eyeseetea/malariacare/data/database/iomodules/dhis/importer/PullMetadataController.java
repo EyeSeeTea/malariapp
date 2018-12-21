@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.data.database.iomodules.dhis.importer;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.R;
@@ -103,169 +104,71 @@ public class PullMetadataController implements IPullMetadataController {
      * Turns sdk metadata into app metadata
      */
     public void convertMetaData() {
+        //User (from UserAccount)
+        convertUser();
+
         //Convert Programs, Tabs
+        convertOptions();
+
         callback.onStep(PullStep.PREPARING_PROGRAMS);
         System.out.printf("Converting programs and tabs...");
-        List<String> assignedProgramsIDs = SdkQueries.getAssignedProgramUids(
-                PreferencesState.getInstance().getContext().getString(
-                        R.string.pull_program_code));
-        for (String assignedProgramID : assignedProgramsIDs) {
-            ProgramExtended programExtended = new ProgramExtended(
-                    SdkQueries.getProgram(assignedProgramID));
-            programExtended.accept(converter);
+
+        List<ProgramExtended> assignedProgramExtendeds = ProgramExtended.getAllPrograms(PreferencesState.getInstance().getContext().getString(
+                R.string.pull_program_code));
+
+        for (ProgramExtended program : assignedProgramExtendeds) {
+            program.accept(converter);
+            Log.i(TAG, String.format("\t\t program '%s' ", program.getName()));
         }
 
-        //Convert Answers, Options
-        callback.onStep(PullStep.PREPARING_ANSWERS);
-        List<OptionSetExtended> optionSets = OptionSetExtended.getExtendedList(
-                SdkQueries.getOptionSets());
-        System.out.printf("Converting answers and options...");
-        for (OptionSetExtended optionSet : optionSets) {
-            optionSet.accept(converter);
-        }
         //OrganisationUnits
-        if (!convertOrgUnits(converter)) return;
-        //User (from UserAccount)
-        System.out.printf("Converting user...");
-        UserAccountExtended userAccountExtended = new UserAccountExtended(
-                SdkQueries.getUserAccount());
-        userAccountExtended.accept(converter);
+        convertOrgUnits(converter);
 
         //Convert questions and compositeScores
         callback.onStep(PullStep.PREPARING_QUESTIONS);
         System.out.printf("Ordering questions and compositeScores...");
-
-        int count;
-        //Dataelements ordered by program.
-        List<ProgramExtended> programs = ProgramExtended.getAllPrograms(
-                PreferencesState.getInstance().getContext().getString(
-                        R.string.pull_program_code));
         Map<String, List<DataElementExtended>> programsDataelements = new HashMap<>();
-        for (ProgramExtended program : programs) {
+
+        for (ProgramExtended program : assignedProgramExtendeds) {
             converter.actualProgram = program;
             Log.i(TAG, String.format("\t program '%s' ", program.getName()));
-            List<DataElementExtended> dataElements = new ArrayList<>();
+
             String programUid = program.getUid();
-            List<ProgramStageExtended> programStages = program.getProgramStages();
-            for (ProgramStageExtended programStage : programStages) {
-                Log.d(TAG, "programStage.getProgramStageDataElements size: "
-                        + programStage.getProgramStageDataElements().size());
-                Log.i(TAG, String.format("\t\t programStage '%s' ", program.getName()));
-                List<ProgramStageDataElementExtended> programStageDataElements =
-                        programStage.getProgramStageDataElements();
-                count = programStage.getProgramStageDataElements().size();
-                for (ProgramStageDataElementExtended programStageDataElement :
-                        programStageDataElements) {
 
-                    //The ProgramStageDataElement without Dataelement uid is not correctly
-                    // configured.
-                    if (programStageDataElement.getDataelement() == null
-                            || programStageDataElement.getDataelement().equals("")) {
-                        Log.d(TAG, "Ignoring ProgramStageDataElements without dataelement...");
-                        continue;
-                    }
+            List<DataElementExtended> dataElements = getDataElements(program);
 
-                    //Note: the sdk method getDataElement returns the dataElement object, and
-                    // getDataelement returns the dataelement uid.
-                    DataElementExtended dataElement = programStageDataElement.getDataElement();
-                    if (dataElement != null && dataElement.getUid() != null) {
-                        dataElements.add(dataElement);
-                    } else {
-                        DataElementExtended.existsDataElementByUid(
-                                programStageDataElement.getDataelement());
-                        dataElement = new DataElementExtended(SdkQueries.getDataElement(
-                                programStageDataElement.getDataelement()));
-
-                        if (dataElement != null) {
-                            dataElements.add(dataElement);
-                        } else {
-                            //FIXME This query returns random null for some dataelements but
-                            // those dataElements are stored in the database. It's a possible bug
-                            // of dbflow and DataElement pojo conversion.
-                            Log.d(TAG, "Null dataelement on first query "
-                                    + programStageDataElement.getProgramStage());
-                            int times = 0;
-                            while (dataElement == null) {
-                                times++;
-                                Log.d(TAG, "running : " + times);
-                                try {
-                                    Thread.sleep(100);
-                                    dataElement = new DataElementExtended(SdkQueries.getDataElement(
-                                            programStageDataElement.getDataelement()));
-                                } catch (InterruptedException e) {//throw new RuntimeException
-                                    // ("Null query");
-                                    e.printStackTrace();
-                                }
-                            }
-                            Log.d(TAG, "needed : " + times);
-                            dataElements.add(dataElement);
-                        }
-                    }
-                }
-
-                if (count != dataElements.size()) {
-                    Log.d(TAG, "The programStageDataElements size (" + count
-                            + ") is different than the saved dataelements size ("
-                            + dataElements.size() + ")");
-                }
-            }
             Log.i(TAG, String.format("\t program '%s' DONE ", program.getName()));
 
-            Collections.sort(dataElements, new Comparator<DataElementExtended>() {
-                public int compare(DataElementExtended dataElementExtended1,
-                        DataElementExtended dataElementExtended2) {
-                    Integer dataelementOrder1 = -1, dataelementOrder2 = -1;
-                    try {
-                        dataelementOrder1 = dataElementExtended1.findOrder();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        dataelementOrder1 = null;
-                    }
-                    try {
-                        dataelementOrder2 = dataElementExtended2.findOrder();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        dataelementOrder2 = null;
-                    }
-                    if (dataelementOrder1 == dataelementOrder2) {
-                        return 0;
-                    } else if (dataelementOrder1 == null) {
-                        return 1;
-                    } else if (dataelementOrder2 == null) {
-                        return -1;
-                    }
-                    return dataelementOrder1.compareTo(dataelementOrder2);
-                }
-            });
+            orderDataElementsByProgramUsingOrderField(dataElements);
+
             programsDataelements.put(programUid, dataElements);
         }
 
         System.out.printf("Building questions,compositescores,headers...");
-        int i = 0;
-        for (ProgramExtended program : programs) {
-            converter.actualProgram = program;
-            String programUid = program.getUid();
-            List<DataElementExtended> sortDataElements = programsDataelements.get(programUid);
-            for (DataElementExtended dataElement : sortDataElements) {
-                /* // TODO: 23/01/2017
-                if (++i % 50 == 0) {
-                    postProgress(
-                            context.getString(R.string.progress_pull_questions) + String.format(
-                                    " %s", i));
-                }
-                */
-                //Log.i(TAG,"Converting DE "+dataElementExtended.getDataElement().getUid());
-                dataElement.setProgramUid(programUid);
-                dataElement.accept(converter);
-            }
+        for (ProgramExtended program : assignedProgramExtendeds) {
+            convertDataElementsOrderedByProgramAndOrderField(programsDataelements, program);
         }
 
         //Saves questions and media in batch mode
-        converter.saveBatch();
+        converter.saveQuestionsInBatch();
 
         System.out.printf("Building relationships...");
         callback.onStep(PullStep.PREPARING_RELATIONSHIPS);
-        for (ProgramExtended program : programs) {
+
+        //I think this method is executed after save the questions to has a question ID
+        buildAndSaveQuestionRelations(assignedProgramExtendeds, programsDataelements);
+
+        //check if the CS are valid cs and remove unused cs
+        validateCompositeScore();
+
+        //Fill order and parent scores
+        System.out.printf("Building compositeScore relationships...");
+        converter.buildScores();
+        System.out.printf("MetaData successfully converted...");
+    }
+
+    private void buildAndSaveQuestionRelations(List<ProgramExtended> assignedProgramExtendeds, Map<String, List<DataElementExtended>> programsDataelements) {
+        for (ProgramExtended program : assignedProgramExtendeds) {
             converter.actualProgram = program;
             String programUid = program.getUid();
             List<DataElementExtended> sortDataElements = programsDataelements.get(programUid);
@@ -275,40 +178,171 @@ public class PullMetadataController implements IPullMetadataController {
                 converter.buildRelations(dataElement);
             }
         }
+    }
 
-        validateCS();
+    private void convertDataElementsOrderedByProgramAndOrderField(Map<String, List<DataElementExtended>> programsDataelements, ProgramExtended program) {
+        converter.actualProgram = program;
+        String programUid = program.getUid();
+        List<DataElementExtended> sortDataElements = programsDataelements.get(programUid);
+        for (DataElementExtended dataElement : sortDataElements) {
+            dataElement.setProgramUid(programUid);
+            dataElement.accept(converter);
+        }
+    }
 
-        //Fill order and parent scores
-        System.out.printf("Building compositeScore relationships...");
-        converter.buildScores();
-        System.out.printf("MetaData successfully converted...");
+    private void orderDataElementsByProgramUsingOrderField(List<DataElementExtended> dataElements) {
+        Collections.sort(dataElements, new Comparator<DataElementExtended>() {
+            public int compare(DataElementExtended dataElementExtended1,
+                    DataElementExtended dataElementExtended2) {
+                Integer dataelementOrder1 = -1, dataelementOrder2 = -1;
+                try {
+                    dataelementOrder1 = dataElementExtended1.findOrder();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    dataelementOrder1 = null;
+                }
+                try {
+                    dataelementOrder2 = dataElementExtended2.findOrder();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    dataelementOrder2 = null;
+                }
+                if (dataelementOrder1 == dataelementOrder2) {
+                    return 0;
+                } else if (dataelementOrder1 == null) {
+                    return 1;
+                } else if (dataelementOrder2 == null) {
+                    return -1;
+                }
+                return dataelementOrder1.compareTo(dataelementOrder2);
+            }
+        });
+    }
+
+    private List<DataElementExtended> getDataElements(ProgramExtended program) {
+        List<DataElementExtended> dataElements = new ArrayList<>();
+        for (ProgramStageExtended programStage : program.getProgramStages()) {
+            for (ProgramStageDataElementExtended programStageDataElement :
+                    programStage.getProgramStageDataElements()) {
+                //The ProgramStageDataElement without Dataelement uid is not correctly
+                // configured.
+                if (hasProgramStageDataElementAConfigurationError(programStageDataElement)) continue;
+
+                //Note: the sdk method getDataElement returns the dataElement object, and
+                // getDataelement returns the dataelement uid.
+                DataElementExtended dataElement = programStageDataElement.getDataElement();
+                if (dataElement != null && dataElement.getUid() != null) {
+                    dataElements.add(dataElement);
+                } else {
+                    getDataElementUIDFromDBFlowDatabaseIfIsNull(dataElements, programStageDataElement);
+                }
+            }
+        }
+        return dataElements;
+    }
+
+    private boolean hasProgramStageDataElementAConfigurationError(ProgramStageDataElementExtended programStageDataElement) {
+        if (programStageDataElement.getDataelement() == null
+                || programStageDataElement.getDataelement().equals("")) {
+            Log.d(TAG, "Ignoring ProgramStageDataElements without dataelement...");
+            return true;
+        }
+        return false;
+    }
+
+    private void getDataElementUIDFromDBFlowDatabaseIfIsNull(List<DataElementExtended> dataElements, ProgramStageDataElementExtended programStageDataElement) {
+        DataElementExtended dataElement;
+        DataElementExtended.existsDataElementByUid(
+                programStageDataElement.getDataelement());
+        dataElement = new DataElementExtended(SdkQueries.getDataElement(
+                programStageDataElement.getDataelement()));
+
+        if (dataElement != null) {
+            dataElements.add(dataElement);
+        } else {
+            getDataElementUidValueInDBFlowStrangeBug(dataElements, programStageDataElement, dataElement);
+
+        }
+    }
+
+    //Sometimes the dataelement was empty in a normal use of the app. This doesn't happen debugging or applying this solution
+    private void getDataElementUidValueInDBFlowStrangeBug(List<DataElementExtended> dataElements, ProgramStageDataElementExtended programStageDataElement, DataElementExtended dataElement) {
+        //FIXME This query returns random null for some dataelements but
+        // those dataElements are stored in the database. It's a possible bug
+        // of dbflow and DataElement pojo conversion.
+        Log.d(TAG, "Null dataelement on first query "
+                + programStageDataElement.getProgramStage());
+        int times = 0;
+        while (dataElement == null) {
+            times++;
+            Log.d(TAG, "running : " + times);
+            try {
+                Thread.sleep(100);
+                dataElement = new DataElementExtended(SdkQueries.getDataElement(
+                        programStageDataElement.getDataelement()));
+            } catch (InterruptedException e) {//throw new RuntimeException
+                // ("Null query");
+                e.printStackTrace();
+            }
+        }
+        Log.d(TAG, "needed : " + times);
+        dataElements.add(dataElement);
+    }
+
+    private void convertUser() {
+        System.out.printf("Converting user...");
+        UserAccountExtended userAccountExtended = new UserAccountExtended(
+                SdkQueries.getUserAccount());
+        userAccountExtended.accept(converter);
+    }
+
+    private void convertOptions() {
+        //Convert Answers, Options
+        callback.onStep(PullStep.PREPARING_ANSWERS);
+        List<OptionSetExtended> optionSets = OptionSetExtended.getExtendedList(
+                SdkQueries.getOptionSets());
+        System.out.printf("Converting answers and options...");
+        for (OptionSetExtended optionSet : optionSets) {
+            optionSet.accept(converter);
+        }
     }
 
     /**
      * Turns sdk organisationUnit and levels into app info
      */
-    private boolean convertOrgUnits(ConvertFromSDKVisitor converter) {
+    private void convertOrgUnits(ConvertFromSDKVisitor converter) {
         callback.onStep(PullStep.PREPARING_ORGANISATION_UNITS);
         System.out.printf("Converting organisationUnitLevels...");
+        convertOrganisationUnitLevels(converter);
+
+        List<OrganisationUnitExtended> assignedOrganisationsUnits = convertOrganisationUnits(converter);
+
+        System.out.printf("Building orgunit hierarchy...");
+        converter.assignOrgUnitParents(assignedOrganisationsUnits);
+    }
+
+    private void convertOrganisationUnitLevels(ConvertFromSDKVisitor converter) {
         List<OrganisationUnitLevelExtended> organisationUnitLevels =
                 OrganisationUnitLevelExtended.getExtendedList(
                         SdkQueries.getOrganisationUnitLevels());
         for (OrganisationUnitLevelExtended organisationUnitLevel : organisationUnitLevels) {
             organisationUnitLevel.accept(converter);
         }
+    }
 
+    @NonNull
+    private List<OrganisationUnitExtended> convertOrganisationUnits(ConvertFromSDKVisitor converter) {
         System.out.printf("Converting organisationUnits...");
         List<OrganisationUnitExtended> assignedOrganisationsUnits =
                 OrganisationUnitExtended.getExtendedList(SdkQueries.getAssignedOrganisationUnits());
         for (OrganisationUnitExtended assignedOrganisationsUnit : assignedOrganisationsUnits) {
             assignedOrganisationsUnit.accept(converter);
         }
-
-        System.out.printf("Building orgunit hierarchy...");
-        return converter.buildOrgUnitHierarchy(assignedOrganisationsUnits);
+        return assignedOrganisationsUnits;
     }
 
-    private void validateCS() {
+    //this method exists to identify server metadata configuration errors and remove unused composite scores
+    private void validateCompositeScore() {
         Log.d(TAG, "Validate Composite scores");
         callback.onStep(PullStep.VALIDATE_COMPOSITE_SCORES);
         List<CompositeScoreDB> compositeScores = CompositeScoreDB.list();

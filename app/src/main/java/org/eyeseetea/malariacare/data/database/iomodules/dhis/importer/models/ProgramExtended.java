@@ -157,14 +157,14 @@ public class ProgramExtended implements VisitableFromSDK {
                 .and(AttributeValueFlow_Table.value.is(pullProgramCode)).queryList();
         List<ProgramExtended> programsExtended = new ArrayList<>();
         for(ProgramFlow programFlow : programFlows){
-            programsExtended.add(new ProgramExtended(programFlow));
+            programsExtended.add(new ProgramExtended(getProgram(programFlow.getUId())));
         }
         return programsExtended;
     }
 
-    public static ProgramFlow getProgram(String id){
+    public static ProgramFlow getProgram(String uId){
         return new Select()
-                .from(ProgramFlow.class).where(ProgramFlow_Table.uId.eq(id)).querySingle();
+                .from(ProgramFlow.class).where(ProgramFlow_Table.uId.eq(uId)).querySingle();
     }
 
 
