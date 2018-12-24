@@ -55,6 +55,7 @@
     <string name="eula_accepted" translatable="false">eula_accepted</string>
     <string name="dhis_url" translatable="false">dhis_url</string>
     <string name="dhis_user" translatable="false">dhis_user</string>
+    <string name="dhis_api_version" translatable="false">dhis_api_version</string>
     <string name="dhis_password" translatable="false">dhis_password</string>
     <string name="dhis_max_items" translatable="false">dhis_max_items</string>
     <string name="dhis_default_max_items" translatable="false">30</string>

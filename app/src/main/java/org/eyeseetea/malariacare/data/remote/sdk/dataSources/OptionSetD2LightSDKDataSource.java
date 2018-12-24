@@ -42,7 +42,8 @@ public class OptionSetD2LightSDKDataSource
     @Override
     public List<OptionSet> getAll() throws Exception {
 
-        D2Response optionSetsResponse = getD2Api().optionSets().getAll().execute();
+        D2Response<List<org.eyeseetea.dhis2.lightsdk.optionsets.OptionSet>> optionSetsResponse =
+                getD2Api().optionSets().getAll().execute();
 
         if (optionSetsResponse.isSuccess()) {
             D2Response.Success<List<org.eyeseetea.dhis2.lightsdk.optionsets.OptionSet>> success =
@@ -57,23 +58,6 @@ public class OptionSetD2LightSDKDataSource
         }
 
         return null;
-    }
-
-    private void handleError(D2Response.Error errorResponse) throws Exception {
-        //TODO: for the moment throw exceptions here
-        //on the future we will return Algebraic data type object (Result = Success | Error)
-        if (errorResponse instanceof D2Response.Error.NetworkConnection) {
-            throw new NetworkException();
-        } else if (errorResponse instanceof D2Response.Error.HttpError){
-            D2Response.Error.HttpError httpError = (D2Response.Error.HttpError) errorResponse;
-
-            String message = "";
-
-            if (httpError.getErrorBody() != null)
-                message = httpError.getErrorBody().getMessage();
-
-            throw new ServerException(httpError.getHttpStatusCode(), message);
-        }
     }
 
     private List<OptionSet> mapToDomain(

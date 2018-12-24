@@ -43,7 +43,7 @@ public class AuthenticationManagerLocalDataSource implements IAuthenticationMana
 
     @Override
     public void logout(IDataSourceCallback<Void> callback) {
-        clearCredentials();
+        clearDhisParameters();
 
         Session.logout();
 
@@ -59,7 +59,7 @@ public class AuthenticationManagerLocalDataSource implements IAuthenticationMana
 
         saveUser(credentials);
 
-        saveCredentials(credentials);
+        saveDhisParameters(credentials);
 
         callback.onSuccess(null);
     }
@@ -72,7 +72,7 @@ public class AuthenticationManagerLocalDataSource implements IAuthenticationMana
         Session.setUser(user);
     }
 
-    private void saveCredentials(Credentials credentials) {
+    private void saveDhisParameters(Credentials credentials) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(mContext.getString(R.string.dhis_url), credentials.getServerURL());
@@ -84,12 +84,13 @@ public class AuthenticationManagerLocalDataSource implements IAuthenticationMana
         Session.setCredentials(credentials);
     }
 
-    private void clearCredentials() {
+    private void clearDhisParameters() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(mContext.getString(R.string.dhis_url), "");
         editor.putString(mContext.getString(R.string.dhis_user), "");
         editor.putString(mContext.getString(R.string.dhis_password), "");
+        editor.putString(mContext.getString(R.string.dhis_api_version), "");
         editor.commit();
         PreferencesState.getInstance().reloadServerUrl();
     }
