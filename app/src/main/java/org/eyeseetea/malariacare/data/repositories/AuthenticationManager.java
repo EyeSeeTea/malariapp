@@ -21,24 +21,29 @@ package org.eyeseetea.malariacare.data.repositories;
 
 import android.content.Context;
 
-import org.eyeseetea.malariacare.data.IDataSourceCallback;
 import org.eyeseetea.malariacare.data.IAuthenticationManagerDataSource;
+import org.eyeseetea.malariacare.data.IDataSourceCallback;
+import org.eyeseetea.malariacare.data.boundaries.ICredentialsDataSource;
 import org.eyeseetea.malariacare.data.database.datasources.AuthenticationManagerLocalDataSource;
-import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.data.database.datasources.CredentialsLocalDataSource;
 import org.eyeseetea.malariacare.data.remote.sdk.AuthenticationManagerDhisSDKDataSource;
 import org.eyeseetea.malariacare.domain.boundary.IRepositoryCallback;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IAuthenticationManager;
+import org.eyeseetea.malariacare.domain.boundary.repositories.ICredentialsRepository;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
 
 public class AuthenticationManager implements IAuthenticationManager {
     IAuthenticationManagerDataSource userAccountLocalDataSource;
     IAuthenticationManagerDataSource userAccountRemoteDataSource;
+    ICredentialsRepository mCredentialsRepository;
 
     public AuthenticationManager(Context context) {
 
         userAccountLocalDataSource = new AuthenticationManagerLocalDataSource(context);
         userAccountRemoteDataSource = new AuthenticationManagerDhisSDKDataSource(context);
+        ICredentialsDataSource credentialsDataSource = new CredentialsLocalDataSource(context);
+        mCredentialsRepository = new CredentialsRepository(credentialsDataSource);
     }
 
     @Override
@@ -54,8 +59,7 @@ public class AuthenticationManager implements IAuthenticationManager {
     @Override
     public void logout(final IRepositoryCallback<Void> callback) {
 
-        //TODO: jsanchez fix find out IsDemo from current UserAccount getting from DataSource
-        Credentials credentials = Session.getCredentials();
+        Credentials credentials = mCredentialsRepository.getCredentials();
 
         if (credentials.isDemoCredentials()) {
             localLogout(callback);

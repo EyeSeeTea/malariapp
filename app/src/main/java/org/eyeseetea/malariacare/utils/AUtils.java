@@ -41,7 +41,6 @@ import org.eyeseetea.malariacare.BuildConfig;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.datasources.UserAccountLocalDataSource;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 import org.eyeseetea.malariacare.data.database.model.HeaderDB;
 import org.eyeseetea.malariacare.data.database.model.QuestionDB;
@@ -50,8 +49,11 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.remote.api.UserAccountAPIDataSource;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
+import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
+import org.eyeseetea.malariacare.domain.usecase.GetCredentialsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.SaveUserAccountUseCase;
+import org.eyeseetea.malariacare.factories.AuthenticationFactory;
 import org.eyeseetea.malariacare.layout.utils.QuestionRow;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
@@ -61,13 +63,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 
 public abstract class AUtils {
 
@@ -324,19 +322,14 @@ public abstract class AUtils {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         userAccount.acceptAnnouncement();
-                        SaveUserAccountUseCase saveUserAccountUseCase = new SaveUserAccountUseCase(
-                                new AsyncExecutor(),
-                                new UIThreadExecutor(),
-                                new UserAccountRepository(new UserAccountAPIDataSource(Session.getCredentials()),
-                                        new UserAccountLocalDataSource())
-                        );
-                        saveUserAccountUseCase.execute(new SaveUserAccountUseCase.Callback() {
+                        GetCredentialsUseCase getCredentialsUseCase =
+                                new AuthenticationFactory().getLoadCredentialsUseCase(context);
+                        getCredentialsUseCase.execute(new GetCredentialsUseCase.Callback() {
                             @Override
-                            public void onSuccess() {
-                                if(userAccount.isClosed()){
-                                    checkUserClosed(context);
-                                }
-                            }}, userAccount);
+                            public void onSuccess(Credentials credentials) {
+                                saveUserAccount(credentials, context, userAccount);
+                            }
+                        });
                         }}).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -348,6 +341,24 @@ public abstract class AUtils {
         dialog.show();
         ((TextView) dialog.findViewById(android.R.id.message)).setMovementMethod(
                 LinkMovementMethod.getInstance());
+    }
+
+    private static void saveUserAccount(Credentials credentials, final Context context,
+            final UserAccount userAccount) {
+        SaveUserAccountUseCase saveUserAccountUseCase = new SaveUserAccountUseCase(
+                new AsyncExecutor(),
+                new UIThreadExecutor(),
+                new UserAccountRepository(new UserAccountAPIDataSource(credentials),
+                        new UserAccountLocalDataSource())
+        );
+        saveUserAccountUseCase.execute(new SaveUserAccountUseCase.Callback() {
+            @Override
+            public void onSuccess() {
+                if (userAccount.isClosed()) {
+                    checkUserClosed(context);
+                }
+            }
+        }, userAccount);
     }
 
     public static void checkUserClosed(Context context) {
