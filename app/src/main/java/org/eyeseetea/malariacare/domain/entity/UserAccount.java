@@ -19,7 +19,9 @@
 
 package org.eyeseetea.malariacare.domain.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static org.eyeseetea.malariacare.domain.common.RequiredChecker.required;
 
@@ -30,13 +32,30 @@ public class UserAccount {
     private String announcement;
     private Date closedDate;
     private boolean isAnnouncementAccept;
+    private List<String> assignedPrograms = new ArrayList<>();
+    private List<String> assignedOrgUnits = new ArrayList<>();
 
-    public UserAccount(String name, String userName, String userUid, String announcement, Date closedDate) {
+    public UserAccount(String name, String userName, String userUid, String announcement,
+            Date closedDate) {
         this.name = required(name, "name is required");
         this.userName = required(userName, "user name is required");
         this.userUid = required(userUid, "user uid is required");
         this.announcement = announcement;
         this.closedDate = closedDate;
+    }
+
+    public UserAccount(String name, String userName, String userUid,
+            String announcement, Date closedDate, List<String> assignedPrograms,
+            List<String> assignedOrgUnits) {
+        this(name, userName, userUid, announcement, closedDate);
+
+        if (assignedOrgUnits != null) {
+            this.assignedOrgUnits = assignedOrgUnits;
+        }
+
+        if (assignedPrograms != null) {
+            this.assignedPrograms = assignedPrograms;
+        }
     }
 
     public String getName() {
@@ -55,29 +74,29 @@ public class UserAccount {
         return announcement;
     }
 
-    public void changeAnnouncement(String announcement){
-        if(announcement.isEmpty()){
+    public void changeAnnouncement(String announcement) {
+        if (announcement.isEmpty()) {
             return;
         }
-        if(this.announcement!=null && this.announcement.equals(announcement)){
+        if (this.announcement != null && this.announcement.equals(announcement)) {
             return;
         }
         isAnnouncementAccept = false;
         this.announcement = announcement;
     }
 
-    public void acceptAnnouncement(){
+    public void acceptAnnouncement() {
         isAnnouncementAccept = true;
     }
 
-    public boolean isAnnouncementAccept(){
+    public boolean isAnnouncementAccept() {
         return isAnnouncementAccept;
     }
 
     public boolean isClosed() {
-        if(closedDate==null) {
+        if (closedDate == null) {
             return false;
-        }else{
+        } else {
             return closedDate.before(new Date());
         }
     }
@@ -91,6 +110,14 @@ public class UserAccount {
     }
 
     public boolean shouldDisplayAnnouncement() {
-        return (announcement!=null && !announcement.isEmpty() && !isAnnouncementAccept);
+        return (announcement != null && !announcement.isEmpty() && !isAnnouncementAccept);
+    }
+
+    public List<String> getAssignedPrograms() {
+        return assignedPrograms;
+    }
+
+    public List<String> getAssignedOrgUnits() {
+        return assignedOrgUnits;
     }
 }
