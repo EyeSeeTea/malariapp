@@ -41,14 +41,13 @@ import org.eyeseetea.malariacare.BuildConfig;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.datasources.UserAccountLocalDataSource;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 import org.eyeseetea.malariacare.data.database.model.HeaderDB;
 import org.eyeseetea.malariacare.data.database.model.QuestionDB;
 import org.eyeseetea.malariacare.data.database.model.TabDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
-import org.eyeseetea.malariacare.data.remote.api.UserAccountAPIDataSource;
+import org.eyeseetea.malariacare.data.remote.api.UserAccountD2LightSDKDataSource;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
 import org.eyeseetea.malariacare.domain.usecase.SaveUserAccountUseCase;
@@ -61,13 +60,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 
 public abstract class AUtils {
 
@@ -327,7 +322,7 @@ public abstract class AUtils {
                         SaveUserAccountUseCase saveUserAccountUseCase = new SaveUserAccountUseCase(
                                 new AsyncExecutor(),
                                 new UIThreadExecutor(),
-                                new UserAccountRepository(new UserAccountAPIDataSource(Session.getCredentials()),
+                                new UserAccountRepository(new UserAccountD2LightSDKDataSource(context),
                                         new UserAccountLocalDataSource())
                         );
                         saveUserAccountUseCase.execute(new SaveUserAccountUseCase.Callback() {

@@ -53,7 +53,11 @@ public class SaveUserAccountUseCase implements UseCase {
 
     @Override
     public void run() {
-        userAccountRepository.saveUser(userAccount);
+        try {
+            userAccountRepository.saveUser(userAccount);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         notifyOnComplete();
     }
 

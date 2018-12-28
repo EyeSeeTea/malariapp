@@ -51,9 +51,6 @@ public class UserDB extends BaseModel {
     @Column
     boolean isAnnouncementAccepted;
 
-    public static final String ATTRIBUTE_USER_CLOSE_DATE = "USER_CLOSE_DATE";
-    public static final String ATTRIBUTE_USER_ANNOUNCEMENT = "USER_ANNOUNCEMENT";
-
     public UserDB() {
     }
 

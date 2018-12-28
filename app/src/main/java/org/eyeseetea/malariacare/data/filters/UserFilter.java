@@ -18,7 +18,7 @@
  */
 
 package org.eyeseetea.malariacare.data.filters;
-
+/*
 public class UserFilter {
 
     String uid;
@@ -30,4 +30,4 @@ public class UserFilter {
     public String getUid() {
         return uid;
     }
-}
+}*/
