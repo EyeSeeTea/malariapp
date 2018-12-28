@@ -64,7 +64,11 @@ public class Permissions {
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             permissionsInstance.removePermission(requestCode);
             return true;
+        }else if(grantResults.length > 0
+                && grantResults[0] == PackageManager.PERMISSION_DENIED){
+            permissionsInstance.removePermission(requestCode);
         }
+
         return false;
     }
 
