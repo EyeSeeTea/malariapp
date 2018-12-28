@@ -40,12 +40,17 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.metadata.PhoneMetaData;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
+import org.eyeseetea.malariacare.data.remote.api.UserAccountAPIDataSource;
 import org.eyeseetea.malariacare.data.remote.api.UserAccountD2LightSDKDataSource;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
+import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.common.ReadPolicy;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
+import org.eyeseetea.malariacare.domain.enums.NetworkStrategy;
+import org.eyeseetea.malariacare.domain.usecase.GetCredentialsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.GetUserAccountUseCase;
 import org.eyeseetea.malariacare.drive.DriveRestController;
+import org.eyeseetea.malariacare.factories.AuthenticationFactory;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.DashboardController;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.ImproveModuleController;
@@ -71,29 +76,15 @@ public class DashboardActivity extends BaseActivity {
 
         handler = new Handler(Looper.getMainLooper());
         dashboardActivity = this;
-        if (getIntent().getBooleanExtra(getString(R.string.show_announcement_key), true)
-                && !Session.getCredentials().isDemoCredentials()) {
-            GetUserAccountUseCase getUserAccountUseCase = new GetUserAccountUseCase(
-                    new AsyncExecutor(),
-                    new UIThreadExecutor(),
-                    new UserAccountRepository(
-                            new UserAccountD2LightSDKDataSource(getApplicationContext()),
-                            new UserAccountLocalDataSource())
-            );
 
-            getUserAccountUseCase.execute(ReadPolicy.NETWORK_FIRST,
-                    new GetUserAccountUseCase.Callback() {
-                        @Override
-                        public void onSuccess(UserAccount userAccount) {
-                            announcementAndUserClosedActions(userAccount);
-                        }
-
-                        @Override
-                        public void onError() {
-                            System.out.println("Error recovering user account.");
-                        }
-                    });
-        }
+        GetCredentialsUseCase getCredentialsUseCase =
+                new AuthenticationFactory().getLoadCredentialsUseCase(this);
+        getCredentialsUseCase.execute(new GetCredentialsUseCase.Callback() {
+            @Override
+            public void onSuccess(Credentials credentials) {
+                getUserAccount(credentials);
+            }
+        });
 
         loadPhoneMetadata();
 
@@ -106,12 +97,44 @@ public class DashboardActivity extends BaseActivity {
         //delegate modules initialization
         dashboardController.onCreate(this, savedInstanceState);
 
-        if (!Session.getCredentials().isDemoCredentials()) {
+        reloadDashboard();
+    }
+
+    private void getUserAccount(Credentials credentials) {
+
+        if (getIntent().getBooleanExtra(getString(R.string.show_announcement_key), true)
+                && !credentials.isDemoCredentials()) {
+            GetUserAccountUseCase getUserAccountUseCase = new GetUserAccountUseCase(
+                    new AsyncExecutor(),
+                    new UIThreadExecutor(),
+                    new UserAccountRepository(
+                            new UserAccountAPIDataSource(credentials),
+                            new UserAccountLocalDataSource())
+            );
+
+            getUserAccountUseCase.execute(NetworkStrategy.NETWORK_FIRST,
+                    new GetUserAccountUseCase.Callback() {
+                        @Override
+                        public void onSuccess(UserAccount userAccount) {
+                            announcementAndUserClosedActions(userAccount);
+                        }
+
+                        @Override
+                        public void onError() {
+                            System.out.println("Error recovering user account.");
+                        }
+                    });
+        }
+    }
+
+    private void initDriveRestController(Credentials credentials) {
+        if (!credentials.isDemoCredentials()) {
             //Media: init drive credentials
             DriveRestController.getInstance().init(this);
         }
-        reloadDashboard();
     }
+
+
 
     private void announcementAndUserClosedActions(UserAccount userAccount) {
         if (userAccount.shouldDisplayAnnouncement()) {

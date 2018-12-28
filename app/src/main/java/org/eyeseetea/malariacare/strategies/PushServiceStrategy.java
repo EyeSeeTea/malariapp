@@ -28,9 +28,12 @@ import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.domain.exception.push.PushValueException;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
+import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.exception.push.PushValueException;
+import org.eyeseetea.malariacare.domain.usecase.GetCredentialsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.MockedPushSurveysUseCase;
 import org.eyeseetea.malariacare.domain.usecase.PushUseCase;
+import org.eyeseetea.malariacare.factories.AuthenticationFactory;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
@@ -49,14 +52,19 @@ public class PushServiceStrategy {
 
     public void push(PushUseCase pushUseCase) {
         this.pushUseCase = pushUseCase;
-
-        if (Session.getCredentials().isDemoCredentials()) {
-            Log.d(TAG, "execute mocked push");
-            executeMockedPush();
-        } else {
-            Log.d(TAG, "execute push");
-            executePush();
-        }
+       GetCredentialsUseCase getCredentialsUseCase =new  AuthenticationFactory().getLoadCredentialsUseCase(mPushService);
+       getCredentialsUseCase.execute(new GetCredentialsUseCase.Callback() {
+           @Override
+           public void onSuccess(Credentials credentials) {
+               if (credentials.isDemoCredentials()) {
+                   Log.d(TAG, "execute mocked push");
+                   executeMockedPush();
+               } else {
+                   Log.d(TAG, "execute push");
+                   executePush();
+               }
+           }
+       });
     }
 
     private void executeMockedPush() {

@@ -40,7 +40,6 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
-import org.eyeseetea.malariacare.domain.usecase.LoadCredentialsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullDemoUseCase;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
@@ -60,10 +59,6 @@ public class LoginActivityStrategy {
 
     public void onCreate() {
         if (existsLoggedUser()) {
-            LoadCredentialsUseCase loadUserAndCredentialsUseCase =
-                    new LoadCredentialsUseCase(loginActivity);
-
-            loadUserAndCredentialsUseCase.execute();
 
             finishAndGo(DashboardActivity.class);
 
