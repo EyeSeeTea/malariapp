@@ -1,5 +1,7 @@
 package org.eyeseetea.malariacare.data.repositories;
 
+import android.util.Log;
+
 import org.eyeseetea.malariacare.data.IUserAccountDataSource;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
 import org.eyeseetea.malariacare.domain.common.ReadPolicy;
@@ -11,20 +13,21 @@ public class UserAccountRepository implements IUserAccountRepository {
     private final IUserAccountDataSource userAccountLocalDataSource;
 
     public UserAccountRepository(IUserAccountDataSource userAccountRemoteDataSource,
-                                 IUserAccountDataSource userAccountLocalDataSource){
+            IUserAccountDataSource userAccountLocalDataSource) {
         this.userAccountRemoteDataSource = userAccountRemoteDataSource;
         this.userAccountLocalDataSource = userAccountLocalDataSource;
     }
 
     @Override
     public UserAccount getUser(ReadPolicy policy) throws Exception {
-        if (policy == ReadPolicy.CACHE)
-            return  getUserFromCache();
-        else if (policy == ReadPolicy.NETWORK_FIRST)
+        if (policy == ReadPolicy.CACHE) {
+            return getUserFromCache();
+        } else if (policy == ReadPolicy.NETWORK_FIRST) {
             return getUserFromNetworkFirst();
-        else
+        } else {
             throw new IllegalArgumentException(
                     "A UserAccount repository does not implement " + policy + " policy.");
+        }
     }
 
     protected UserAccount getUserFromCache() throws Exception {
@@ -33,17 +36,23 @@ public class UserAccountRepository implements IUserAccountRepository {
 
     protected UserAccount getUserFromNetworkFirst() throws Exception {
 
-        UserAccount userAccount;
+        UserAccount remoteUserAccount;
+        UserAccount localUserAccount = userAccountLocalDataSource.getUser();
 
         try {
-            userAccount = userAccountRemoteDataSource.getUser();
 
-            userAccountLocalDataSource.saveUser(userAccount);
-        } catch (Exception e){
-            userAccount = userAccountLocalDataSource.getUser();
+            remoteUserAccount = userAccountRemoteDataSource.getUser();
+
+            localUserAccount.changeAnnouncement(remoteUserAccount.getAnnouncement());
+            localUserAccount.changeClosedDate(remoteUserAccount.getClosedDate());
+
+            userAccountLocalDataSource.saveUser(localUserAccount);
+
+        } catch (Exception e) {
+            Log.d("UserAccountRepository", "An error has occur retrieving remote user account");
         }
 
-        return userAccount;
+        return localUserAccount;
     }
 
     @Override

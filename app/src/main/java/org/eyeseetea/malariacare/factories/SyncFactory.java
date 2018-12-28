@@ -17,6 +17,7 @@ import org.eyeseetea.malariacare.domain.boundary.repositories.IObservationReposi
 import org.eyeseetea.malariacare.domain.boundary.repositories.IOptionSetRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IOrgUnitLevelRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyRepository;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
 import org.eyeseetea.malariacare.domain.usecase.MarkAsRetryAllSendingDataUseCase;
 import org.eyeseetea.malariacare.domain.usecase.PushUseCase;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullUseCase;
@@ -51,13 +52,17 @@ public class SyncFactory extends AFactory{
 
     @NonNull
     private PullMetadataController getPullMetadataController(Context context) {
+        IUserAccountRepository userAccountRepository =
+                metadataFactory.getUserAccountRepository(context);
+
         IOrgUnitLevelRepository orgUnitLevelRepository =
                 metadataFactory.getOrgUnitLevelRepository();
 
         IOptionSetRepository optionSetRepository =
                 metadataFactory.getOptionSetRepository(context);
 
-        return new PullMetadataController(orgUnitLevelRepository, optionSetRepository);
+        return new PullMetadataController(userAccountRepository,orgUnitLevelRepository,
+                optionSetRepository);
     }
 
     public PushUseCase getPushUseCase(Context context){

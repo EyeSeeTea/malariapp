@@ -3,11 +3,14 @@ package org.eyeseetea.malariacare.factories;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import org.eyeseetea.malariacare.data.IUserAccountDataSource;
 import org.eyeseetea.malariacare.data.boundaries.IMetadataLocalDataSource;
 import org.eyeseetea.malariacare.data.boundaries.IMetadataRemoteDataSource;
 import org.eyeseetea.malariacare.data.database.datasources.OptionSetLocalDataSource;
 import org.eyeseetea.malariacare.data.database.datasources.OrgUnitLevelLocalDataSource;
 import org.eyeseetea.malariacare.data.database.datasources.QuestionLocalDataSource;
+import org.eyeseetea.malariacare.data.database.datasources.UserAccountLocalDataSource;
+import org.eyeseetea.malariacare.data.remote.api.UserAccountD2LightSDKDataSource;
 import org.eyeseetea.malariacare.data.remote.sdk.dataSources.OptionSetD2LightSDKDataSource;
 import org.eyeseetea.malariacare.data.remote.sdk.dataSources.OrgUnitLevelSDKDhisDataSource;
 import org.eyeseetea.malariacare.data.repositories.OptionRepository;
@@ -15,14 +18,17 @@ import org.eyeseetea.malariacare.data.repositories.OptionSetRepository;
 import org.eyeseetea.malariacare.data.repositories.OrgUnitLevelRepository;
 import org.eyeseetea.malariacare.data.repositories.OrgUnitRepository;
 import org.eyeseetea.malariacare.data.repositories.ServerMetadataRepository;
+import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IOptionRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IOptionSetRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IOrgUnitLevelRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IOrgUnitRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IQuestionRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerMetadataRepository;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
 import org.eyeseetea.malariacare.domain.entity.OptionSet;
 import org.eyeseetea.malariacare.domain.entity.OrgUnitLevel;
+import org.eyeseetea.malariacare.domain.entity.UserAccount;
 
 public class MetadataFactory {
     @NonNull
@@ -65,5 +71,18 @@ public class MetadataFactory {
                 new OptionSetRepository(optionSetLocalDataSource,optionSetRemoteDataSource);
 
         return optionSetRepository;
+    }
+
+    public IUserAccountRepository getUserAccountRepository(Context context) {
+        IUserAccountDataSource userAccountLocalDataSource =
+                new UserAccountLocalDataSource();
+        IUserAccountDataSource userAccountRemoteDataSource =
+                new UserAccountD2LightSDKDataSource(context);
+
+
+        IUserAccountRepository userAccountRepository =
+                new UserAccountRepository(userAccountLocalDataSource, userAccountRemoteDataSource);
+
+        return userAccountRepository;
     }
 }

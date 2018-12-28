@@ -1,6 +1,7 @@
 package org.eyeseetea.malariacare.domain.entity;
 
-import static org.eyeseetea.malariacare.domain.utils.RequiredChecker.required;
+
+import static org.eyeseetea.malariacare.domain.common.RequiredChecker.required;
 
 import org.eyeseetea.malariacare.utils.Constants;
 

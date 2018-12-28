@@ -40,7 +40,9 @@ import org.eyeseetea.malariacare.data.remote.sdk.SdkQueries;
 import org.eyeseetea.malariacare.domain.boundary.IPullMetadataController;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IOptionSetRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IOrgUnitLevelRepository;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
 import org.eyeseetea.malariacare.domain.common.ReadPolicy;
+import org.eyeseetea.malariacare.domain.entity.UserAccount;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
 
 import java.util.ArrayList;
@@ -53,6 +55,8 @@ import java.util.Map;
 public class PullMetadataController implements IPullMetadataController {
 
     private final String TAG = ".PullMetadataController";
+    private final IUserAccountRepository mUserAccountRepository;
+    private final IOrgUnitLevelRepository mOrgUnitLevelRepository;
     private final IOptionSetRepository mOptionSetRepository;
 
     PullDhisSDKDataSource pullRemoteDataSource;
@@ -60,13 +64,13 @@ public class PullMetadataController implements IPullMetadataController {
 
     ConvertFromSDKVisitor converter;
 
-    IOrgUnitLevelRepository mOrgUnitLevelRepository;
-
-    public PullMetadataController(IOrgUnitLevelRepository orgUnitLevelRepository,
+    public PullMetadataController(IUserAccountRepository userAccountRepository,
+            IOrgUnitLevelRepository orgUnitLevelRepository,
             IOptionSetRepository optionSetRepository) {
         converter = new ConvertFromSDKVisitor();
         pullRemoteDataSource = new PullDhisSDKDataSource();
 
+        mUserAccountRepository = userAccountRepository;
         mOrgUnitLevelRepository = orgUnitLevelRepository;
         mOptionSetRepository = optionSetRepository;
     }
@@ -76,6 +80,7 @@ public class PullMetadataController implements IPullMetadataController {
         //TODO: this method on the future should be in PullUseCase
         try {
 
+            UserAccount userAccount = mUserAccountRepository.getUser(ReadPolicy.NETWORK_FIRST);
             mOrgUnitLevelRepository.getAll(ReadPolicy.NETWORK_FIRST);
             mOptionSetRepository.getAll(ReadPolicy.NETWORK_FIRST);
 

@@ -40,13 +40,11 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.metadata.PhoneMetaData;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
-import org.eyeseetea.malariacare.data.remote.api.UserAccountAPIDataSource;
 import org.eyeseetea.malariacare.data.remote.api.UserAccountD2LightSDKDataSource;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
-import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.common.ReadPolicy;
+import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
-import org.eyeseetea.malariacare.domain.enums.NetworkStrategy;
 import org.eyeseetea.malariacare.domain.usecase.GetCredentialsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.GetUserAccountUseCase;
 import org.eyeseetea.malariacare.drive.DriveRestController;
@@ -108,11 +106,11 @@ public class DashboardActivity extends BaseActivity {
                     new AsyncExecutor(),
                     new UIThreadExecutor(),
                     new UserAccountRepository(
-                            new UserAccountAPIDataSource(credentials),
+                            new UserAccountD2LightSDKDataSource(getApplicationContext()),
                             new UserAccountLocalDataSource())
             );
 
-            getUserAccountUseCase.execute(NetworkStrategy.NETWORK_FIRST,
+            getUserAccountUseCase.execute(ReadPolicy.NETWORK_FIRST,
                     new GetUserAccountUseCase.Callback() {
                         @Override
                         public void onSuccess(UserAccount userAccount) {

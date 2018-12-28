@@ -322,14 +322,7 @@ public abstract class AUtils {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         userAccount.acceptAnnouncement();
-                        GetCredentialsUseCase getCredentialsUseCase =
-                                new AuthenticationFactory().getLoadCredentialsUseCase(context);
-                        getCredentialsUseCase.execute(new GetCredentialsUseCase.Callback() {
-                            @Override
-                            public void onSuccess(Credentials credentials) {
-                                saveUserAccount(credentials, context, userAccount);
-                            }
-                        });
+                        saveUserAccount(context, userAccount);
                         }}).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -343,12 +336,12 @@ public abstract class AUtils {
                 LinkMovementMethod.getInstance());
     }
 
-    private static void saveUserAccount(Credentials credentials, final Context context,
+    private static void saveUserAccount(final Context context,
             final UserAccount userAccount) {
         SaveUserAccountUseCase saveUserAccountUseCase = new SaveUserAccountUseCase(
                 new AsyncExecutor(),
                 new UIThreadExecutor(),
-                new UserAccountRepository(new UserAccountAPIDataSource(credentials),
+                new UserAccountRepository(new UserAccountD2LightSDKDataSource(context),
                         new UserAccountLocalDataSource())
         );
         saveUserAccountUseCase.execute(new SaveUserAccountUseCase.Callback() {
