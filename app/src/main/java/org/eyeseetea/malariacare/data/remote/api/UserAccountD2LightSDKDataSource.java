@@ -4,12 +4,17 @@ import android.content.Context;
 
 import org.eyeseetea.dhis2.lightsdk.D2Response;
 import org.eyeseetea.dhis2.lightsdk.attributes.AttributeValue;
+import org.eyeseetea.dhis2.lightsdk.organisationunits.OrganisationUnit;
 import org.eyeseetea.malariacare.data.IUserAccountDataSource;
 import org.eyeseetea.malariacare.data.remote.sdk.dataSources.D2LightSDKDataSource;
+import org.eyeseetea.malariacare.domain.entity.OrgUnit;
+import org.eyeseetea.malariacare.domain.entity.Program;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
 import org.eyeseetea.malariacare.utils.DateParser;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class UserAccountD2LightSDKDataSource
         extends D2LightSDKDataSource
@@ -48,19 +53,35 @@ public class UserAccountD2LightSDKDataSource
         String announcement = "";
         Date closedDate = null;
 
-        for (AttributeValue attributeValue:remoteUserAccount.getAttributeValues()) {
-            if (attributeValue.getAttribute().getCode().equals(ATTRIBUTE_USER_ANNOUNCEMENT)){
+        for (AttributeValue attributeValue : remoteUserAccount.getAttributeValues()) {
+            if (attributeValue.getAttribute().getCode().equals(ATTRIBUTE_USER_ANNOUNCEMENT)) {
                 announcement = attributeValue.getValue();
-            } else if (attributeValue.getAttribute().getCode().equals(ATTRIBUTE_USER_CLOSE_DATE)){
+            } else if (attributeValue.getAttribute().getCode().equals(ATTRIBUTE_USER_CLOSE_DATE)) {
                 closedDate = parseClosedDate(attributeValue.getValue());
             }
         }
 
+        List<String> assignedOrgUnits = new ArrayList<>();
+        List<String> assignedPrograms = new ArrayList<>();
+
+        for (OrganisationUnit organisationUnit : remoteUserAccount.getOrganisationUnits()) {
+            if (!assignedOrgUnits.contains(organisationUnit.getId())) {
+                assignedOrgUnits.add(organisationUnit.getId());
+            }
+
+            for (org.eyeseetea.dhis2.lightsdk.programs.Program program :
+                    organisationUnit.getPrograms()) {
+                if (!assignedPrograms.contains(program.getId())) {
+                    assignedPrograms.add(program.getId());
+                }
+            }
+        }
 
         UserAccount userAccount = new UserAccount(
                 remoteUserAccount.getName(),
                 remoteUserAccount.getUserCredentials().getUsername(),
-                remoteUserAccount.getId(), announcement, closedDate);
+                remoteUserAccount.getId(), announcement, closedDate,
+                assignedPrograms, assignedOrgUnits);
 
         return userAccount;
     }
