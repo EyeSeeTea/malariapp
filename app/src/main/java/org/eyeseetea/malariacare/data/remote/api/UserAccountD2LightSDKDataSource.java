@@ -5,6 +5,7 @@ import android.content.Context;
 import org.eyeseetea.dhis2.lightsdk.D2Response;
 import org.eyeseetea.dhis2.lightsdk.attributes.AttributeValue;
 import org.eyeseetea.dhis2.lightsdk.organisationunits.OrganisationUnit;
+import org.eyeseetea.dhis2.lightsdk.programs.ProgramType;
 import org.eyeseetea.malariacare.data.IUserAccountDataSource;
 import org.eyeseetea.malariacare.data.remote.sdk.dataSources.D2LightSDKDataSource;
 import org.eyeseetea.malariacare.domain.entity.OrgUnit;
@@ -71,7 +72,8 @@ public class UserAccountD2LightSDKDataSource
 
             for (org.eyeseetea.dhis2.lightsdk.programs.Program program :
                     organisationUnit.getPrograms()) {
-                if (!assignedPrograms.contains(program.getId())) {
+                if (!assignedPrograms.contains(program.getId()) &&
+                        program.getProgramType() == ProgramType.WITHOUT_REGISTRATION) {
                     assignedPrograms.add(program.getId());
                 }
             }
