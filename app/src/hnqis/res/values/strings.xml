@@ -295,4 +295,5 @@ evaluation"</string>
 <string name="feedback_progress_bar_text">Loading Survey scores... Please wait</string>
 
 <string name="other">Other</string>
+<string name="server_version_error">The server version is not supported.</string>
 </resources>
