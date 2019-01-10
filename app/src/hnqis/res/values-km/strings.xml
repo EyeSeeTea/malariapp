@@ -303,6 +303,7 @@
 <string name="survey_not_assigned_facility">"ការស្ទង់មតិនេះមិនត្រូវបានកំណត់ទៅកន្លែងនេះទេ។ សូមជ្រើសរើសការស្ទង់មតិផ្សេងទៀត។"</string>
 <string name="feedback_progress_bar_text">កំពុងដំណើរការពិន្ទុស្ទង់មតិ ... សូមរង់ចាំ</string>
 <string name="other">ផ្សេងទៀត</string>
+<string name="server_version_error">"កំណែម៉ាស៊ីនមេមិនត្រូវបានគាំទ្រទេ"</string>
 <string name="login_error_unsupported_server_version">កំណែម៉ាស៊ីនមេមិនត្រូវបានគាំទ្រទេ</string>
 <string name="feedback_not_sent">"URL ឆ្លើយតបមិនមានទេដោយសារតែការស្ទង់មតិ។ ព្យាយាមចែករំលែកមតិត្រឡប់ម្តងទៀតនៅពេលក្រោយ។"</string>
 </resources>

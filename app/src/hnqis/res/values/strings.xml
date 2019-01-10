@@ -297,4 +297,5 @@ evaluation"</string>
 
 <string name="other">Other</string>
 <string name="feedback_not_sent">"The feedback URL is not available because the survey hasn't been sent to the server yet. Try sharing the feedback again later."</string>
+<string name="server_version_error">The server version is not supported.</string>
 </resources>
