@@ -31,9 +31,8 @@ public class OkHttpClientDataSource {
      * @param url
      */
     public static Response executeCall(BasicAuthenticator basicAuthenticator, JSONObject data, String url, String method) throws IOException {
-        final String DHIS_URL=PreferencesState.getInstance().getServer().getUrl() + url.replace(" ", "%20");
 
-        Log.d(TAG, "executeCall Url" + DHIS_URL + "");
+        Log.d(TAG, "executeCall Url" + url + "");
 
         OkHttpClient client= UnsafeOkHttpsClientFactory.getUnsafeOkHttpClient();
 
@@ -45,7 +44,7 @@ public class OkHttpClientDataSource {
 
         Request.Builder builder = new Request.Builder()
                 .header(basicAuthenticator.AUTHORIZATION_HEADER, basicAuthenticator.getCredentials())
-                .url(DHIS_URL);
+                .url(url);
 
         switch (method){
             case "POST":
@@ -80,7 +79,8 @@ public class OkHttpClientDataSource {
      * @param method
      */
     public static Response executeCall(String url, String method) throws IOException {
-        return executeCall(new BasicAuthenticator(), null, url, method);
+        final String DHIS_URL=PreferencesState.getInstance().getServer().getUrl() + url.replace(" ", "%20");
+        return executeCall(new BasicAuthenticator(PreferencesState.getInstance().getCreedentials()), null, DHIS_URL + url, method);
     }
 
     public static Response executeCall(BasicAuthenticator basicAuthenticator, String url, String method) throws IOException {

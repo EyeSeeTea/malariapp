@@ -18,13 +18,7 @@ public class BasicAuthenticator implements Authenticator {
     private String credentials;
     private int mCounter = 0;
 
-    org.eyeseetea.malariacare.domain.entity.Credentials userCredentials =
-            PreferencesState.getInstance().getCreedentials();
-
     BasicAuthenticator(org.eyeseetea.malariacare.domain.entity.Credentials userCredentials){
-        credentials = Credentials.basic(userCredentials.getUsername(), userCredentials.getPassword());
-    }
-    BasicAuthenticator(){
         credentials = Credentials.basic(userCredentials.getUsername(), userCredentials.getPassword());
     }
 
