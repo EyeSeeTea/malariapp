@@ -3,7 +3,7 @@ package org.eyeseetea.malariacare.data.remote.api;
 import android.util.Log;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.squareup.okhttp.Response;
+import okhttp3.Response;
 
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerInfoDataSource;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
