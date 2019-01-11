@@ -85,8 +85,9 @@ public class LoginActivityStrategy {
             public void onClick(View v) {
 
                 Credentials demoCrededentials = Credentials.createDemoCredentials();
+                int lastCompatibleServerVersion = Integer.parseInt(loginActivity.getString(R.string.api_minimal_server_version));
 
-                loginActivity.mLoginUseCase.execute(demoCrededentials,
+                loginActivity.mLoginUseCase.execute(demoCrededentials, lastCompatibleServerVersion,
                         new LoginUseCase.Callback() {
                             @Override
                             public void onLoginSuccess() {

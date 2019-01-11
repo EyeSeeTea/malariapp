@@ -19,7 +19,6 @@
 
 package org.eyeseetea.malariacare;
 
-import android.animation.LayoutTransition;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -27,12 +26,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.text.Editable;
 import android.text.Html;
@@ -43,17 +39,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -63,11 +54,17 @@ import org.eyeseetea.malariacare.data.database.utils.LanguageContextWrapper;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.remote.api.PullDhisApiDataSource;
+import org.eyeseetea.malariacare.data.remote.api.ServerInfoDataSource;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
+import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
+import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IServerInfoDataSource;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
+import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
+import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.strategies.LoginActivityStrategy;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Permissions;
@@ -81,7 +78,10 @@ public class LoginActivity extends AbsLoginActivity {
     private static final String TAG = ".LoginActivity";
 
     public IUserAccountRepository mUserAccountRepository = new UserAccountRepository(this);
-    public LoginUseCase mLoginUseCase = new LoginUseCase(mUserAccountRepository);
+    public IServerInfoDataSource mServerVersionDataSource = new ServerInfoDataSource();
+    IAsyncExecutor asyncExecutor = new AsyncExecutor();
+    IMainExecutor mainExecutor = new UIThreadExecutor();
+    public LoginUseCase mLoginUseCase = new LoginUseCase(mUserAccountRepository, mServerVersionDataSource, mainExecutor, asyncExecutor);
     LogoutUseCase mLogoutUseCase = new LogoutUseCase(mUserAccountRepository);
     public LoginActivityStrategy mLoginActivityStrategy = new LoginActivityStrategy(this);
 
@@ -233,43 +233,47 @@ public class LoginActivity extends AbsLoginActivity {
         showProgress();
 
         final Credentials credentials = new Credentials(serverUrl, username, password);
-        mLoginUseCase.execute(credentials, new LoginUseCase.Callback() {
-            @Override
-            public void onLoginSuccess() {
-                PreferencesState.getInstance().setUserAccept(false);
-                hideProgress();
-                AsyncPullAnnouncement
-                        asyncPullAnnouncement = new AsyncPullAnnouncement();
-                asyncPullAnnouncement.execute(mLoginActivity);
-            }
+        int lastCompatibleServerVersion = Integer.parseInt(getApplicationContext().getString(R.string.api_minimal_server_version));
 
-            @Override
-            public void onServerURLNotValid() {
-                showError(PreferencesState.getInstance().getContext().getText(
-                        org.hisp.dhis.client.sdk.ui.bindings.R.string
-                                .error_not_found).toString());
-            }
+        mLoginUseCase.execute(credentials, lastCompatibleServerVersion,
+                new LoginUseCase.Callback() {
+                    @Override
+                    public void onLoginSuccess() {
+                        PreferencesState.getInstance().setUserAccept(false);
+                        hideProgress();
+                        AsyncPullAnnouncement
+                                asyncPullAnnouncement = new AsyncPullAnnouncement();
+                        asyncPullAnnouncement.execute(mLoginActivity);
+                    }
 
-            @Override
-            public void onInvalidCredentials() {
-                showError(PreferencesState.getInstance().getContext().getText(
-                        org.hisp.dhis.client.sdk.ui.bindings.R.string.error_unauthorized)
-                        .toString());
-            }
+                    @Override
+                    public void onServerURLNotValid() {
+                        showError(PreferencesState.getInstance().getContext().getText(
+                                org.hisp.dhis.client.sdk.ui.bindings.R.string
+                                        .error_not_found).toString());
+                    }
 
-            @Override
-            public void onNetworkError() {
-                showError(PreferencesState.getInstance().getContext().getString(
-                        org.hisp.dhis.client.sdk.ui.bindings.R.string
-                                .title_error_unexpected));
-            }
+                    @Override
+                    public void onInvalidCredentials() {
+                        showError(PreferencesState.getInstance().getContext().getText(
+                                org.hisp.dhis.client.sdk.ui.bindings.R.string.error_unauthorized)
+                                .toString());
+                    }
 
-            @Override
-            public void onUnsupportedServerVersion() {
-                showError(PreferencesState.getInstance().getContext().getString(
-                        R.string.login_error_unsupported_server_version));
-            }
-        });
+                    @Override
+                    public void onNetworkError() {
+                        showError(PreferencesState.getInstance().getContext().getString(
+                                org.hisp.dhis.client.sdk.ui.bindings.R.string
+                                        .title_error_unexpected));
+                    }
+
+                    @Override
+                    public void onUnsupportedServerVersion() {
+                        showError(PreferencesState.getInstance().getContext().getString(
+                                R.string.login_error_unsupported_server_version));
+
+                    }
+                });
     }
 
     public void showError(String message) {
