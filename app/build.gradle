@@ -226,8 +226,10 @@ dependencies {
     compile "com.github.Raizlabs.DBFlow:dbflow-core:${libs.dbFlowVersion}"
     compile "com.github.Raizlabs.DBFlow:dbflow-sqlcipher:${libs.dbFlowVersion}"
 
-    testCompile "com.squareup.okhttp3:mockwebserver:${libs.mockwebserverVersion}"
+    // Instrumented tests dependencies
     androidTestCompile "com.squareup.okhttp3:mockwebserver:${libs.mockwebserverVersion}"
+    androidTestCompile "org.mockito:mockito-core:${libs.mockitoVersion}"
+    androidTestCompile "com.linkedin.dexmaker:dexmaker-mockito:${libs.dexmakerMockitoVersion}"
 
     compile(project(path: ':bugshaker')) {
         exclude group: "com.google.android.gms"

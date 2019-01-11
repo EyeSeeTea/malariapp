@@ -18,9 +18,12 @@ buildscript {
 
 allprojects {
     repositories {
-        maven { url "https://www.jitpack.io" }
         google()
         jcenter()
+        maven { url "https://www.jitpack.io" }
+        maven {
+            url "https://maven.google.com"
+        }
     }
 
     configurations.all {
@@ -84,11 +87,11 @@ ext {
             jUnitVersion            : "4.12",
             mockitoVersion          : "2.22.0",
             gsonVersion             : "2.8.2",
-            mockitoVersion          : "1.10.19",
-            mockwebserverVersion    : "3.11.0",
             powerMockVersion        : "1.6.3",
             runnerVersion           : "1.0.2",
             espressoVersion         : "3.0.2",
+            mockwebserverVersion    : "3.11.0",
+            dexmakerMockitoVersion       : "2.19.0"
     ]
 }
 
