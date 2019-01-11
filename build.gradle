@@ -20,6 +20,9 @@ allprojects {
     repositories {
         jcenter()
         maven { url "https://www.jitpack.io" }
+        maven {
+            url "https://maven.google.com"
+        }
     }
 
     configurations.all {
@@ -62,7 +65,7 @@ ext {
 
             // java libs
             timberVersion           : "4.1.0",
-            okhttpVersion           : "3.2.0",
+            okhttpVersion           : "3.11.0",
             retrofitVersion         : "2.0.0",
             jacksonVersion          : "2.7.4",
             jodaTimeVersion         : "2.9.2",
@@ -80,12 +83,13 @@ ext {
             jsr305Version           : "2.0.1",
 
             // testing libs
-            jUnitVersion            : "4.12",
-            mockitoVersion          : "1.10.19",
-            mockwebserverVersion    : "3.11.0",
-            powerMockVersion        : "1.6.3",
-            runnerVersion           : "0.4.1",
-            espressoVersion         : "2.2.1",
+            jUnitVersion                 : "4.12",
+            mockitoVersion               : "2.22.0",
+            powerMockVersion             : "1.6.3",
+            runnerVersion                : "1.0.2",
+            espressoVersion              : "3.0.2",
+            mockwebserverVersion         : "3.11.0",
+            dexmakerMockitoVersion       : "2.19.0"
     ]
 
     // Old App dependencies versions
