@@ -299,4 +299,5 @@
 <string name="feedback_progress_bar_text">ກໍາລັງໂຫລດຄະແນນສໍາຫຼວດ ... ກະລຸນາລໍຖ້າ</string>
 <string name="other">ອື່ນໆ</string>
 <string name="server_version_error">"ເວີຊັນຂອງເຄື່ອງແມ່ຂ່າຍບໍ່ສະຫນັບສະຫນູນ"</string>
+<string name="recommend_upgrade">"ກະລຸນາອັບເກດແອັບຯຈາກ Google Play."</string>
 </resources>
