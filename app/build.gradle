@@ -26,6 +26,15 @@ android {
     signingConfigs {
         config {}
     }
+    sourceSets {
+        String sharedTestDir = 'src/sharedTest/java'
+        test {
+            java.srcDir sharedTestDir
+        }
+        androidTest {
+            java.srcDirs sharedTestDir
+        }
+    }
 
     compileSdkVersion cfg.compileSdkVersion
     buildToolsVersion cfg.buildToolsVersion
@@ -193,6 +202,9 @@ dependencies {
     compile "com.github.Raizlabs.DBFlow:dbflow:${libs.dbFlowVersion}"
     compile "com.github.Raizlabs.DBFlow:dbflow-core:${libs.dbFlowVersion}"
     compile "com.github.Raizlabs.DBFlow:dbflow-sqlcipher:${libs.dbFlowVersion}"
+
+    testCompile "com.squareup.okhttp3:mockwebserver:${libs.mockwebserverVersion}"
+    androidTestCompile "com.squareup.okhttp3:mockwebserver:${libs.mockwebserverVersion}"
 
     compile(project(path: ':bugshaker')) {
         exclude group: "com.google.android.gms"
