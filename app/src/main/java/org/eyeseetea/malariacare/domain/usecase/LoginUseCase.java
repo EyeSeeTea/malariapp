@@ -75,9 +75,11 @@ public class LoginUseCase implements UseCase{
     @Override
     public void run() {
         boolean isValidServer = false;
-        if(!credentials.isDemoCredentials()){
+        if(credentials.isDemoCredentials()) {
+            isValidServer = true;
+        } else {
             ServerInfo serverInfo = mServerVersionDataSource.get(credentials.getServerURL(), credentials);
-            if(serverInfo.getVersion() <= (apiMinimalVersion)){
+            if(serverInfo.getVersion() <= apiMinimalVersion){
                 isValidServer = true;
             }
         }
