@@ -69,7 +69,8 @@ public class PushServiceStrategy {
     private void executePush() {
         Log.d(TAG, "Starting push process...");
 
-        pushUseCase.execute(new PushUseCase.Callback() {
+        int lastCompatibleServerVersion = Integer.parseInt(mPushService.getString(R.string.api_minimal_server_version));
+        pushUseCase.execute(Session.getCredentials(), lastCompatibleServerVersion, new PushUseCase.Callback() {
             @Override
             public void onComplete(PushController.Kind kind) {
                 AlarmPushReceiver.isDoneSuccess(kind);
@@ -112,9 +113,28 @@ public class PushServiceStrategy {
                 AlarmPushReceiver.isDoneFail();
                 Log.e(TAG, "Network not available");
             }
+
+            @Override
+            public void onServerVersionError() {
+                launchServerVersionErrorAction();
+                Log.e(TAG, "onServerVersionError");
+            }
         });
     }
-    public void showInDialog(String title, String message) {
-        DashboardActivity.dashboardActivity.showException(title, message);
+
+    public boolean showInDialog(String title, String message) {
+        if(DashboardActivity.dashboardActivity.isVisible()) {
+            DashboardActivity.dashboardActivity.showException(title, message);
+            return true;
+        }
+        return false;
+    }
+
+    public void launchServerVersionErrorAction() {
+        boolean isShown = showInDialog(DashboardActivity.dashboardActivity.getString(R.string.server_version_error),
+                DashboardActivity.dashboardActivity.getString(R.string.recommend_upgrade));
+        if(isShown){
+                DashboardActivity.dashboardActivity.cancelAlarm();
+        }
     }
 }
