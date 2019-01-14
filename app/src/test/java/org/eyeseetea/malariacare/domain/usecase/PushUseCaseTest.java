@@ -25,11 +25,13 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushController;
-import org.eyeseetea.malariacare.data.remote.api.ServerInfoRemoteDataSource;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IServerInfoRepository;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
+import org.eyeseetea.malariacare.domain.entity.ServerInfo;
+import org.eyeseetea.malariacare.domain.enums.NetworkStrategy;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -61,9 +63,21 @@ public class PushUseCaseTest {
             }
         };
         Credentials credentials = new Credentials("", "", "");
-        PushUseCase pushUseCase = new PushUseCase(mPushController, mainExecutor, asyncExecutor, new ServerInfoRemoteDataSource(credentials));
+        IServerInfoRepository serverInfoRepository = new IServerInfoRepository() {
+            @Override
+            public ServerInfo getServerInfo(NetworkStrategy networkStrategy) throws Exception {
+                return new ServerInfo(30);
+            }
 
-        pushUseCase.execute(credentials, 0, new PushUseCase.Callback() {
+            @Override
+            public void save(ServerInfo serverInfo) {
+
+            }
+        };
+
+        PushUseCase pushUseCase = new PushUseCase(mPushController, mainExecutor, asyncExecutor, serverInfoRepository);
+
+        pushUseCase.execute(credentials, new PushUseCase.Callback() {
 
             @Override
             public void onComplete(PushController.Kind kind) {
