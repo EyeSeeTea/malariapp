@@ -77,7 +77,7 @@ public class LoginUseCaseShould {
             }
 
             @Override
-            public void onServerVersionError() {
+            public void onUnsupportedServerVersion() {
                 fail("onServerVersionError");
             }
         });
@@ -115,7 +115,7 @@ public class LoginUseCaseShould {
             }
 
             @Override
-            public void onServerVersionError() {
+            public void onUnsupportedServerVersion() {
                 fail("onServerVersionError");
             }
         });
@@ -153,7 +153,7 @@ public class LoginUseCaseShould {
             }
 
             @Override
-            public void onServerVersionError() {
+            public void onUnsupportedServerVersion() {
                 Assert.assertTrue(true);
             }
         });
