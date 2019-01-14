@@ -75,16 +75,7 @@ public class LoginUseCase implements UseCase{
 
     @Override
     public void run() {
-        boolean isValidServer = false;
-        if(credentials.isDemoCredentials()) {
-            isValidServer = true;
-        } else {
-            ServerInfo serverInfo = mServerVersionDataSource.get(credentials.getServerURL(), credentials);
-            if(serverInfo.getVersion() <= apiMinimalVersion){
-                isValidServer = true;
-            }
-        }
-        if(isValidServer){
+        if(isValidServerVersion()){
             mUserAccountRepository.login(credentials,
                     new IRepositoryCallback<UserAccount>() {
                         @Override
@@ -109,6 +100,19 @@ public class LoginUseCase implements UseCase{
         } else {
             notifyOnServerVersionError();
         }
+    }
+
+    private boolean isValidServerVersion() {
+        boolean isValidServer = false;
+        if(credentials.isDemoCredentials()) {
+            isValidServer = true;
+        } else {
+            ServerInfo serverInfo = mServerVersionDataSource.get(credentials.getServerURL(), credentials);
+            if(serverInfo.getVersion() <= apiMinimalVersion){
+                isValidServer = true;
+            }
+        }
+        return isValidServer;
     }
 
     private void notifyOnLoginSuccess() {
