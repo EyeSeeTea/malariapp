@@ -66,6 +66,9 @@ public class AlarmPushReceiver extends BroadcastReceiver {
         setFail(true);
     }
 
+    public static void isDoneCancel() {
+    }
+
 
     /**
      * Launches a PushService call if it is not already in progress

@@ -59,6 +59,7 @@ public class DashboardActivity extends BaseActivity {
     public DashboardController dashboardController;
     static Handler handler;
     public static DashboardActivity dashboardActivity;
+    private boolean mIsVisible = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -196,6 +197,7 @@ public class DashboardActivity extends BaseActivity {
     public void onResume() {
         Log.d(TAG, "onResume");
         super.onResume();
+        mIsVisible = true;
         getSurveysFromService();
         DriveRestController.getInstance().syncMedia();
         DashboardActivity.dashboardActivity.reloadActiveTab();
@@ -205,6 +207,7 @@ public class DashboardActivity extends BaseActivity {
     public void onPause() {
         Log.d(TAG, "onPause");
         super.onPause();
+        mIsVisible = false;
     }
 
     public void setReloadOnResume(boolean doReload) {
@@ -393,6 +396,10 @@ public class DashboardActivity extends BaseActivity {
 
     public void reloadActiveTab() {
         dashboardController.reloadActiveModule();
+    }
+
+    public boolean isVisible() {
+        return mIsVisible;
     }
 
 
