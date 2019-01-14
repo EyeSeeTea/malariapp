@@ -169,6 +169,8 @@ dependencies {
     // Unit testing dependencies
     testCompile "junit:junit:${libs.jUnitVersion}"
     testCompile "org.mockito:mockito-core:${libs.mockitoVersion}"
+    testCompile "com.squareup.okhttp3:mockwebserver:${libs.mockwebserverVersion}"
+    testCompile "com.linkedin.dexmaker:dexmaker-mockito:${libs.dexmakerMockitoVersion}"
     testCompile "com.fasterxml.jackson.core:jackson-core:${libs.jacksonVersion}"
     testCompile "com.fasterxml.jackson.core:jackson-databind:${libs.jacksonVersion}"
     testCompile "com.fasterxml.jackson.core:jackson-annotations:${libs.jacksonVersion}"
@@ -203,7 +205,6 @@ dependencies {
     compile "com.github.Raizlabs.DBFlow:dbflow-core:${libs.dbFlowVersion}"
     compile "com.github.Raizlabs.DBFlow:dbflow-sqlcipher:${libs.dbFlowVersion}"
 
-    testCompile "com.squareup.okhttp3:mockwebserver:${libs.mockwebserverVersion}"
     // Instrumented tests dependencies
     androidTestCompile "com.squareup.okhttp3:mockwebserver:${libs.mockwebserverVersion}"
     androidTestCompile "org.mockito:mockito-core:${libs.mockitoVersion}"
