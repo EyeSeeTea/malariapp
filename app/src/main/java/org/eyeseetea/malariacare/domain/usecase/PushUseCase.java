@@ -23,9 +23,11 @@ import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushContr
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
-import org.eyeseetea.malariacare.domain.boundary.repositories.IServerInfoDataSource;
+import org.eyeseetea.malariacare.data.IServerInfoDataSource;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IServerInfoRepository;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.ServerInfo;
+import org.eyeseetea.malariacare.domain.enums.NetworkStrategy;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
 import org.eyeseetea.malariacare.domain.exception.SurveysToPushNotFoundException;
@@ -35,9 +37,8 @@ import org.eyeseetea.malariacare.data.remote.SurveyChecker;
 public class PushUseCase implements UseCase {
 
     private IPushController mPushController;
-    private IServerInfoDataSource mServerVersionDataSource;
+    private IServerInfoRepository mServerInfoRepository;
     private Credentials credentials;
-    private int apiMinimalVersion;
 
     private IMainExecutor mMainExecutor;
     private IAsyncExecutor mAsyncExecutor;
@@ -46,16 +47,15 @@ public class PushUseCase implements UseCase {
     public PushUseCase(IPushController pushController,
                        IMainExecutor mainExecutor,
                        IAsyncExecutor asyncExecutor,
-                       IServerInfoDataSource serverVersionDataSource) {
+                       IServerInfoRepository serverInfoRepository) {
         mMainExecutor = mainExecutor;
         mAsyncExecutor = asyncExecutor;
         mPushController = pushController;
-        mServerVersionDataSource = serverVersionDataSource;
+        mServerInfoRepository = serverInfoRepository;
     }
 
-    public void execute(Credentials credentials, int apiMinimalVersion, final Callback callback) {
+    public void execute(Credentials credentials, final Callback callback) {
         this.credentials = credentials;
-        this.apiMinimalVersion = apiMinimalVersion;
         this.callback = callback;
         mAsyncExecutor.run(this);
     }
@@ -66,9 +66,14 @@ public class PushUseCase implements UseCase {
             callback.onPushInProgressError();
             return;
         }
-        if(!isValidServerVersion()){
-            callback.onServerVersionError();
-            return;
+        try {
+            if(!isValidServerVersion()){
+                notifyOnServerVersionError();
+                return;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            notifyOnNetworkError();
         }
         mPushController.changePushInProgress(true);
 
@@ -114,17 +119,22 @@ public class PushUseCase implements UseCase {
 
     }
 
-    private boolean isValidServerVersion() {
-        boolean isValidServer = false;
+    private boolean isValidServerVersion() throws Exception {
         if(credentials.isDemoCredentials()) {
-            isValidServer = true;
-        } else {
-            ServerInfo serverInfo = mServerVersionDataSource.get();
-            if(serverInfo.getVersion() <= apiMinimalVersion){
-                isValidServer = true;
+            return true;
+        }
+        ServerInfo localServerInfo = mServerInfoRepository.getServerInfo(NetworkStrategy.LOCAL_FIRST);
+        ServerInfo serverInfo = mServerInfoRepository.getServerInfo(NetworkStrategy.ONLY_NETWORK);
+
+        if(localServerInfo.getVersion()==-1){
+            mServerInfoRepository.save(serverInfo);
+            return true;
+        }else {
+            if (localServerInfo.getVersion() == serverInfo.getVersion()) {
+                return true;
             }
         }
-        return isValidServer;
+        return false;
     }
 
     private void notifyOnComplete(final PushController.Kind kind) {
@@ -177,6 +187,15 @@ public class PushUseCase implements UseCase {
             @Override
             public void run() {
                 callback.onInformativeError(throwable.getMessage());
+            }
+        });
+    }
+
+    private void notifyOnServerVersionError() {
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                callback.onServerVersionError();
             }
         });
     }
