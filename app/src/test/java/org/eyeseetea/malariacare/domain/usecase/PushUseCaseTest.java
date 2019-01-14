@@ -25,7 +25,7 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushController;
-import org.eyeseetea.malariacare.data.remote.api.ServerInfoDataSource;
+import org.eyeseetea.malariacare.data.remote.api.ServerInfoRemoteDataSource;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
@@ -60,9 +60,10 @@ public class PushUseCaseTest {
                 runnable.run();
             }
         };
-        PushUseCase pushUseCase = new PushUseCase(mPushController, mainExecutor, asyncExecutor, new ServerInfoDataSource());
+        Credentials credentials = new Credentials("", "", "");
+        PushUseCase pushUseCase = new PushUseCase(mPushController, mainExecutor, asyncExecutor, new ServerInfoRemoteDataSource(credentials));
 
-        pushUseCase.execute(new Credentials("", "", ""), 0, new PushUseCase.Callback() {
+        pushUseCase.execute(credentials, 0, new PushUseCase.Callback() {
 
             @Override
             public void onComplete(PushController.Kind kind) {

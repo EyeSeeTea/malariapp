@@ -119,7 +119,7 @@ public class PushUseCase implements UseCase {
         if(credentials.isDemoCredentials()) {
             isValidServer = true;
         } else {
-            ServerInfo serverInfo = mServerVersionDataSource.get(credentials.getServerURL(), credentials);
+            ServerInfo serverInfo = mServerVersionDataSource.get();
             if(serverInfo.getVersion() <= apiMinimalVersion){
                 isValidServer = true;
             }

@@ -54,7 +54,7 @@ import org.eyeseetea.malariacare.data.database.utils.LanguageContextWrapper;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.remote.api.PullDhisApiDataSource;
-import org.eyeseetea.malariacare.data.remote.api.ServerInfoDataSource;
+import org.eyeseetea.malariacare.data.remote.api.ServerInfoRemoteDataSource;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
@@ -78,10 +78,8 @@ public class LoginActivity extends AbsLoginActivity {
     private static final String TAG = ".LoginActivity";
 
     public IUserAccountRepository mUserAccountRepository = new UserAccountRepository(this);
-    public IServerInfoDataSource mServerVersionDataSource = new ServerInfoDataSource();
     IAsyncExecutor asyncExecutor = new AsyncExecutor();
     IMainExecutor mainExecutor = new UIThreadExecutor();
-    public LoginUseCase mLoginUseCase = new LoginUseCase(mUserAccountRepository, mServerVersionDataSource, mainExecutor, asyncExecutor);
     LogoutUseCase mLogoutUseCase = new LogoutUseCase(mUserAccountRepository);
     public LoginActivityStrategy mLoginActivityStrategy = new LoginActivityStrategy(this);
 
@@ -235,6 +233,8 @@ public class LoginActivity extends AbsLoginActivity {
         final Credentials credentials = new Credentials(serverUrl, username, password);
         int lastCompatibleServerVersion = Integer.parseInt(getApplicationContext().getString(R.string.api_minimal_server_version));
 
+        IServerInfoDataSource mServerVersionDataSource = new ServerInfoRemoteDataSource(credentials);
+        LoginUseCase mLoginUseCase = new LoginUseCase(mUserAccountRepository, mServerVersionDataSource, mainExecutor, asyncExecutor);
         mLoginUseCase.execute(credentials, lastCompatibleServerVersion,
                 new LoginUseCase.Callback() {
                     @Override

@@ -20,7 +20,7 @@
 package org.eyeseetea.malariacare.domain.usecase;
 
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushController;
-import org.eyeseetea.malariacare.data.remote.api.ServerInfoDataSource;
+import org.eyeseetea.malariacare.data.remote.api.ServerInfoRemoteDataSource;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
@@ -44,9 +44,9 @@ public class PushUseCaseShould {
 
     @Test
     public void return_on_surveys_not_found_callback_when_server_version_with_invalid_server_version_when_the_user_is_demo_user() throws Exception {
-        PushUseCase loginUseCase = givenPushUseCase();
-
         Credentials credentials = Credentials.createDemoCredentials();
+        PushUseCase loginUseCase = givenPushUseCase(credentials);
+
         int minimalVersion = 25;
 
         mockWebServerRule.getMockServer().enqueueMockResponseFileName(200, SYSTEM_INFO_VERSION_26);
@@ -96,9 +96,9 @@ public class PushUseCaseShould {
 
     @Test
     public void return_on_surveys_not_found_callback_when_server_version_is_equals_than_last_valid_server() throws Exception {
-        PushUseCase loginUseCase = givenPushUseCase();
-
         Credentials credentials = new Credentials(mockWebServerRule.getMockServer().getBaseEndpoint(), "user", "password");
+        PushUseCase loginUseCase = givenPushUseCase(credentials);
+
         int minimalVersion = 25;
 
         mockWebServerRule.getMockServer().enqueueMockResponseFileName(200, SYSTEM_INFO_VERSION_25);
@@ -148,9 +148,9 @@ public class PushUseCaseShould {
 
     @Test
     public void return_on_server_version_error_callback_when_server_version_is_high_than_last_valid_server() throws Exception {
-        PushUseCase loginUseCase = givenPushUseCase();
-
         Credentials credentials = new Credentials(mockWebServerRule.getMockServer().getBaseEndpoint(), "user", "password");
+        PushUseCase loginUseCase = givenPushUseCase(credentials);
+
         int minimalVersion = 25;
 
         mockWebServerRule.getMockServer().enqueueMockResponseFileName(200, SYSTEM_INFO_VERSION_26);
@@ -198,7 +198,7 @@ public class PushUseCaseShould {
         });
     }
 
-    private PushUseCase givenPushUseCase() {
+    private PushUseCase givenPushUseCase(Credentials credentials) {
         IMainExecutor mainExecutor = new UIThreadExecutor();
         IAsyncExecutor asyncExecutor = new IAsyncExecutor() {
             @Override
@@ -222,6 +222,6 @@ public class PushUseCaseShould {
 
             }
         };
-        return new PushUseCase(pushController, mainExecutor, asyncExecutor, new ServerInfoDataSource());
+        return new PushUseCase(pushController, mainExecutor, asyncExecutor, new ServerInfoRemoteDataSource(credentials));
     }
 }
