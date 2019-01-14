@@ -22,11 +22,13 @@ package org.eyeseetea.malariacare.domain.usecase;
 import org.eyeseetea.malariacare.domain.boundary.IRepositoryCallback;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
-import org.eyeseetea.malariacare.domain.boundary.repositories.IServerInfoDataSource;
+import org.eyeseetea.malariacare.data.IServerInfoDataSource;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IServerInfoRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.ServerInfo;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
+import org.eyeseetea.malariacare.domain.enums.NetworkStrategy;
 import org.eyeseetea.malariacare.domain.exception.InvalidCredentialsException;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
 import org.hisp.dhis.client.sdk.models.common.UnsupportedServerVersionException;
@@ -51,68 +53,56 @@ public class LoginUseCase implements UseCase{
     private IMainExecutor mMainExecutor;
     private IAsyncExecutor mAsyncExecutor;
     private IUserAccountRepository mUserAccountRepository;
-    private IServerInfoDataSource mServerVersionDataSource;
+    private IServerInfoRepository mServerRepository;
     private Credentials credentials;
-    private int apiMinimalVersion;
     private Callback callback;
 
     public LoginUseCase(IUserAccountRepository userAccountRepository,
-                        IServerInfoDataSource serverVersionDataSource,
+                        IServerInfoRepository serverRepository,
                         IMainExecutor mainExecutor,
                         IAsyncExecutor asyncExecutor) {
         mMainExecutor = mainExecutor;
         mAsyncExecutor = asyncExecutor;
         mUserAccountRepository = userAccountRepository;
-        mServerVersionDataSource = serverVersionDataSource;
+        mServerRepository = serverRepository;
     }
 
-    public void execute(Credentials credentials, int apiMinimalVersion, final Callback callback) {
+    public void execute(Credentials credentials, final Callback callback) {
         this.credentials = credentials;
-        this.apiMinimalVersion = apiMinimalVersion;
         this.callback = callback;
         mAsyncExecutor.run(this);
     }
 
     @Override
     public void run() {
-        if(isValidServerVersion()){
-            mUserAccountRepository.login(credentials,
-                    new IRepositoryCallback<UserAccount>() {
-                        @Override
-                        public void onSuccess(UserAccount userAccount) {
-                            notifyOnLoginSuccess();
-                        }
-
-                        @Override
-                        public void onError(Throwable throwable) {
-                            if (throwable instanceof MalformedURLException
-                                    || throwable instanceof UnknownHostException) {
-                                notifyOnServerURLNotValid();
-                            } else if (throwable instanceof InvalidCredentialsException) {
-                                notifyOnInvalidCredentials();
-                            } else if (throwable instanceof NetworkException) {
-                                notifyOnNetworkError();
-                            } else if (throwable instanceof UnsupportedServerVersionException){
-                                notifyOnServerVersionError();
-                            }
-                        }
-                    });
-        } else {
-            notifyOnServerVersionError();
+        try {
+            ServerInfo serverInfoLocal = mServerRepository.getServerInfo(NetworkStrategy.ONLY_NETWORK);
+            mServerRepository.save(serverInfoLocal);
+        } catch (Exception e) {
+            notifyOnNetworkError();
+            return;
         }
-    }
 
-    private boolean isValidServerVersion() {
-        boolean isValidServer = false;
-        if(credentials.isDemoCredentials()) {
-            isValidServer = true;
-        } else {
-            ServerInfo serverInfo = mServerVersionDataSource.get();
-            if(serverInfo.getVersion() <= apiMinimalVersion){
-                isValidServer = true;
+        mUserAccountRepository.login(credentials, new IRepositoryCallback<UserAccount>() {
+            @Override
+            public void onSuccess(UserAccount userAccount) {
+                notifyOnLoginSuccess();
             }
-        }
-        return isValidServer;
+
+            @Override
+            public void onError(Throwable throwable) {
+                if (throwable instanceof MalformedURLException
+                        || throwable instanceof UnknownHostException) {
+                    notifyOnServerURLNotValid();
+                } else if (throwable instanceof InvalidCredentialsException) {
+                    notifyOnInvalidCredentials();
+                } else if (throwable instanceof NetworkException) {
+                    notifyOnNetworkError();
+                } else if (throwable instanceof UnsupportedServerVersionException){
+                    notifyOnServerVersionError();
+                }
+            }
+        });
     }
 
     private void notifyOnLoginSuccess() {
