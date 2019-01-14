@@ -5,7 +5,7 @@ import android.util.Log;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.squareup.okhttp.Response;
 
-import org.eyeseetea.malariacare.domain.boundary.repositories.IServerInfoDataSource;
+import org.eyeseetea.malariacare.data.IServerInfoDataSource;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.ServerInfo;
 
@@ -20,16 +20,21 @@ public class ServerInfoDataSource implements IServerInfoDataSource {
     private static final String VERSION = "version";
 
     private static final String TAG = ".PullDhisApiDataSource";
+    private Credentials credentials;
 
-    @Override
-    public ServerInfo get(String server, Credentials credentials) {
-        return new ServerInfo(getServerVersion(server, credentials));
+    public ServerInfoDataSource(Credentials credentials) {
+        this.credentials = credentials;
     }
 
-    public static Integer getServerVersion(String server, Credentials credentials) {
+    @Override
+    public ServerInfo get() {
+        return new ServerInfo(getServerVersion(credentials));
+    }
+
+    public static Integer getServerVersion(Credentials credentials) {
         Integer version = null;
         try {
-            Response response = executeCall(new BasicAuthenticator(credentials), server + SERVER_VERSION_CALL, "GET");
+            Response response = executeCall(new BasicAuthenticator(credentials), credentials.getServerURL() + SERVER_VERSION_CALL, "GET");
             JsonNode jsonNode = parseResponse(response.body().string());
             JsonNode jsonVersionNode = jsonNode.get(VERSION);
             String[] completedVersionParts = jsonVersionNode.asText().split(Pattern.quote("."));

@@ -48,10 +48,10 @@ public class LoginUseCaseShould {
     public MockWebServerRule mockWebServerRule = new MockWebServerRule();
     @Test
     public void return_on_login_success_callback_when_server_version_is_the_minimal_valid_server_info_with_server_credentials() {
-        LoginUseCase loginUseCase = givenLoginUseCase();
-
-
         Credentials credentials = Credentials.createDemoCredentials();
+        LoginUseCase loginUseCase = givenLoginUseCase(credentials);
+
+
         int minimalVersion = 25;
 
         loginUseCase.execute(credentials,minimalVersion, new LoginUseCase.Callback() {
@@ -85,9 +85,9 @@ public class LoginUseCaseShould {
 
     @Test
     public void return_on_login_success_callback_when_server_version_is_the_minimal_valid_server_info() throws Exception {
-        LoginUseCase loginUseCase = givenLoginUseCase();
-
         Credentials credentials = new Credentials(mockWebServerRule.getMockServer().getBaseEndpoint(), "user", "password");
+        LoginUseCase loginUseCase = givenLoginUseCase(credentials);
+
         int minimalVersion = 25;
 
         mockWebServerRule.getMockServer().enqueueMockResponseFileName(200, SYSTEM_INFO_VERSION_25);
@@ -123,9 +123,9 @@ public class LoginUseCaseShould {
 
     @Test
     public void return_on_login_success_callback_when_server_version_is_low_than_last_valid_server() throws Exception {
-        LoginUseCase loginUseCase = givenLoginUseCase();
-
         Credentials credentials = new Credentials(mockWebServerRule.getMockServer().getBaseEndpoint(), "user", "password");
+        LoginUseCase loginUseCase = givenLoginUseCase(credentials);
+
         int minimalVersion = 25;
 
         mockWebServerRule.getMockServer().enqueueMockResponseFileName(200, SYSTEM_INFO_VERSION_26);
@@ -159,7 +159,7 @@ public class LoginUseCaseShould {
         });
     }
 
-    private LoginUseCase givenLoginUseCase() {
+    private LoginUseCase givenLoginUseCase(Credentials credentials) {
         IMainExecutor mainExecutor = new UIThreadExecutor();
         IAsyncExecutor asyncExecutor = new IAsyncExecutor() {
             @Override
@@ -168,6 +168,6 @@ public class LoginUseCaseShould {
             }
         };
         return new LoginUseCase(new UserAccountRepository(InstrumentationRegistry.getTargetContext()),
-                new ServerInfoDataSource(), mainExecutor, asyncExecutor);
+                new ServerInfoDataSource(credentials), mainExecutor, asyncExecutor);
     }
 }

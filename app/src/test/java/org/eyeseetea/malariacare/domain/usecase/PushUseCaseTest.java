@@ -57,9 +57,10 @@ public class PushUseCaseTest {
                 runnable.run();
             }
         };
-        PushUseCase pushUseCase = new PushUseCase(mPushController, mainExecutor, asyncExecutor, new ServerInfoDataSource());
+        Credentials credentials = new Credentials("", "", "");
+        PushUseCase pushUseCase = new PushUseCase(mPushController, mainExecutor, asyncExecutor, new ServerInfoDataSource(credentials));
 
-        pushUseCase.execute(new Credentials("", "", ""), 0, new PushUseCase.Callback() {
+        pushUseCase.execute(credentials, 0, new PushUseCase.Callback() {
 
             @Override
             public void onComplete(PushController.Kind kind) {

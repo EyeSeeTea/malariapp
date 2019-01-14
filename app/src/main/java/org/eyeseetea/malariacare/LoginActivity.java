@@ -58,7 +58,7 @@ import org.eyeseetea.malariacare.data.remote.api.ServerInfoDataSource;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
-import org.eyeseetea.malariacare.domain.boundary.repositories.IServerInfoDataSource;
+import org.eyeseetea.malariacare.data.IServerInfoDataSource;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
@@ -78,10 +78,6 @@ public class LoginActivity extends AbsLoginActivity {
     private static final String TAG = ".LoginActivity";
 
     public IUserAccountRepository mUserAccountRepository = new UserAccountRepository(this);
-    public IServerInfoDataSource mServerVersionDataSource = new ServerInfoDataSource();
-    IAsyncExecutor asyncExecutor = new AsyncExecutor();
-    IMainExecutor mainExecutor = new UIThreadExecutor();
-    public LoginUseCase mLoginUseCase = new LoginUseCase(mUserAccountRepository, mServerVersionDataSource, mainExecutor, asyncExecutor);
     LogoutUseCase mLogoutUseCase = new LogoutUseCase(mUserAccountRepository);
     public LoginActivityStrategy mLoginActivityStrategy = new LoginActivityStrategy(this);
 
@@ -235,6 +231,10 @@ public class LoginActivity extends AbsLoginActivity {
         final Credentials credentials = new Credentials(serverUrl, username, password);
         int lastCompatibleServerVersion = Integer.parseInt(getApplicationContext().getString(R.string.api_minimal_server_version));
 
+        IServerInfoDataSource mServerVersionDataSource = new ServerInfoDataSource(credentials);
+        IAsyncExecutor asyncExecutor = new AsyncExecutor();
+        IMainExecutor mainExecutor = new UIThreadExecutor();
+        LoginUseCase mLoginUseCase = new LoginUseCase(mUserAccountRepository, mServerVersionDataSource, mainExecutor, asyncExecutor);
         mLoginUseCase.execute(credentials, lastCompatibleServerVersion,
                 new LoginUseCase.Callback() {
                     @Override

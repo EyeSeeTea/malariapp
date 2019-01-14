@@ -22,7 +22,7 @@ package org.eyeseetea.malariacare.domain.usecase;
 import org.eyeseetea.malariacare.domain.boundary.IRepositoryCallback;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
-import org.eyeseetea.malariacare.domain.boundary.repositories.IServerInfoDataSource;
+import org.eyeseetea.malariacare.data.IServerInfoDataSource;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.ServerInfo;
@@ -104,7 +104,7 @@ public class LoginUseCase implements UseCase{
         if(credentials.isDemoCredentials()) {
             isValidServer = true;
         } else {
-            ServerInfo serverInfo = mServerVersionDataSource.get(credentials.getServerURL(), credentials);
+            ServerInfo serverInfo = mServerVersionDataSource.get();
             if(serverInfo.getVersion() <= apiMinimalVersion){
                 isValidServer = true;
             }

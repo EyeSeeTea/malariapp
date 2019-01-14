@@ -23,7 +23,7 @@ import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushContr
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
-import org.eyeseetea.malariacare.domain.boundary.repositories.IServerInfoDataSource;
+import org.eyeseetea.malariacare.data.IServerInfoDataSource;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.ServerInfo;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
@@ -119,7 +119,7 @@ public class PushUseCase implements UseCase {
         if(credentials.isDemoCredentials()) {
             isValidServer = true;
         } else {
-            ServerInfo serverInfo = mServerVersionDataSource.get(credentials.getServerURL(), credentials);
+            ServerInfo serverInfo = mServerVersionDataSource.get();
             if(serverInfo.getVersion() <= apiMinimalVersion){
                 isValidServer = true;
             }
