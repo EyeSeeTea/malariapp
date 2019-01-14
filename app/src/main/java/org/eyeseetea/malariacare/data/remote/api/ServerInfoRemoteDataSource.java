@@ -37,11 +37,6 @@ public class ServerInfoRemoteDataSource implements IServerInfoDataSource {
         throw new NotImplementedException("save not implemented");
     }
 
-    @Override
-    public void clear() {
-        throw new NotImplementedException("clear not implemented");
-    }
-
     public static Integer getServerVersion(Credentials credentials) {
         Integer version = null;
         try {
