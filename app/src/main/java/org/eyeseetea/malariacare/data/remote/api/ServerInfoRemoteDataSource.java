@@ -5,7 +5,8 @@ import android.util.Log;
 import com.fasterxml.jackson.databind.JsonNode;
 import okhttp3.Response;
 
-import org.eyeseetea.malariacare.domain.boundary.repositories.IServerInfoDataSource;
+import org.apache.commons.lang3.NotImplementedException;
+import org.eyeseetea.malariacare.data.IServerInfoDataSource;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.ServerInfo;
 
@@ -29,6 +30,16 @@ public class ServerInfoRemoteDataSource implements IServerInfoDataSource {
     @Override
     public ServerInfo get() {
         return new ServerInfo(getServerVersion(credentials));
+    }
+
+    @Override
+    public void save(ServerInfo serverInfo) {
+        throw new NotImplementedException("save not implemented");
+    }
+
+    @Override
+    public void clear() {
+        throw new NotImplementedException("clear not implemented");
     }
 
     public static Integer getServerVersion(Credentials credentials) {
