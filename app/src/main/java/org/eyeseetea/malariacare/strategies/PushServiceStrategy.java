@@ -19,6 +19,8 @@
 
 package org.eyeseetea.malariacare.strategies;
 
+import android.text.Html;
+import android.text.Spanned;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.DashboardActivity;
@@ -68,7 +70,7 @@ public class PushServiceStrategy {
 
     private void executePush() {
         Log.d(TAG, "Starting push process...");
-
+        launchServerVersionErrorAction();
         int lastCompatibleServerVersion = Integer.parseInt(mPushService.getString(R.string.max_compatible_server_version));
         pushUseCase.execute(Session.getCredentials(), lastCompatibleServerVersion, new PushUseCase.Callback() {
             @Override
@@ -131,8 +133,10 @@ public class PushServiceStrategy {
     }
 
     public void launchServerVersionErrorAction() {
+        String message = DashboardActivity.dashboardActivity.getString(R.string.recommend_upgrade) + "\n"
+                + DashboardActivity.dashboardActivity.getString(R.string.google_play_url);
         boolean isShown = showInDialog(DashboardActivity.dashboardActivity.getString(R.string.server_version_error),
-                DashboardActivity.dashboardActivity.getString(R.string.recommend_upgrade));
+                message);
         if(isShown){
                 DashboardActivity.dashboardActivity.cancelAlarm();
         }

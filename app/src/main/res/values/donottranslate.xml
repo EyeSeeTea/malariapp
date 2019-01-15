@@ -148,4 +148,5 @@
         <item>https://clone.psi-mis.org/</item>
         <item>@string/other</item>
     </string-array>
+    <string name="google_play_url">"https://play.google.com/store/apps/details?id=org.eyeseetea.malariacare.hnqis_ng"</string>
 </resources>

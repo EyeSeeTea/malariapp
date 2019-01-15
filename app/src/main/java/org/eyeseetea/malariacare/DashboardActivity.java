@@ -28,9 +28,15 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.telephony.TelephonyManager;
+import android.text.Html;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
@@ -357,12 +363,16 @@ public class DashboardActivity extends BaseActivity {
                         if (errorMessage != null) {
                             dialogMessage = errorMessage;
                         }
-                        new AlertDialog.Builder(dashboardActivity)
+                        final SpannableString spannableText = new SpannableString(dialogMessage);
+                        Linkify.addLinks(spannableText, Linkify.WEB_URLS);
+                        final AlertDialog alertDialog = new AlertDialog.Builder(dashboardActivity)
                                 .setCancelable(false)
                                 .setTitle(dialogTitle)
-                                .setMessage(dialogMessage)
+                                .setMessage(spannableText)
                                 .setNeutralButton(android.R.string.ok, null)
-                                .create().show();
+                                .create();
+                        alertDialog.show();
+                        ((TextView)alertDialog.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
                     }
                 });
             }
