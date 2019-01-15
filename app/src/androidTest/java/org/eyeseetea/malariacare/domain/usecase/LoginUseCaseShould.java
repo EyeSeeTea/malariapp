@@ -47,7 +47,7 @@ public class LoginUseCaseShould {
     @Rule
     public MockWebServerRule mockWebServerRule = new MockWebServerRule();
     @Test
-    public void return_on_login_success_callback_when_server_version_is_the_minimal_valid_server_info_with_server_credentials() {
+    public void return_on_login_success_with_demo_credentials() {
         Credentials credentials = Credentials.createDemoCredentials();
         LoginUseCase loginUseCase = givenLoginUseCase(credentials);
 
@@ -84,7 +84,7 @@ public class LoginUseCaseShould {
     }
 
     @Test
-    public void return_on_login_success_callback_when_server_version_is_the_minimal_valid_server_info() throws Exception {
+    public void return_on_login_success_when_server_version_is_the_minimal_valid_server_info() throws Exception {
         Credentials credentials = new Credentials(mockWebServerRule.getMockServer().getBaseEndpoint(), "user", "password");
         LoginUseCase loginUseCase = givenLoginUseCase(credentials);
 
@@ -122,7 +122,7 @@ public class LoginUseCaseShould {
     }
 
     @Test
-    public void return_on_login_success_callback_when_server_version_is_low_than_last_valid_server() throws Exception {
+    public void return_on_server_version_error_when_server_version_is_lower_than_last_valid_server() throws Exception {
         Credentials credentials = new Credentials(mockWebServerRule.getMockServer().getBaseEndpoint(), "user", "password");
         LoginUseCase loginUseCase = givenLoginUseCase(credentials);
 
