@@ -48,10 +48,10 @@ public class PushUseCaseShould {
         Credentials credentials = Credentials.createDemoCredentials();
         PushUseCase loginUseCase = givenPushUseCase(credentials);
 
-        int minimalVersion = 25;
+        int maxCompatibleVersion = 25;
 
         mockWebServerRule.getMockServer().enqueueMockResponseFileName(200, SYSTEM_INFO_VERSION_26);
-        loginUseCase.execute(credentials, minimalVersion, new PushUseCase.Callback() {
+        loginUseCase.execute(credentials, maxCompatibleVersion, new PushUseCase.Callback() {
 
             @Override
             public void onComplete(PushController.Kind kind) {
@@ -148,7 +148,7 @@ public class PushUseCaseShould {
     }
 
     @Test
-    public void return_on_server_version_error_when_server_version_is_greater_to_max_compatible_version() throws Exception {
+    public void return_on_server_version_error_when_server_version_is_greater_than_max_compatible_version() throws Exception {
         Credentials credentials = new Credentials(mockWebServerRule.getMockServer().getBaseEndpoint(), "user", "password");
         PushUseCase loginUseCase = givenPushUseCase(credentials);
 
@@ -200,7 +200,7 @@ public class PushUseCaseShould {
     }
 
     @Test
-    public void return_on_complete_when_server_version_is_lower_to_max_compatible_version() throws Exception {
+    public void return_on_complete_when_server_version_is_lower_than_max_compatible_version() throws Exception {
         Credentials credentials = new Credentials(mockWebServerRule.getMockServer().getBaseEndpoint(), "user", "password");
         PushUseCase loginUseCase = givenPushUseCase(credentials);
 

@@ -48,14 +48,15 @@ public class LoginUseCaseShould {
     public MockitoRule rule = MockitoJUnit.rule();
     @Rule
     public MockWebServerRule mockWebServerRule = new MockWebServerRule();
+
     @Test
     public void return_on_login_success_with_demo_credentials() {
         Credentials credentials = Credentials.createDemoCredentials();
         LoginUseCase loginUseCase = givenLoginUseCase(credentials);
 
-        int minimalVersion = 25;
+        int maxCompatibleVersion = 25;
 
-        loginUseCase.execute(credentials,minimalVersion, new LoginUseCase.Callback() {
+        loginUseCase.execute(credentials, maxCompatibleVersion, new LoginUseCase.Callback() {
 
             @Override
             public void onLoginSuccess() {
@@ -85,15 +86,17 @@ public class LoginUseCaseShould {
     }
 
     @Test
-    public void return_on_login_success_when_server_version_is_equals_to_max_compatible_version() throws Exception {
-        Credentials credentials = new Credentials(mockWebServerRule.getMockServer().getBaseEndpoint(), "user", "password");
+    public void return_on_login_success_when_server_version_is_equals_to_max_compatible_version()
+            throws Exception {
+        Credentials credentials = new Credentials(
+                mockWebServerRule.getMockServer().getBaseEndpoint(), "user", "password");
         LoginUseCase loginUseCase = givenLoginUseCase(credentials);
 
         int maxCompatibleVersion = 25;
 
         mockWebServerRule.getMockServer().enqueueMockResponseFileName(200, SYSTEM_INFO_VERSION_25);
         mockWebServerRule.getMockServer().enqueueMockResponseFileName(200, AUTH);
-        loginUseCase.execute(credentials,maxCompatibleVersion, new LoginUseCase.Callback() {
+        loginUseCase.execute(credentials, maxCompatibleVersion, new LoginUseCase.Callback() {
 
             @Override
             public void onLoginSuccess() {
@@ -123,8 +126,10 @@ public class LoginUseCaseShould {
     }
 
     @Test
-    public void return_on_login_success_when_server_version_is_greater_than_max_compatible_version() throws Exception {
-        Credentials credentials = new Credentials(mockWebServerRule.getMockServer().getBaseEndpoint(), "user", "password");
+    public void return_on_server_version_error_when_server_version_is_greater_than_max_compatible_version()
+            throws Exception {
+        Credentials credentials = new Credentials(
+                mockWebServerRule.getMockServer().getBaseEndpoint(), "user", "password");
         LoginUseCase loginUseCase = givenLoginUseCase(credentials);
 
         int maxCompatibleVersion = 25;
@@ -161,15 +166,17 @@ public class LoginUseCaseShould {
     }
 
     @Test
-    public void return_on_login_success_when_server_version_is_lower_than_max_compatible_version() throws Exception {
-        Credentials credentials = new Credentials(mockWebServerRule.getMockServer().getBaseEndpoint(), "user", "password");
+    public void return_on_login_success_when_server_version_is_lower_than_max_compatible_version()
+            throws Exception {
+        Credentials credentials = new Credentials(
+                mockWebServerRule.getMockServer().getBaseEndpoint(), "user", "password");
         LoginUseCase loginUseCase = givenLoginUseCase(credentials);
 
         int maxCompatibleVersion = 25;
 
         mockWebServerRule.getMockServer().enqueueMockResponseFileName(200, SYSTEM_INFO_VERSION_24);
         mockWebServerRule.getMockServer().enqueueMockResponseFileName(200, AUTH);
-        loginUseCase.execute(credentials,maxCompatibleVersion, new LoginUseCase.Callback() {
+        loginUseCase.execute(credentials, maxCompatibleVersion, new LoginUseCase.Callback() {
 
             @Override
             public void onLoginSuccess() {
@@ -206,7 +213,9 @@ public class LoginUseCaseShould {
                 runnable.run();
             }
         };
-        return new LoginUseCase(new UserAccountRepository(InstrumentationRegistry.getTargetContext()),
-                new ServerInfoRepository(new ServerInfoDataSource(credentials)), mainExecutor, asyncExecutor);
+        return new LoginUseCase(
+                new UserAccountRepository(InstrumentationRegistry.getTargetContext()),
+                new ServerInfoRepository(new ServerInfoDataSource(credentials)), mainExecutor,
+                asyncExecutor);
     }
 }

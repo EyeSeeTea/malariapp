@@ -52,7 +52,7 @@ public class LoginUseCase implements UseCase{
     private IUserAccountRepository mUserAccountRepository;
     private IServerInfoRepository mServerVersionDataSource;
     private Credentials credentials;
-    private int apiMinimalVersion;
+    private int maxApiVersion;
     private Callback callback;
 
     public LoginUseCase(IUserAccountRepository userAccountRepository,
@@ -65,9 +65,9 @@ public class LoginUseCase implements UseCase{
         mServerVersionDataSource = serverVersionDataSource;
     }
 
-    public void execute(Credentials credentials, int apiMinimalVersion, final Callback callback) {
+    public void execute(Credentials credentials, int maxApiVersion, final Callback callback) {
         this.credentials = credentials;
-        this.apiMinimalVersion = apiMinimalVersion;
+        this.maxApiVersion = maxApiVersion;
         this.callback = callback;
         mAsyncExecutor.run(this);
     }
@@ -105,7 +105,7 @@ public class LoginUseCase implements UseCase{
             isValidServer = true;
         } else {
             ServerInfo serverInfo = mServerVersionDataSource.get();
-            if(serverInfo.getVersion() <= apiMinimalVersion){
+            if(serverInfo.getVersion() <= maxApiVersion){
                 isValidServer = true;
             }
         }

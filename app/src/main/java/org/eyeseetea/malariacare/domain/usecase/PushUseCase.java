@@ -37,7 +37,7 @@ public class PushUseCase implements UseCase {
     private IPushController mPushController;
     private IServerInfoRepository mServerInfoRepository;
     private Credentials credentials;
-    private int apiMinimalVersion;
+    private int maxApiVersion;
 
     private IMainExecutor mMainExecutor;
     private IAsyncExecutor mAsyncExecutor;
@@ -53,9 +53,9 @@ public class PushUseCase implements UseCase {
         mServerInfoRepository = serverInfoRepository;
     }
 
-    public void execute(Credentials credentials, int apiMinimalVersion, final Callback callback) {
+    public void execute(Credentials credentials, int maxApiVersion, final Callback callback) {
         this.credentials = credentials;
-        this.apiMinimalVersion = apiMinimalVersion;
+        this.maxApiVersion = maxApiVersion;
         this.callback = callback;
         mAsyncExecutor.run(this);
     }
@@ -120,7 +120,7 @@ public class PushUseCase implements UseCase {
             isValidServer = true;
         } else {
             ServerInfo serverInfo = mServerInfoRepository.get();
-            if(serverInfo.getVersion() <= apiMinimalVersion){
+            if(serverInfo.getVersion() <= maxApiVersion){
                 isValidServer = true;
             }
         }
