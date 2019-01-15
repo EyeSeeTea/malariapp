@@ -32,6 +32,7 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.LocalPullController;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.remote.api.ServerInfoDataSource;
+import org.eyeseetea.malariacare.data.repositories.ServerInfoRepository;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
@@ -96,10 +97,11 @@ public class LoginActivityStrategy {
                 int lastCompatibleServerVersion = Integer.parseInt(loginActivity.getString(R.string.max_compatible_server_version));
 
                 IUserAccountRepository mUserAccountRepository = new UserAccountRepository(loginActivity);
-                IServerInfoDataSource mServerVersionDataSource = new ServerInfoDataSource(demoCrededentials);
+                ServerInfoDataSource mServerVersionDataSource = new ServerInfoDataSource(demoCrededentials);
                 IAsyncExecutor asyncExecutor = new AsyncExecutor();
                 IMainExecutor mainExecutor = new UIThreadExecutor();
-                LoginUseCase mLoginUseCase = new LoginUseCase(mUserAccountRepository, mServerVersionDataSource, mainExecutor, asyncExecutor);
+                LoginUseCase mLoginUseCase = new LoginUseCase(mUserAccountRepository, new ServerInfoRepository(mServerVersionDataSource),
+                        mainExecutor, asyncExecutor);
                 mLoginUseCase.execute(demoCrededentials, lastCompatibleServerVersion,
                         new LoginUseCase.Callback() {
                             @Override

@@ -55,10 +55,12 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.remote.api.PullDhisApiDataSource;
 import org.eyeseetea.malariacare.data.remote.api.ServerInfoDataSource;
+import org.eyeseetea.malariacare.data.repositories.ServerInfoRepository;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.data.IServerInfoDataSource;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IServerInfoRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
@@ -231,10 +233,11 @@ public class LoginActivity extends AbsLoginActivity {
         final Credentials credentials = new Credentials(serverUrl, username, password);
         int lastCompatibleServerVersion = Integer.parseInt(getApplicationContext().getString(R.string.max_compatible_server_version));
 
-        IServerInfoDataSource mServerVersionDataSource = new ServerInfoDataSource(credentials);
+        ServerInfoDataSource mServerVersionDataSource = new ServerInfoDataSource(credentials);
+        IServerInfoRepository repository = new ServerInfoRepository(mServerVersionDataSource);
         IAsyncExecutor asyncExecutor = new AsyncExecutor();
         IMainExecutor mainExecutor = new UIThreadExecutor();
-        LoginUseCase mLoginUseCase = new LoginUseCase(mUserAccountRepository, mServerVersionDataSource, mainExecutor, asyncExecutor);
+        LoginUseCase mLoginUseCase = new LoginUseCase(mUserAccountRepository, repository, mainExecutor, asyncExecutor);
         mLoginUseCase.execute(credentials, lastCompatibleServerVersion,
                 new LoginUseCase.Callback() {
                     @Override

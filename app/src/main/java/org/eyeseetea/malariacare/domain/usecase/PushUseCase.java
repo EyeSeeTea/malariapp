@@ -23,7 +23,7 @@ import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushContr
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
-import org.eyeseetea.malariacare.data.IServerInfoDataSource;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IServerInfoRepository;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.ServerInfo;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
@@ -35,7 +35,7 @@ import org.eyeseetea.malariacare.data.remote.SurveyChecker;
 public class PushUseCase implements UseCase {
 
     private IPushController mPushController;
-    private IServerInfoDataSource mServerVersionDataSource;
+    private IServerInfoRepository mServerInfoRepository;
     private Credentials credentials;
     private int apiMinimalVersion;
 
@@ -46,11 +46,11 @@ public class PushUseCase implements UseCase {
     public PushUseCase(IPushController pushController,
                        IMainExecutor mainExecutor,
                        IAsyncExecutor asyncExecutor,
-                       IServerInfoDataSource serverVersionDataSource) {
+                       IServerInfoRepository serverInfoRepository) {
         mMainExecutor = mainExecutor;
         mAsyncExecutor = asyncExecutor;
         mPushController = pushController;
-        mServerVersionDataSource = serverVersionDataSource;
+        mServerInfoRepository = serverInfoRepository;
     }
 
     public void execute(Credentials credentials, int apiMinimalVersion, final Callback callback) {
@@ -119,7 +119,7 @@ public class PushUseCase implements UseCase {
         if(credentials.isDemoCredentials()) {
             isValidServer = true;
         } else {
-            ServerInfo serverInfo = mServerVersionDataSource.get();
+            ServerInfo serverInfo = mServerInfoRepository.get();
             if(serverInfo.getVersion() <= apiMinimalVersion){
                 isValidServer = true;
             }

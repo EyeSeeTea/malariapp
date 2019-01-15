@@ -22,6 +22,7 @@ package org.eyeseetea.malariacare.domain.usecase;
 import android.support.test.InstrumentationRegistry;
 
 import org.eyeseetea.malariacare.data.remote.api.ServerInfoDataSource;
+import org.eyeseetea.malariacare.data.repositories.ServerInfoRepository;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
@@ -206,6 +207,6 @@ public class LoginUseCaseShould {
             }
         };
         return new LoginUseCase(new UserAccountRepository(InstrumentationRegistry.getTargetContext()),
-                new ServerInfoDataSource(credentials), mainExecutor, asyncExecutor);
+                new ServerInfoRepository(new ServerInfoDataSource(credentials)), mainExecutor, asyncExecutor);
     }
 }

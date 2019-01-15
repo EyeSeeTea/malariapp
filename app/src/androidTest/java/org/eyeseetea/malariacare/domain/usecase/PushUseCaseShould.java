@@ -21,6 +21,7 @@ package org.eyeseetea.malariacare.domain.usecase;
 
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushController;
 import org.eyeseetea.malariacare.data.remote.api.ServerInfoDataSource;
+import org.eyeseetea.malariacare.data.repositories.ServerInfoRepository;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
@@ -274,6 +275,7 @@ public class PushUseCaseShould {
 
             }
         };
-        return new PushUseCase(pushController, mainExecutor, asyncExecutor, new ServerInfoDataSource(credentials));
+        ServerInfoRepository serverInfoRepository = new ServerInfoRepository(new ServerInfoDataSource(credentials));
+        return new PushUseCase(pushController, mainExecutor, asyncExecutor, serverInfoRepository);
     }
 }

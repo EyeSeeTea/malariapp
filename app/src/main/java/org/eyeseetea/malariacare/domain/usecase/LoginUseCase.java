@@ -22,7 +22,7 @@ package org.eyeseetea.malariacare.domain.usecase;
 import org.eyeseetea.malariacare.domain.boundary.IRepositoryCallback;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
-import org.eyeseetea.malariacare.data.IServerInfoDataSource;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IServerInfoRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.ServerInfo;
@@ -50,13 +50,13 @@ public class LoginUseCase implements UseCase{
     private IMainExecutor mMainExecutor;
     private IAsyncExecutor mAsyncExecutor;
     private IUserAccountRepository mUserAccountRepository;
-    private IServerInfoDataSource mServerVersionDataSource;
+    private IServerInfoRepository mServerVersionDataSource;
     private Credentials credentials;
     private int apiMinimalVersion;
     private Callback callback;
 
     public LoginUseCase(IUserAccountRepository userAccountRepository,
-                        IServerInfoDataSource serverVersionDataSource,
+                        IServerInfoRepository serverVersionDataSource,
                         IMainExecutor mainExecutor,
                         IAsyncExecutor asyncExecutor) {
         mMainExecutor = mainExecutor;

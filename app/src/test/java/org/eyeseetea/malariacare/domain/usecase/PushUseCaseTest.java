@@ -26,6 +26,7 @@ import static org.mockito.Mockito.when;
 
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushController;
 import org.eyeseetea.malariacare.data.remote.api.ServerInfoDataSource;
+import org.eyeseetea.malariacare.data.repositories.ServerInfoRepository;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
@@ -62,7 +63,8 @@ public class PushUseCaseTest {
             }
         };
         Credentials credentials = new Credentials("", "", "");
-        PushUseCase pushUseCase = new PushUseCase(mPushController, mainExecutor, asyncExecutor, new ServerInfoDataSource(credentials));
+        ServerInfoRepository serverInfoRepository = new ServerInfoRepository(new ServerInfoDataSource(credentials));
+        PushUseCase pushUseCase = new PushUseCase(mPushController, mainExecutor, asyncExecutor, serverInfoRepository);
 
         pushUseCase.execute(credentials, 0, new PushUseCase.Callback() {
 
