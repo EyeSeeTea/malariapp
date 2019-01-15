@@ -69,7 +69,7 @@ public class PushServiceStrategy {
     private void executePush() {
         Log.d(TAG, "Starting push process...");
 
-        int lastCompatibleServerVersion = Integer.parseInt(mPushService.getString(R.string.api_minimal_server_version));
+        int lastCompatibleServerVersion = Integer.parseInt(mPushService.getString(R.string.max_compatible_server_version));
         pushUseCase.execute(Session.getCredentials(), lastCompatibleServerVersion, new PushUseCase.Callback() {
             @Override
             public void onComplete(PushController.Kind kind) {

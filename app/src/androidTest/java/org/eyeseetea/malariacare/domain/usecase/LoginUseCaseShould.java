@@ -38,6 +38,7 @@ import static org.junit.Assert.fail;
 
 public class LoginUseCaseShould {
 
+    private static final String SYSTEM_INFO_VERSION_24 = "system_info_24.json";
     private static final String SYSTEM_INFO_VERSION_25 = "system_info_25.json";
     private static final String SYSTEM_INFO_VERSION_26 = "system_info_26.json";
     private static final String AUTH = "auth.json";
@@ -51,7 +52,6 @@ public class LoginUseCaseShould {
         Credentials credentials = Credentials.createDemoCredentials();
         LoginUseCase loginUseCase = givenLoginUseCase(credentials);
 
-
         int minimalVersion = 25;
 
         loginUseCase.execute(credentials,minimalVersion, new LoginUseCase.Callback() {
@@ -84,15 +84,15 @@ public class LoginUseCaseShould {
     }
 
     @Test
-    public void return_on_login_success_when_server_version_is_the_minimal_valid_server_info() throws Exception {
+    public void return_on_login_success_when_server_version_is_equals_to_max_compatible_version() throws Exception {
         Credentials credentials = new Credentials(mockWebServerRule.getMockServer().getBaseEndpoint(), "user", "password");
         LoginUseCase loginUseCase = givenLoginUseCase(credentials);
 
-        int minimalVersion = 25;
+        int maxCompatibleVersion = 25;
 
         mockWebServerRule.getMockServer().enqueueMockResponseFileName(200, SYSTEM_INFO_VERSION_25);
         mockWebServerRule.getMockServer().enqueueMockResponseFileName(200, AUTH);
-        loginUseCase.execute(credentials,minimalVersion, new LoginUseCase.Callback() {
+        loginUseCase.execute(credentials,maxCompatibleVersion, new LoginUseCase.Callback() {
 
             @Override
             public void onLoginSuccess() {
@@ -122,15 +122,15 @@ public class LoginUseCaseShould {
     }
 
     @Test
-    public void return_on_server_version_error_when_server_version_is_lower_than_last_valid_server() throws Exception {
+    public void return_on_login_success_when_server_version_is_greater_than_max_compatible_version() throws Exception {
         Credentials credentials = new Credentials(mockWebServerRule.getMockServer().getBaseEndpoint(), "user", "password");
         LoginUseCase loginUseCase = givenLoginUseCase(credentials);
 
-        int minimalVersion = 25;
+        int maxCompatibleVersion = 25;
 
         mockWebServerRule.getMockServer().enqueueMockResponseFileName(200, SYSTEM_INFO_VERSION_26);
         mockWebServerRule.getMockServer().enqueueMockResponseFileName(200, AUTH);
-        loginUseCase.execute(credentials, minimalVersion, new LoginUseCase.Callback() {
+        loginUseCase.execute(credentials, maxCompatibleVersion, new LoginUseCase.Callback() {
 
             @Override
             public void onLoginSuccess() {
@@ -155,6 +155,44 @@ public class LoginUseCaseShould {
             @Override
             public void onServerVersionError() {
                 Assert.assertTrue(true);
+            }
+        });
+    }
+
+    @Test
+    public void return_on_login_success_when_server_version_is_lower_than_max_compatible_version() throws Exception {
+        Credentials credentials = new Credentials(mockWebServerRule.getMockServer().getBaseEndpoint(), "user", "password");
+        LoginUseCase loginUseCase = givenLoginUseCase(credentials);
+
+        int maxCompatibleVersion = 25;
+
+        mockWebServerRule.getMockServer().enqueueMockResponseFileName(200, SYSTEM_INFO_VERSION_24);
+        mockWebServerRule.getMockServer().enqueueMockResponseFileName(200, AUTH);
+        loginUseCase.execute(credentials,maxCompatibleVersion, new LoginUseCase.Callback() {
+
+            @Override
+            public void onLoginSuccess() {
+                Assert.assertTrue(true);
+            }
+
+            @Override
+            public void onServerURLNotValid() {
+                fail("onServerURLNotValid");
+            }
+
+            @Override
+            public void onInvalidCredentials() {
+                fail("onInvalidCredentials");
+            }
+
+            @Override
+            public void onNetworkError() {
+                fail("onNetworkError");
+            }
+
+            @Override
+            public void onServerVersionError() {
+                fail("onServerVersionError");
             }
         });
     }

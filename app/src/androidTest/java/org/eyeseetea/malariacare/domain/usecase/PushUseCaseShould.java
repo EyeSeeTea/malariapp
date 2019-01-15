@@ -35,15 +35,15 @@ import static org.junit.Assert.fail;
 
 public class PushUseCaseShould {
 
+    private static final String SYSTEM_INFO_VERSION_24 = "system_info_24.json";
     private static final String SYSTEM_INFO_VERSION_25 = "system_info_25.json";
     private static final String SYSTEM_INFO_VERSION_26 = "system_info_26.json";
-    private static final String AUTH = "auth.json";
 
     @Rule
     public MockWebServerRule mockWebServerRule = new MockWebServerRule();
 
     @Test
-    public void return_on_surveys_not_found_callback_when_server_version_with_invalid_server_version_when_the_user_is_demo_user() throws Exception {
+    public void return_on_complete_with_demo_credentials() throws Exception {
         Credentials credentials = Credentials.createDemoCredentials();
         PushUseCase loginUseCase = givenPushUseCase(credentials);
 
@@ -54,7 +54,7 @@ public class PushUseCaseShould {
 
             @Override
             public void onComplete(PushController.Kind kind) {
-                fail("onLoginSuccess");
+                Assert.assertTrue(true);
             }
 
             @Override
@@ -69,7 +69,7 @@ public class PushUseCaseShould {
 
             @Override
             public void onSurveysNotFoundError() {
-                Assert.assertTrue(true);
+                fail("onSurveysNotFoundError");
             }
 
             @Override
@@ -95,18 +95,18 @@ public class PushUseCaseShould {
     }
 
     @Test
-    public void return_on_surveys_not_found_callback_when_server_version_is_equals_than_last_valid_server() throws Exception {
+    public void return_on_complete_when_server_version_is_equals_to_max_compatible_version() throws Exception {
         Credentials credentials = new Credentials(mockWebServerRule.getMockServer().getBaseEndpoint(), "user", "password");
         PushUseCase loginUseCase = givenPushUseCase(credentials);
 
-        int minimalVersion = 25;
+        int maxCompatibleVersion = 25;
 
         mockWebServerRule.getMockServer().enqueueMockResponseFileName(200, SYSTEM_INFO_VERSION_25);
-        loginUseCase.execute(credentials, minimalVersion, new PushUseCase.Callback() {
+        loginUseCase.execute(credentials, maxCompatibleVersion, new PushUseCase.Callback() {
 
             @Override
             public void onComplete(PushController.Kind kind) {
-                fail("onLoginSuccess");
+                Assert.assertTrue(true);
             }
 
             @Override
@@ -121,7 +121,7 @@ public class PushUseCaseShould {
 
             @Override
             public void onSurveysNotFoundError() {
-                Assert.assertTrue(true);
+                fail("onSurveysNotFoundError");
             }
 
             @Override
@@ -147,14 +147,14 @@ public class PushUseCaseShould {
     }
 
     @Test
-    public void return_on_server_version_error_callback_when_server_version_is_high_than_last_valid_server() throws Exception {
+    public void return_on_server_version_error_when_server_version_is_greater_to_max_compatible_version() throws Exception {
         Credentials credentials = new Credentials(mockWebServerRule.getMockServer().getBaseEndpoint(), "user", "password");
         PushUseCase loginUseCase = givenPushUseCase(credentials);
 
-        int minimalVersion = 25;
+        int maxCompatibleVersion = 25;
 
         mockWebServerRule.getMockServer().enqueueMockResponseFileName(200, SYSTEM_INFO_VERSION_26);
-        loginUseCase.execute(credentials, minimalVersion, new PushUseCase.Callback() {
+        loginUseCase.execute(credentials, maxCompatibleVersion, new PushUseCase.Callback() {
 
             @Override
             public void onComplete(PushController.Kind kind) {
@@ -194,6 +194,58 @@ public class PushUseCaseShould {
             @Override
             public void onServerVersionError() {
                 Assert.assertTrue(true);
+            }
+        });
+    }
+
+    @Test
+    public void return_on_complete_when_server_version_is_lower_to_max_compatible_version() throws Exception {
+        Credentials credentials = new Credentials(mockWebServerRule.getMockServer().getBaseEndpoint(), "user", "password");
+        PushUseCase loginUseCase = givenPushUseCase(credentials);
+
+        int maxCompatibleVersion = 25;
+
+        mockWebServerRule.getMockServer().enqueueMockResponseFileName(200, SYSTEM_INFO_VERSION_24);
+        loginUseCase.execute(credentials, maxCompatibleVersion, new PushUseCase.Callback() {
+
+            @Override
+            public void onComplete(PushController.Kind kind) {
+                Assert.assertTrue(true);
+            }
+
+            @Override
+            public void onPushError() {
+                fail("onLoginSuccess");
+            }
+
+            @Override
+            public void onPushInProgressError() {
+                fail("onLoginSuccess");
+            }
+
+            @Override
+            public void onSurveysNotFoundError() {
+                fail("onLoginSuccess");
+            }
+
+            @Override
+            public void onInformativeError(String message) {
+                fail("onLoginSuccess");
+            }
+
+            @Override
+            public void onConversionError() {
+                fail("onLoginSuccess");
+            }
+
+            @Override
+            public void onNetworkError() {
+                fail("onNetworkError");
+            }
+
+            @Override
+            public void onServerVersionError() {
+                fail("onServerVersionError");
             }
         });
     }
@@ -209,7 +261,7 @@ public class PushUseCaseShould {
         IPushController pushController = new IPushController() {
             @Override
             public void push(IPushControllerCallback callback) {
-
+                callback.onComplete(PushController.Kind.EVENTS);
             }
 
             @Override

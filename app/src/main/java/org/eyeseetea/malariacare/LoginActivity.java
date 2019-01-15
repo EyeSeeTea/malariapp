@@ -229,7 +229,7 @@ public class LoginActivity extends AbsLoginActivity {
         showProgress();
 
         final Credentials credentials = new Credentials(serverUrl, username, password);
-        int lastCompatibleServerVersion = Integer.parseInt(getApplicationContext().getString(R.string.api_minimal_server_version));
+        int lastCompatibleServerVersion = Integer.parseInt(getApplicationContext().getString(R.string.max_compatible_server_version));
 
         IServerInfoDataSource mServerVersionDataSource = new ServerInfoDataSource(credentials);
         IAsyncExecutor asyncExecutor = new AsyncExecutor();

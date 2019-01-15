@@ -93,7 +93,7 @@ public class LoginActivityStrategy {
             public void onClick(View v) {
 
                 Credentials demoCrededentials = Credentials.createDemoCredentials();
-                int lastCompatibleServerVersion = Integer.parseInt(loginActivity.getString(R.string.api_minimal_server_version));
+                int lastCompatibleServerVersion = Integer.parseInt(loginActivity.getString(R.string.max_compatible_server_version));
 
                 IUserAccountRepository mUserAccountRepository = new UserAccountRepository(loginActivity);
                 IServerInfoDataSource mServerVersionDataSource = new ServerInfoDataSource(demoCrededentials);
