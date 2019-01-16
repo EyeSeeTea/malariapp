@@ -20,8 +20,12 @@
 package org.eyeseetea.malariacare.domain.usecase;
 
 import org.eyeseetea.malariacare.domain.boundary.IRepositoryCallback;
+import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
+import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IServerInfoRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
+import org.eyeseetea.malariacare.domain.entity.ServerInfo;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
 import org.eyeseetea.malariacare.domain.exception.InvalidCredentialsException;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
@@ -29,7 +33,8 @@ import org.eyeseetea.malariacare.domain.exception.NetworkException;
 import java.net.MalformedURLException;
 import java.net.UnknownHostException;
 
-public class LoginUseCase {
+public class LoginUseCase implements UseCase{
+
     public interface Callback {
         void onLoginSuccess();
 
@@ -38,36 +43,115 @@ public class LoginUseCase {
         void onInvalidCredentials();
 
         void onNetworkError();
+
+        void onServerVersionError();
     }
 
+    private IMainExecutor mMainExecutor;
+    private IAsyncExecutor mAsyncExecutor;
     private IUserAccountRepository mUserAccountRepository;
+    private IServerInfoRepository mServerVersionDataSource;
+    private Credentials credentials;
+    private int maxApiVersion;
+    private Callback callback;
 
-    public LoginUseCase(IUserAccountRepository userAccountRepository) {
+    public LoginUseCase(IUserAccountRepository userAccountRepository,
+                        IServerInfoRepository serverVersionDataSource,
+                        IMainExecutor mainExecutor,
+                        IAsyncExecutor asyncExecutor) {
+        mMainExecutor = mainExecutor;
+        mAsyncExecutor = asyncExecutor;
         mUserAccountRepository = userAccountRepository;
+        mServerVersionDataSource = serverVersionDataSource;
     }
 
-    public void execute(Credentials credentials, final Callback callback) {
-        
-        mUserAccountRepository.login(credentials,
-                new IRepositoryCallback<UserAccount>() {
-                    @Override
-                    public void onSuccess(UserAccount userAccount) {
-                        callback.onLoginSuccess();
-                    }
+    public void execute(Credentials credentials, int maxApiVersion, final Callback callback) {
+        this.credentials = credentials;
+        this.maxApiVersion = maxApiVersion;
+        this.callback = callback;
+        mAsyncExecutor.run(this);
+    }
 
-                    @Override
-                    public void onError(Throwable throwable) {
-                        if (throwable instanceof MalformedURLException
-                                || throwable instanceof UnknownHostException) {
-                            callback.onServerURLNotValid();
-                        } else if (throwable instanceof InvalidCredentialsException) {
-                            callback.onInvalidCredentials();
-                        } else if (throwable instanceof NetworkException) {
-                            callback.onNetworkError();
+    @Override
+    public void run() {
+        if(isValidServerVersion()){
+            mUserAccountRepository.login(credentials,
+                    new IRepositoryCallback<UserAccount>() {
+                        @Override
+                        public void onSuccess(UserAccount userAccount) {
+                            notifyOnLoginSuccess();
                         }
-                    }
-                });
+
+                        @Override
+                        public void onError(Throwable throwable) {
+                            if (throwable instanceof MalformedURLException
+                                    || throwable instanceof UnknownHostException) {
+                                notifyOnServerURLNotValid();
+                            } else if (throwable instanceof InvalidCredentialsException) {
+                                notifyOnInvalidCredentials();
+                            } else if (throwable instanceof NetworkException) {
+                                notifyOnNetworkError();
+                            }
+                        }
+                    });
+        } else {
+            notifyOnServerVersionError();
+        }
     }
 
+    private boolean isValidServerVersion() {
+        boolean isValidServer = false;
+        if(credentials.isDemoCredentials()) {
+            isValidServer = true;
+        } else {
+            ServerInfo serverInfo = mServerVersionDataSource.get();
+            if(serverInfo.getVersion() <= maxApiVersion){
+                isValidServer = true;
+            }
+        }
+        return isValidServer;
+    }
+
+    private void notifyOnLoginSuccess() {
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                callback.onLoginSuccess();
+            }
+        });
+    }
+
+    private void notifyOnServerURLNotValid() {
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                callback.onServerURLNotValid();
+            }
+        });
+    }
+    private void notifyOnInvalidCredentials() {
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                callback.onInvalidCredentials();
+            }
+        });
+    }
+    private void notifyOnNetworkError() {
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                callback.onNetworkError();
+            }
+        });
+    }
+    private void notifyOnServerVersionError() {
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                callback.onServerVersionError();
+            }
+        });
+    }
 }
 

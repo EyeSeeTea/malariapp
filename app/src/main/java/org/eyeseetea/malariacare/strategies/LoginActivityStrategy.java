@@ -31,12 +31,21 @@ import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.LocalPullController;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
+import org.eyeseetea.malariacare.data.remote.api.ServerInfoDataSource;
+import org.eyeseetea.malariacare.data.repositories.ServerInfoRepository;
+import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
+import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
+import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
+import org.eyeseetea.malariacare.data.IServerInfoDataSource;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.usecase.LoadUserAndCredentialsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullFilters;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullUseCase;
+import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
+import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.hisp.dhis.client.sdk.ui.views.FontButton;
 
 public class LoginActivityStrategy {
@@ -85,8 +94,15 @@ public class LoginActivityStrategy {
             public void onClick(View v) {
 
                 Credentials demoCrededentials = Credentials.createDemoCredentials();
+                int lastCompatibleServerVersion = Integer.parseInt(loginActivity.getString(R.string.max_compatible_server_version));
 
-                loginActivity.mLoginUseCase.execute(demoCrededentials,
+                IUserAccountRepository mUserAccountRepository = new UserAccountRepository(loginActivity);
+                ServerInfoDataSource mServerVersionDataSource = new ServerInfoDataSource(demoCrededentials);
+                IAsyncExecutor asyncExecutor = new AsyncExecutor();
+                IMainExecutor mainExecutor = new UIThreadExecutor();
+                LoginUseCase mLoginUseCase = new LoginUseCase(mUserAccountRepository, new ServerInfoRepository(mServerVersionDataSource),
+                        mainExecutor, asyncExecutor);
+                mLoginUseCase.execute(demoCrededentials, lastCompatibleServerVersion,
                         new LoginUseCase.Callback() {
                             @Override
                             public void onLoginSuccess() {
@@ -106,6 +122,11 @@ public class LoginActivityStrategy {
                             @Override
                             public void onNetworkError() {
                                 Log.e(this.getClass().getSimpleName(), "Network Error");
+                            }
+
+                            @Override
+                            public void onServerVersionError() {
+                                Log.e(this.getClass().getSimpleName(), "onServerVersionError");
                             }
                         });
             }

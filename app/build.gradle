@@ -26,6 +26,15 @@ android {
     signingConfigs {
         config {}
     }
+    sourceSets {
+        String sharedTestDir = 'src/sharedTest/java'
+        test {
+            java.srcDir sharedTestDir
+        }
+        androidTest {
+            java.srcDirs sharedTestDir
+        }
+    }
 
     compileSdkVersion cfg.compileSdkVersion
     buildToolsVersion cfg.buildToolsVersion
@@ -160,6 +169,8 @@ dependencies {
     // Unit testing dependencies
     testCompile "junit:junit:${libs.jUnitVersion}"
     testCompile "org.mockito:mockito-core:${libs.mockitoVersion}"
+    testCompile "com.squareup.okhttp3:mockwebserver:${libs.mockwebserverVersion}"
+    testCompile "com.linkedin.dexmaker:dexmaker-mockito:${libs.dexmakerMockitoVersion}"
     testCompile "com.fasterxml.jackson.core:jackson-core:${libs.jacksonVersion}"
     testCompile "com.fasterxml.jackson.core:jackson-databind:${libs.jacksonVersion}"
     testCompile "com.fasterxml.jackson.core:jackson-annotations:${libs.jacksonVersion}"
@@ -193,6 +204,11 @@ dependencies {
     compile "com.github.Raizlabs.DBFlow:dbflow:${libs.dbFlowVersion}"
     compile "com.github.Raizlabs.DBFlow:dbflow-core:${libs.dbFlowVersion}"
     compile "com.github.Raizlabs.DBFlow:dbflow-sqlcipher:${libs.dbFlowVersion}"
+
+    // Instrumented tests dependencies
+    androidTestCompile "com.squareup.okhttp3:mockwebserver:${libs.mockwebserverVersion}"
+    androidTestCompile "org.mockito:mockito-core:${libs.mockitoVersion}"
+    androidTestCompile "com.linkedin.dexmaker:dexmaker-mockito:${libs.dexmakerMockitoVersion}"
 
     compile(project(path: ':bugshaker')) {
         exclude group: "com.google.android.gms"

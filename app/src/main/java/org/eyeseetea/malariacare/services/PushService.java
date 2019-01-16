@@ -22,12 +22,17 @@ package org.eyeseetea.malariacare.services;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.util.Log;
 
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushController;
+import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.data.remote.api.ServerInfoDataSource;
+import org.eyeseetea.malariacare.data.repositories.ServerInfoRepository;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
+import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
+import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.usecase.PushUseCase;
-import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
+import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
+import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.strategies.PushServiceStrategy;
 
 public class PushService extends IntentService {
@@ -80,7 +85,11 @@ public class PushService extends IntentService {
         super.onCreate();
 
         pushController = new PushController(getApplicationContext());
-        pushUseCase = new PushUseCase(pushController);
+
+        IMainExecutor mainExecutor = new UIThreadExecutor();
+        IAsyncExecutor asyncExecutor = new AsyncExecutor();
+        ServerInfoRepository serverInfoRepository = new ServerInfoRepository(new ServerInfoDataSource(Session.getCredentials()));
+        pushUseCase = new PushUseCase(pushController, mainExecutor, asyncExecutor, serverInfoRepository);
     }
 
     public void onPushFinished() {

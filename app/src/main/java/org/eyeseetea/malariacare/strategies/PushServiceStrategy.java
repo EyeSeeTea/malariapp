@@ -19,6 +19,8 @@
 
 package org.eyeseetea.malariacare.strategies;
 
+import android.text.Html;
+import android.text.Spanned;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.DashboardActivity;
@@ -68,8 +70,8 @@ public class PushServiceStrategy {
 
     private void executePush() {
         Log.d(TAG, "Starting push process...");
-
-        pushUseCase.execute(new PushUseCase.Callback() {
+        int lastCompatibleServerVersion = Integer.parseInt(mPushService.getString(R.string.max_compatible_server_version));
+        pushUseCase.execute(Session.getCredentials(), lastCompatibleServerVersion, new PushUseCase.Callback() {
             @Override
             public void onComplete(PushController.Kind kind) {
                 AlarmPushReceiver.isDoneSuccess(kind);
@@ -112,9 +114,30 @@ public class PushServiceStrategy {
                 AlarmPushReceiver.isDoneFail();
                 Log.e(TAG, "Network not available");
             }
+
+            @Override
+            public void onServerVersionError() {
+                launchServerVersionErrorAction();
+                Log.e(TAG, "onServerVersionError");
+            }
         });
     }
-    public void showInDialog(String title, String message) {
-        DashboardActivity.dashboardActivity.showException(title, message);
+
+    public boolean showInDialog(String title, String message) {
+        if(DashboardActivity.dashboardActivity.isVisible()) {
+            DashboardActivity.dashboardActivity.showException(title, message);
+            return true;
+        }
+        return false;
+    }
+
+    public void launchServerVersionErrorAction() {
+        String message = DashboardActivity.dashboardActivity.getString(R.string.recommend_upgrade) + "\n"
+                + DashboardActivity.dashboardActivity.getString(R.string.google_play_url);
+        boolean isShown = showInDialog(DashboardActivity.dashboardActivity.getString(R.string.server_version_error),
+                message);
+        if(isShown){
+                DashboardActivity.dashboardActivity.cancelAlarm();
+        }
     }
 }

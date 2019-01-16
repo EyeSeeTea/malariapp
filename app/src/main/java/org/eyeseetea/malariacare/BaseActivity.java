@@ -89,6 +89,10 @@ public abstract class BaseActivity extends ActionBarActivity {
         alarmPush.setPushAlarm(this);
     }
 
+    public void cancelAlarm() {
+        alarmPush.cancelPushAlarm(this);
+    }
+
     private void checkQuarantineSurveys() {
         PreferencesState.getInstance().setPushInProgress(false);
         List<SurveyDB> surveys = SurveyDB.getAllSendingSurveys();
