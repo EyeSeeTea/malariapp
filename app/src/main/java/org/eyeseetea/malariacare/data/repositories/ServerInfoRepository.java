@@ -23,7 +23,7 @@ import org.eyeseetea.malariacare.data.database.datasources.ServerInfoLocalDataSo
 import org.eyeseetea.malariacare.data.remote.api.ServerInfoRemoteDataSource;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerInfoRepository;
 import org.eyeseetea.malariacare.domain.entity.ServerInfo;
-import org.eyeseetea.malariacare.domain.enums.NetworkStrategy;
+import org.eyeseetea.malariacare.domain.common.ReadPolicy;
 
 public class ServerInfoRepository implements IServerInfoRepository {
     IServerInfoDataSource serverInfoLocalDataSource;
@@ -36,15 +36,13 @@ public class ServerInfoRepository implements IServerInfoRepository {
     }
 
     @Override
-    public ServerInfo getServerInfo(NetworkStrategy networkStrategy) {
+    public ServerInfo getServerInfo(ReadPolicy readPolicy) {
         ServerInfo serverInfo = null;
-        if(networkStrategy.equals(NetworkStrategy.LOCAL_FIRST)){
-            serverInfo = serverInfoLocalDataSource.get();
-            if(serverInfo.getVersion()==-1){
-                serverInfo = serverInfoRemoteDataSource.get();
-            }
-        }else if (networkStrategy.equals(NetworkStrategy.NETWORK_FIRST)){
+        if(readPolicy.equals(ReadPolicy.CACHE)){
+            return serverInfoLocalDataSource.get();
+        }else if (readPolicy.equals(readPolicy.NETWORK_FIRST)){
             serverInfo = serverInfoRemoteDataSource.get();
+            serverInfoLocalDataSource.save(serverInfo);
         }
         return serverInfo;
     }
