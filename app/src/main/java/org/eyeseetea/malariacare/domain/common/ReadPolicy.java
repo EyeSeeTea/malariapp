@@ -1,5 +1,7 @@
-package org.eyeseetea.malariacare.domain.enums;
+package org.eyeseetea.malariacare.domain.common;
 
-public enum  NetworkStrategy {
-    NETWORK_FIRST, LOCAL_FIRST
+public enum ReadPolicy {
+    CACHE,
+    NETWORK_FIRST,
+    NETWORK_NO_CACHE
 }
