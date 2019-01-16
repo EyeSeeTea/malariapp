@@ -43,7 +43,7 @@ public class UserAccountLocalDataSource implements IUserAccountDataSource {
 
     @Override
     public void logout(IDataSourceCallback<Void> callback) {
-        clearCredentials();
+        clearPreferences();
 
         Session.logout();
 
@@ -84,12 +84,14 @@ public class UserAccountLocalDataSource implements IUserAccountDataSource {
         Session.setCredentials(credentials);
     }
 
-    private void clearCredentials() {
+    private void clearPreferences() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(mContext.getString(R.string.dhis_url), "");
         editor.putString(mContext.getString(R.string.dhis_user), "");
         editor.putString(mContext.getString(R.string.dhis_password), "");
+        editor.putString(mContext.getString(R.string.server_version_preference), "");
+        editor.putString(mContext.getString(R.string.invalid_server_detected_preference), "");
         editor.commit();
         PreferencesState.getInstance().reloadServerUrl();
     }

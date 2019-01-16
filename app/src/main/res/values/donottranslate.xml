@@ -147,4 +147,5 @@
         <item>@string/other</item>
     </string-array>
     <string name="server_version_preference" translatable="false">server_version_preference</string>
+    <string name="invalid_server_detected_preference" translatable="false">invalid_server_detected_preference</string>
 </resources>
