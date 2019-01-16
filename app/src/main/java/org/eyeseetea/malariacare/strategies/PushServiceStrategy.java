@@ -130,10 +130,9 @@ public class PushServiceStrategy {
     }
 
     public void launchServerVersionErrorAction() {
-        boolean isShown = showInDialog(DashboardActivity.dashboardActivity.getString(R.string.server_version_error),
-                DashboardActivity.dashboardActivity.getString(R.string.recommend_upgrade));
-        if(isShown){
-                DashboardActivity.dashboardActivity.cancelAlarm();
+        DashboardActivity.dashboardActivity.cancelAlarm();
+        if(DashboardActivity.dashboardActivity.isVisible()){
+            DashboardActivity.dashboardActivity.showInvalidServerDialog();
         }
     }
 }

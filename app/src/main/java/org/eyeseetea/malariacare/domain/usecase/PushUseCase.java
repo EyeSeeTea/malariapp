@@ -23,11 +23,10 @@ import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushContr
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
-import org.eyeseetea.malariacare.data.IServerInfoDataSource;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerInfoRepository;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.ServerInfo;
-import org.eyeseetea.malariacare.domain.enums.NetworkStrategy;
+import org.eyeseetea.malariacare.domain.common.ReadPolicy;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
 import org.eyeseetea.malariacare.domain.exception.SurveysToPushNotFoundException;
@@ -123,18 +122,18 @@ public class PushUseCase implements UseCase {
         if(credentials.isDemoCredentials()) {
             return true;
         }
-        ServerInfo localServerInfo = mServerInfoRepository.getServerInfo(NetworkStrategy.LOCAL_FIRST);
-        ServerInfo serverInfo = mServerInfoRepository.getServerInfo(NetworkStrategy.ONLY_NETWORK);
+        ServerInfo localServerInfo = mServerInfoRepository.getServerInfo(ReadPolicy.CACHE);
 
-        if(localServerInfo.getVersion()==-1){
-            mServerInfoRepository.save(serverInfo);
+        ServerInfo remoteServerInfo = mServerInfoRepository.getServerInfo(ReadPolicy.NETWORK_FIRST);
+
+        if (localServerInfo.getVersion() == -1 ||
+                localServerInfo.getVersion() == remoteServerInfo.getVersion()) {
             return true;
-        }else {
-            if (localServerInfo.getVersion() == serverInfo.getVersion()) {
-                return true;
-            }
+        } else {
+            remoteServerInfo.markAsUnsupported();
+            mServerInfoRepository.save(remoteServerInfo);
+            return false;
         }
-        return false;
     }
 
     private void notifyOnComplete(final PushController.Kind kind) {

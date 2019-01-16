@@ -31,7 +31,7 @@ import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerInfoRepository;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.ServerInfo;
-import org.eyeseetea.malariacare.domain.enums.NetworkStrategy;
+import org.eyeseetea.malariacare.domain.common.ReadPolicy;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -65,7 +65,7 @@ public class PushUseCaseTest {
         Credentials credentials = new Credentials("", "", "");
         IServerInfoRepository serverInfoRepository = new IServerInfoRepository() {
             @Override
-            public ServerInfo getServerInfo(NetworkStrategy networkStrategy) throws Exception {
+            public ServerInfo getServerInfo(ReadPolicy readPolicy) throws Exception {
                 return new ServerInfo(30);
             }
 
