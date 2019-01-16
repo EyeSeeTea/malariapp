@@ -77,7 +77,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     private SurveyLocationListener locationListener;
 
     LogoutUseCase mLogoutUseCase;
-    GetServerInfoUseCase serverStatusUseCase;
     IUserAccountRepository mUserAccountRepository;
     private AlarmPushReceiver alarmPush;
 
@@ -95,7 +94,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         mLogoutUseCase = new LogoutUseCase(mUserAccountRepository);
         IServerInfoRepository serverStatusRepository = new ServerInfoRepository(new ServerInfoLocalDataSource(getApplicationContext()),
                 new ServerInfoRemoteDataSource(Session.getCredentials()));
-        serverStatusUseCase = new GetServerInfoUseCase(serverStatusRepository,
+        GetServerInfoUseCase serverStatusUseCase = new GetServerInfoUseCase(serverStatusRepository,
                 new UIThreadExecutor(), new AsyncExecutor());
         serverStatusUseCase.execute(new GetServerInfoUseCase.Callback() {
             @Override
@@ -107,10 +106,6 @@ public abstract class BaseActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    public void cancelAlarm() {
-        alarmPush.cancelPushAlarm(this);
     }
 
     private void checkQuarantineSurveys() {
