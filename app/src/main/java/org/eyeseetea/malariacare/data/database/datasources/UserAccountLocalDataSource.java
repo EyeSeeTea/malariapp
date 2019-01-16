@@ -91,7 +91,7 @@ public class UserAccountLocalDataSource implements IUserAccountDataSource {
         editor.putString(mContext.getString(R.string.dhis_user), "");
         editor.putString(mContext.getString(R.string.dhis_password), "");
         editor.putString(mContext.getString(R.string.server_version_preference), "");
-        editor.putString(mContext.getString(R.string.invalid_server_detected_preference), "");
+        editor.putBoolean(mContext.getString(R.string.is_server_version_supported), true);
         editor.commit();
         PreferencesState.getInstance().reloadServerUrl();
     }
