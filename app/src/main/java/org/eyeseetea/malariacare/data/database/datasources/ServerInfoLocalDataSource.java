@@ -18,12 +18,21 @@ public class ServerInfoLocalDataSource implements IServerInfoDataSource {
 
     @Override
     public ServerInfo get() {
-        return new ServerInfo(getServerVersion());
+        ServerInfo serverInfo = new ServerInfo(getServerVersion());
+        if(getServerIsUnsupported()) {
+            serverInfo.markAsUnsupported();
+        }
+        return serverInfo;
     }
 
     @Override
     public void save(ServerInfo serverInfo) {
         saveServerVersion(serverInfo);
+    }
+
+    private boolean getServerIsUnsupported() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(context.getResources().getString(R.string.invalid_server_detected_preference), false);
     }
 
     private int getServerVersion() {
@@ -35,6 +44,7 @@ public class ServerInfoLocalDataSource implements IServerInfoDataSource {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(context.getString(R.string.server_version_preference), serverInfo.getVersion());
+        editor.putBoolean(context.getString(R.string.invalid_server_detected_preference), serverInfo.isServerSupported());
         editor.commit();
     }
 }
