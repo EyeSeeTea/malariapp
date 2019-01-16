@@ -97,7 +97,7 @@ public class AlarmPushReceiver extends BroadcastReceiver {
 
     }
 
-    public void cancelPushAlarm(Context context) {
+    public static void cancelPushAlarm(Context context) {
         Log.d(TAG, "cancelPushAlarm");
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);

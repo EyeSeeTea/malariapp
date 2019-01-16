@@ -130,7 +130,7 @@ public class PushServiceStrategy {
     }
 
     public void launchServerVersionErrorAction() {
-        DashboardActivity.dashboardActivity.cancelAlarm();
+       AlarmPushReceiver.cancelPushAlarm(DashboardActivity.dashboardActivity);
         if(DashboardActivity.dashboardActivity.isVisible()){
             DashboardActivity.dashboardActivity.showInvalidServerDialog();
         }
