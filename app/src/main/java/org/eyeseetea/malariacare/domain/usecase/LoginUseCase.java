@@ -22,13 +22,11 @@ package org.eyeseetea.malariacare.domain.usecase;
 import org.eyeseetea.malariacare.domain.boundary.IRepositoryCallback;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
-import org.eyeseetea.malariacare.data.IServerInfoDataSource;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerInfoRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
-import org.eyeseetea.malariacare.domain.entity.ServerInfo;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
-import org.eyeseetea.malariacare.domain.enums.NetworkStrategy;
+import org.eyeseetea.malariacare.domain.common.ReadPolicy;
 import org.eyeseetea.malariacare.domain.exception.InvalidCredentialsException;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
 import org.hisp.dhis.client.sdk.models.common.UnsupportedServerVersionException;
@@ -75,12 +73,14 @@ public class LoginUseCase implements UseCase{
 
     @Override
     public void run() {
-        try {
-            ServerInfo serverInfoLocal = mServerRepository.getServerInfo(NetworkStrategy.ONLY_NETWORK);
-            mServerRepository.save(serverInfoLocal);
-        } catch (Exception e) {
-            notifyOnNetworkError();
-            return;
+        if(!credentials.isDemoCredentials()) {
+            try {
+                mServerRepository.getServerInfo(ReadPolicy.NETWORK_FIRST);
+            } catch (Exception e) {
+                e.printStackTrace();
+                notifyOnNetworkError();
+                return;
+            }
         }
 
         mUserAccountRepository.login(credentials, new IRepositoryCallback<UserAccount>() {

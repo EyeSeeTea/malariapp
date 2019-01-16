@@ -21,40 +21,44 @@ package org.eyeseetea.malariacare.domain.usecase;
 
 import android.support.test.InstrumentationRegistry;
 
+import org.eyeseetea.malariacare.data.database.datasources.ServerInfoLocalDataSource;
 import org.eyeseetea.malariacare.data.remote.api.ServerInfoRemoteDataSource;
+import org.eyeseetea.malariacare.data.repositories.ServerInfoRepository;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
+import org.eyeseetea.malariacare.domain.entity.ServerInfo;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.rules.MockWebServerRule;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
 import static org.junit.Assert.fail;
+import static org.mockito.Mockito.when;
 
 public class LoginUseCaseShould {
 
-    private static final String SYSTEM_INFO_VERSION_25 = "system_info_25.json";
-    private static final String SYSTEM_INFO_VERSION_26 = "system_info_26.json";
+    private static final String SYSTEM_INFO_VERSION_30 = "system_info_30.json";
     private static final String AUTH = "auth.json";
 
     @Rule
     public MockitoRule rule = MockitoJUnit.rule();
     @Rule
     public MockWebServerRule mockWebServerRule = new MockWebServerRule();
+    @Mock
+    ServerInfoLocalDataSource mServerLocalDataSource;
     @Test
-    public void return_on_login_success_callback_when_server_version_is_the_minimal_valid_server_info_with_server_credentials() {
+    public void return_on_login_success_callback_when_server_do_login_with_demo_credentials() {
         Credentials credentials = Credentials.createDemoCredentials();
-        LoginUseCase loginUseCase = givenLoginUseCase(credentials);
+        int actualVersion = 30;
+        LoginUseCase loginUseCase = givenLoginUseCase(credentials, actualVersion);
 
-
-        int minimalVersion = 25;
-
-        loginUseCase.execute(credentials,minimalVersion, new LoginUseCase.Callback() {
+        loginUseCase.execute(credentials, new LoginUseCase.Callback() {
 
             @Override
             public void onLoginSuccess() {
@@ -84,15 +88,14 @@ public class LoginUseCaseShould {
     }
 
     @Test
-    public void return_on_login_success_callback_when_server_version_is_the_minimal_valid_server_info() throws Exception {
+    public void return_on_login_success_callback_when_server_do_login() throws Exception {
         Credentials credentials = new Credentials(mockWebServerRule.getMockServer().getBaseEndpoint(), "user", "password");
-        LoginUseCase loginUseCase = givenLoginUseCase(credentials);
+        int actualVersion = -1;
+        LoginUseCase loginUseCase = givenLoginUseCase(credentials, actualVersion);
 
-        int minimalVersion = 25;
-
-        mockWebServerRule.getMockServer().enqueueMockResponseFileName(200, SYSTEM_INFO_VERSION_25);
+        mockWebServerRule.getMockServer().enqueueMockResponseFileName(200, SYSTEM_INFO_VERSION_30);
         mockWebServerRule.getMockServer().enqueueMockResponseFileName(200, AUTH);
-        loginUseCase.execute(credentials,minimalVersion, new LoginUseCase.Callback() {
+        loginUseCase.execute(credentials, new LoginUseCase.Callback() {
 
             @Override
             public void onLoginSuccess() {
@@ -116,50 +119,12 @@ public class LoginUseCaseShould {
 
             @Override
             public void onUnsupportedServerVersion() {
-                fail("onServerVersionError");
+                fail("onUnsupportedServerVersion");
             }
         });
     }
 
-    @Test
-    public void return_on_login_success_callback_when_server_version_is_low_than_last_valid_server() throws Exception {
-        Credentials credentials = new Credentials(mockWebServerRule.getMockServer().getBaseEndpoint(), "user", "password");
-        LoginUseCase loginUseCase = givenLoginUseCase(credentials);
-
-        int minimalVersion = 25;
-
-        mockWebServerRule.getMockServer().enqueueMockResponseFileName(200, SYSTEM_INFO_VERSION_26);
-        mockWebServerRule.getMockServer().enqueueMockResponseFileName(200, AUTH);
-        loginUseCase.execute(credentials, minimalVersion, new LoginUseCase.Callback() {
-
-            @Override
-            public void onLoginSuccess() {
-                fail("onLoginSuccess");
-            }
-
-            @Override
-            public void onServerURLNotValid() {
-                fail("onServerURLNotValid");
-            }
-
-            @Override
-            public void onInvalidCredentials() {
-                fail("onInvalidCredentials");
-            }
-
-            @Override
-            public void onNetworkError() {
-                fail("onNetworkError");
-            }
-
-            @Override
-            public void onUnsupportedServerVersion() {
-                Assert.assertTrue(true);
-            }
-        });
-    }
-
-    private LoginUseCase givenLoginUseCase(Credentials credentials) {
+    private LoginUseCase givenLoginUseCase(Credentials credentials, int serverVersion) {
         IMainExecutor mainExecutor = new UIThreadExecutor();
         IAsyncExecutor asyncExecutor = new IAsyncExecutor() {
             @Override
@@ -167,7 +132,10 @@ public class LoginUseCaseShould {
                 runnable.run();
             }
         };
+        when(mServerLocalDataSource.get()).thenReturn(new ServerInfo(serverVersion));
+        ServerInfoRemoteDataSource mServerRemoteDataSource = new ServerInfoRemoteDataSource(credentials);
+        ServerInfoRepository serverInfoRepository = new ServerInfoRepository(mServerLocalDataSource, mServerRemoteDataSource);
         return new LoginUseCase(new UserAccountRepository(InstrumentationRegistry.getTargetContext()),
-                new ServerInfoRemoteDataSource(credentials), mainExecutor, asyncExecutor);
+                serverInfoRepository, mainExecutor, asyncExecutor);
     }
 }
