@@ -34,7 +34,7 @@ public class ServerInfoDataSource implements IServerInfoDataSource {
     public static Integer getServerVersion(Credentials credentials) {
         Integer version = null;
         try {
-            Response response = executeCall(new BasicAuthenticator(credentials), credentials.getServerURL() + SERVER_VERSION_CALL, "GET");
+            Response response = executeCall(new BasicAuthenticator(credentials), credentials.getServerURL(), SERVER_VERSION_CALL);
             JsonNode jsonNode = parseResponse(response.body().string());
             JsonNode jsonVersionNode = jsonNode.get(VERSION);
             String[] completedVersionParts = jsonVersionNode.asText().split(Pattern.quote("."));

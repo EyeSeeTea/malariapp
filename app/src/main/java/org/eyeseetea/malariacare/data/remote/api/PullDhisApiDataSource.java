@@ -53,7 +53,7 @@ public class PullDhisApiDataSource {
         String data = USER + String.format(QUERY_USER_ATTRIBUTES, appUser.getUid());
         Log.d(TAG, String.format("getUserAttributesApiCall(%s) -> %s", USER, data));
         try {
-            Response response = executeCall(DHIS_PULL_API+data, "GET");
+            Response response = executeCall(DHIS_PULL_API+data);
             JsonNode jsonNode = parseResponse(response.body().string());
             JsonNode jsonNodeArray = jsonNode.get(ATTRIBUTEVALUES);
             String newMessage = "";
@@ -117,7 +117,7 @@ public class PullDhisApiDataSource {
 
         Date closedDate = null;
         try {
-            Response response = executeCall(DHIS_PULL_API+data, "GET");
+            Response response = executeCall(DHIS_PULL_API+data);
             JsonNode jsonNode = parseResponse(response.body().string());
             closedDate = getClosedDate(jsonNode.get(ATTRIBUTEVALUES));
         } catch (Exception ex) {
@@ -143,7 +143,7 @@ public class PullDhisApiDataSource {
     }
 
     public static List<EventExtended> pullQuarantineEvents(String url) throws IOException, JSONException {
-        Response response = executeCall(url, "GET");
+        Response response = executeCall(url);
         JSONObject events = new JSONObject(response.body().string());
         ObjectMapper mapper = new ObjectMapper();
         JsonNode jsonNode = mapper.convertValue(mapper.readTree(events.toString()),
