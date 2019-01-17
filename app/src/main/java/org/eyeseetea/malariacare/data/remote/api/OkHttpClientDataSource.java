@@ -18,8 +18,6 @@ import java.io.IOException;
 
 public class OkHttpClientDataSource {
 
-    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-
     private static final String TAG = ".PullDhisApiDataSource";
 
     /**
