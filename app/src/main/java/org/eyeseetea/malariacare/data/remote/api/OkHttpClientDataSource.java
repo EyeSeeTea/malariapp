@@ -26,13 +26,23 @@ public class OkHttpClientDataSource {
 
     /**
      * Call to DHIS Server
-     * @param data
-     * @param method
+     * @param apiCall
+     */
+    public static Response executeCall(String apiCall) throws IOException {
+        return executeCall(new BasicAuthenticator(PreferencesState.getInstance().getCreedentials()), PreferencesState.getInstance().getServer().getUrl(), apiCall);
+    }
+
+    /**
+     * Call to DHIS Server
      * @param url
      */
-    public static Response executeCall(BasicAuthenticator basicAuthenticator, JSONObject data, String url, String method) throws IOException {
-
-        Log.d(TAG, "executeCall Url" + url + "");
+    public static Response executeCall(BasicAuthenticator basicAuthenticator, String url, String apiCall) throws IOException {
+        if (!url.substring(url.length()-1).equals("/")) {
+            url = url + "/";
+        }
+        url = url + apiCall;
+        url = url.replace(" ", "%20");
+        Log.d(TAG, "executeCall Url " + url + "");
 
         OkHttpClient client= UnsafeOkHttpsClientFactory.getUnsafeOkHttpClient();
 
@@ -46,23 +56,7 @@ public class OkHttpClientDataSource {
                 .header(basicAuthenticator.AUTHORIZATION_HEADER, basicAuthenticator.getCredentials())
                 .url(url);
 
-        switch (method){
-            case "POST":
-                RequestBody postBody = RequestBody.create(JSON, data.toString());
-                builder.post(postBody);
-                break;
-            case "PUT":
-                RequestBody putBody = RequestBody.create(JSON, data.toString());
-                builder.put(putBody);
-                break;
-            case "PATCH":
-                RequestBody patchBody = RequestBody.create(JSON, data.toString());
-                builder.patch(patchBody);
-                break;
-            case "GET":
-                builder.get();
-                break;
-        }
+        builder.get();
 
         Request request = builder.build();
         Response response = client.newCall(request).execute();
@@ -71,20 +65,6 @@ public class OkHttpClientDataSource {
             throw new IOException(response.message());
         }
         return response;
-    }
-
-    /**
-     * Call to DHIS Server
-     * @param url
-     * @param method
-     */
-    public static Response executeCall(String url, String method) throws IOException {
-        final String DHIS_URL=PreferencesState.getInstance().getServer().getUrl() + url.replace(" ", "%20");
-        return executeCall(new BasicAuthenticator(PreferencesState.getInstance().getCreedentials()), null, DHIS_URL + url, method);
-    }
-
-    public static Response executeCall(BasicAuthenticator basicAuthenticator, String url, String method) throws IOException {
-        return executeCall(basicAuthenticator, null, url, method);
     }
 
     public static JsonNode parseResponse(String responseData)throws Exception{
