@@ -17,7 +17,7 @@ import static org.eyeseetea.malariacare.data.remote.api.OkHttpClientDataSource.p
 
 public class ServerInfoRemoteDataSource implements IServerInfoDataSource {
 
-    private static final String SERVER_VERSION_CALL = "/api/system/info/";
+    private static final String SERVER_VERSION_CALL = "api/system/info/";
     private static final String VERSION = "version";
 
     private static final String TAG = ".PullDhisApiDataSource";
