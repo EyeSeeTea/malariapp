@@ -25,10 +25,10 @@ import static org.eyeseetea.malariacare.data.remote.api.OkHttpClientDataSource.p
 
 public class PullDhisApiDataSource {
 
-    private static final String DHIS_PULL_API="/api/";
+    private static final String DHIS_PULL_API="api/";
 
     private static final String DHIS_CHECK_EVENT_API =
-            "/api/events.json?program=%s&orgUnit=%s&startDate=%s&endDate=%s&skipPaging=true"
+            "api/events.json?program=%s&orgUnit=%s&startDate=%s&endDate=%s&skipPaging=true"
                     + "&fields=event,orgUnit,program,dataValues";
 
     private static String QUERY_USER_ATTRIBUTES =
