@@ -29,7 +29,7 @@ public class OkHttpClientDataSource {
      * @param url
      */
     public static Response executeCall(BasicAuthenticator basicAuthenticator, JSONObject data, String url, String method) throws IOException {
-
+        url = url.replace("//", "/");
         Log.d(TAG, "executeCall Url" + url + "");
         OkHttpClient client= UnsafeOkHttpsClientFactory.getUnsafeOkHttpClient(basicAuthenticator);
 
