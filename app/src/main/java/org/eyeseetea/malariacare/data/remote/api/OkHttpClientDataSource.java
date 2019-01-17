@@ -37,7 +37,7 @@ public class OkHttpClientDataSource {
      * @param url
      */
     public static Response executeCall(BasicAuthenticator basicAuthenticator, String url, String apiCall) throws IOException {
-        if (!url.substring(url.length()).equals("/")) {
+        if (!url.substring(url.length()-1).equals("/")) {
             url = url + "/";
         }
         url = url + apiCall;
