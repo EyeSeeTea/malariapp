@@ -246,7 +246,7 @@ Mensuelle"</string>
 </string-array>
 <string name="supervision_on">"Surveillance des résultats sur:"</string>
 <string name="critical_steps">ÉTAPES CRITIQUES MANQUÉES:</string>
-<string name="url_not_available">"L'URL n'est pas encore disponible"</string>
+<string name="url_not_available">"L'URL de commentaires n'est pas disponible car l'enquête n'a pas encore été envoyée au serveur. Essayez de partager les commentaires plus tard."</string>
 <string name="see_full_assessment">"Voir l'enquête complète à:"</string>
 <string name="on">"DATE D'ÉVALUATION:"</string>
 

@@ -263,7 +263,7 @@
 </string-array>
 <string name="supervision_on">ការត្រួតពិនិត្យលទ្ធផលលើ:</string>
 <string name="critical_steps">ជំហានរិះគន់ខកខាន:</string>
-<string name="url_not_available">URL មិនទាន់មានទេ</string>
+<string name="url_not_available">URL ឆ្លើយតបមិនមានទេពីព្រោះការស្ទង់មតិមិនត្រូវបានផ្ញើទៅម៉ាស៊ីនមេនៅឡើយទេ។ ព្យាយាមចែករំលែកមតិត្រឡប់ម្តងទៀតពេលក្រោយ។</string>
 <string name="see_full_assessment">មើលការស្ទង់មតិពេញលេញនៅ</string>
 <string name="pref_header_general">General</string>
 <string name="install_file_manager">សូមដំឡើងកម្មវិធីគ្រប់គ្រងឯកសារមួយ។</string>

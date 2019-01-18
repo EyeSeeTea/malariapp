@@ -256,7 +256,7 @@ clínica"</string>
 </string-array>
 <string name="supervision_on">Supervisión de resultados en:</string>
 <string name="critical_steps">PASOS CRÍTICOS PERDIDOS:</string>
-<string name="url_not_available">URL aún no disponible</string>
+<string name="url_not_available">La URL de comentarios no está disponible porque la encuesta aún no se ha enviado al servidor. Intenta compartir los comentarios de nuevo más tarde.</string>
 <string name="see_full_assessment">Ver evaluación completa en:</string>
 <string name="on">"FECHA DE EVALUACIÓN:"</string>
 
