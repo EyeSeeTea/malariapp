@@ -148,4 +148,5 @@
     </string-array>
     <string name="server_version_preference" translatable="false">server_version_preference</string>
     <string name="is_server_version_supported" translatable="false">is_server_version_supported</string>
+    <string name="google_play_url" translatable="false">"https://play.google.com/store/apps/details?id=org.eyeseetea.malariacare.hnqis_ng"</string>
 </resources>
