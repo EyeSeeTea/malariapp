@@ -28,9 +28,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.telephony.TelephonyManager;
+import android.text.SpannableString;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.eyeseetea.malariacare.data.database.datasources.ServerInfoLocalDataSource;
@@ -207,13 +211,13 @@ public class DashboardActivity extends BaseActivity {
         super.onResume();
         mIsVisible = true;
 
-        shoInvalidServerDialogIfIsRequired();
+        showInvalidServerDialogIfIsRequired();
         getSurveysFromService();
         DriveRestController.getInstance().syncMedia();
         DashboardActivity.dashboardActivity.reloadActiveTab();
     }
 
-    private void shoInvalidServerDialogIfIsRequired() {
+    private void showInvalidServerDialogIfIsRequired() {
         IServerInfoRepository serverStatusRepository = new ServerInfoRepository(new ServerInfoLocalDataSource(getApplicationContext()),
                 new ServerInfoRemoteDataSource(Session.getCredentials()));
         GetServerInfoUseCase serverStatusUseCase = new GetServerInfoUseCase(serverStatusRepository,
@@ -386,12 +390,16 @@ public class DashboardActivity extends BaseActivity {
                         if (errorMessage != null) {
                             dialogMessage = errorMessage;
                         }
-                        new AlertDialog.Builder(dashboardActivity)
+                        final SpannableString spannableText = new SpannableString(dialogMessage);
+                        Linkify.addLinks(spannableText, Linkify.WEB_URLS);
+                        final AlertDialog alertDialog = new AlertDialog.Builder(dashboardActivity)
                                 .setCancelable(false)
                                 .setTitle(dialogTitle)
-                                .setMessage(dialogMessage)
+                                .setMessage(spannableText)
                                 .setNeutralButton(android.R.string.ok, null)
-                                .create().show();
+                                .create();
+                        alertDialog.show();
+                        ((TextView)alertDialog.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
                     }
                 });
             }
@@ -432,8 +440,9 @@ public class DashboardActivity extends BaseActivity {
     }
 
     public void showInvalidServerDialog() {
-        showException(DashboardActivity.dashboardActivity.getString(R.string.server_version_error),
-                DashboardActivity.dashboardActivity.getString(R.string.recommend_upgrade));
+        String message = DashboardActivity.dashboardActivity.getString(R.string.recommend_upgrade) + "\n" +
+                DashboardActivity.dashboardActivity.getString(R.string.google_play_url);
+        showException(DashboardActivity.dashboardActivity.getString(R.string.server_version_error), message);
         setIsInvalidServerDialogShowed(true);
     }
 
