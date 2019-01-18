@@ -66,6 +66,9 @@ public class AlarmPushReceiver extends BroadcastReceiver {
         setFail(true);
     }
 
+    public static void isDoneCancel() {
+    }
+
 
     /**
      * Launches a PushService call if it is not already in progress
@@ -94,7 +97,7 @@ public class AlarmPushReceiver extends BroadcastReceiver {
 
     }
 
-    public void cancelPushAlarm(Context context) {
+    public static void cancelPushAlarm(Context context) {
         Log.d(TAG, "cancelPushAlarm");
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);

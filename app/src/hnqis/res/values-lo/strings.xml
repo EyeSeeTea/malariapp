@@ -298,6 +298,8 @@
 <string name="survey_not_assigned_facility">"ການສໍາຫຼວດນີ້ບໍ່ໄດ້ມອບຫມາຍໃຫ້ສະຖານທີ່ນີ້. ກະລຸນາເລືອກການສໍາຫຼວດອື່ນ."</string>
 <string name="feedback_progress_bar_text">ກໍາລັງໂຫລດຄະແນນສໍາຫຼວດ ... ກະລຸນາລໍຖ້າ</string>
 <string name="other">ອື່ນໆ</string>
+<string name="server_version_error">"ເວີຊັນຂອງເຄື່ອງແມ່ຂ່າຍບໍ່ສະຫນັບສະຫນູນ"</string>
 <string name="login_error_unsupported_server_version">ເວີຊັນຂອງເຄື່ອງແມ່ຂ່າຍບໍ່ສະຫນັບສະຫນູນ</string>
 <string name="feedback_not_sent">"URL ຄວາມຄິດເຫັນບໍ່ສາມາດໃຊ້ໄດ້ເນື່ອງຈາກການສໍາຫຼວດ. ລອງແບ່ງປັນຄວາມຄິດເຫັນຕໍ່ອີກເທື່ອຫນຶ່ງ."</string>
+<string name="recommend_upgrade">"ກະລຸນາອັບເກດແອັບຯຈາກ Google Play."</string>
 </resources>
