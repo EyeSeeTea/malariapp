@@ -53,6 +53,7 @@ public class PreferencesState {
     static {
         nextScheduleMonths.put(DEFAULT_SCHEDULE_MONTHS_VALUE, new int[]{2, 4, 6});
         nextScheduleMonths.put("https://zw.hnqis.org/", new int[]{1, 1, 6});
+        nextScheduleMonths.put("https://clone-zw.hnqis.org/", new int[]{1, 1, 6});
     }
 
     static Context context;
