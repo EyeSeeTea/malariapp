@@ -47,7 +47,7 @@ import java.util.Map;
 
 public class PreferencesState {
 
-    public static final String DEFAULT_SCHEDULE_MONTHS_VALUE ="https://data.psi-mis.org";
+    public static final String DEFAULT_SCHEDULE_MONTHS_VALUE ="https://data.psi-mis.org/";
     public static final HashMap<String, int[]> nextScheduleMonths = new HashMap<>();
 
     static {
@@ -496,6 +496,10 @@ public class PreferencesState {
     }
 
     private int[] getMonthArray(String serverUrl) {
+        if(!(serverUrl.substring(serverUrl.length()-1)).equals("/")){
+            serverUrl = serverUrl+"/";
+        }
+
         if(nextScheduleMonths.containsKey(serverUrl))
         {
             return nextScheduleMonths.get(serverUrl);
