@@ -507,6 +507,9 @@ public class PreferencesState {
     }
 
     private String formatUrl(String serverUrl) {
+        if(serverUrl == null || serverUrl.isEmpty()) {
+            return "";
+        }
         if(!(serverUrl.substring(serverUrl.length()-1)).equals("/")){
             serverUrl = serverUrl+"/";
         }
