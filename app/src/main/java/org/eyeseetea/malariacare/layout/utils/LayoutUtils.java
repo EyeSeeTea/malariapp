@@ -22,7 +22,7 @@ package org.eyeseetea.malariacare.layout.utils;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.Spanned;
 import android.view.View;
@@ -113,7 +113,7 @@ public class LayoutUtils {
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
     }
 
-    public static void setActionBarBackButton(ActionBarActivity activity) {
+    public static void setActionBarBackButton(AppCompatActivity activity) {
         android.support.v7.app.ActionBar actionBar = activity.getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(false);
     }
@@ -168,7 +168,7 @@ public class LayoutUtils {
         actionBar.setTitle(title);
     }
 
-    private static void setActionbarTitle(ActionBarActivity activity, Spanned title,
+    private static void setActionbarTitle(AppCompatActivity activity, Spanned title,
             String subtitle) {
         android.support.v7.app.ActionBar actionBar = activity.getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
@@ -184,7 +184,7 @@ public class LayoutUtils {
         ((CustomTextView) activity.findViewById(R.id.action_bar_multititle_subtitle)).setText(subtitle);
     }
 
-    private static void setSurveyActionbarTitle(ActionBarActivity activity, Spanned title,
+    private static void setSurveyActionbarTitle(AppCompatActivity activity, Spanned title,
             String subtitle, long surveyId, SurveyAnsweredRatio surveyAnsweredRatio) {
         android.support.v7.app.ActionBar actionBar = activity.getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
@@ -204,7 +204,7 @@ public class LayoutUtils {
 
 
 
-    private static void setActionbarAppName(ActionBarActivity activity) {
+    private static void setActionbarAppName(AppCompatActivity activity) {
         android.support.v7.app.ActionBar actionBar = activity.getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(false);
@@ -213,7 +213,7 @@ public class LayoutUtils {
         actionBar.setTitle(activity.getResources().getString(R.string.app_name));
     }
 
-    public static void setActionBarDashboard(ActionBarActivity activity, String title) {
+    public static void setActionBarDashboard(AppCompatActivity activity, String title) {
 
         if (PreferencesState.getInstance().isVerticalDashboard()) {
             LayoutUtils.setActionbarAppName(activity);
