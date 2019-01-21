@@ -496,9 +496,7 @@ public class PreferencesState {
     }
 
     private int[] getMonthArray(String serverUrl) {
-        if(!(serverUrl.substring(serverUrl.length()-1)).equals("/")){
-            serverUrl = serverUrl+"/";
-        }
+        serverUrl = formatUrl(serverUrl);
 
         if(nextScheduleMonths.containsKey(serverUrl))
         {
@@ -506,6 +504,13 @@ public class PreferencesState {
         } else {
             return nextScheduleMonths.get(DEFAULT_SCHEDULE_MONTHS_VALUE);
         }
+    }
+
+    private String formatUrl(String serverUrl) {
+        if(!(serverUrl.substring(serverUrl.length()-1)).equals("/")){
+            serverUrl = serverUrl+"/";
+        }
+        return serverUrl;
     }
 
     private String getServerUrl() {
