@@ -47,12 +47,13 @@ import java.util.Map;
 
 public class PreferencesState {
 
-    public static final String DEFAULT_SCHEDULE_MONTHS_VALUE ="https://data.psi-mis.org";
+    public static final String DEFAULT_SCHEDULE_MONTHS_VALUE ="https://data.psi-mis.org/";
     public static final HashMap<String, int[]> nextScheduleMonths = new HashMap<>();
 
     static {
         nextScheduleMonths.put(DEFAULT_SCHEDULE_MONTHS_VALUE, new int[]{2, 4, 6});
         nextScheduleMonths.put("https://zw.hnqis.org/", new int[]{1, 1, 6});
+        nextScheduleMonths.put("https://clone-zw.hnqis.org/", new int[]{1, 1, 6});
     }
 
     static Context context;
@@ -495,12 +496,21 @@ public class PreferencesState {
     }
 
     private int[] getMonthArray(String serverUrl) {
+        serverUrl = formatUrl(serverUrl);
+
         if(nextScheduleMonths.containsKey(serverUrl))
         {
             return nextScheduleMonths.get(serverUrl);
         } else {
             return nextScheduleMonths.get(DEFAULT_SCHEDULE_MONTHS_VALUE);
         }
+    }
+
+    private String formatUrl(String serverUrl) {
+        if(!(serverUrl.substring(serverUrl.length()-1)).equals("/")){
+            serverUrl = serverUrl+"/";
+        }
+        return serverUrl;
     }
 
     private String getServerUrl() {
