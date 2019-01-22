@@ -19,7 +19,7 @@
 
 package org.eyeseetea.malariacare.fragments;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;

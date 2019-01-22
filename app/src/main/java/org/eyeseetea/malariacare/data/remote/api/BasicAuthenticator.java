@@ -4,17 +4,17 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 
 import java.io.IOException;
 
-import com.squareup.okhttp.Authenticator;
-import com.squareup.okhttp.Credentials;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
+import javax.annotation.Nullable;
 
-import java.net.Proxy;
-
+import okhttp3.Authenticator;
+import okhttp3.Credentials;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.Route;
 
 public class BasicAuthenticator implements Authenticator {
 
-    public final String AUTHORIZATION_HEADER="Authorization";
+    public final String AUTHORIZATION_HEADER = "Authorization";
     private String credentials;
     private int mCounter = 0;
 
@@ -22,21 +22,17 @@ public class BasicAuthenticator implements Authenticator {
         credentials = Credentials.basic(userCredentials.getUsername(), userCredentials.getPassword());
     }
 
-    @Override
-    public Request authenticate(Proxy proxy, Response response) throws IOException {
+    public String getCredentials() {
+        return credentials;
+    }
 
+    @Nullable
+    @Override
+    public Request authenticate(Route route, Response response) throws IOException {
         if (mCounter++ > 0) {
             throw new IOException(response.message());
         }
-        return response.request().newBuilder().header(AUTHORIZATION_HEADER, credentials).build();
-    }
-
-    @Override
-    public Request authenticateProxy(Proxy proxy, Response response) throws IOException {
-        return null;
-    }
-
-    public String getCredentials(){
-        return credentials;
+        return response.request().newBuilder().header(AUTHORIZATION_HEADER,
+                credentials).build();
     }
 }

@@ -5,7 +5,6 @@ import android.util.Log;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.squareup.okhttp.Response;
 
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
@@ -19,6 +18,8 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+
+import okhttp3.Response;
 
 import static org.eyeseetea.malariacare.data.remote.api.OkHttpClientDataSource.executeCall;
 import static org.eyeseetea.malariacare.data.remote.api.OkHttpClientDataSource.parseResponse;

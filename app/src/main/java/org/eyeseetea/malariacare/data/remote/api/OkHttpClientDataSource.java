@@ -4,23 +4,17 @@ import android.util.Log;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.eyeseetea.malariacare.data.remote.api.BasicAuthenticator;
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.domain.exception.PullApiParsingException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 public class OkHttpClientDataSource {
-
-    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     private static final String TAG = ".PullDhisApiDataSource";
 
@@ -44,15 +38,9 @@ public class OkHttpClientDataSource {
         url = url.replace(" ", "%20");
         Log.d(TAG, "executeCall Url " + url + "");
 
-        OkHttpClient client= UnsafeOkHttpsClientFactory.getUnsafeOkHttpClient();
+        OkHttpClient client= UnsafeOkHttpsClientFactory.getUnsafeOkHttpClient(basicAuthenticator);
 
-        client.setConnectTimeout(30, TimeUnit.SECONDS); // connect timeout
-        client.setReadTimeout(30, TimeUnit.SECONDS);    // socket timeout
-        client.setWriteTimeout(30, TimeUnit.SECONDS);    // write timeout
-        client.setRetryOnConnectionFailure(false); // Cancel retry on failure
-        client.setAuthenticator(basicAuthenticator);
-
-        Request.Builder builder = new Request.Builder()
+        okhttp3.Request.Builder builder = new okhttp3.Request.Builder()
                 .header(basicAuthenticator.AUTHORIZATION_HEADER, basicAuthenticator.getCredentials())
                 .url(url);
 

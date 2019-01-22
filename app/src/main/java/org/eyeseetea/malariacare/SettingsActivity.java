@@ -19,6 +19,14 @@
 
 package org.eyeseetea.malariacare;
 
+import android.app.Activity;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.preference.ListPreference;
+import android.support.v7.preference.Preference;
+import android.support.v7.preference.PreferenceFragmentCompat;
+import android.support.v7.preference.PreferenceManager;
+import android.support.v7.preference.PreferenceScreen;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -26,30 +34,22 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.PreferenceActivity;
-import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
-import android.preference.PreferenceScreen;
 import android.support.annotation.NonNull;
-import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.View;
 
 import org.eyeseetea.malariacare.data.database.utils.LanguageContextWrapper;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
+import org.eyeseetea.malariacare.views.SimpleDividerItemDecoration;
 
 /**
- * A {@link PreferenceActivity} that presents a set of application settings. On
+ * A {@link android.support.v7.app.AppCompatActivity} that presents a set of application settings
+ * . On
  * handset devices, settings are presented as a single list. On tablets,
  * settings are split by category, with category headers shown to the left of
  * the list of settings.
@@ -59,7 +59,7 @@ import java.util.Locale;
  * href="http://developer.android.com/guide/topics/ui/settings.html">Settings
  * API Guide</a> for more information on developing a Settings UI.
  */
-public class SettingsActivity extends PreferenceActivity implements
+public class SettingsActivity extends AppCompatActivity implements
         SharedPreferences.OnSharedPreferenceChangeListener {
     /**
      * Determines whether to always show the simplified settings UI, where
@@ -73,111 +73,9 @@ public class SettingsActivity extends PreferenceActivity implements
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_settings);
         PreferencesState.getInstance().initalizateActivityDependencies();
     }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-    }
-
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-
-        setupSimplePreferencesScreen();
-    }
-
-    /**
-     * Logging out from sdk is an async method.
-     * Thus it is required a callback to finish logout gracefully.
-     *
-     * @param uiEvent
-     */
-    /**
-     @Subscribe
-     //// FIXME: 09/11/2016
-     @Subscribe public void onLogoutFinished(UiEvent uiEvent){
-     //No event or not a logout event -> done
-     if(uiEvent==null || !uiEvent.getEventType().equals(UiEvent.UiEventType.USER_LOG_OUT)){
-     return;
-     }
-     Log.i(TAG, "Logging out from sdk...OK");
-     Session.logout();
-     Intent loginIntent = new Intent(this,LoginActivity.class);
-     finish();
-     startActivity(loginIntent);
-     }
-     */
-
-    /**
-     * Shows the simplified settings UI if the device configuration if the
-     * device configuration dictates that a simplified, single-pane UI should be
-     * shown.
-     */
-    private void setupSimplePreferencesScreen() {
-        if (!isSimplePreferences(this)) {
-            return;
-        }
-
-        // In the simplified UI, fragments are not used at all and we instead
-        // use the older PreferenceActivity APIs.
-
-        // Add 'general' preferences.
-        addPreferencesFromResource(R.xml.pref_general);
-
-        // fitler the font options by screen size
-        filterTextSizeOptions(
-                findPreference(getApplicationContext().getString(R.string.font_sizes)));
-
-        // Bind the summaries of EditText/List/Dialog/Ringtone preferences to
-        // their values. When their values change, their summaries are updated
-        // to reflect the new value, per the Android Design guidelines.
-        if (BuildConfig.translations) {
-            setLanguageOptions(
-                    findPreference(getApplicationContext().getString(R.string.language_code)));
-            bindPreferenceSummaryToValue(
-                    findPreference(getApplicationContext().getString(R.string.language_code)));
-        }
-
-
-        bindPreferenceSummaryToValue(
-                findPreference(getApplicationContext().getString(R.string.font_sizes)));
-        bindPreferenceSummaryToValue(findPreference(getString(R.string.dhis_max_items)));
-
-        bindPreferenceSummaryToValue(findPreference(getString(R.string.monitoring_target)));
-
-        Preference serverUrlPreference = (Preference) findPreference(
-                getResources().getString(R.string.dhis_url));
-        Preference userPreference = (Preference) findPreference(
-                getResources().getString(R.string.dhis_user));
-        Preference passwordPreference = (Preference) findPreference(
-                getResources().getString(R.string.dhis_password));
-
-        //Hide developer option if is not active in the json
-        if (!AppSettingsBuilder.isDeveloperOptionsActive()) {
-            getPreferenceScreen().removePreference(getPreferenceScreen().findPreference(
-                    getResources().getString(R.string.developer_option)));
-        }
-
-        bindPreferenceSummaryToValue(serverUrlPreference);
-        bindPreferenceSummaryToValue(userPreference);
-
-        serverUrlPreference.setOnPreferenceClickListener(
-                new LoginRequiredOnPreferenceClickListener(this));
-        userPreference.setOnPreferenceClickListener(
-                new LoginRequiredOnPreferenceClickListener(this));
-        passwordPreference.setOnPreferenceClickListener(
-                new LoginRequiredOnPreferenceClickListener(this));
-
-        PreferenceScreen preferenceScreen = getPreferenceScreen();
-
-        if(BuildConfig.customFontHidden) {
-            hideFontCustomisationOption(preferenceScreen);
-        }
-    }
-
 
 
     /**
@@ -189,13 +87,6 @@ public class SettingsActivity extends PreferenceActivity implements
         listPreference.setEntryValues(R.array.languages_codes);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean onIsMultiPane() {
-        return isXLargeTablet(this) && !isSimplePreferences(this);
-    }
 
     private void restartActivity() {
         Intent intent = getIntent();
@@ -246,16 +137,6 @@ public class SettingsActivity extends PreferenceActivity implements
                 || !isXLargeTablet(context);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public void onBuildHeaders(List<Header> target) {
-        if (!isSimplePreferences(this)) {
-            loadHeadersFromResource(R.xml.pref_headers, target);
-        }
-    }
 
     /**
      * A preference value change listener that updates the preference's summary
@@ -322,54 +203,81 @@ public class SettingsActivity extends PreferenceActivity implements
      * activity is showing a two-pane settings UI.
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public static class GeneralPreferenceFragment extends PreferenceFragment {
+    public static class GeneralPreferenceFragment extends PreferenceFragmentCompat {
+
         @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            PreferencesState.getInstance().initalizateActivityDependencies();
-            addPreferencesFromResource(R.xml.pref_general);
-
-            // Bind the summaries of EditText/List/Dialog/Ringtone preferences
-            // to their values. When their values change, their summaries are
-            // updated to reflect the new value, per the Android Design
-            // guidelines.
-            bindPreferenceSummaryToValue(findPreference(getString(R.string.font_sizes)));
-            bindPreferenceSummaryToValue(findPreference(getString(R.string.dhis_url)));
-            bindPreferenceSummaryToValue(findPreference(getString(R.string.dhis_max_items)));
-
-            //Hide translation option if is not active in gradle variable
-            if (BuildConfig.translations) {
-                setLanguageOptions(findPreference(
-                        PreferencesState.getInstance().getContext().getString(
-                                R.string.language_code)));
-                bindPreferenceSummaryToValue(
-                        findPreference(getResources().getString(R.string.language_code)));
+        public void onCreatePreferences(Bundle bundle, String s) {
+            if (!isSimplePreferences(getActivity())) {
+                return;
             }
 
-            Preference serverUrlPreference = (Preference) findPreference(
+            // In the simplified UI, fragments are not used at all and we instead
+            // use the older PreferenceActivity APIs.
+
+            // Add 'general' preferences.
+            addPreferencesFromResource(R.xml.pref_general);
+
+
+            PreferencesState.getInstance().initalizateActivityDependencies();
+
+            // fitler the font options by screen size
+            filterTextSizeOptions(
+                    findPreference(getActivity().getString(R.string.font_sizes)));
+
+            // Bind the summaries of EditText/List/Dialog/Ringtone preferences to
+            // their values. When their values change, their summaries are updated
+            // to reflect the new value, per the Android Design guidelines.
+            if (BuildConfig.translations) {
+                setLanguageOptions(
+                        findPreference(getActivity().getString(R.string.language_code)));
+                bindPreferenceSummaryToValue(
+                        findPreference(getActivity().getString(R.string.language_code)));
+            }
+
+
+            bindPreferenceSummaryToValue(
+                    findPreference(getActivity().getString(R.string.font_sizes)));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.dhis_max_items)));
+
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.monitoring_target)));
+
+            Preference serverUrlPreference = findPreference(
                     getResources().getString(R.string.dhis_url));
-            Preference userPreference = (Preference) findPreference(
+            Preference userPreference = findPreference(
                     getResources().getString(R.string.dhis_user));
-            Preference passwordPreference = (Preference) findPreference(
+            Preference passwordPreference = findPreference(
                     getResources().getString(R.string.dhis_password));
+
+            //Hide developer option if is not active in the json
+            if (!AppSettingsBuilder.isDeveloperOptionsActive()) {
+                getPreferenceScreen().removePreference(getPreferenceScreen().findPreference(
+                        getResources().getString(R.string.developer_option)));
+            }
 
             bindPreferenceSummaryToValue(serverUrlPreference);
             bindPreferenceSummaryToValue(userPreference);
 
-            SettingsActivity settingsActivity = (SettingsActivity) getActivity();
             serverUrlPreference.setOnPreferenceClickListener(
-                    new LoginRequiredOnPreferenceClickListener(settingsActivity));
+                    new LoginRequiredOnPreferenceClickListener(getActivity()));
             userPreference.setOnPreferenceClickListener(
-                    new LoginRequiredOnPreferenceClickListener(settingsActivity));
+                    new LoginRequiredOnPreferenceClickListener(getActivity()));
             passwordPreference.setOnPreferenceClickListener(
-                    new LoginRequiredOnPreferenceClickListener(settingsActivity));
+                    new LoginRequiredOnPreferenceClickListener(getActivity()));
+
+            PreferenceScreen preferenceScreen = getPreferenceScreen();
+
+            if (BuildConfig.customFontHidden) {
+                hideFontCustomisationOption(preferenceScreen);
+            }
+        }
+
+        @Override
+        public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+            super.onViewCreated(view, savedInstanceState);
+            getListView().addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public boolean isValidFragment(String fragment) {
-        return true;
-    }
 
     @Override
     protected void onResume() {
@@ -411,7 +319,7 @@ public class SettingsActivity extends PreferenceActivity implements
         return callerActivity;
     }
 
-    private void hideFontCustomisationOption(@NonNull PreferenceScreen preferenceScreen) {
+    private static void hideFontCustomisationOption(@NonNull PreferenceScreen preferenceScreen) {
         Context context = preferenceScreen.getContext();
 
         Preference customizeFonts = preferenceScreen.findPreference(
@@ -442,9 +350,9 @@ class LoginRequiredOnPreferenceClickListener implements Preference.OnPreferenceC
     /**
      * Reference to the activity so you can use this from the activity or the fragment
      */
-    SettingsActivity activity;
+    Activity activity;
 
-    LoginRequiredOnPreferenceClickListener(SettingsActivity activity) {
+    LoginRequiredOnPreferenceClickListener(Activity activity) {
         this.activity = activity;
     }
 
