@@ -3,13 +3,14 @@ package org.eyeseetea.malariacare.data.remote.api;
 import android.util.Log;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.squareup.okhttp.Response;
 
 import org.eyeseetea.malariacare.data.IServerInfoDataSource;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.ServerInfo;
 
 import java.util.regex.Pattern;
+
+import okhttp3.Response;
 
 import static org.eyeseetea.malariacare.data.remote.api.OkHttpClientDataSource.executeCall;
 import static org.eyeseetea.malariacare.data.remote.api.OkHttpClientDataSource.parseResponse;
