@@ -40,6 +40,7 @@ import org.eyeseetea.malariacare.data.remote.sdk.SdkQueries;
 import org.eyeseetea.malariacare.domain.boundary.IPullMetadataController;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IOptionSetRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IOrgUnitLevelRepository;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IOrgUnitRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
 import org.eyeseetea.malariacare.domain.common.ReadPolicy;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
@@ -58,6 +59,7 @@ public class PullMetadataController implements IPullMetadataController {
     private final IUserAccountRepository mUserAccountRepository;
     private final IOrgUnitLevelRepository mOrgUnitLevelRepository;
     private final IOptionSetRepository mOptionSetRepository;
+    private final IOrgUnitRepository mOrgUnitRepository;
 
     PullDhisSDKDataSource pullRemoteDataSource;
     IPullMetadataController.Callback callback;
@@ -66,13 +68,14 @@ public class PullMetadataController implements IPullMetadataController {
 
     public PullMetadataController(IUserAccountRepository userAccountRepository,
             IOrgUnitLevelRepository orgUnitLevelRepository,
-            IOptionSetRepository optionSetRepository) {
+            IOptionSetRepository optionSetRepository, IOrgUnitRepository orgUnitRepository) {
         converter = new ConvertFromSDKVisitor();
         pullRemoteDataSource = new PullDhisSDKDataSource();
 
         mUserAccountRepository = userAccountRepository;
         mOrgUnitLevelRepository = orgUnitLevelRepository;
         mOptionSetRepository = optionSetRepository;
+        mOrgUnitRepository = orgUnitRepository;
     }
 
     @Override
@@ -83,6 +86,10 @@ public class PullMetadataController implements IPullMetadataController {
             UserAccount userAccount = mUserAccountRepository.getUser(ReadPolicy.NETWORK_FIRST);
             mOrgUnitLevelRepository.getAll(ReadPolicy.NETWORK_FIRST);
             mOptionSetRepository.getAll(ReadPolicy.NETWORK_FIRST);
+            mOrgUnitRepository.getAllByUIds(ReadPolicy.NETWORK_FIRST, userAccount.getAssignedOrgUnits());
+
+            //TODO:Build org unit program relations
+
 
         } catch (Exception e){
             callback.onError(e);

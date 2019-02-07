@@ -2,6 +2,7 @@ package org.eyeseetea.malariacare.data.repositories;
 
 import org.eyeseetea.malariacare.data.boundaries.IMetadataLocalDataSource;
 import org.eyeseetea.malariacare.data.boundaries.IMetadataRemoteDataSource;
+import org.eyeseetea.malariacare.data.remote.sdk.DhisFilter;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IOptionSetRepository;
 import org.eyeseetea.malariacare.domain.entity.OptionSet;
 
@@ -23,13 +24,12 @@ public class OptionSetRepository
 
     @Override
     protected List<OptionSet> getAllFromCache() throws Exception {
-        return (List<OptionSet>) mOptionSetLocalDataSource.getAll();
+        return mOptionSetLocalDataSource.getAll();
     }
 
     @Override
     protected List<OptionSet> getAllFromNetworkFirst() throws Exception {
-        List<OptionSet> remoteOptionSets = (List<OptionSet>)
-                mOptionSetRemoteDataSource.getAll();
+        List<OptionSet> remoteOptionSets = mOptionSetRemoteDataSource.getAll(DhisFilter.empty());
 
         mOptionSetLocalDataSource.clearAndSave(remoteOptionSets);
 

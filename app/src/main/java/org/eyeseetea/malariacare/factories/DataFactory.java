@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 
 import org.eyeseetea.malariacare.data.boundaries.IDataLocalDataSource;
 import org.eyeseetea.malariacare.data.boundaries.IDataRemoteDataSource;
+import org.eyeseetea.malariacare.data.boundaries.IMetadataLocalDataSource;
 import org.eyeseetea.malariacare.data.database.datasources.CompositeScoreDataSource;
 import org.eyeseetea.malariacare.data.database.datasources.ObservationLocalDataSource;
 import org.eyeseetea.malariacare.data.database.datasources.QuestionLocalDataSource;
@@ -24,8 +25,11 @@ import org.eyeseetea.malariacare.domain.boundary.repositories.IOrgUnitRepository
 import org.eyeseetea.malariacare.domain.boundary.repositories.IQuestionRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerMetadataRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyRepository;
+import org.eyeseetea.malariacare.domain.entity.OrgUnit;
 
 public class DataFactory extends AFactory {
+
+    MetadataFactory mMetadataFactory = new MetadataFactory();
 
     @NonNull
     public ISurveyRepository getSurveyRepository() {
@@ -50,14 +54,12 @@ public class DataFactory extends AFactory {
     @NonNull
     public IDataRemoteDataSource getSurveyRemoteDataSource(Context context) {
         IQuestionRepository questionRepository = new QuestionLocalDataSource();
-        IOrgUnitRepository orgUnitRepository = new OrgUnitRepository();
+        IMetadataLocalDataSource<OrgUnit> orgUnitLocalDataSource = mMetadataFactory.getOrgUnitLocalDataSource();
         ICompositeScoreRepository compositeScoreRepository = new CompositeScoreDataSource();
-        IConnectivityManager connectivityManager = new ConnectivityManager();
 
         return new SurveySDKDhisDataSource(context, getServerMetadataRepository(context),
                 questionRepository, getOptionRepository(), compositeScoreRepository,
-                orgUnitRepository,
-                connectivityManager);
+                orgUnitLocalDataSource);
     }
 
     @NonNull

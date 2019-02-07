@@ -21,6 +21,7 @@ package org.eyeseetea.malariacare.data.remote.sdk.dataSources;
 
 import org.eyeseetea.malariacare.data.boundaries.IMetadataRemoteDataSource;
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
+import org.eyeseetea.malariacare.data.remote.sdk.DhisFilter;
 import org.eyeseetea.malariacare.domain.entity.OrgUnitLevel;
 import org.hisp.dhis.client.sdk.android.api.D2;
 import org.hisp.dhis.client.sdk.models.organisationunit.OrganisationUnitLevel;
@@ -32,7 +33,7 @@ import java.util.List;
 
 public class OrgUnitLevelSDKDhisDataSource implements IMetadataRemoteDataSource<OrgUnitLevel> {
     @Override
-    public List<OrgUnitLevel> getAll() throws Exception {
+    public List<OrgUnitLevel> getAll(DhisFilter filter) throws Exception {
         List<OrganisationUnitLevel> organisationUnitLevels =
                 D2.organisationUnitLevels().pull().toBlocking().single();
 

@@ -23,6 +23,7 @@ import android.content.Context;
 
 import org.eyeseetea.dhis2.lightsdk.D2Response;
 import org.eyeseetea.malariacare.data.boundaries.IMetadataRemoteDataSource;
+import org.eyeseetea.malariacare.data.remote.sdk.DhisFilter;
 import org.eyeseetea.malariacare.domain.entity.OptionSet;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
 import org.eyeseetea.malariacare.domain.exception.ServerException;
@@ -40,7 +41,7 @@ public class OptionSetD2LightSDKDataSource
     }
 
     @Override
-    public List<OptionSet> getAll() throws Exception {
+    public List<OptionSet> getAll(DhisFilter filter) throws Exception {
 
         D2Response<List<org.eyeseetea.dhis2.lightsdk.optionsets.OptionSet>> optionSetsResponse =
                 getD2Api().optionSets().getAll().execute();

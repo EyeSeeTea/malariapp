@@ -8,10 +8,12 @@ import org.eyeseetea.malariacare.data.boundaries.IMetadataLocalDataSource;
 import org.eyeseetea.malariacare.data.boundaries.IMetadataRemoteDataSource;
 import org.eyeseetea.malariacare.data.database.datasources.OptionSetLocalDataSource;
 import org.eyeseetea.malariacare.data.database.datasources.OrgUnitLevelLocalDataSource;
+import org.eyeseetea.malariacare.data.database.datasources.OrgUnitLocalDataSource;
 import org.eyeseetea.malariacare.data.database.datasources.QuestionLocalDataSource;
 import org.eyeseetea.malariacare.data.database.datasources.UserAccountLocalDataSource;
 import org.eyeseetea.malariacare.data.remote.api.UserAccountD2LightSDKDataSource;
 import org.eyeseetea.malariacare.data.remote.sdk.dataSources.OptionSetD2LightSDKDataSource;
+import org.eyeseetea.malariacare.data.remote.sdk.dataSources.OrgUnitD2LightSDKDataSource;
 import org.eyeseetea.malariacare.data.remote.sdk.dataSources.OrgUnitLevelSDKDhisDataSource;
 import org.eyeseetea.malariacare.data.repositories.OptionRepository;
 import org.eyeseetea.malariacare.data.repositories.OptionSetRepository;
@@ -27,6 +29,7 @@ import org.eyeseetea.malariacare.domain.boundary.repositories.IQuestionRepositor
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerMetadataRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
 import org.eyeseetea.malariacare.domain.entity.OptionSet;
+import org.eyeseetea.malariacare.domain.entity.OrgUnit;
 import org.eyeseetea.malariacare.domain.entity.OrgUnitLevel;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
 
@@ -45,8 +48,16 @@ public class MetadataFactory {
         return new QuestionLocalDataSource();
     }
 
-    public IOrgUnitRepository getOrgUnitRepository() {
-        return new OrgUnitRepository();
+    public IOrgUnitRepository getOrgUnitRepository(Context context) {
+        IMetadataLocalDataSource<OrgUnit> orgUnitLocalDataSource = getOrgUnitLocalDataSource();
+        IMetadataRemoteDataSource<OrgUnit> orgUnitRemoteDataSource =
+                new OrgUnitD2LightSDKDataSource(context);
+        return new OrgUnitRepository(orgUnitLocalDataSource,orgUnitRemoteDataSource);
+    }
+
+    @NonNull
+    public OrgUnitLocalDataSource getOrgUnitLocalDataSource() {
+        return new OrgUnitLocalDataSource();
     }
 
     public IOrgUnitLevelRepository getOrgUnitLevelRepository(){

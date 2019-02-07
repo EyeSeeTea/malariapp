@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public class OrgUnit {
+public class OrgUnit implements IMetadata {
 
     private final String uid;
     private final String name;

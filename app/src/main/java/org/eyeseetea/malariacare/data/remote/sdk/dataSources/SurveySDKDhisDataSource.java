@@ -23,6 +23,7 @@ import android.content.Context;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.boundaries.IDataRemoteDataSource;
+import org.eyeseetea.malariacare.data.boundaries.IMetadataLocalDataSource;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
@@ -67,20 +68,20 @@ public class SurveySDKDhisDataSource implements IDataRemoteDataSource {
     private final IServerMetadataRepository mServerMetadataRepository;
     private final IOptionRepository mOptionRepository;
     private final IQuestionRepository mQuestionRepository;
-    private final IOrgUnitRepository mOrgUnitRepository;
+    private final IMetadataLocalDataSource<OrgUnit> mOrgUnitLocalDataSource;
     private final ICompositeScoreRepository mCompositeScoreRepository;
     private final Context mContext;
 
     public SurveySDKDhisDataSource(Context context, IServerMetadataRepository serverMetadataRepository,
             IQuestionRepository questionRepository, IOptionRepository optionRepository,
             ICompositeScoreRepository mCompositeScoreRepository,
-            IOrgUnitRepository orgUnitRepository, IConnectivityManager connectivityManager) {
+            IMetadataLocalDataSource<OrgUnit> orgUnitLocalDataSource) {
         this.mContext = context;
         this.mServerMetadataRepository = serverMetadataRepository;
         this.mQuestionRepository = questionRepository;
         this.mOptionRepository = optionRepository;
         this.mCompositeScoreRepository = mCompositeScoreRepository;
-        this.mOrgUnitRepository = orgUnitRepository;
+        this.mOrgUnitLocalDataSource = orgUnitLocalDataSource;
 
         try {
             D2.isConfigured();
@@ -149,7 +150,7 @@ public class SurveySDKDhisDataSource implements IDataRemoteDataSource {
         List<Option> options = mOptionRepository.getAll();
         List<Question> questions = mQuestionRepository.getAll();
         List<CompositeScore> compositeScores = mCompositeScoreRepository.getAll();
-        List<OrgUnit> orgUnits = mOrgUnitRepository.getAll();
+        List<OrgUnit> orgUnits = mOrgUnitLocalDataSource.getAll();
 
         SurveyMapper surveyMapper = new SurveyMapper(serverMetadata, orgUnits,compositeScores, questions,
                 options);
