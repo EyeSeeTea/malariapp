@@ -20,17 +20,14 @@
 package org.eyeseetea.malariacare.data.remote.sdk.dataSources;
 
 import android.content.Context;
-import android.util.Log;
 
 import org.eyeseetea.dhis2.lightsdk.D2Response;
 import org.eyeseetea.dhis2.lightsdk.attributes.AttributeValue;
 import org.eyeseetea.dhis2.lightsdk.organisationunits.OrganisationUnit;
+import org.eyeseetea.dhis2.lightsdk.organisationunits.OrganisationUnitLevel;
 import org.eyeseetea.dhis2.lightsdk.programs.Program;
 import org.eyeseetea.malariacare.data.boundaries.IMetadataRemoteDataSource;
-import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
-import org.eyeseetea.malariacare.data.database.model.OrgUnitProgramRelationDB;
 import org.eyeseetea.malariacare.data.remote.sdk.DhisFilter;
-import org.eyeseetea.malariacare.domain.entity.OptionSet;
 import org.eyeseetea.malariacare.domain.entity.OrgUnit;
 
 import java.util.ArrayList;
@@ -49,17 +46,16 @@ public class OrgUnitD2LightSDKDataSource
 
     @Override
     public List<OrgUnit> getAll(DhisFilter filter) throws Exception {
-
-        D2Response<List<OrganisationUnit>> optionSetsResponse =
+        D2Response<List<OrganisationUnit>> response =
                 getD2Api().organisationUnits().getAll(filter.getUIds()).execute();
 
-        if (optionSetsResponse.isSuccess()) {
+        if (response.isSuccess()) {
             D2Response.Success<List<OrganisationUnit>> success =
-                    (D2Response.Success<List<OrganisationUnit>>) optionSetsResponse;
+                    (D2Response.Success<List<OrganisationUnit>>) response;
 
             return mapToDomain(success.getValue());
         } else {
-            D2Response.Error errorResponse = (D2Response.Error) optionSetsResponse;
+            D2Response.Error errorResponse = (D2Response.Error) response;
 
             handleError(errorResponse);
         }
@@ -68,20 +64,46 @@ public class OrgUnitD2LightSDKDataSource
     }
 
     private List<OrgUnit> mapToDomain(
-            List<OrganisationUnit> organisationUnits) {
+            List<OrganisationUnit> organisationUnits) throws Exception {
         List<OrgUnit> orgUnits = new ArrayList<>();
+
+        Map<Integer, OrganisationUnitLevel> orgUnitLevelsMap = getAllOrgUnitLevels();
 
         for (OrganisationUnit organisationUnit : organisationUnits) {
             Map<String, Integer> productivityByProgram = getProductivityByProgram(organisationUnit);
 
+            String orgUnitLevelUid = orgUnitLevelsMap.get(organisationUnit.getLevel()).getId();
+
             orgUnits.add(
                     new OrgUnit(organisationUnit.getId(),
                             organisationUnit.getName(),
-                            "", //TODO:
+                            orgUnitLevelUid,
                             productivityByProgram));
         }
 
         return orgUnits;
+    }
+
+    public Map<Integer, OrganisationUnitLevel> getAllOrgUnitLevels() throws Exception {
+        D2Response<List<OrganisationUnitLevel>> response =
+                getD2Api().organisationUnitLevels().getAll().execute();
+
+        Map<Integer, OrganisationUnitLevel> organisationUnitLevelsMap = new HashMap<>();
+
+        if (response.isSuccess()) {
+            D2Response.Success<List<OrganisationUnitLevel>> success =
+                    (D2Response.Success<List<OrganisationUnitLevel>>) response;
+            for (OrganisationUnitLevel organisationUnitLevel:success.getValue()) {
+                organisationUnitLevelsMap.put(organisationUnitLevel.getLevel(), organisationUnitLevel);
+            }
+            return organisationUnitLevelsMap;
+        } else {
+            D2Response.Error errorResponse = (D2Response.Error) response;
+
+            handleError(errorResponse);
+        }
+
+        return null;
     }
 
     private Map<String, Integer> getProductivityByProgram(OrganisationUnit organisationUnit) {

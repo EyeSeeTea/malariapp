@@ -13,11 +13,11 @@ public class OrgUnitRepository
         extends AMetadataRepository<OrgUnit>
         implements IOrgUnitRepository{
 
-    private final IMetadataLocalDataSource orgUnitLocalDataSource;
-    private final IMetadataRemoteDataSource orgUnitRemoteDataSource;
+    private final IMetadataLocalDataSource<OrgUnit> orgUnitLocalDataSource;
+    private final IMetadataRemoteDataSource<OrgUnit> orgUnitRemoteDataSource;
 
-    public OrgUnitRepository(IMetadataLocalDataSource orgUnitLocalDataSource,
-            IMetadataRemoteDataSource orgUnitRemoteDataSource){
+    public OrgUnitRepository(IMetadataLocalDataSource<OrgUnit> orgUnitLocalDataSource,
+            IMetadataRemoteDataSource<OrgUnit> orgUnitRemoteDataSource){
         this.orgUnitLocalDataSource = orgUnitLocalDataSource;
         this.orgUnitRemoteDataSource = orgUnitRemoteDataSource;
     }
