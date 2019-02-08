@@ -57,7 +57,7 @@ public class SyncFactory extends AFactory{
                 metadataFactory.getUserAccountRepository(context);
 
         IOrgUnitLevelRepository orgUnitLevelRepository =
-                metadataFactory.getOrgUnitLevelRepository();
+                metadataFactory.getOrgUnitLevelRepository(context);
 
         IOptionSetRepository optionSetRepository =
                 metadataFactory.getOptionSetRepository(context);

@@ -14,7 +14,7 @@ import org.eyeseetea.malariacare.data.database.datasources.UserAccountLocalDataS
 import org.eyeseetea.malariacare.data.remote.api.UserAccountD2LightSDKDataSource;
 import org.eyeseetea.malariacare.data.remote.sdk.dataSources.OptionSetD2LightSDKDataSource;
 import org.eyeseetea.malariacare.data.remote.sdk.dataSources.OrgUnitD2LightSDKDataSource;
-import org.eyeseetea.malariacare.data.remote.sdk.dataSources.OrgUnitLevelSDKDhisDataSource;
+import org.eyeseetea.malariacare.data.remote.sdk.dataSources.OrgUnitLevelD2LightSDKDataSource;
 import org.eyeseetea.malariacare.data.repositories.OptionRepository;
 import org.eyeseetea.malariacare.data.repositories.OptionSetRepository;
 import org.eyeseetea.malariacare.data.repositories.OrgUnitLevelRepository;
@@ -31,7 +31,6 @@ import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountReposi
 import org.eyeseetea.malariacare.domain.entity.OptionSet;
 import org.eyeseetea.malariacare.domain.entity.OrgUnit;
 import org.eyeseetea.malariacare.domain.entity.OrgUnitLevel;
-import org.eyeseetea.malariacare.domain.entity.UserAccount;
 
 public class MetadataFactory {
     @NonNull
@@ -60,11 +59,11 @@ public class MetadataFactory {
         return new OrgUnitLocalDataSource();
     }
 
-    public IOrgUnitLevelRepository getOrgUnitLevelRepository(){
+    public IOrgUnitLevelRepository getOrgUnitLevelRepository(Context context){
         IMetadataLocalDataSource<OrgUnitLevel> orgUnitLocalDataSource =
                 new OrgUnitLevelLocalDataSource();
         IMetadataRemoteDataSource <OrgUnitLevel> orgUnitLevelRemoteDataSource =
-                new OrgUnitLevelSDKDhisDataSource();
+                new OrgUnitLevelD2LightSDKDataSource(context);
 
         IOrgUnitLevelRepository orgUnitLevelRepository =
                 new OrgUnitLevelRepository(orgUnitLocalDataSource,orgUnitLevelRemoteDataSource);

@@ -54,6 +54,7 @@ public class OrgUnitLevelDB extends BaseModel {
 
 
     public OrgUnitLevelDB(String uid, String name) {
+        this.uid_org_unit_level = uid;
         this.name = name;
     }
 

@@ -19,25 +19,44 @@
 
 package org.eyeseetea.malariacare.data.remote.sdk.dataSources;
 
+import android.content.Context;
+
+import org.eyeseetea.dhis2.lightsdk.D2Response;
+import org.eyeseetea.dhis2.lightsdk.organisationunits.OrganisationUnitLevel;
 import org.eyeseetea.malariacare.data.boundaries.IMetadataRemoteDataSource;
-import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 import org.eyeseetea.malariacare.data.remote.sdk.DhisFilter;
 import org.eyeseetea.malariacare.domain.entity.OrgUnitLevel;
-import org.hisp.dhis.client.sdk.android.api.D2;
-import org.hisp.dhis.client.sdk.models.organisationunit.OrganisationUnitLevel;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class OrgUnitLevelSDKDhisDataSource implements IMetadataRemoteDataSource<OrgUnitLevel> {
+public class OrgUnitLevelD2LightSDKDataSource
+        extends D2LightSDKDataSource
+        implements IMetadataRemoteDataSource<OrgUnitLevel> {
+
+    public OrgUnitLevelD2LightSDKDataSource(Context context) {
+        super(context);
+    }
+
     @Override
     public List<OrgUnitLevel> getAll(DhisFilter filter) throws Exception {
-        List<OrganisationUnitLevel> organisationUnitLevels =
-                D2.organisationUnitLevels().pull().toBlocking().single();
+        D2Response<List<OrganisationUnitLevel>> response =
+                getD2Api().organisationUnitLevels().getAll().execute();
 
-        return mapToDomain(organisationUnitLevels);
+        if (response.isSuccess()) {
+            D2Response.Success<List<OrganisationUnitLevel>> success =
+                    (D2Response.Success<List<OrganisationUnitLevel>>) response;
+
+            return mapToDomain(success.getValue());
+        } else {
+            D2Response.Error errorResponse = (D2Response.Error) response;
+
+            handleError(errorResponse);
+        }
+
+        return null;
     }
 
     private List<OrgUnitLevel> mapToDomain(List<OrganisationUnitLevel> organisationUnitLevels) {
@@ -46,7 +65,7 @@ public class OrgUnitLevelSDKDhisDataSource implements IMetadataRemoteDataSource<
         sortByLevel(organisationUnitLevels);
 
         for (OrganisationUnitLevel organisationUnitLevel:organisationUnitLevels) {
-            orgUnitLevels.add(new OrgUnitLevel(organisationUnitLevel.getUId(),
+            orgUnitLevels.add(new OrgUnitLevel(organisationUnitLevel.getId(),
                             organisationUnitLevel.getDisplayName()));
         }
 
