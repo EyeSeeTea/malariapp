@@ -30,6 +30,7 @@ import org.eyeseetea.malariacare.data.boundaries.IMetadataRemoteDataSource;
 import org.eyeseetea.malariacare.data.remote.sdk.DhisFilter;
 import org.eyeseetea.malariacare.domain.entity.OrgUnit;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,7 +48,7 @@ public class OrgUnitD2LightSDKDataSource
     @Override
     public List<OrgUnit> getAll(DhisFilter filter) throws Exception {
         D2Response<List<OrganisationUnit>> response =
-                getD2Api().organisationUnits().getAll(filter.getUIds()).execute();
+                getD2Api().organisationUnits().getAll(filter.getUIds().toArray(new String[0])).execute();
 
         if (response.isSuccess()) {
             D2Response.Success<List<OrganisationUnit>> success =
