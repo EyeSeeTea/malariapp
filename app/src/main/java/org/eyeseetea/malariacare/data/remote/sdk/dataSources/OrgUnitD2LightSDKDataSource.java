@@ -47,8 +47,9 @@ public class OrgUnitD2LightSDKDataSource
 
     @Override
     public List<OrgUnit> getAll(DhisFilter filter) throws Exception {
+
         D2Response<List<OrganisationUnit>> response =
-                getD2Api().organisationUnits().getAll(filter.getUIds().toArray(new String[0])).execute();
+                getD2Api().organisationUnits().getAll(filter.getUIds()).execute();
 
         if (response.isSuccess()) {
             D2Response.Success<List<OrganisationUnit>> success =

@@ -4,13 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DhisFilter {
-    private List<String> uIds;
+    private String[] uIds;
 
     public DhisFilter(List<String> uIds){
-        this.uIds = uIds;
+        String[] itemsArray = new String[uIds.size()];
+        itemsArray = uIds.toArray(itemsArray);
+
+        this.uIds = itemsArray;
     }
 
-    public List<String> getUIds() {
+    public String[] getUIds() {
         return uIds;
     }
 
