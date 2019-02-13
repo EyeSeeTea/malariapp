@@ -2,23 +2,25 @@ package org.eyeseetea.malariacare.domain.entity;
 
 import static org.eyeseetea.malariacare.domain.common.RequiredChecker.required;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-public class Program {
+public class Program implements IMetadata{
 
     private final String uid;
     private final String name;
-    private final List<String> assignedOrgUnits;
+    private final String programStageUid;
+    private final List<Tab> tabs;
 
-    public Program(String uid, String name) {
+    public Program(String uid, String name, String programStageUid, List<Tab> tabs) {
         required(uid, "uid is required");
         required(name, "name is required");
+        required(programStageUid, "programStageUid is required");
+        required(tabs, "tabs is required");
 
         this.uid = uid;
         this.name = name;
-        this.assignedOrgUnits = new ArrayList<>();
+        this.programStageUid = programStageUid;
+        this.tabs = tabs;
     }
 
     public String getUid() {
@@ -29,11 +31,11 @@ public class Program {
         return name;
     }
 
-    public void addAssignedOrgUnits(List<String> relatedPrograms) {
-        this.assignedOrgUnits.addAll(relatedPrograms);
+    public String getProgramStageUid() {
+        return programStageUid;
     }
 
-    public List<String> getAssignedOrgUnits() {
-        return Collections.unmodifiableList(assignedOrgUnits);
+    public List<Tab> getTabs() {
+        return tabs;
     }
 }
