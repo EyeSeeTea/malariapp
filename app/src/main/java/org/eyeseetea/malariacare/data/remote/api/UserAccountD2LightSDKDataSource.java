@@ -8,8 +8,6 @@ import org.eyeseetea.dhis2.lightsdk.organisationunits.OrganisationUnit;
 import org.eyeseetea.dhis2.lightsdk.programs.ProgramType;
 import org.eyeseetea.malariacare.data.IUserAccountDataSource;
 import org.eyeseetea.malariacare.data.remote.sdk.dataSources.D2LightSDKDataSource;
-import org.eyeseetea.malariacare.domain.entity.OrgUnit;
-import org.eyeseetea.malariacare.domain.entity.Program;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
 import org.eyeseetea.malariacare.utils.DateParser;
 
@@ -23,6 +21,8 @@ public class UserAccountD2LightSDKDataSource
 
     public static final String ATTRIBUTE_USER_CLOSE_DATE = "USER_CLOSE_DATE";
     public static final String ATTRIBUTE_USER_ANNOUNCEMENT = "USER_ANNOUNCEMENT";
+    public static final String ATTRIBUTE_HNQIS_CODE = "PROGRAM_TYPE";
+    public static final String ATTRIBUTE_HNQIS_VALUE = "HNQIS";
 
     public UserAccountD2LightSDKDataSource(Context context) {
         super(context);
@@ -73,7 +73,8 @@ public class UserAccountD2LightSDKDataSource
             for (org.eyeseetea.dhis2.lightsdk.programs.Program program :
                     organisationUnit.getPrograms()) {
                 if (!assignedPrograms.contains(program.getId()) &&
-                        program.getProgramType() == ProgramType.WITHOUT_REGISTRATION) {
+                        program.getProgramType() == ProgramType.WITHOUT_REGISTRATION &&
+                        isHNQISProgram(program)) {
                     assignedPrograms.add(program.getId());
                 }
             }
@@ -99,6 +100,24 @@ public class UserAccountD2LightSDKDataSource
         }
         DateParser dateParser = new DateParser();
         return dateParser.parseDate(closedDate, DateParser.LONG_DATE_FORMAT);
+    }
+
+    private boolean isHNQISProgram(org.eyeseetea.dhis2.lightsdk.programs.Program remoteProgram){
+        boolean isHNQIS = false;
+
+        if (remoteProgram.getAttributeValues() != null) {
+            for (AttributeValue attributeValue : remoteProgram.getAttributeValues()) {
+                if (attributeValue.getAttribute().getCode() != null &&
+                        attributeValue.getAttribute().getCode().equals(ATTRIBUTE_HNQIS_CODE) &&
+                        attributeValue.getValue() != null &&
+                        attributeValue.getValue().equals(ATTRIBUTE_HNQIS_VALUE)) {
+                    isHNQIS = true;
+                    break;
+                }
+            }
+        }
+
+        return isHNQIS;
     }
 
 }
