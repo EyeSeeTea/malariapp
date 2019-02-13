@@ -9,28 +9,33 @@ import org.eyeseetea.malariacare.data.boundaries.IMetadataRemoteDataSource;
 import org.eyeseetea.malariacare.data.database.datasources.OptionSetLocalDataSource;
 import org.eyeseetea.malariacare.data.database.datasources.OrgUnitLevelLocalDataSource;
 import org.eyeseetea.malariacare.data.database.datasources.OrgUnitLocalDataSource;
+import org.eyeseetea.malariacare.data.database.datasources.ProgramLocalDataSource;
 import org.eyeseetea.malariacare.data.database.datasources.QuestionLocalDataSource;
 import org.eyeseetea.malariacare.data.database.datasources.UserAccountLocalDataSource;
 import org.eyeseetea.malariacare.data.remote.api.UserAccountD2LightSDKDataSource;
 import org.eyeseetea.malariacare.data.remote.sdk.dataSources.OptionSetD2LightSDKDataSource;
 import org.eyeseetea.malariacare.data.remote.sdk.dataSources.OrgUnitD2LightSDKDataSource;
 import org.eyeseetea.malariacare.data.remote.sdk.dataSources.OrgUnitLevelD2LightSDKDataSource;
+import org.eyeseetea.malariacare.data.remote.sdk.dataSources.ProgramD2LightSDKDataSource;
 import org.eyeseetea.malariacare.data.repositories.OptionRepository;
 import org.eyeseetea.malariacare.data.repositories.OptionSetRepository;
 import org.eyeseetea.malariacare.data.repositories.OrgUnitLevelRepository;
 import org.eyeseetea.malariacare.data.repositories.OrgUnitRepository;
+import org.eyeseetea.malariacare.data.repositories.ProgramRepository;
 import org.eyeseetea.malariacare.data.repositories.ServerMetadataRepository;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IOptionRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IOptionSetRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IOrgUnitLevelRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IOrgUnitRepository;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IProgramRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IQuestionRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerMetadataRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
 import org.eyeseetea.malariacare.domain.entity.OptionSet;
 import org.eyeseetea.malariacare.domain.entity.OrgUnit;
 import org.eyeseetea.malariacare.domain.entity.OrgUnitLevel;
+import org.eyeseetea.malariacare.domain.entity.Program;
 
 public class MetadataFactory {
     @NonNull
@@ -94,5 +99,12 @@ public class MetadataFactory {
                 new UserAccountRepository(userAccountLocalDataSource, userAccountRemoteDataSource);
 
         return userAccountRepository;
+    }
+
+    public IProgramRepository getProgramRepository(Context context) {
+        IMetadataLocalDataSource<Program> programLocalDataSource = new ProgramLocalDataSource();
+        IMetadataRemoteDataSource<Program> programRemoteDataSource =
+                new ProgramD2LightSDKDataSource(context);
+        return new ProgramRepository(programLocalDataSource,programRemoteDataSource);
     }
 }

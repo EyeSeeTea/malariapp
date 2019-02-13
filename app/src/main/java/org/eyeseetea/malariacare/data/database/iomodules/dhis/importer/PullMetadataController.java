@@ -41,6 +41,7 @@ import org.eyeseetea.malariacare.domain.boundary.IPullMetadataController;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IOptionSetRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IOrgUnitLevelRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IOrgUnitRepository;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IProgramRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
 import org.eyeseetea.malariacare.domain.common.ReadPolicy;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
@@ -60,6 +61,7 @@ public class PullMetadataController implements IPullMetadataController {
     private final IOrgUnitLevelRepository mOrgUnitLevelRepository;
     private final IOptionSetRepository mOptionSetRepository;
     private final IOrgUnitRepository mOrgUnitRepository;
+    private final IProgramRepository mProgramRepository;
 
     PullDhisSDKDataSource pullRemoteDataSource;
     IPullMetadataController.Callback callback;
@@ -68,7 +70,8 @@ public class PullMetadataController implements IPullMetadataController {
 
     public PullMetadataController(IUserAccountRepository userAccountRepository,
             IOrgUnitLevelRepository orgUnitLevelRepository,
-            IOptionSetRepository optionSetRepository, IOrgUnitRepository orgUnitRepository) {
+            IOptionSetRepository optionSetRepository, IOrgUnitRepository orgUnitRepository,
+            IProgramRepository programRepository) {
         converter = new ConvertFromSDKVisitor();
         pullRemoteDataSource = new PullDhisSDKDataSource();
 
@@ -76,6 +79,7 @@ public class PullMetadataController implements IPullMetadataController {
         mOrgUnitLevelRepository = orgUnitLevelRepository;
         mOptionSetRepository = optionSetRepository;
         mOrgUnitRepository = orgUnitRepository;
+        mProgramRepository = programRepository;
     }
 
     @Override
@@ -86,6 +90,7 @@ public class PullMetadataController implements IPullMetadataController {
             UserAccount userAccount = mUserAccountRepository.getUser(ReadPolicy.NETWORK_FIRST);
             mOrgUnitLevelRepository.getAll(ReadPolicy.NETWORK_FIRST);
             mOptionSetRepository.getAll(ReadPolicy.NETWORK_FIRST);
+            mProgramRepository.getAllByUIds(ReadPolicy.NETWORK_FIRST, userAccount.getAssignedPrograms());
             mOrgUnitRepository.getAllByUIds(ReadPolicy.NETWORK_FIRST, userAccount.getAssignedOrgUnits());
 
             //TODO:Build org unit program relations
