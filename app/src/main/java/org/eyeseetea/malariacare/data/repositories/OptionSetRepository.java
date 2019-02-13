@@ -16,10 +16,10 @@ public class OptionSetRepository
     IMetadataRemoteDataSource mOptionSetRemoteDataSource;
 
     public OptionSetRepository(
-            IMetadataLocalDataSource orgUnitLevelLocalDataSource,
-            IMetadataRemoteDataSource orgUnitLevelRemoteDataSource){
-        mOptionSetLocalDataSource = orgUnitLevelLocalDataSource;
-        mOptionSetRemoteDataSource = orgUnitLevelRemoteDataSource;
+            IMetadataLocalDataSource optionSetLocalDataSource,
+            IMetadataRemoteDataSource optionSetRemoteDataSource){
+        mOptionSetLocalDataSource = optionSetLocalDataSource;
+        mOptionSetRemoteDataSource = optionSetRemoteDataSource;
     }
 
     @Override
