@@ -133,6 +133,10 @@ public class ProgramDB extends BaseModel{
         return tabs;
     }
 
+    public void setTabs(List<TabDB> tabs){
+        this.tabs = tabs;
+    }
+
     public OrgUnitProgramRelationDB addOrgUnit(OrgUnitDB orgUnit){
         //Null -> nothing
         if(orgUnit==null){

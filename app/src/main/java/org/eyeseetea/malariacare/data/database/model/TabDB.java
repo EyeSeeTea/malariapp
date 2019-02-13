@@ -42,6 +42,8 @@ public class TabDB extends BaseModel {
     @Column
     Integer order_pos;
     @Column
+    String uid_tab;
+    @Column
     Integer type;
     @Column
     Long id_program_fk;
@@ -82,6 +84,14 @@ public class TabDB extends BaseModel {
         this.name = name;
     }
 
+    public String getUid() {
+        return uid_tab;
+    }
+
+    public void setUid(String uid) {
+        this.uid_tab = uid;
+    }
+
     public Integer getOrder_pos() {
         return order_pos;
     }
@@ -108,6 +118,10 @@ public class TabDB extends BaseModel {
                             .is(id_program_fk)).querySingle();
         }
         return program;
+    }
+
+    public Long getId_program_fk() {
+        return id_program_fk;
     }
 
     public void setProgram(Long id_program){
