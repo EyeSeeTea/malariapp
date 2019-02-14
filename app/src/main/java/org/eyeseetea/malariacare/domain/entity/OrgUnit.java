@@ -49,8 +49,12 @@ public class OrgUnit implements IMetadata {
         return Collections.unmodifiableList(relatedPrograms);
     }
 
-    public int getProductivity(String programUId){
-        return productivityByOrgUnit.get(programUId);
+    public Integer getProductivity(String programUId){
+        if (productivityByOrgUnit.containsKey(programUId)){
+            return productivityByOrgUnit.get(programUId);
+        } else {
+            return null;
+        }
     }
 
     @Override

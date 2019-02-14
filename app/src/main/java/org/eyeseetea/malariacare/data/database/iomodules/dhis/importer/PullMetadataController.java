@@ -92,10 +92,6 @@ public class PullMetadataController implements IPullMetadataController {
             mOptionSetRepository.getAll(ReadPolicy.NETWORK_FIRST);
             mProgramRepository.getAllByUIds(ReadPolicy.NETWORK_FIRST, userAccount.getAssignedPrograms());
             mOrgUnitRepository.getAllByUIds(ReadPolicy.NETWORK_FIRST, userAccount.getAssignedOrgUnits());
-
-            //TODO:Build org unit program relations
-
-
         } catch (Exception e){
             callback.onError(e);
         }

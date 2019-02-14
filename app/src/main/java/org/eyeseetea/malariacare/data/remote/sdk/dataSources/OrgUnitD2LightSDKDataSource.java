@@ -76,17 +76,19 @@ public class OrgUnitD2LightSDKDataSource
 
             String orgUnitLevelUid = orgUnitLevelsMap.get(organisationUnit.getLevel()).getId();
 
-            orgUnits.add(
-                    new OrgUnit(organisationUnit.getId(),
-                            organisationUnit.getName(),
-                            orgUnitLevelUid,
-                            productivityByProgram));
+            OrgUnit orgUnit = new OrgUnit(organisationUnit.getId(),
+                    organisationUnit.getName(),
+                    orgUnitLevelUid,
+                    productivityByProgram);
+
+            orgUnit.addRelatedPrograms(getRelatedProgramsUIds(organisationUnit));
+            orgUnits.add(orgUnit);
         }
 
         return orgUnits;
     }
 
-    public Map<Integer, OrganisationUnitLevel> getAllOrgUnitLevels() throws Exception {
+    private Map<Integer, OrganisationUnitLevel> getAllOrgUnitLevels() throws Exception {
         D2Response<List<OrganisationUnitLevel>> response =
                 getD2Api().organisationUnitLevels().getAll().execute();
 
@@ -169,5 +171,15 @@ public class OrgUnitD2LightSDKDataSource
         }
 
         return attributeValue;
+    }
+
+    private List<String> getRelatedProgramsUIds(OrganisationUnit organisationUnit) {
+        List<String> programUids = new ArrayList<>();
+
+        for (Program program : organisationUnit.getPrograms()) {
+            programUids.add(program.getId());
+        }
+
+        return programUids;
     }
 }

@@ -78,6 +78,8 @@ public class OrgUnitDB extends BaseModel {
      */
     List<ProgramDB> programs;
 
+    List<OrgUnitProgramRelationDB> orgUnitProgramRelationDBS;
+
     public OrgUnitDB() {
     }
 
@@ -179,6 +181,15 @@ public class OrgUnitDB extends BaseModel {
                             OrderBy.fromProperty(OrgUnitDB_Table.name)).queryList();
         }
         return children;
+    }
+
+    public List<OrgUnitProgramRelationDB> getOrgUnitProgramRelationDBS() {
+        return orgUnitProgramRelationDBS;
+    }
+
+    public void setOrgUnitProgramRelationDBS(
+            List<OrgUnitProgramRelationDB> orgUnitProgramRelationDBS) {
+        this.orgUnitProgramRelationDBS = orgUnitProgramRelationDBS;
     }
 
     public List<SurveyDB> getSurveys(){

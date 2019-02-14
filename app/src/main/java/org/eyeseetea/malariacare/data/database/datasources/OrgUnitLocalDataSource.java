@@ -51,6 +51,7 @@ public class OrgUnitLocalDataSource
     @Override
     public void clearAndSave(List<OrgUnit> orgUnits) throws Exception {
         Delete.table(OrgUnitDB.class);
+        Delete.table(OrgUnitProgramRelationDB.class);
 
         loadDependants();
 
@@ -58,6 +59,13 @@ public class OrgUnitLocalDataSource
 
         for (OrgUnitDB orgUnitDB : orgUnitsDB) {
             orgUnitDB.save();
+
+            for(OrgUnitProgramRelationDB orgUnitProgramRelationDB:
+                    orgUnitDB.getOrgUnitProgramRelationDBS()){
+                orgUnitProgramRelationDB.setOrgUnit(orgUnitDB);
+
+                orgUnitProgramRelationDB.save();
+            }
         }
     }
 
@@ -93,10 +101,35 @@ public class OrgUnitLocalDataSource
 
             orgUnitDB.setOrgUnitLevel(orgUnitLevelId);
 
+            orgUnitDB.setOrgUnitProgramRelationDBS(mapProductivityByProgramToDB(orgUnit));
+
             orgUnitsDB.add(orgUnitDB);
         }
 
         return orgUnitsDB;
+    }
+
+    private List<OrgUnitProgramRelationDB> mapProductivityByProgramToDB(OrgUnit orgUnit) {
+        List<OrgUnitProgramRelationDB> programRelationDBS = new ArrayList<>();
+
+        for (String programUid: orgUnit.getRelatedPrograms()) {
+            Integer productivity = orgUnit.getProductivity(programUid);
+
+            if (productivity != null) {
+                Long programId = getProgramId(programUid);
+
+                if (programId != null) {
+                    OrgUnitProgramRelationDB orgUnitProgramRelationDB =
+                            new OrgUnitProgramRelationDB();
+                    orgUnitProgramRelationDB.setProgram(programId);
+                    orgUnitProgramRelationDB.setProductivity(productivity);
+
+                    programRelationDBS.add(orgUnitProgramRelationDB);
+                }
+            }
+        }
+
+        return programRelationDBS;
     }
 
     private String getOrgUnitLevelUid(Long orgUnitLevelId) {
@@ -123,6 +156,19 @@ public class OrgUnitLocalDataSource
         }
 
         return orgUnitLevelId;
+    }
+
+    private Long getProgramId(String programUId) {
+        Long programId = null;
+
+        for (ProgramDB programDB : programsDB) {
+            if (programUId.equals(programDB.getUid())) {
+                programId = programDB.getId_program();
+                break;
+            }
+        }
+
+        return programId;
     }
 
     private String getProgramUid(Long id_program_fk) {
