@@ -24,15 +24,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
@@ -47,42 +47,28 @@ import java.util.List;
 /**
  * Created by ivan.arrizabalaga on 15/12/2015.
  */
-public class PlannedFragment extends ListFragment implements IModuleFragment{
+public class PlannedFragment extends Fragment implements IModuleFragment{
     public static final String TAG = ".PlannedFragment";
 
     private PlannedItemsReceiver plannedItemsReceiver;
 
-    private PlannedAdapter adapter;
-
     OrgUnitProgramFilterView orgUnitProgramFilterView;
 
-
-    private List<ProgramDB> programList;
-    private List<OrgUnitDB> orgUnitList;
-
     private ProgramDB programFilter;
-    List<PlannedItem> plannedItemList;
-    public PlannedFragment() {
 
-    }
+    private View rootView;
+    private RecyclerView plannedRecyclerView;
+    private PlannedAdapter plannedAdapter;
 
-
-    @Override
-    public void onCreate(Bundle savedInstanceState){
-        Log.d(TAG, "onCreate");
-        super.onCreate(savedInstanceState);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
-        Log.d(TAG, "onCreateView");
-        if (container == null) {
-            return null;
-        }
+        rootView = inflater.inflate(R.layout.fragment_plan, container, false);
 
+        initializeRecyclerView();
         loadFilter();
 
-        return super.onCreateView(inflater, container, savedInstanceState);
+        return rootView;
     }
 
     @Override
@@ -91,30 +77,34 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
         super.onActivityCreated(savedInstanceState);
     }
 
-    private void prepareUI(List<PlannedItem> plannedItemList) {
-        this.adapter = new PlannedAdapter(plannedItemList,getActivity());
-        this.setListAdapter(adapter);
+    private void refreshPlannedItems(List<PlannedItem> plannedItemList) {
+        plannedAdapter.setItems(plannedItemList);
 
         reloadFilter();
     }
 
-    public void reloadFilter(){
+    private void initializeRecyclerView() {
+        plannedRecyclerView = rootView.findViewById(R.id.planList);
 
+        plannedAdapter = new PlannedAdapter(getActivity());
+        plannedRecyclerView.setAdapter(plannedAdapter);
+    }
+
+
+    public void reloadFilter(){
         ProgramDB selectedProgram = orgUnitProgramFilterView.getSelectedProgramFilter();
 
         if(selectedProgram!=null) {
             loadProgram(selectedProgram);
         }
-        if(adapter!=null){
-            adapter.notifyDataSetChanged();
+        if(plannedAdapter!=null){
+            plannedAdapter.notifyDataSetChanged();
         }
     }
 
     @Override
     public void onResume(){
         Log.d(TAG, "onResume");
-        //Loading...
-        setListShown(false);
         //Listen for data
         registerPlannedItemsReceiver();
         super.onResume();
@@ -190,9 +180,9 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
     public void loadProgram(ProgramDB program) {
         Log.d(TAG,"Loading program: "+program.getUid());
         programFilter=program;
-        if(adapter!=null){
-            adapter.applyFilter(programFilter);
-            adapter.notifyDataSetChanged();
+        if(plannedAdapter!=null){
+            plannedAdapter.applyFilter(programFilter);
+            plannedAdapter.notifyDataSetChanged();
         }
         else {
             reloadData();
@@ -215,10 +205,7 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
                         (PlannedServiceBundle) Session.popServiceValue(
                                 PlannedSurveyService.PLANNED_SURVEYS_ACTION);
 
-                prepareUI(plannedServiceBundle.getPlannedItems());
-
-                setListShown(true);
-                adapter.notifyDataSetChanged();
+                refreshPlannedItems(plannedServiceBundle.getPlannedItems());
 
                 updateSelectedFilters();
             }
