@@ -56,7 +56,6 @@ import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.VisitableToSDK;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
-import org.eyeseetea.malariacare.domain.entity.ScoreType;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
@@ -112,6 +111,9 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
 
     @Column
     String uid_event_fk;
+
+    @Column
+    Integer competent_score_classification;
 
     /**
      * List of values for this survey
@@ -282,6 +284,15 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
     public void setStatus(Integer status) {
         Log.d(SurveyDB.class.getName()+"B&D","Id: "+ getId_survey() + " actual status:"+ status +" set as:"+ status);
         this.status = status;
+    }
+
+    public Integer getCompetentScoreClassification() {
+        return competent_score_classification;
+    }
+
+    public void setCompetentScoreClassification(
+            Integer competentScoreClassification) {
+        this.competent_score_classification = competentScoreClassification;
     }
 
     /**
