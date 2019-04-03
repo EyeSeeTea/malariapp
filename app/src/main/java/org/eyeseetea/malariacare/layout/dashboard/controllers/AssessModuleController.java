@@ -40,6 +40,7 @@ import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyAnsweredRatioRepository;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
+import org.eyeseetea.malariacare.domain.usecase.CompleteSurveyUseCase;
 import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.domain.usecase.ISurveyAnsweredRatioCallback;
 import org.eyeseetea.malariacare.domain.usecase.SaveSurveyAnsweredRatioUseCase;
@@ -72,6 +73,8 @@ public class AssessModuleController extends ModuleController {
     SaveSurveyAnsweredRatioUseCase saveSurveyAnsweredRatioUseCase;
     GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase;
 
+    CompleteSurveyUseCase completeSurveyUseCase;
+
     public AssessModuleController(ModuleSettings moduleSettings) {
         super(moduleSettings);
         this.tabLayout = R.id.tab_assess_layout;
@@ -91,6 +94,8 @@ public class AssessModuleController extends ModuleController {
 
         getSurveyAnsweredRatioUseCase = new GetSurveyAnsweredRatioUseCase(
                 surveyAnsweredRatioRepository, mainExecutor, asyncExecutor);
+
+        completeSurveyUseCase = new CompleteSurveyUseCase(mainExecutor,asyncExecutor);
     }
 
     public static String getSimpleName() {
@@ -461,19 +466,27 @@ public class AssessModuleController extends ModuleController {
     }
 
     private void completeAndCloseSurvey(SurveyDB survey) {
-        survey.setCompleteSurveyState(getSimpleName());
+        completeSurveyUseCase.execute(survey, new CompleteSurveyUseCase.Callback() {
+            @Override
+            public void onCompleteSurveySuccess() {
+                if (!survey.isInProgress()) {
+                    alertOnCompleteGoToFeedback(survey);
+                }
 
-        if (!survey.isInProgress()) {
-            alertOnCompleteGoToFeedback(survey);
-        }
+                dashboardController.setNavigatingBackwards(true);
+                closeSurveyFragment();
+                if (DashboardOrientation.VERTICAL.equals(
+                        dashboardController.getOrientation())) {
+                    dashboardController.reloadVertical();
+                }
+                dashboardController.setNavigatingBackwards(false);
+            }
 
-        dashboardController.setNavigatingBackwards(true);
-        closeSurveyFragment();
-        if (DashboardOrientation.VERTICAL.equals(
-                dashboardController.getOrientation())) {
-            dashboardController.reloadVertical();
-        }
-        dashboardController.setNavigatingBackwards(false);
+            @Override
+            public void onCompleteSurveyError(Exception e) {
+                Log.e(getSimpleName(), e.getMessage());
+            }
+        });
     }
 
     private void alertOnComplete(SurveyDB survey) {

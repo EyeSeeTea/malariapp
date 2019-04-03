@@ -524,7 +524,7 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
         save();
     }
 
-    private void saveScore(String module) {        //Prepare scores info
+    public void saveScore(String module) {        //Prepare scores info
         List<CompositeScoreDB> compositeScoreList = ScoreRegister.loadCompositeScores(this, module);
 
         //Calculate main score to push later
@@ -811,31 +811,8 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
         saveMainScore();
     }
 
-    public void setCompleteSurveyState(String module) {
-        //TODO: this coordination should be realized in a CompleteSurveyUseCase
-
+    public void setCompleteSurveyState() {
         setStatus(Constants.SURVEY_COMPLETED);
-        //CompletionDate
-        this.setCompletionDate(new Date());
-
-        CompetentScoreCalculationDomainService competentScoreCalculationDomainService =
-                new CompetentScoreCalculationDomainService();
-
-        List<QuestionDB> criticalFailedQuestions =
-                QuestionDB.getCriticalFailedQuestions(this.id_survey);
-
-        float nonCriticalStepsScore =
-                ScoreRegister.calculateScoreForNonCriticalsSteps(this, "nonCriticalStepsScore");
-
-        competent_score_classification =
-                competentScoreCalculationDomainService.calculateClassification(
-                criticalFailedQuestions.size() > 0, nonCriticalStepsScore).getCode();
-
-        saveScore(module);
-        save();
-        saveMainScore();
-        //Plan a new survey for the future
-        SurveyPlanner.getInstance().buildNext(this);
     }
 
     /**
