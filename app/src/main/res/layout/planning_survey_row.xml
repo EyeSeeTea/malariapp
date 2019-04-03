@@ -31,7 +31,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:id="@+id/facilityDateContainer"
-        android:layout_weight=".16"
+        android:layout_weight=".1"
         android:gravity="center_horizontal"
         android:layout_gravity="center_horizontal">
 
@@ -52,7 +52,7 @@
         android:orientation="vertical"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="0.9"
+        android:layout_weight="0.8"
         android:layout_gravity="center_vertical">
         <LinearLayout
             android:orientation="horizontal"
@@ -63,7 +63,7 @@
             <org.eyeseetea.malariacare.views.CustomTextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.4"
+                android:layout_weight="0.30"
                 android:id="@+id/planning_org_unit"
                 android:layout_gravity="center_vertical"
                 android:typeface="sans"
@@ -78,7 +78,7 @@
             <org.eyeseetea.malariacare.views.CustomTextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight=".12"
+                android:layout_weight=".10"
                 android:typeface="sans"
                 android:textStyle="bold"
                 android:gravity="center"
@@ -93,14 +93,14 @@
             <org.eyeseetea.malariacare.views.CustomTextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight=".12"
+                android:layout_weight=".35"
                 android:typeface="sans"
                 android:textStyle="bold"
                 android:gravity="center"
                 android:layout_gravity="center_vertical"
                 android:ellipsize="end"
                 android:lines="1"
-                android:text="@string/dashboard_title_planned_quality_of_care"
+                android:text="@string/dashboard_title_planned_competency"
                 android:textSize="@dimen/planing_text_size"
                 app:tDimension="@string/font_size_level1"
                 app:tFontName="@string/medium_font_name"/>
@@ -108,7 +108,7 @@
             <org.eyeseetea.malariacare.views.CustomTextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight=".24"
+                android:layout_weight=".25"
                 android:gravity="center"
                 android:layout_gravity="center_vertical"
                 android:ellipsize="end"
@@ -131,7 +131,7 @@
             <org.eyeseetea.malariacare.views.CustomTextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.4"
+                android:layout_weight="0.30"
                 android:id="@+id/planning_program"
                 android:typeface="sans"
                 android:gravity="left|center"
@@ -145,7 +145,7 @@
             <org.eyeseetea.malariacare.views.CustomTextView
                 android:id="@+id/planning_survey_prod"
                 android:layout_width="0dp"
-                android:layout_weight=".12"
+                android:layout_weight=".10"
                 android:layout_height="wrap_content"
                 android:typeface="sans"
                 android:gravity="center"
@@ -159,21 +159,21 @@
             <org.eyeseetea.malariacare.views.CustomTextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight=".12"
-                android:id="@+id/planning_survey_qoc"
+                android:layout_weight=".35"
+                android:id="@+id/planning_survey_competency"
                 android:typeface="sans"
                 android:gravity="center"
                 android:ellipsize="end"
                 android:lines="1"
                 android:layout_gravity="center_vertical"
-                android:text="@string/lorem_ipsum"
+                android:text="Comp. Imprv."
                 app:tDimension="@string/font_size_level2"
                 app:tFontName="@string/light_font"/>
 
             <org.eyeseetea.malariacare.views.CustomTextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight=".24"
+                android:layout_weight=".25"
                 android:id="@+id/planning_survey_schedule_date"
                 android:gravity="center"
                 android:layout_gravity="center_vertical"
