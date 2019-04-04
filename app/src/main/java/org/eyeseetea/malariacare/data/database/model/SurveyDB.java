@@ -55,10 +55,8 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.VisitableToSDK;
-import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
-import org.eyeseetea.malariacare.domain.service.CompetentScoreCalculationDomainService;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
@@ -114,7 +112,7 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
     String uid_event_fk;
 
     @Column
-    Integer competent_score_classification = 0;
+    Integer competency_score_classification = 0;
 
     /**
      * List of values for this survey
@@ -288,13 +286,13 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
         this.status = status;
     }
 
-    public Integer getCompetentScoreClassification() {
-        return competent_score_classification;
+    public Integer getCompetencyScoreClassification() {
+        return competency_score_classification;
     }
 
-    public void setCompetentScoreClassification(
-            Integer competentScoreClassification) {
-        this.competent_score_classification = competentScoreClassification;
+    public void setCompetencyScoreClassification(
+            Integer competencyScoreClassification) {
+        this.competency_score_classification = competencyScoreClassification;
     }
 
     /**

@@ -5,8 +5,8 @@ import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
-import org.eyeseetea.malariacare.domain.entity.CompetentScoreClassification;
-import org.eyeseetea.malariacare.domain.service.CompetentScoreCalculationDomainService;
+import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
+import org.eyeseetea.malariacare.domain.service.CompetencyScoreCalculationDomainService;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
 
@@ -49,8 +49,8 @@ public class CompleteSurveyUseCase implements UseCase {
             surveyDB.setStatus(Constants.SURVEY_COMPLETED);
             surveyDB.setCompletionDate(new Date());
 
-            CompetentScoreCalculationDomainService competentScoreCalculationDomainService =
-                    new CompetentScoreCalculationDomainService();
+            CompetencyScoreCalculationDomainService competencyScoreCalculationDomainService =
+                    new CompetencyScoreCalculationDomainService();
 
             List<QuestionDB> criticalFailedQuestions =
                     QuestionDB.getCriticalFailedQuestions(surveyDB.getId_survey());
@@ -59,11 +59,11 @@ public class CompleteSurveyUseCase implements UseCase {
                     ScoreRegister.calculateScoreForNonCriticalsSteps(surveyDB,
                             "nonCriticalStepsScore");
 
-            CompetentScoreClassification competentScoreClassification =
-                    competentScoreCalculationDomainService.calculateClassification(
+            CompetencyScoreClassification competencyScoreClassification =
+                    competencyScoreCalculationDomainService.calculateClassification(
                             criticalFailedQuestions.size() > 0, nonCriticalStepsScore);
 
-            surveyDB.setCompetentScoreClassification(competentScoreClassification.getCode());
+            surveyDB.setCompetencyScoreClassification(competencyScoreClassification.getCode());
 
             surveyDB.saveScore(getClass().getSimpleName());
             surveyDB.save();
