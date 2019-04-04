@@ -11,9 +11,9 @@ import org.eyeseetea.malariacare.data.database.model.ObsActionPlanDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 
 @Migration(version = 16, database = AppDatabase.class)
-public class Migration16AddCompetentScoreClassificationSurveyColumn extends BaseMigration {
+public class Migration16AddCompetencyScoreClassificationSurveyColumn extends BaseMigration {
 
-    public Migration16AddCompetentScoreClassificationSurveyColumn() {
+    public Migration16AddCompetencyScoreClassificationSurveyColumn() {
         super();
     }
 
@@ -22,9 +22,9 @@ public class Migration16AddCompetentScoreClassificationSurveyColumn extends Base
 
     @Override
     public void migrate(DatabaseWrapper database) {
-        addColumn(database, SurveyDB.class, "competent_score_classification", "integer");
+        addColumn(database, SurveyDB.class, "competency_score_classification", "integer");
 
-        database.execSQL("update survey set competent_score_classification = 0");
+        database.execSQL("update survey set competency_score_classification = 0");
     }
 
     @Override

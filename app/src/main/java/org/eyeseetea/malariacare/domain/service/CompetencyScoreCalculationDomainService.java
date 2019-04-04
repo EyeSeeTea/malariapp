@@ -19,23 +19,23 @@
 
 package org.eyeseetea.malariacare.domain.service;
 
-import org.eyeseetea.malariacare.domain.entity.CompetentScoreClassification;
+import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
 
-public class CompetentScoreCalculationDomainService {
+public class CompetencyScoreCalculationDomainService {
 
     public final static float NON_CRITICAL_COMPETENT_SCORE_LIMIT = 80f;
 
-    public CompetentScoreClassification calculateClassification(
+    public CompetencyScoreClassification calculateClassification(
             boolean hasCriticalStepsMissed, Float nonCriticalStepsScore) {
 
         if (!hasCriticalStepsMissed){
             if(nonCriticalStepsScore>= NON_CRITICAL_COMPETENT_SCORE_LIMIT){
-                return CompetentScoreClassification.COMPETENT;
+                return CompetencyScoreClassification.COMPETENT;
             } else {
-                return CompetentScoreClassification.COMPETENT_NEEDS_IMPROVEMENT;
+                return CompetencyScoreClassification.COMPETENT_NEEDS_IMPROVEMENT;
             }
         } else {
-            return CompetentScoreClassification.NOT_COMPETENT;
+            return CompetencyScoreClassification.NOT_COMPETENT;
         }
     }
 }
