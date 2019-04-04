@@ -26,6 +26,7 @@ import android.view.View;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.DateParser;
@@ -93,21 +94,33 @@ public class AssessmentSentAdapter extends
     }
 
     private void decorateSentScore(SurveyDB survey, View rowView) {
+        CustomTextView sentCompetency = (CustomTextView) rowView.findViewById(R.id.score);
 
-        String scoreText;
+        String competencyText = "";
+
         if (survey.hasConflict()) {
-            scoreText = (getContext().getResources().getString(
+            competencyText = (getContext().getResources().getString(
                     R.string.feedback_info_conflict)).toUpperCase();
         } else {
-            if (survey.hasMainScore()) {
-                scoreText = String.format(SCORE_FORMAT, survey.getMainScore());
-            } else {
-                scoreText = "NaN";
+            if (survey.getCompetencyScoreClassification() ==
+                    CompetencyScoreClassification.NOT_AVAILABLE.getCode()) {
+                competencyText = context.getString(
+                        R.string.competency_classification_not_available);
+            } else if (survey.getCompetencyScoreClassification() ==
+                    CompetencyScoreClassification.COMPETENT.getCode()) {
+                competencyText = context.getString(R.string.competency_classification_competent);
+            } else if (survey.getCompetencyScoreClassification() ==
+                    CompetencyScoreClassification.COMPETENT_NEEDS_IMPROVEMENT.getCode()) {
+                competencyText = context.getString(
+                        R.string.competency_classification_competent_improvement);
+            } else if (survey.getCompetencyScoreClassification() ==
+                    CompetencyScoreClassification.NOT_COMPETENT.getCode()) {
+                competencyText = context.getString(
+                        R.string.competency_classification_not_competent);
             }
         }
 
-        CustomTextView sentScore = (CustomTextView) rowView.findViewById(R.id.score);
-        sentScore.setText(scoreText);
+        sentCompetency.setText(competencyText);
     }
 
     private void decorateSentDate(SurveyDB survey, View rowView) {
@@ -131,9 +144,9 @@ public class AssessmentSentAdapter extends
      */
     @Override
     protected View decorateBackground(int position, View rowView) {
-        if(position==0 || position%2==0){
+        if (position == 0 || position % 2 == 0) {
             rowView.setBackgroundColor(context.getResources().getColor(R.color.white));
-        }else {
+        } else {
             rowView.setBackgroundColor(context.getResources().getColor(R.color.white_grey));
         }
         return rowView;
