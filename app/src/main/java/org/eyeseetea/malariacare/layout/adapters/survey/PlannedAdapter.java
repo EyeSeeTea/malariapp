@@ -41,6 +41,7 @@ import org.eyeseetea.malariacare.data.database.utils.planning.PlannedItem;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedSurvey;
 import org.eyeseetea.malariacare.data.database.utils.planning.ScheduleListener;
 import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
+import org.eyeseetea.malariacare.utils.CompetencyUtils;
 import org.eyeseetea.malariacare.utils.DateParser;
 
 import java.util.List;
@@ -282,23 +283,14 @@ public class PlannedAdapter extends BaseAdapter {
         TextView competencyTextView = (TextView) rowLayout.findViewById(
                 R.id.planning_survey_competency);
 
-        if (plannedSurvey.getSurvey().getCompetencyScoreClassification() ==
-                CompetencyScoreClassification.NOT_AVAILABLE.getCode()) {
-            competencyTextView.setText(
-                    context.getString(R.string.competency_classification_not_available));
-        } else if (plannedSurvey.getSurvey().getCompetencyScoreClassification() ==
-                CompetencyScoreClassification.COMPETENT.getCode()) {
-            competencyTextView.setText(
-                    context.getString(R.string.competency_classification_competent));
-        } else if (plannedSurvey.getSurvey().getCompetencyScoreClassification() ==
-                CompetencyScoreClassification.COMPETENT_NEEDS_IMPROVEMENT.getCode()) {
-            competencyTextView.setText(
-                    context.getString(R.string.competency_classification_competent_improvement));
-        } else if (plannedSurvey.getSurvey().getCompetencyScoreClassification() ==
-                CompetencyScoreClassification.NOT_COMPETENT.getCode()) {
-            competencyTextView.setText(
-                    context.getString(R.string.competency_classification_not_competent));
-        }
+        CompetencyScoreClassification classification =
+                CompetencyScoreClassification.get(
+                        plannedSurvey.getSurvey().getCompetencyScoreClassification());
+
+        String competencyText =
+                CompetencyUtils.convertCompetencyToText(classification,context);
+
+        competencyTextView.setText(competencyText);
 
         //ScheduledDate
         textView = (TextView) rowLayout.findViewById(R.id.planning_survey_schedule_date);

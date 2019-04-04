@@ -26,16 +26,15 @@ import android.view.View;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
-import org.eyeseetea.malariacare.utils.AUtils;
+import org.eyeseetea.malariacare.utils.CompetencyUtils;
 import org.eyeseetea.malariacare.utils.DateParser;
 import org.eyeseetea.malariacare.views.CustomTextView;
-import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class AssessmentSentAdapter extends
         ADashboardAdapter {
@@ -96,28 +95,17 @@ public class AssessmentSentAdapter extends
     private void decorateSentScore(SurveyDB survey, View rowView) {
         CustomTextView sentCompetency = (CustomTextView) rowView.findViewById(R.id.score);
 
-        String competencyText = "";
+        String competencyText;
 
         if (survey.hasConflict()) {
             competencyText = (getContext().getResources().getString(
                     R.string.feedback_info_conflict)).toUpperCase();
         } else {
-            if (survey.getCompetencyScoreClassification() ==
-                    CompetencyScoreClassification.NOT_AVAILABLE.getCode()) {
-                competencyText = context.getString(
-                        R.string.competency_classification_not_available);
-            } else if (survey.getCompetencyScoreClassification() ==
-                    CompetencyScoreClassification.COMPETENT.getCode()) {
-                competencyText = context.getString(R.string.competency_classification_competent);
-            } else if (survey.getCompetencyScoreClassification() ==
-                    CompetencyScoreClassification.COMPETENT_NEEDS_IMPROVEMENT.getCode()) {
-                competencyText = context.getString(
-                        R.string.competency_classification_competent_improvement);
-            } else if (survey.getCompetencyScoreClassification() ==
-                    CompetencyScoreClassification.NOT_COMPETENT.getCode()) {
-                competencyText = context.getString(
-                        R.string.competency_classification_not_competent);
-            }
+            CompetencyScoreClassification classification =
+                    CompetencyScoreClassification.get(
+                            survey.getCompetencyScoreClassification());
+
+            competencyText = CompetencyUtils.convertCompetencyToText(classification, context);
         }
 
         sentCompetency.setText(competencyText);
