@@ -105,7 +105,7 @@ public class AssessmentSentAdapter extends
                     CompetencyScoreClassification.get(
                             survey.getCompetencyScoreClassification());
 
-            competencyText = CompetencyUtils.convertCompetencyToText(classification, context);
+            competencyText = CompetencyUtils.getTextByCompetency(classification, context);
         }
 
         sentCompetency.setText(competencyText);

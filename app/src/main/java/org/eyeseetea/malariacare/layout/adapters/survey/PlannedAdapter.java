@@ -288,7 +288,7 @@ public class PlannedAdapter extends BaseAdapter {
                         plannedSurvey.getSurvey().getCompetencyScoreClassification());
 
         String competencyText =
-                CompetencyUtils.convertCompetencyToText(classification,context);
+                CompetencyUtils.getTextByCompetency(classification,context);
 
         competencyTextView.setText(competencyText);
 
