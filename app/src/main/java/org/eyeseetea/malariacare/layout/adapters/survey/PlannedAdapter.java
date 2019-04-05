@@ -287,10 +287,7 @@ public class PlannedAdapter extends BaseAdapter {
                 CompetencyScoreClassification.get(
                         plannedSurvey.getSurvey().getCompetencyScoreClassification());
 
-        String competencyText =
-                CompetencyUtils.getTextByCompetency(classification,context);
-
-        competencyTextView.setText(competencyText);
+        CompetencyUtils.setTextByCompetency(competencyTextView , classification);
 
         //ScheduledDate
         textView = (TextView) rowLayout.findViewById(R.id.planning_survey_schedule_date);

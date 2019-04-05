@@ -93,22 +93,21 @@ public class AssessmentSentAdapter extends
     }
 
     private void decorateSentScore(SurveyDB survey, View rowView) {
-        CustomTextView sentCompetency = (CustomTextView) rowView.findViewById(R.id.score);
+        CustomTextView competencyTextView = rowView.findViewById(R.id.score);
 
         String competencyText;
 
         if (survey.hasConflict()) {
             competencyText = (getContext().getResources().getString(
                     R.string.feedback_info_conflict)).toUpperCase();
+            competencyTextView.setText(competencyText);
         } else {
             CompetencyScoreClassification classification =
                     CompetencyScoreClassification.get(
                             survey.getCompetencyScoreClassification());
 
-            competencyText = CompetencyUtils.getTextByCompetency(classification, context);
+            CompetencyUtils.setTextByCompetency(competencyTextView, classification);
         }
-
-        sentCompetency.setText(competencyText);
     }
 
     private void decorateSentDate(SurveyDB survey, View rowView) {

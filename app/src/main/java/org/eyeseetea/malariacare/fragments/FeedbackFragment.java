@@ -28,7 +28,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -182,18 +181,18 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
         chkFailed = llLayout.findViewById(R.id.chkFailed);
         chkFailed.setChecked(true);
         chkFailed.setOnClickListener(v -> {
-            feedbackAdapter.toggleOnlyFailed();
-            ((CustomRadioButton) v).setChecked(feedbackAdapter
-                    .isOnlyFailed());
-        }
+                    feedbackAdapter.toggleOnlyFailed();
+                    ((CustomRadioButton) v).setChecked(feedbackAdapter
+                            .isOnlyFailed());
+                }
         );
         chkMedia = llLayout.findViewById(R.id.chkMedia);
         chkMedia.setChecked(false);
         chkMedia.setOnClickListener(v -> {
-            feedbackAdapter.toggleOnlyMedia();
-            ((CustomRadioButton) v).setChecked(feedbackAdapter
-                    .isOnlyMedia());
-        }
+                    feedbackAdapter.toggleOnlyMedia();
+                    ((CustomRadioButton) v).setChecked(feedbackAdapter
+                            .isOnlyMedia());
+                }
         );
         planAction = llLayout.findViewById(R.id.action_plan);
         planAction.setOnClickListener(v -> DashboardActivity.dashboardActivity.openActionPlan()
@@ -224,13 +223,9 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
                 CompetencyScoreClassification.get(
                         survey.getCompetencyScoreClassification());
 
-        String competencyText = CompetencyUtils.getTextByCompetency(classification, getActivity());
-        int background = CompetencyUtils.getBackgroundByCompetency(classification, getActivity());
-        int textColor = CompetencyUtils.getTextColorByCompetency(classification, getActivity());
-
-        competencyTextView.setText(competencyText);
-        competencyTextView.setBackgroundColor(background);
-        competencyTextView.setTextColor(textColor);
+        CompetencyUtils.setTextByCompetency(competencyTextView, classification);
+        CompetencyUtils.setBackgroundByCompetency(competencyTextView, classification);
+        CompetencyUtils.setTextColorByCompetency(competencyTextView, classification);
     }
 
     private void loadItems(List<Feedback> items) {
