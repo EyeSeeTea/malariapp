@@ -48,8 +48,10 @@ import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
+import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.presentation.presenters.ObsActionPlanPresenter;
+import org.eyeseetea.malariacare.utils.CompetencyUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.DateParser;
 import org.eyeseetea.malariacare.views.CustomEditText;
@@ -360,7 +362,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
             mFabComplete.setImageResource(R.drawable.ic_action_uncheck);
         } else if (status == Constants.SURVEY_SENT) {
             mFabComplete.setImageResource(R.drawable.ic_double_check);
-        }else {
+        } else {
             mFabComplete.setImageResource(R.drawable.ic_action_check);
         }
     }
@@ -422,7 +424,8 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
     public void enableShareButton() {
         fabShare.setEnabled(true);
         fabShare.getBackground().clearColorFilter();
-        int shareColor = ContextCompat.getColor(fabShare.getContext(), R.color.share_fab_background);
+        int shareColor = ContextCompat.getColor(fabShare.getContext(),
+                R.color.share_fab_background);
 
         fabShare.getBackground().setColorFilter(shareColor, PorterDuff.Mode.SRC_IN);
 
@@ -446,6 +449,16 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
         data += getString(R.string.on) + " " + dateParser.format
                 (survey.getCompletionDate(), DateParser.EUROPEAN_DATE_FORMAT)
                 + "\n";
+
+
+        CompetencyScoreClassification classification =
+                CompetencyScoreClassification.get(
+                        survey.getCompetencyScoreClassification());
+
+        String competencyText = CompetencyUtils.getTextByCompetency(classification, getActivity());
+        data += getString(R.string.dashboard_title_planned_competency).toUpperCase() + ": "
+                + competencyText + "\n";
+
         int roundedScore = Math.round(survey.getMainScore());
         data += getString(R.string.quality_of_care) + " " + roundedScore + "% \n";
 
@@ -453,8 +466,9 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
                 dateParser.format(SurveyPlanner.getInstance().findScheduledDateBySurvey(survey),
                         DateParser.EUROPEAN_DATE_FORMAT));
 
-        if(obsActionPlan.getProvider()!=null && !obsActionPlan.getProvider().isEmpty()) {
-            data += "\n\n" + getString(R.string.plan_action_provider_title) + " " + obsActionPlan.getProvider();
+        if (obsActionPlan.getProvider() != null && !obsActionPlan.getProvider().isEmpty()) {
+            data += "\n\n" + getString(R.string.plan_action_provider_title) + " "
+                    + obsActionPlan.getProvider();
         }
 
         data += "\n\n" + getString(R.string.plan_action_gasp_title) + " ";
