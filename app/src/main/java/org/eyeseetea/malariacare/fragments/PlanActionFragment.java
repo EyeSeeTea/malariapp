@@ -134,7 +134,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
     }
 
     private void initEditTexts() {
-        mCustomProviderText = (CustomEditText) mRootView.findViewById(
+        mCustomProviderText = mRootView.findViewById(
                 R.id.plan_action_provider_text);
 
         mCustomProviderText.addTextChangedListener(new TextWatcher() {
@@ -154,7 +154,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
             }
         });
 
-        mCustomGapsEditText = (CustomEditText) mRootView.findViewById(
+        mCustomGapsEditText = mRootView.findViewById(
                 R.id.plan_action_gasp_edit_text);
         mCustomGapsEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -173,7 +173,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
             }
         });
 
-        mCustomActionPlanEditText = (CustomEditText) mRootView.findViewById(
+        mCustomActionPlanEditText = mRootView.findViewById(
                 R.id.plan_action_action_plan_edit_text);
 
         mCustomActionPlanEditText.addTextChangedListener(new TextWatcher() {
@@ -192,7 +192,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
                 presenter.actionPlanChanged(editable.toString());
             }
         });
-        mCustomActionOtherEditText = (CustomEditText) mRootView.findViewById(
+        mCustomActionOtherEditText = mRootView.findViewById(
                 R.id.plan_action_others_edit_text);
 
         mCustomActionOtherEditText.addTextChangedListener(new TextWatcher() {
@@ -217,51 +217,32 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
         mGoBack = (ImageButton) mRootView.findViewById(
                 R.id.backToSentSurveys);
 
-        mGoBack.setOnClickListener(new View.OnClickListener() {
-                                       @Override
-                                       public void onClick(View v) {
-                                           getActivity().onBackPressed();
-                                       }
-                                   }
+        mGoBack.setOnClickListener(v -> getActivity().onBackPressed()
         );
     }
 
     private void initFAB() {
         initFabComplete(mRootView);
 
-        fabShare = (FloatingActionButton) mRootView.findViewById(R.id.fab_share);
+        fabShare = mRootView.findViewById(R.id.fab_share);
 
-        fabShare.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                presenter.shareObsActionPlan();
-            }
-        });
+        fabShare.setOnClickListener(view -> presenter.shareObsActionPlan());
     }
 
     private void initFabComplete(RelativeLayout llLayout) {
-        mFabComplete = (FloatingActionButton) llLayout.findViewById(R.id.fab_save);
+        mFabComplete = llLayout.findViewById(R.id.fab_save);
 
-        mFabComplete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new AlertDialog.Builder(getActivity())
-                        .setTitle(null)
-                        .setMessage(getActivity().getString(
-                                R.string.dialog_info_ask_for_completion_plan))
-                        .setPositiveButton(android.R.string.yes,
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface arg0, int arg1) {
-                                        presenter.completePlan();
-                                    }
-                                })
-                        .setNegativeButton(android.R.string.no, null).create().show();
-            }
-        });
+        mFabComplete.setOnClickListener(view -> new AlertDialog.Builder(getActivity())
+                .setTitle(null)
+                .setMessage(getActivity().getString(
+                        R.string.dialog_info_ask_for_completion_plan))
+                .setPositiveButton(android.R.string.yes,
+                        (arg0, arg1) -> presenter.completePlan())
+                .setNegativeButton(android.R.string.no, null).create().show());
     }
 
     private void initActions() {
-        actionSpinner = (CustomSpinner) mRootView.findViewById(R.id.plan_action_spinner);
+        actionSpinner = mRootView.findViewById(R.id.plan_action_spinner);
 
         mActionsAdapter =
                 new ArrayAdapter(mRootView.getContext(), android.R.layout.simple_spinner_item);
@@ -281,7 +262,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
     }
 
     private void initSubActions() {
-        secondaryActionSpinner = (CustomSpinner) mRootView.findViewById(
+        secondaryActionSpinner = mRootView.findViewById(
                 R.id.plan_action_secondary_spinner);
         secondaryView = mRootView.findViewById(R.id.secondaryView);
         otherView = mRootView.findViewById(R.id.otherView);
@@ -307,12 +288,12 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
     }
 
     private void initLayoutHeaders() {
-        mTotalScoreTextView = (CustomTextView) mRootView.findViewById(R.id.feedback_total_score);
-        mOrgUnitTextView = (CustomTextView) mRootView.findViewById(
+        mTotalScoreTextView = mRootView.findViewById(R.id.feedback_total_score);
+        mOrgUnitTextView = mRootView.findViewById(
                 R.id.org_unit);
-        mCompletionDateTextView = (CustomTextView) mRootView.findViewById(
+        mCompletionDateTextView = mRootView.findViewById(
                 R.id.completion_date);
-        mNextDateTextView = (CustomTextView) mRootView.findViewById(R.id.next_date);
+        mNextDateTextView = mRootView.findViewById(R.id.next_date);
     }
 
     @Override
