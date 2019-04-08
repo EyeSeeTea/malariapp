@@ -41,7 +41,8 @@
                 android:layout_below="@id/org_unit"
                 android:orientation="horizontal"
                 android:background="@color/new_grey"
-                android:weightSum="2">
+                android:weightSum="2"
+                android:padding="8dp">
 
                 <org.eyeseetea.malariacare.views.CustomTextView
                     android:id="@+id/observations"
@@ -50,7 +51,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|center_vertical"
                     android:gravity="center_horizontal|center_vertical"
-                    android:padding="5dp"
                     android:minHeight="@dimen/header_min_height"
                     android:text="@string/plan_action_title"
                     android:textColor="@color/new_grey_text_color"
@@ -67,8 +67,8 @@
 
                     <android.support.design.widget.FloatingActionButton
                         android:id="@+id/fab_save"
-                        android:layout_width="@dimen/standard_30"
-                        android:layout_height="@dimen/standard_30"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:background="@color/share_fab_background"
                         app:backgroundTint="@color/share_fab_background"
                         app:fabSize="mini"
@@ -78,8 +78,8 @@
 
                     <android.support.design.widget.FloatingActionButton
                         android:id="@+id/fab_share"
-                        android:layout_width="@dimen/standard_30"
-                        android:layout_height="@dimen/standard_30"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:background="@color/share_fab_background"
                         app:backgroundTint="@color/share_fab_background"
                         app:fabSize="mini"
@@ -94,25 +94,54 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/observations_title_container"
                 android:background="@color/clear_gray"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_margin="8dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_lateral_feedback_radiobutton"
                     android:orientation="horizontal">
 
                     <org.eyeseetea.malariacare.views.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left|center_vertical"
+                        android:gravity="left"
+                        android:text="@string/dashboard_title_planned_competency"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/xsmall_text_size"
+                        android:textStyle="bold"
+                        android:padding="4dp"
+                        app:tDimension="@string/font_size_level1"
+                        app:tFontName="@string/medium_font_name" />
 
+                    <org.eyeseetea.malariacare.views.CustomTextView
+                        android:id="@+id/feedback_competency"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left|center_vertical"
+                        android:layout_marginLeft="4dp"
+                        android:gravity="center_horizontal"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/xsmall_text_size"
+                        android:textStyle="bold"
+                        android:padding="4dp"
+                        app:tDimension="@string/font_size_level1"
+                        app:tFontName="@string/medium_font_name" />
+
+                    <org.eyeseetea.malariacare.views.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left|center_vertical"
                         android:gravity="left"
                         android:text="@string/overall_quality_of_care"
                         android:textAppearance="?android:attr/textAppearanceLarge"
                         android:textColor="@color/black"
                         android:textSize="@dimen/xsmall_text_size"
                         android:textStyle="bold"
+                        android:layout_marginLeft="16dp"
                         app:tDimension="@string/font_size_level1"
                         app:tFontName="@string/medium_font_name" />
 
@@ -124,17 +153,17 @@
                         android:layout_marginLeft="4dp"
                         android:gravity="center_horizontal"
                         android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         android:textSize="@dimen/xsmall_text_size"
                         android:textStyle="bold"
+                        android:padding="4dp"
                         app:tDimension="@string/font_size_level1"
                         app:tFontName="@string/medium_font_name" />
                 </LinearLayout>
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_lateral_feedback_radiobutton">
+                    android:layout_height="wrap_content">
 
                     <org.eyeseetea.malariacare.views.CustomTextView
                         android:id="@+id/completion_date"
@@ -146,6 +175,7 @@
                         android:textColor="@color/new_grey_text_color"
                         android:textSize="@dimen/xsmall_text_size"
                         android:textStyle="normal"
+                        android:padding="4dp"
                         app:tDimension="@string/font_size_level1"
                         app:tFontName="@string/font_name_regular" />
 
@@ -157,10 +187,11 @@
                         android:layout_marginRight="@dimen/margin_lateral_feedback_radiobutton"
                         android:layout_toRightOf="@+id/completion_date"
                         android:gravity="center_vertical"
-                        android:paddingLeft="10dp"
+                        android:paddingLeft="16dp"
                         android:singleLine="true"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textColor="@color/new_grey_text_color"
+                        android:padding="4dp"
                         android:textSize="@dimen/xsmall_text_size"
                         app:tDimension="@string/font_size_level1"
                         app:tFontName="@string/font_name_regular" />

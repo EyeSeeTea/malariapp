@@ -20,7 +20,6 @@
 package org.eyeseetea.malariacare.fragments;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -40,7 +39,6 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 import org.eyeseetea.malariacare.data.database.model.ObsActionPlanDB;
 import org.eyeseetea.malariacare.data.database.model.QuestionDB;
@@ -70,6 +68,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
     private ArrayAdapter<CharSequence> mSubActionsAdapter;
 
     private CustomTextView mTotalScoreTextView;
+    private CustomTextView mCompetencyTextView;
     private CustomTextView mOrgUnitTextView;
     private CustomTextView mNextDateTextView;
     private CustomTextView mCompletionDateTextView;
@@ -290,6 +289,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
     }
 
     private void initLayoutHeaders() {
+        mCompetencyTextView = mRootView.findViewById(R.id.feedback_competency);
         mTotalScoreTextView = mRootView.findViewById(R.id.feedback_total_score);
         mOrgUnitTextView = mRootView.findViewById(
                 R.id.org_unit);
@@ -369,9 +369,14 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
 
     @Override
     public void renderHeaderInfo(String orgUnitName, Float mainScore, String completionDate,
-            String nextDate) {
+            String nextDate,
+            CompetencyScoreClassification classification) {
 
         mOrgUnitTextView.setText(orgUnitName);
+
+        CompetencyUtils.setBackgroundByCompetency(mCompetencyTextView, classification);
+        CompetencyUtils.setTextColorByCompetency(mCompetencyTextView, classification);
+        CompetencyUtils.setTextByCompetency(mCompetencyTextView, classification);
 
         if (mainScore > 0f) {
             mTotalScoreTextView.setText(String.format("%.1f%%", mainScore));
