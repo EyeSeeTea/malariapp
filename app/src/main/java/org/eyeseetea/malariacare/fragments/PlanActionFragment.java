@@ -138,17 +138,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
         mCustomProviderText = mRootView.findViewById(
                 R.id.plan_action_provider_text);
 
-        mCustomProviderText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
+        mCustomProviderText.addTextChangedListener(new CustomTextWatcher() {
             @Override
             public void afterTextChanged(Editable editable) {
                 presenter.providerChanged(editable.toString());
@@ -157,17 +147,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
 
         mCustomGapsEditText = mRootView.findViewById(
                 R.id.plan_action_gasp_edit_text);
-        mCustomGapsEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
+        mCustomGapsEditText.addTextChangedListener(new CustomTextWatcher() {
             @Override
             public void afterTextChanged(Editable editable) {
                 presenter.gaspChanged(editable.toString());
@@ -177,17 +157,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
         mCustomActionPlanEditText = mRootView.findViewById(
                 R.id.plan_action_action_plan_edit_text);
 
-        mCustomActionPlanEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
+        mCustomActionPlanEditText.addTextChangedListener(new CustomTextWatcher() {
             @Override
             public void afterTextChanged(Editable editable) {
                 presenter.actionPlanChanged(editable.toString());
@@ -196,17 +166,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
         mCustomActionOtherEditText = mRootView.findViewById(
                 R.id.plan_action_others_edit_text);
 
-        mCustomActionOtherEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
+        mCustomActionOtherEditText.addTextChangedListener(new CustomTextWatcher() {
             @Override
             public void afterTextChanged(Editable editable) {
                 presenter.subActionOtherChanged(editable.toString());
@@ -536,4 +496,22 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
 
         System.out.println("data:" + data);
     }
+
+    class CustomTextWatcher implements TextWatcher {
+        @Override
+        public void beforeTextChanged (CharSequence charSequence,int i, int i1, int i2){
+
+        }
+
+        @Override
+        public void onTextChanged (CharSequence charSequence,int i, int i1, int i2){
+
+        }
+
+        @Override
+        public void afterTextChanged (Editable editable){
+        }
+    }
 }
+
+
