@@ -126,7 +126,6 @@
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textColor="@color/white"
                         android:textSize="@dimen/xsmall_text_size"
-                        android:textStyle="bold"
                         android:padding="4dp"
                         app:tDimension="@string/font_size_level1"
                         app:tFontName="@string/medium_font_name" />
@@ -155,7 +154,6 @@
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textColor="@color/white"
                         android:textSize="@dimen/xsmall_text_size"
-                        android:textStyle="bold"
                         android:padding="4dp"
                         app:tDimension="@string/font_size_level1"
                         app:tFontName="@string/medium_font_name" />
