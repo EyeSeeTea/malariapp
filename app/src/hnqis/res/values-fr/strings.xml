@@ -114,7 +114,7 @@ Mensuelle"</string>
 <string name="dashboard_title_planned_type_next_30">"30 prochains jours"</string>
 <string name="dashboard_title_planned_type_future">"Futurs"</string>
 <string name="dashboard_title_planned_productivity">"Prd"</string>
-<string name="dashboard_title_planned_competency">"Compétence"</string>
+<string name="competency_title">"Compétence"</string>
 <string name="dashboard_title_planned_next_qa">"Proch. éval."</string>
 <string name="assessment_sent_competency">"Compétence"</string>
 <string name="feedback_show_only_failed">"Afficher uniquement les questions ratées"</string>

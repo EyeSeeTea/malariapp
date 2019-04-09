@@ -117,7 +117,7 @@ evaluation"</string>
 <string name="dashboard_title_planned_type_next_30">"Next 30 days"</string>
 <string name="dashboard_title_planned_type_future">"Future"</string>
 <string name="dashboard_title_planned_productivity">"Prd"</string>
-<string name="dashboard_title_planned_competency">"Competency"</string>
+<string name="competency_title">"Competency"</string>
 <string name="dashboard_title_planned_next_qa">"Next QA"</string>
 <string name="assessment_sent_competency">"Competency"</string>
 <string name="feedback_show_only_failed">"Show only failed questions"</string>

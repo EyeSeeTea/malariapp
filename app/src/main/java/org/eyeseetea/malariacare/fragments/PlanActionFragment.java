@@ -421,7 +421,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
                         survey.getCompetencyScoreClassification());
 
         String competencyText = CompetencyUtils.getTextByCompetency(classification, getActivity());
-        data += getString(R.string.dashboard_title_planned_competency).toUpperCase() + ": "
+        data += getString(R.string.competency_title).toUpperCase() + ": "
                 + competencyText + "\n";
 
         int roundedScore = Math.round(survey.getMainScore());

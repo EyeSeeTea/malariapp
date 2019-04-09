@@ -59,18 +59,18 @@ import org.eyeseetea.malariacare.data.database.utils.monitor.facilities.Facility
 import org.eyeseetea.malariacare.data.database.utils.monitor.pies.PieBuilderByOrgUnit;
 import org.eyeseetea.malariacare.data.database.utils.monitor.pies.PieBuilderByProgram;
 import org.eyeseetea.malariacare.data.database.utils.services.BaseServiceBundle;
+import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
 import org.eyeseetea.malariacare.domain.entity.ScoreType;
 import org.eyeseetea.malariacare.layout.dashboard.config.MonitorFilter;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.services.SurveyService;
-import org.eyeseetea.malariacare.utils.AUtils;
+import org.eyeseetea.malariacare.utils.CompetencyUtils;
 import org.eyeseetea.malariacare.utils.DateParser;
 import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 
 public class MonitorFragment extends Fragment implements IModuleFragment {
     List<SurveyDB> surveysForGraphic;
@@ -407,28 +407,38 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
         orgUnit.setText(surveys.get(0).getOrgUnit().getName());
         Button cancel = (Button) v.findViewById(R.id.cancel);
         LinearLayout linearLayout = (LinearLayout) v.findViewById(R.id.log_content);
-        View row = inflater.inflate(R.layout.item_list_dialog_header, null);
-        ((TextView)row.findViewById(R.id.first_column)).setText(R.string.assessment_sent_date);
-        ((TextView)row.findViewById(R.id.second_column)).setText(R.string.score);
+
+        View row = inflater.inflate(R.layout.content_survey_list_header_monitoring, null);
+
         linearLayout.addView(row);
         final AlertDialog alertDialog = builder.create();
         for(final SurveyDB survey: surveys){
-            row = inflater.inflate(R.layout.item_list_row_row, null);
-            TextView completionDate = (TextView) row.findViewById(R.id.first_column);
-            TextView score = (TextView) row.findViewById(R.id.second_column);
+            row = inflater.inflate(R.layout.item_survey_monitoring, null);
+            TextView completionDateView = row.findViewById(R.id.survey_completion_date_item_view);
+            TextView competencyView = row.findViewById(R.id.survey_competency_item_view);
+            TextView scoreView = row.findViewById(R.id.survey_score_item_view);
             DateParser dateParser = new DateParser();
-            completionDate.setText(dateParser.getEuropeanFormattedDate(survey.getCompletionDate()));
-            score.setText(Math.round(survey.getMainScore())+"");
+            completionDateView.setText(dateParser.getEuropeanFormattedDate(survey.getCompletionDate()));
+            scoreView.setText(Math.round(survey.getMainScore())+"");
             Resources resources = PreferencesState.getInstance().getContext().getResources();
 
             ScoreType scoreType = new ScoreType(survey.getMainScore());
             if (scoreType.isTypeA()) {
-                score.setBackgroundColor(resources.getColor(R.color.high_score_color));
+                scoreView.setBackgroundColor(resources.getColor(R.color.high_score_color));
             }else if (scoreType.isTypeB()){
-                score.setBackgroundColor(resources.getColor(R.color.medium_score_color));
+                scoreView.setBackgroundColor(resources.getColor(R.color.medium_score_color));
             }else if (scoreType.isTypeC()){
-                score.setBackgroundColor(resources.getColor(R.color.low_score_color));
+                scoreView.setBackgroundColor(resources.getColor(R.color.low_score_color));
             }
+
+            CompetencyScoreClassification classification =
+                    CompetencyScoreClassification.get(
+                            survey.getCompetencyScoreClassification());
+
+            CompetencyUtils.setBackgroundByCompetency(competencyView, classification);
+            CompetencyUtils.setTextByCompetency(competencyView, classification);
+            CompetencyUtils.setTextColorByCompetency(competencyView, classification);
+
             row.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

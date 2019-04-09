@@ -130,7 +130,7 @@
 <string name="dashboard_title_planned_type_next_30">"ໃນ 30 ວັນຕໍ່ໜ້າ"</string>
 <string name="dashboard_title_planned_type_future">"ຄັ້ງຕໍ່ໄປ"</string>
 <string name="dashboard_title_planned_productivity">"ຈຳນວນ"</string>
-<string name="dashboard_title_planned_competency">"ຄວາມສາມາດ"</string>
+<string name="competency_title">"ຄວາມສາມາດ"</string>
 <string name="dashboard_title_planned_next_qa">"ການປະເມີນຄຸນນະພາບຄັ້ງຕໍ່ໄປ"</string>
 <string name="assessment_sent_competency">"ຄວາມສາມາດ"</string>
 <string name="feedback_show_only_failed">"ສະແດງສະເພາະຄຳຖາມທີ່ຕອບຜິດ"</string>
