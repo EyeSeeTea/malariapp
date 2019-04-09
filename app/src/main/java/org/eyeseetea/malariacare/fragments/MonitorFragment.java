@@ -34,11 +34,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
@@ -339,6 +342,12 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
                 }else{
                     FacilityTableBuilderByProgram.showFacilities(view);
                 }
+            }
+
+            @Override
+            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error){
+                //Your code to do
+                Toast.makeText(getActivity(), "Your Internet Connection May not be active Or " + error , Toast.LENGTH_LONG).show();
             }
         });
         //Load html
