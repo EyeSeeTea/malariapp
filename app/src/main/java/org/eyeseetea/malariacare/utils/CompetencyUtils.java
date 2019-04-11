@@ -88,16 +88,7 @@ public class CompetencyUtils {
 
         Context context = textView.getContext();
 
-        if (classification == CompetencyScoreClassification.NOT_AVAILABLE) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                textView.setBackground(context.getDrawable(R.drawable.background_black_border));
-            } else {
-                textView.setBackgroundDrawable(
-                        ContextCompat.getDrawable(context, R.drawable.background_black_border));
-            }
-        } else {
-            textView.setBackgroundColor(getColorByCompetency(classification, context));
-        }
+        textView.setBackgroundColor(getColorByCompetency(classification, context));
     }
 
     public static void setTextColorByCompetency(TextView textView,
