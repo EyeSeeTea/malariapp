@@ -78,6 +78,10 @@ function pieXTabGroupChart(data){
                                    value: data.valueC,
                                    color: notCompetentColor,
                                    label: "C ("+notCompetentText+")"
+                               }, {
+                                   value: data.valueNA,
+                                   color: notAvailableColor,
+                                   label: ""+notAvailableText+""
                                }],
                                {
                                    tooltipTemplate: "<%= value %>",

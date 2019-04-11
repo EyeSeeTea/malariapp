@@ -41,7 +41,7 @@ public class PieDataByOrgUnit extends PieDataBase {
     }
     public String toJSON(String tipChat){
         String pieTitle = String.format("%s (%s)", AUtils.escapeQuotes(orgUnit.getName()), orgUnit.getId_org_unit());
-        String json = String.format(JSONFORMAT, pieTitle, tipChat, orgUnit.getId_org_unit(), this.numA, this.numB, this.numC, orgUnit.getUid(), orgUnit.getUid());
+        String json = String.format(JSONFORMAT, pieTitle, tipChat, orgUnit.getId_org_unit(), this.numA, this.numB, this.numC, this.numNA, orgUnit.getUid(), orgUnit.getUid());
         return json;
     }
 }

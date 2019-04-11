@@ -161,19 +161,19 @@ function buildColorXScore(value, listOfSurveys){
     }
     if(value == competencyScoreClassification.COMPETENT){
         if(listOfSurveys.length>1){
-            return "<td class='competent-circle' onclick=\"androidPassUids(\'" +getListOfUids(listOfSurveys)+ "\')\" ><div class='circlerow' style='background-color:"+competentColor+";border: 1px solid "+competentColor+";'><span class='centerspan'>";
+            return "<td class='competent-circle' onclick=\"androidPassUids(\'" +getListOfUids(listOfSurveys)+ "\')\" ><div class='circlerow' style='background-color:"+competentColor+"'><span class='centerspan'>";
         }else{
-            return "<td class='competent-circle' onclick=\"androidMoveToFeedback(\'" +listOfSurveys[0].id+ "\')\" ><div class='circlerow' style='background-color:"+competentColor+";border: 1px solid "+competentColor+";'><span class='centerspan'>";
+            return "<td class='competent-circle' onclick=\"androidMoveToFeedback(\'" +listOfSurveys[0].id+ "\')\" ><div class='circlerow' style='background-color:"+competentColor+"'><span class='centerspan'>";
         }
     } else if(value == competencyScoreClassification.COMPETENT_NEEDS_IMPROVEMENT){
         if(listOfSurveys.length>1){
-            return "<td class='competent_improvement-circle' onclick=\"androidPassUids(\'" +getListOfUids(listOfSurveys)+ "\')\"><div class='circlerow' style='background-color:"+competentImprovementColor+";border: 1px solid "+competentImprovementColor+";'><span class='centerspan'>";
+            return "<td class='competent_improvement-circle' onclick=\"androidPassUids(\'" +getListOfUids(listOfSurveys)+ "\')\"><div class='circlerow' style='background-color:"+competentImprovementColor+"'><span class='centerspan'>";
         }else{
-            return "<td class='competent_improvement-circle' onclick=\"androidMoveToFeedback(\'" +listOfSurveys[0].id+ "\')\"><div class='circlerow' style='background-color:"+competentImprovementColor+";border: 1px solid "+competentImprovementColor+";'><span class='centerspan'>";
+            return "<td class='competent_improvement-circle' onclick=\"androidMoveToFeedback(\'" +listOfSurveys[0].id+ "\')\"><div class='circlerow' style='background-color:"+competentImprovementColor+"'><span class='centerspan'>";
         }
     } else if(value == competencyScoreClassification.NOT_COMPETENT){
         if(listOfSurveys.length>1){
-            return "<td class='not-competent-circle' onclick=\"androidPassUids(\'" +getListOfUids(listOfSurveys)+ "\')\"><div class='circlerow' style='background-color:"+notCompetentColor+";border: 1px solid "+notCompetentColor+";'><span class='centerspan'>";
+            return "<td class='not-competent-circle' onclick=\"androidPassUids(\'" +getListOfUids(listOfSurveys)+ "\')\"><div class='circlerow' style='background-color:"+notCompetentColor+"'><span class='centerspan'>";
         }else{
             return "<td class='not-competent-circle' onclick=\"androidMoveToFeedback(\'" +listOfSurveys[0].id+ "\')\"><div class='circlerow' style='background-color:"+notCompetentColor+";border: 1px solid "+notCompetentColor+";'><span class='centerspan'>";
         }
