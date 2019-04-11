@@ -44,6 +44,8 @@ public class FacilityTableBuilderBase {
             "javascript:setCompetentImprovementColor(%s)";
     public static final String JAVASCRIPT_SET_NOT_COMPETENT_COLOR =
             "javascript:setNotCompetentColor(%s)";
+    public static final String JAVASCRIPT_SET_NOT_AVAILABLE_COLOR =
+            "javascript:setNotAvailableColor(%s)";
     public static final String JAVASCRIPT_SET_CLASSIFICATION = "javascript:setClassification(%s)";
 
     /**
@@ -81,6 +83,12 @@ public class FacilityTableBuilderBase {
                 "{color:'" + getHtmlCodeColor(color) + "'}");
         Log.d(TAG, injectColor);
         webView.loadUrl(injectColor);
+        color = context.getResources().getString(R.color.competency_not_available_background_color);
+        injectColor = String.format(
+                JAVASCRIPT_SET_NOT_AVAILABLE_COLOR,
+                "{color:'" + getHtmlCodeColor(color) + "'}");
+        Log.d(TAG, injectColor);
+        webView.loadUrl(injectColor);
 
         String injectClassification = String.format(JAVASCRIPT_SET_CLASSIFICATION,
                 "{competentText:'" + CompetencyUtils.getTextByCompetency(
@@ -88,15 +96,29 @@ public class FacilityTableBuilderBase {
                         "competentImprovementText:'" + CompetencyUtils.getTextByCompetency(
                         CompetencyScoreClassification.COMPETENT_NEEDS_IMPROVEMENT, context) + "'," +
                         "notCompetentText:'" + CompetencyUtils.getTextByCompetency(
-                        CompetencyScoreClassification.NOT_COMPETENT, context) + "'}");
+                        CompetencyScoreClassification.NOT_COMPETENT, context)+ "'," +
+                        "notAvailableText:'" + CompetencyUtils.getTextByCompetency(
+                        CompetencyScoreClassification.NOT_AVAILABLE, context)+ "'," +
+                        "competentAbbreviationText:'" + CompetencyUtils.getAbbreviationTextByCompetency(
+                CompetencyScoreClassification.COMPETENT, context) + "'," +
+                        "competentImprovementAbbreviationText:'" + CompetencyUtils.getAbbreviationTextByCompetency(
+                        CompetencyScoreClassification.COMPETENT_NEEDS_IMPROVEMENT, context) + "'," +
+                        "notCompetentAbbreviationText:'" + CompetencyUtils.getAbbreviationTextByCompetency(
+                        CompetencyScoreClassification.NOT_COMPETENT, context) + "'," +
+                        "notAvailableAbbreviationText:'" + CompetencyUtils.getAbbreviationTextByCompetency(
+                            CompetencyScoreClassification.NOT_AVAILABLE, context) + "'}");
 
         Log.d(TAG, injectClassification);
         webView.loadUrl(injectClassification);
     }
 
     private static String getHtmlCodeColor(String color) {
-        //remove the first two characters(about alpha color).
-        String colorRRGGBB = "#" + color.substring(3, 9);
-        return colorRRGGBB;
+        try{
+            //remove the first two characters(about alpha color).
+            String colorRRGGBB = "#" + color.substring(3, 9);
+            return colorRRGGBB;
+        } catch (Exception e){
+            return "";
+        }
     }
 }

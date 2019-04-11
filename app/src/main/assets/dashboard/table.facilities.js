@@ -10,16 +10,16 @@
 						values:[
 							null,
 							null,
-							[{"uid":31,"score":0.0},{"uid":30,"score":100.0}],
+							[{"uid":31,"competency":3},{"uid":30,"competency":3}],
 							null,
-							[{"uid":1,"score":0.0},{"uid":12,"score":100.0},{"uid":21,"score":100.0}],
-							null,
-							null,
+							[{"uid":1,"competency":2},{"uid":12,"competency":100.0},{"uid":21,"competency":0}],
 							null,
 							null,
 							null,
 							null,
-							[{"uid":113,"score":10.0}]
+							null,
+							null,
+							[{"uid":113,"competency":1}]
 						]
 					},
 					...
@@ -30,6 +30,14 @@
 */
 var inputDataTablesPerProgram=[];
 var inputDataTablesPerOrgUnit=[];
+
+const competencyScoreClassification = {
+    NOT_AVAILABLE: 0,
+    COMPETENT: 1,
+    COMPETENT_NEEDS_IMPROVEMENT: 2,
+    NOT_COMPETENT: 3
+}
+
 //Save the table data
 function buildTablesPerProgram(tabGroupId,dataFacilities){
 	inputDataTablesPerProgram.push(dataFacilities);
@@ -126,23 +134,20 @@ function buildRowFacility(facility){
 	    //value x month
 	    for(var i=0;i<facility.values.length;i++){
 	    	var facilityMonth=facility.values[i];
-	    	var average=0;
+	    	var competency=0;
 	    	var asterisk = "";
 	    	if(facilityMonth==null){
-	    		var average=null;
+	    		competency=null;
 	    	}else{
-	    		for(var d=0;d<facilityMonth.length;d++){
-	    			average+= facilityMonth[d].score;
-	    		}
-	    		average=average/facilityMonth.length;
-	    		average=Math.round(average);
+	    	    competency = facilityMonth[0].competency;
+
                 if(facilityMonth.length>1){
                     showMultipleEventLegend();
                     asterisk = "*";
                 }
 	    	}
 
-            row=row+""+buildColorXScore(average,facilityMonth)+""+buildCellXScore(average)+"</span></div>"+asterisk+"</td>";
+            row=row+""+buildColorXScore(competency,facilityMonth)+""+buildCellXScore(competency)+"</span></div>"+asterisk+"</td>";
 	    }
 	}
 	//end row
@@ -151,34 +156,50 @@ function buildRowFacility(facility){
 }
 
 function buildColorXScore(value, listOfSurveys){
-	if(value==null){
-		return "<td class='novisible' ><div class='circlerow' ><span class='centerspan'>";
-	}
-	if(value<low){
-	    if(listOfSurveys.length>1){
-		    return "<td class='redcircle'   onclick=\"androidPassUids(\'" +getListOfUids(listOfSurveys)+ "\')\"><div class='circlerow' style='background-color:"+red+"'><span class='centerspan'>";
-		}else{
-		    return "<td class='redcircle'   onclick=\"androidMoveToFeedback(\'" +listOfSurveys[0].id+ "\')\"><div class='circlerow' style='background-color:"+red+"'><span class='centerspan'>";
-		}
-	}else if(value<medium){
-	    if(listOfSurveys.length>1){
-		    return "<td class='ambercircle'  onclick=\"androidPassUids(\'" +getListOfUids(listOfSurveys)+ "\')\"><div class='circlerow' style='background-color:"+yellow+"'><span class='centerspan'>";
-		}else{
-		    return "<td class='ambercircle'  onclick=\"androidMoveToFeedback(\'" +listOfSurveys[0].id+ "\')\"><div class='circlerow' style='background-color:"+yellow+"'><span class='centerspan'>";
-		}
-	} else{
+    if(value==null){
+        return "<td class='novisible' ><div class='circlerow' ><span class='centerspan'>";
+    }
+    if(value == competencyScoreClassification.COMPETENT){
         if(listOfSurveys.length>1){
-            return "<td class='greencircle'  onclick=\"androidPassUids(\'" +getListOfUids(listOfSurveys)+ "\')\" ><div class='circlerow' style='background-color:"+green+"'><span class='centerspan'>";
+            return "<td class='competent-circle' onclick=\"androidPassUids(\'" +getListOfUids(listOfSurveys)+ "\')\" ><div class='circlerow' style='background-color:"+competentColor+";border: 1px solid "+competentColor+";'><span class='centerspan'>";
         }else{
-            return "<td class='greencircle'  onclick=\"androidMoveToFeedback(\'" +listOfSurveys[0].id+ "\')\" ><div class='circlerow' style='background-color:"+green+"'><span class='centerspan'>";
+            return "<td class='competent-circle' onclick=\"androidMoveToFeedback(\'" +listOfSurveys[0].id+ "\')\" ><div class='circlerow' style='background-color:"+competentColor+";border: 1px solid "+competentColor+";'><span class='centerspan'>";
         }
-	}
+    } else if(value == competencyScoreClassification.COMPETENT_NEEDS_IMPROVEMENT){
+        if(listOfSurveys.length>1){
+            return "<td class='competent_improvement-circle' onclick=\"androidPassUids(\'" +getListOfUids(listOfSurveys)+ "\')\"><div class='circlerow' style='background-color:"+competentImprovementColor+";border: 1px solid "+competentImprovementColor+";'><span class='centerspan'>";
+        }else{
+            return "<td class='competent_improvement-circle' onclick=\"androidMoveToFeedback(\'" +listOfSurveys[0].id+ "\')\"><div class='circlerow' style='background-color:"+competentImprovementColor+";border: 1px solid "+competentImprovementColor+";'><span class='centerspan'>";
+        }
+    } else if(value == competencyScoreClassification.NOT_COMPETENT){
+        if(listOfSurveys.length>1){
+            return "<td class='not-competent-circle' onclick=\"androidPassUids(\'" +getListOfUids(listOfSurveys)+ "\')\"><div class='circlerow' style='background-color:"+notCompetentColor+";border: 1px solid "+notCompetentColor+";'><span class='centerspan'>";
+        }else{
+            return "<td class='not-competent-circle' onclick=\"androidMoveToFeedback(\'" +listOfSurveys[0].id+ "\')\"><div class='circlerow' style='background-color:"+notCompetentColor+";border: 1px solid "+notCompetentColor+";'><span class='centerspan'>";
+        }
+    } else {
+        //NOT_AVAILABLE
+        if(listOfSurveys.length>1){
+            return "<td class='not_available-circle' onclick=\"androidPassUids(\'" +getListOfUids(listOfSurveys)+ "\')\"><div class='circlerow' style='background-color:"+notAvailableColor+"'><span class='centerspan'>";
+        }else{
+            return "<td class='not_available-circle' onclick=\"androidMoveToFeedback(\'" +listOfSurveys[0].id+ "\')\"><div class='circlerow' style='background-color:"+notAvailableColor+"'><span class='centerspan'>";
+        }
+    }
 }
 
-function buildCellXScore(value){
-	if(value==null){
+function buildCellXScore(competency){
+	if(competency==null){
 		return '';
-	}
+	} else if(competency == competencyScoreClassification.COMPETENT){
+        return competentAbbreviationText;
+    } else if(competency == competencyScoreClassification.COMPETENT_NEEDS_IMPROVEMENT){
+        return competentImprovementAbbreviationText;
+    } else if(competency == competencyScoreClassification.NOT_COMPETENT){
+        return notCompetentAbbreviationText;
+    } else {
+        return notAvailableAbbreviationText;
+    }
+
 	return value;
 }
 

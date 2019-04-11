@@ -304,4 +304,9 @@ evaluation"</string>
 <string name="competency_classification_competent">Competent</string>
 <string name="competency_classification_competent_improvement">Comp. Improv.</string>
 <string name="competency_classification_not_competent">Not Competent</string>
+
+<string name="competency_classification_not_available_abbreviation">NA</string>
+<string name="competency_classification_competent_abbreviation">C</string>
+<string name="competency_classification_competent_improvement_abbreviation">CI</string>
+<string name="competency_classification_not_competent_abbreviation">NC</string>
 </resources>

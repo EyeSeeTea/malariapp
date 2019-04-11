@@ -20,14 +20,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 var competentColor;
 var competentImprovementColor;
 var notCompetentColor;
+var notAvailableColor;
 var competentText;
 var competentImprovementText;
 var notCompetentText;
+var notAvailableText;
+var competentAbbreviationText;
+var competentImprovementAbbreviationText;
+var notCompetentAbbreviationText;
+var notAvailableAbbreviationText;
 
 function setClassification(classification){
     competentText=classification["competentText"];
     competentImprovementText=classification["competentImprovementText"];
     notCompetentText=classification["notCompetentText"];
+    notAvailableText=classification["notAvailableText"];
+    competentAbbreviationText=classification["competentAbbreviationText"];
+    competentImprovementAbbreviationText=classification["competentImprovementAbbreviationText"];
+    notCompetentAbbreviationText=classification["notCompetentAbbreviationText"];
+    notAvailableAbbreviationText=classification["notAvailableAbbreviationText"];
 }
 function setCompetentColor(color){
     competentColor=color["color"];
@@ -39,6 +50,10 @@ function setCompetentImprovementColor(color){
 
 function setNotCompetentColor(color){
     notCompetentColor=color["color"];
+}
+
+function setNotAvailableColor(color){
+    notAvailableColor=color["color"];
 }
 
 function pieXTabGroupChart(data){
@@ -54,7 +69,7 @@ function pieXTabGroupChart(data){
                                [{
                                    value: data.valueA,
                                    color: competentColor,
-                                   label: "A (>"+competentText+")"
+                                   label: "A ("+competentText+")"
                                }, {
                                    value: data.valueB,
                                    color: competentImprovementColor,
@@ -62,7 +77,7 @@ function pieXTabGroupChart(data){
                                }, {
                                    value: data.valueC,
                                    color: notCompetentColor,
-                                   label: "C (<"+notCompetentText+")"
+                                   label: "C ("+notCompetentText+")"
                                }],
                                {
                                    tooltipTemplate: "<%= value %>",

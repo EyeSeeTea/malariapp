@@ -31,6 +31,29 @@ public class CompetencyUtils {
         return competencyText;
     }
 
+    public static String getAbbreviationTextByCompetency(
+            CompetencyScoreClassification classification, Context context) {
+
+        String competencyText = "";
+
+        if (classification == CompetencyScoreClassification.NOT_AVAILABLE) {
+            competencyText = context.getString(
+                    R.string.competency_classification_not_available_abbreviation);
+        } else if (classification == CompetencyScoreClassification.COMPETENT) {
+            competencyText = context.getString(
+                    R.string.competency_classification_competent_abbreviation);
+        } else if (classification == CompetencyScoreClassification.COMPETENT_NEEDS_IMPROVEMENT) {
+            competencyText = context.getString(
+                    R.string.competency_classification_competent_improvement_abbreviation);
+        } else if (classification == CompetencyScoreClassification.NOT_COMPETENT) {
+            competencyText = context.getString(
+                    R.string.competency_classification_not_competent_abbreviation);
+        }
+
+        return competencyText;
+    }
+
+
     public static int getColorByCompetency(
             CompetencyScoreClassification classification, Context context) {
 
