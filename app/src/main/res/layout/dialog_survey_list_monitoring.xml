@@ -1,52 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center_vertical"
-    android:paddingBottom="20dp"
-    android:background="@android:color/white">
+    android:background="@android:color/white"
+    android:paddingBottom="20dp">
+
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:orientation="vertical">
+
         <org.eyeseetea.sdk.presentation.views.CustomTextView
             android:id="@+id/org_unitName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="20dp"
-            android:textStyle="bold"
-            android:textSize="18dp"
             android:background="@color/plan_grey_light"
+            android:padding="20dp"
             android:textColor="@color/darkGrey"
-            app:tDimension="@string/font_size_level4"
-            app:font_name="@string/font_name_medium" />
+            android:textSize="18dp"
+            android:textStyle="bold"
+            app:font_name="@string/font_name_medium"
+            app:tDimension="@string/font_size_level4" />
 
         <org.eyeseetea.sdk.presentation.views.CustomTextView
             android:id="@+id/programName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18dp"
-            android:textStyle="bold"
             android:layout_margin="20dp"
             android:textColor="@color/darkGrey"
-            app:tDimension="@string/font_size_level4"
-            app:font_name="@string/font_name_medium" />
+            android:textSize="18dp"
+            android:textStyle="bold"
+            app:font_name="@string/font_name_medium"
+            app:tDimension="@string/font_size_level4" />
     </LinearLayout>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/header"
         android:layout_above="@+id/cancel"
-        android:scrollbars="none"
-        android:layout_weight="1">
+        android:layout_below="@+id/header"
+        android:layout_weight="1"
+        android:scrollbars="none">
+
         <LinearLayout
-            android:id="@+id/dialog_content"
-            android:layout_height="fill_parent"
             android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
             android:orientation="vertical">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -67,10 +72,10 @@
                         android:id="@+id/survey_completion_date_header_view"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.33"
                         android:layout_gravity="center"
-                        android:gravity="center"
+                        android:layout_weight="0.33"
                         android:ellipsize="end"
+                        android:gravity="center"
                         android:lines="1"
                         android:padding="10dp"
                         android:text="@string/assessment_sent_date"
@@ -84,18 +89,18 @@
                         android:id="@+id/survey_competency_header_view"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.33"
                         android:layout_gravity="center"
+                        android:layout_margin="1dp"
+                        android:layout_weight="0.33"
                         android:background="@color/white"
-                        android:gravity="center"
                         android:ellipsize="end"
+                        android:gravity="center"
                         android:lines="1"
                         android:padding="10dp"
                         android:text="@string/competency_title"
                         android:textColor="@color/darkGrey"
                         android:textSize="16dp"
                         android:textStyle="bold"
-                        android:layout_margin="1dp"
                         app:font_name="@string/font_name_medium"
                         app:tDimension="@string/font_size_level4" />
 
@@ -103,37 +108,46 @@
                         android:id="@+id/survey_score_header_view"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="0.33"
                         android:layout_gravity="center"
+                        android:layout_margin="1dp"
+                        android:layout_weight="0.33"
                         android:background="@color/white"
+                        android:ellipsize="end"
                         android:gravity="center"
+                        android:lines="1"
                         android:padding="10dp"
                         android:text="@string/score"
-                        android:ellipsize="end"
-                        android:lines="1"
                         android:textColor="@color/darkGrey"
                         android:textSize="16dp"
                         android:textStyle="bold"
-                        android:layout_margin="1dp"
                         app:font_name="@string/font_name_medium"
                         app:tDimension="@string/font_size_level4" />
                 </LinearLayout>
             </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/monitor_surveys_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                tools:listitem="@layout/item_survey_monitor"
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
         </LinearLayout>
     </ScrollView>
+
     <org.eyeseetea.sdk.presentation.views.CustomButton
         android:id="@id/cancel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:padding="20dp"
         android:layout_alignParentBottom="true"
-        android:text="@string/cancel"
-        android:background="@color/dialog_button_text"
-        android:textColor="@android:color/white"
         android:layout_gravity="center"
+        android:layout_margin="20dp"
+        android:background="@color/dialog_button_text"
         android:gravity="center"
-        app:tDimension="@string/font_size_level4"
-        app:font_name="@string/font_name_medium" />
+        android:padding="20dp"
+        android:text="@string/cancel"
+        android:textColor="@android:color/white"
+        app:font_name="@string/font_name_medium"
+        app:tDimension="@string/font_size_level4" />
 
 </RelativeLayout>
