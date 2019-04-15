@@ -48,7 +48,7 @@ import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
-import org.eyeseetea.malariacare.presentation.presenters.ObsActionPlanPresenter;
+import org.eyeseetea.malariacare.presentation.presenters.ObservationsPresenter;
 import org.eyeseetea.malariacare.utils.CompetencyUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.DateParser;
@@ -59,10 +59,10 @@ import org.eyeseetea.malariacare.views.CustomTextView;
 import java.util.Iterator;
 import java.util.List;
 
-public class PlanActionFragment extends Fragment implements IModuleFragment,
-        ObsActionPlanPresenter.View {
+public class ObservationsFragment extends Fragment implements IModuleFragment,
+        ObservationsPresenter.View {
 
-    public static final String TAG = ".PlanActionFragment";
+    public static final String TAG = ".ObservationsFragment";
     private static final String SURVEY_ID = "surveyId";
     private ArrayAdapter<CharSequence> mActionsAdapter;
     private ArrayAdapter<CharSequence> mSubActionsAdapter;
@@ -84,10 +84,10 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
     private FloatingActionButton mFabComplete;
     private FloatingActionButton fabShare;
     private RelativeLayout mRootView;
-    private ObsActionPlanPresenter presenter;
+    private ObservationsPresenter presenter;
 
-    public static PlanActionFragment newInstance(long surveyId) {
-        PlanActionFragment myFragment = new PlanActionFragment();
+    public static ObservationsFragment newInstance(long surveyId) {
+        ObservationsFragment myFragment = new ObservationsFragment();
 
         Bundle args = new Bundle();
         args.putLong(SURVEY_ID, surveyId);
@@ -130,7 +130,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
     }
 
     private void initPresenter(long surveyId) {
-        presenter = new ObsActionPlanPresenter(getActivity());
+        presenter = new ObservationsPresenter(getActivity());
         presenter.attachView(this, surveyId);
     }
 
@@ -284,7 +284,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
     }
 
     @Override
-    public void renderBasicPlanInfo(String provider, String gasp, String actionPlan) {
+    public void renderBasicObservations(String provider, String gasp, String actionPlan) {
         mCustomProviderText.setText(provider);
         mCustomGapsEditText.setText(gasp);
         mCustomActionPlanEditText.setText(actionPlan);

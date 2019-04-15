@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-public class ObsActionPlanPresenter {
+public class ObservationsPresenter {
     private final Context mContext;
     private View mView;
     private ObsActionPlanDB mObsActionPlan;
@@ -33,7 +33,7 @@ public class ObsActionPlanPresenter {
     private String[] mSubActions;
     SurveyDB mSurvey;
 
-    public ObsActionPlanPresenter(Context context) {
+    public ObservationsPresenter(Context context) {
         this.mContext = context;
 
         ObservablePush.getInstance().addObserver(new Observer() {
@@ -51,7 +51,7 @@ public class ObsActionPlanPresenter {
 
         loadActions();
         loadSurvey(surveyId);
-        loadObsActionPlan(surveyId);
+        loadObservations(surveyId);
     }
 
     private void loadSurvey(long surveyId) {
@@ -98,7 +98,7 @@ public class ObsActionPlanPresenter {
         this.mView = null;
     }
 
-    private void loadObsActionPlan(long surveyId) {
+    private void loadObservations(long surveyId) {
         mObsActionPlan = ObsActionPlanDB.findObsActionPlanBySurvey(surveyId);
 
         if (mObsActionPlan == null) {
@@ -113,13 +113,13 @@ public class ObsActionPlanPresenter {
 
             updateStatus();
 
-            showPlanInfo();
+            showObservations();
         }
     }
 
-    private void showPlanInfo() {
+    private void showObservations() {
         if (mView != null) {
-            mView.renderBasicPlanInfo(mObsActionPlan.getProvider(), mObsActionPlan.getGaps(), mObsActionPlan.getAction_plan());
+            mView.renderBasicObservations(mObsActionPlan.getProvider(), mObsActionPlan.getGaps(), mObsActionPlan.getAction_plan());
 
             if (mObsActionPlan.getAction1() != null) {
                 for (int i = 0; i < mActions.length; i++) {
@@ -295,7 +295,7 @@ public class ObsActionPlanPresenter {
 
         void changeToReadOnlyMode();
 
-        void renderBasicPlanInfo(String provider, String gasp, String actionPlan);
+        void renderBasicObservations(String provider, String gasp, String actionPlan);
 
         void renderHeaderInfo(String orgUnitName, Float mainScore, String completionDate,
                 String nextDate, CompetencyScoreClassification classification);
