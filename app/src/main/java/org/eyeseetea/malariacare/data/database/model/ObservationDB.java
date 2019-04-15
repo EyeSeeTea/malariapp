@@ -7,6 +7,8 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.data.database.AppDatabase;
 
+import java.util.List;
+
 @Table(database = AppDatabase.class, name = "Observation")
 public class ObservationDB extends BaseModel {
 
@@ -19,6 +21,8 @@ public class ObservationDB extends BaseModel {
 
     @Column
     Integer status;
+
+    List<ObservationValueDB> valuesDB;
 
     public long getId_observation() {
         return id_observation;
@@ -42,6 +46,15 @@ public class ObservationDB extends BaseModel {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public List<ObservationValueDB> getValuesDB() {
+        return valuesDB;
+    }
+
+    public void setValuesDB(
+            List<ObservationValueDB> valuesDB) {
+        this.valuesDB = valuesDB;
     }
 
     @Override
