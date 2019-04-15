@@ -63,7 +63,7 @@ public class Migration17AddObservationValueTable extends BaseMigration {
                 int status = obsActionPlanDBCursor.getInt(7);
 
                 database.execSQL(
-                        String.format("INSERT INTO Observation(id_survey_observation_fk,status)"
+                        String.format("INSERT INTO Observation(id_survey_observation_fk,status_observation)"
                                 + " values(%d, %d)", surveyId, status));
 
                 Cursor lastIdCursor = database.rawQuery("SELECT last_insert_rowid()", null);

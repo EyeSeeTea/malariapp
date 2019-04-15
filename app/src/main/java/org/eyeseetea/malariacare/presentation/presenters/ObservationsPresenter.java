@@ -1,20 +1,25 @@
 package org.eyeseetea.malariacare.presentation.presenters;
 
-import static org.eyeseetea.malariacare.utils.Constants.SURVEY_COMPLETED;
-import static org.eyeseetea.malariacare.utils.Constants.SURVEY_IN_PROGRESS;
-import static org.eyeseetea.malariacare.utils.Constants.SURVEY_SENT;
+import static org.eyeseetea.malariacare.domain.entity.ObservationStatus.*;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
-import org.eyeseetea.malariacare.data.database.model.ObsActionPlanDB;
 import org.eyeseetea.malariacare.data.database.model.QuestionDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
+import org.eyeseetea.malariacare.domain.entity.Observation;
+import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
+import org.eyeseetea.malariacare.domain.entity.ServerMetadata;
+import org.eyeseetea.malariacare.domain.usecase.GetObservationBySurveyUidUseCase;
+import org.eyeseetea.malariacare.domain.usecase.GetServerMetadataUseCase;
+import org.eyeseetea.malariacare.domain.usecase.SaveObservationUseCase;
 import org.eyeseetea.malariacare.observables.ObservablePush;
+import org.eyeseetea.malariacare.presentation.mapper.ObservationMapper;
+import org.eyeseetea.malariacare.presentation.viewmodels.ObservationsViewModel;
 import org.eyeseetea.malariacare.utils.DateParser;
 import org.eyeseetea.malariacare.utils.Constants;
 
@@ -26,36 +31,106 @@ import java.util.Observable;
 import java.util.Observer;
 
 public class ObservationsPresenter {
+    private final GetObservationBySurveyUidUseCase mGetObservationBySurveyUidUseCase;
+    private final GetServerMetadataUseCase mGetServerMetadataUseCase;
+    private final SaveObservationUseCase mSaveObservationUseCase;
+
     private final Context mContext;
     private View mView;
-    private ObsActionPlanDB mObsActionPlan;
     private String[] mActions;
     private String[] mSubActions;
-    SurveyDB mSurvey;
+    private SurveyDB mSurvey;
 
-    public ObservationsPresenter(Context context) {
+    private ServerMetadata mServerMetadata;
+    private String mSurveyUid;
+
+    private ObservationsViewModel mObservationsViewModel;
+
+    public ObservationsPresenter(Context context,
+            GetObservationBySurveyUidUseCase getObservationBySurveyUidUseCase,
+            GetServerMetadataUseCase getServerMetadataUseCase,
+            SaveObservationUseCase saveObservationUseCase) {
         this.mContext = context;
+        this.mGetObservationBySurveyUidUseCase = getObservationBySurveyUidUseCase;
+        this.mGetServerMetadataUseCase = getServerMetadataUseCase;
+        this.mSaveObservationUseCase = saveObservationUseCase;
 
         ObservablePush.getInstance().addObserver(new Observer() {
             @Override
             public void update(Observable observable, Object o) {
-                if (mView != null){
-                    refreshStatusFromDB();
+                if (mView != null) {
+                    refreshObservation();
                 }
             }
         });
     }
 
-    public void attachView(View view, long surveyId) {
+    public void attachView(View view, String surveyUid) {
         this.mView = view;
+        this.mSurveyUid = surveyUid;
 
-        loadActions();
-        loadSurvey(surveyId);
-        loadObservations(surveyId);
+
+        LoadData();
     }
 
-    private void loadSurvey(long surveyId) {
-        mSurvey = SurveyDB.getSurveyById(surveyId);
+    public void detachView() {
+        this.mView = null;
+    }
+
+    private void LoadData() {
+        mGetServerMetadataUseCase.execute(new GetServerMetadataUseCase.Callback() {
+            @Override
+            public void onSuccess(ServerMetadata serverMetadata) {
+                ObservationsPresenter.this.mServerMetadata = serverMetadata;
+                loadObservation();
+            }
+
+            @Override
+            public void onError(Exception e) {
+                System.out.println(
+                        "An error has occur retrieving server metadata: " + e.getMessage());
+            }
+        });
+    }
+
+    private void loadObservation() {
+        mGetObservationBySurveyUidUseCase.execute(mSurveyUid,
+                new GetObservationBySurveyUidUseCase.Callback() {
+                    @Override
+                    public void onSuccess(Observation observation) {
+                        mObservationsViewModel =
+                                ObservationMapper.mapToViewModel(observation, mServerMetadata);
+
+                        if (mView != null) {
+                            if (!mObservationsViewModel.getStatus().equals(
+                                    IN_PROGRESS)) {
+                                mView.changeToReadOnlyMode();
+                            }
+
+                            loadSurvey();
+                            loadActions();
+                            updateStatus();
+                            showObservations();
+                        }
+                    }
+
+                    @Override
+                    public void onObservationNotFound() {
+                        mObservationsViewModel = new ObservationsViewModel(mSurveyUid);
+                        saveObservation();
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        System.out.println(
+                                "An error has occur retrieving observation: " + e.getMessage());
+                    }
+                });
+    }
+
+
+    private void loadSurvey() {
+        mSurvey = SurveyDB.getSurveyByUId(mSurveyUid);
 
         if (mView != null) {
             DateParser dateParser = new DateParser();
@@ -94,36 +169,14 @@ public class ObservationsPresenter {
         }
     }
 
-    public void detachView() {
-        this.mView = null;
-    }
-
-    private void loadObservations(long surveyId) {
-        mObsActionPlan = ObsActionPlanDB.findObsActionPlanBySurvey(surveyId);
-
-        if (mObsActionPlan == null) {
-            mObsActionPlan = new ObsActionPlanDB(surveyId);
-            mObsActionPlan.save();
-        }
-
-        if (mView != null) {
-            if (!mObsActionPlan.getStatus().equals(SURVEY_IN_PROGRESS)) {
-                mView.changeToReadOnlyMode();
-            }
-
-            updateStatus();
-
-            showObservations();
-        }
-    }
-
     private void showObservations() {
         if (mView != null) {
-            mView.renderBasicObservations(mObsActionPlan.getProvider(), mObsActionPlan.getGaps(), mObsActionPlan.getAction_plan());
+            mView.renderBasicObservations(mObservationsViewModel.getProvider(),
+                    mObservationsViewModel.getGaps(), mObservationsViewModel.getPlanAction());
 
-            if (mObsActionPlan.getAction1() != null) {
+            if (mObservationsViewModel.getAction1() != null) {
                 for (int i = 0; i < mActions.length; i++) {
-                    if (mObsActionPlan.getAction1().equals(mActions[i])) {
+                    if (mObservationsViewModel.getAction1().equals(mActions[i])) {
                         mView.selectAction(i);
                         break;
                     }
@@ -131,30 +184,31 @@ public class ObservationsPresenter {
             }
         }
 
-        if (mObsActionPlan.getAction2() != null && mObsActionPlan.getAction1() != null) {
-            if (mObsActionPlan.getAction1().equals(mActions[1])) {
+        if (mObservationsViewModel.getAction2() != null
+                && mObservationsViewModel.getAction1() != null) {
+            if (mObservationsViewModel.getAction1().equals(mActions[1])) {
                 for (int i = 0; i < mSubActions.length; i++) {
-                    if (mObsActionPlan.getAction2().equals(mSubActions[i])) {
+                    if (mObservationsViewModel.getAction2().equals(mSubActions[i])) {
                         mView.selectSubAction(i);
                         break;
                     }
                 }
-            } else if (mObsActionPlan.getAction1().equals(mActions[5])) {
-                mView.renderOtherSubAction(mObsActionPlan.getAction2());
+            } else if (mObservationsViewModel.getAction1().equals(mActions[5])) {
+                mView.renderOtherSubAction(mObservationsViewModel.getAction2());
             }
         }
     }
 
     public void onActionSelected(String selectedAction) {
         if (selectedAction.equals(mActions[0])) {
-            mObsActionPlan.setAction1(null);
+            mObservationsViewModel.setAction1(null);
         } else {
-            mObsActionPlan.setAction1(selectedAction);
+            mObservationsViewModel.setAction1(selectedAction);
         }
 
-        mObsActionPlan.setAction2(null);
+        mObservationsViewModel.setAction2(null);
 
-        mObsActionPlan.save();
+        saveObservation();
 
         if (selectedAction.equals(mActions[1])) {
             mView.showSubActionOptionsView();
@@ -169,40 +223,58 @@ public class ObservationsPresenter {
 
     }
 
+    private void saveObservation() {
+        Observation observation =
+                ObservationMapper.mapToObservation(mObservationsViewModel, mServerMetadata);
+
+        mSaveObservationUseCase.execute(observation, new SaveObservationUseCase.Callback() {
+            @Override
+            public void onSuccess() {
+                System.out.println("Observation saved successfully");
+            }
+
+            @Override
+            public void onError(Exception e) {
+                System.out.println(
+                        "An error has occur saving Observation: " + e.getMessage());
+            }
+        });
+    }
+
     public void onSubActionSelected(String selectedSubAction) {
         if (selectedSubAction.equals(mSubActions[0])) {
-            mObsActionPlan.setAction2(null);
+            mObservationsViewModel.setAction2(null);
         } else {
-            mObsActionPlan.setAction2(selectedSubAction);
+            mObservationsViewModel.setAction2(selectedSubAction);
         }
 
-        mObsActionPlan.save();
+        saveObservation();
     }
 
     public void gaspChanged(String gasp) {
-        mObsActionPlan.setGaps(gasp);
-        mObsActionPlan.save();
+        mObservationsViewModel.setGaps(gasp);
+        saveObservation();
     }
 
     public void actionPlanChanged(String actionPlan) {
-        mObsActionPlan.setAction_plan(actionPlan);
-        mObsActionPlan.save();
+        mObservationsViewModel.setPlanAction(actionPlan);
+        saveObservation();
     }
 
     public void providerChanged(String provider) {
-        mObsActionPlan.setProvider(provider);
-        mObsActionPlan.save();
+        mObservationsViewModel.setProvider(provider);
+        saveObservation();
     }
 
 
     public void subActionOtherChanged(String subActionOther) {
-        mObsActionPlan.setAction2(subActionOther);
-        mObsActionPlan.save();
+        mObservationsViewModel.setAction2(subActionOther);
+        saveObservation();
     }
 
-    public void completePlan() {
-        mObsActionPlan.setStatus(SURVEY_COMPLETED);
-        mObsActionPlan.save();
+    public void completeObservation() {
+        mObservationsViewModel.setStatus(COMPLETED);
+        saveObservation();
 
         if (mView != null) {
             mView.changeToReadOnlyMode();
@@ -212,16 +284,18 @@ public class ObservationsPresenter {
     }
 
     private void updateStatus() {
-        mView.updateStatusView(mObsActionPlan.getStatus());
+        if (mView != null) {
+            mView.updateStatusView(mObservationsViewModel.getStatus());
+        }
 
-        switch (mObsActionPlan.getStatus()){
 
-            case SURVEY_COMPLETED:
-            case SURVEY_SENT:
+        switch (mObservationsViewModel.getStatus()) {
+            case COMPLETED:
+            case SENT:
                 mView.enableShareButton();
                 break;
 
-            case SURVEY_IN_PROGRESS:
+            case IN_PROGRESS:
                 mView.disableShareButton();
                 break;
         }
@@ -234,10 +308,10 @@ public class ObservationsPresenter {
         List<CompositeScoreDB> compositeScoresTree = getValidTreeOfCompositeScores();
         if (mView != null) {
 
-            if(mSurvey.getStatus() != Constants.SURVEY_SENT){
+            if (mSurvey.getStatus() != Constants.SURVEY_SENT) {
                 mView.shareNotSent(mContext.getString(R.string.feedback_not_sent));
-            }else {
-                mView.shareByText(mObsActionPlan, mSurvey, criticalQuestions, compositeScoresTree);
+            } else {
+                mView.shareByText(mObservationsViewModel, mSurvey, criticalQuestions, compositeScoresTree);
             }
         }
     }
@@ -282,10 +356,29 @@ public class ObservationsPresenter {
         }
     }
 
-    private void refreshStatusFromDB() {
-        mObsActionPlan = ObsActionPlanDB.findById(mObsActionPlan.getId_obs_action_plan());
+    private void refreshObservation() {
+        mGetObservationBySurveyUidUseCase.execute(mSurveyUid,
+                new GetObservationBySurveyUidUseCase.Callback() {
+                    @Override
+                    public void onSuccess(Observation observation) {
+                        mObservationsViewModel =
+                                ObservationMapper.mapToViewModel(observation, mServerMetadata);
 
-        updateStatus();
+                        updateStatus();
+                    }
+
+                    @Override
+                    public void onObservationNotFound() {
+                        System.out.println(
+                                "Observation not found by surveyUid: " + mSurveyUid);
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        System.out.println(
+                                "An error has occur retrieving observation: " + e.getMessage());
+                    }
+                });
     }
 
     public interface View {
@@ -314,10 +407,10 @@ public class ObservationsPresenter {
 
         void hideSubActionOtherView();
 
-        void updateStatusView(Integer status);
+        void updateStatusView(ObservationStatus status);
 
-        void shareByText(ObsActionPlanDB obsActionPlan,SurveyDB survey, List<QuestionDB> criticalQuestions,
-                List<CompositeScoreDB> compositeScoresTree);
+        void shareByText(ObservationsViewModel observationsViewModel, SurveyDB survey,
+                List<QuestionDB> criticalQuestions, List<CompositeScoreDB> compositeScoresTree);
 
         void shareNotSent(String surveyNoSentMessage);
 
