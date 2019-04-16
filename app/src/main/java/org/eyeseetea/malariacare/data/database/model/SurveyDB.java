@@ -55,6 +55,7 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.VisitableToSDK;
+import org.eyeseetea.malariacare.data.sync.IData;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
@@ -66,7 +67,7 @@ import java.util.Date;
 import java.util.List;
 
 @Table(database = AppDatabase.class, name = "Survey")
-public class SurveyDB extends BaseModel implements VisitableToSDK {
+public class SurveyDB extends BaseModel implements VisitableToSDK, IData {
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -939,6 +940,12 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
         stringBuilder.append(", ");
         stringBuilder.append(this.getProgram().getName());
         return stringBuilder.toString();
+    }
+
+    @Override
+    public void changeStatusToSending() {
+        setStatus(Constants.SURVEY_SENDING);
+        save();
     }
 
     @Override
