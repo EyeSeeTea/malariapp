@@ -41,6 +41,7 @@ import android.widget.Toast;
 import org.eyeseetea.malariacare.data.database.datasources.ServerInfoLocalDataSource;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.LocalPullController;
 import org.eyeseetea.malariacare.data.database.model.ObsActionPlanDB;
+import org.eyeseetea.malariacare.data.database.model.ObservationDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.ExportData;
 import org.eyeseetea.malariacare.data.database.utils.LanguageContextWrapper;
@@ -52,6 +53,7 @@ import org.eyeseetea.malariacare.data.repositories.ServerInfoRepository;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerInfoRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
+import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
 import org.eyeseetea.malariacare.domain.entity.ServerInfo;
 import org.eyeseetea.malariacare.domain.usecase.GetServerInfoUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
@@ -117,11 +119,11 @@ public abstract class BaseActivity extends AppCompatActivity {
             survey.setStatus(Constants.SURVEY_QUARANTINE);
             survey.save();
         }
-        List<ObsActionPlanDB> obsActionPlens = ObsActionPlanDB.getAllSendingObsActionPlans();
-        for (ObsActionPlanDB obsActionPlan : obsActionPlens) {
+        List<ObservationDB> observations = ObservationDB.getAllSendingObservations();
+        for (ObservationDB observationDB : observations) {
             //Obs action plan doesn't need quarantine status. This type of element only overwritte the server survey.
-            obsActionPlan.setStatus(Constants.SURVEY_COMPLETED);
-            obsActionPlan.save();
+            observationDB.setStatus_observation(ObservationStatus.COMPLETED.getCode());
+            observationDB.save();
         }
     }
 

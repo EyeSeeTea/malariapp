@@ -9,7 +9,6 @@ public enum ObservationStatus {
     COMPLETED (1),
     SENT(2),
     CONFLICT(4),
-    QUARANTINE(5),
     SENDING(6);
 
     private static final Map<Integer, ObservationStatus> lookup
