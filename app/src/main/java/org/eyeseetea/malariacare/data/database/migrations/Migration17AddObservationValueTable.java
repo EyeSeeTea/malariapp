@@ -92,7 +92,7 @@ public class Migration17AddObservationValueTable extends BaseMigration {
                 database.execSQL(dataMigration);
             }
 
-            //database.execSQL("DROP TABLE IF EXISTS ObsActionPlan");
+            database.execSQL("DROP TABLE IF EXISTS ObsActionPlan");
         }
     }
 
