@@ -19,7 +19,7 @@ import org.eyeseetea.malariacare.domain.usecase.GetServerMetadataUseCase;
 import org.eyeseetea.malariacare.domain.usecase.SaveObservationUseCase;
 import org.eyeseetea.malariacare.observables.ObservablePush;
 import org.eyeseetea.malariacare.presentation.mapper.ObservationMapper;
-import org.eyeseetea.malariacare.presentation.viewmodels.ObservationsViewModel;
+import org.eyeseetea.malariacare.presentation.viewmodels.ObservationViewModel;
 import org.eyeseetea.malariacare.utils.DateParser;
 import org.eyeseetea.malariacare.utils.Constants;
 
@@ -44,7 +44,7 @@ public class ObservationsPresenter {
     private ServerMetadata mServerMetadata;
     private String mSurveyUid;
 
-    private ObservationsViewModel mObservationsViewModel;
+    private ObservationViewModel mObservationViewModel;
 
     public ObservationsPresenter(Context context,
             GetObservationBySurveyUidUseCase getObservationBySurveyUidUseCase,
@@ -98,26 +98,25 @@ public class ObservationsPresenter {
                 new GetObservationBySurveyUidUseCase.Callback() {
                     @Override
                     public void onSuccess(Observation observation) {
-                        mObservationsViewModel =
+                        mObservationViewModel =
                                 ObservationMapper.mapToViewModel(observation, mServerMetadata);
 
-                        if (mView != null) {
-                            if (!mObservationsViewModel.getStatus().equals(
-                                    IN_PROGRESS)) {
-                                mView.changeToReadOnlyMode();
-                            }
 
                             loadSurvey();
                             loadActions();
                             updateStatus();
-                            showObservations();
-                        }
+                            showObservation();
                     }
 
                     @Override
                     public void onObservationNotFound() {
-                        mObservationsViewModel = new ObservationsViewModel(mSurveyUid);
+                        mObservationViewModel = new ObservationViewModel(mSurveyUid);
                         saveObservation();
+
+                        loadSurvey();
+                        loadActions();
+                        updateStatus();
+                        showObservation();
                     }
 
                     @Override
@@ -169,63 +168,112 @@ public class ObservationsPresenter {
         }
     }
 
-    private void showObservations() {
+    private void showObservation() {
         if (mView != null) {
-            mView.renderBasicObservations(mObservationsViewModel.getProvider(),
-                    mObservationsViewModel.getGaps(), mObservationsViewModel.getPlanAction());
+            mView.renderBasicObservations(mObservationViewModel.getProvider(),
+                    mObservationViewModel.getGaps(), mObservationViewModel.getActionPlan());
 
-            if (mObservationsViewModel.getAction1() != null) {
+            if (mObservationViewModel.getAction1().isEmpty()) {
+                mView.selectAction(0);
+            } else {
                 for (int i = 0; i < mActions.length; i++) {
-                    if (mObservationsViewModel.getAction1().equals(mActions[i])) {
+                    if (mObservationViewModel.getAction1().equals(mActions[i])) {
                         mView.selectAction(i);
                         break;
                     }
                 }
             }
-        }
 
-        if (mObservationsViewModel.getAction2() != null
-                && mObservationsViewModel.getAction1() != null) {
-            if (mObservationsViewModel.getAction1().equals(mActions[1])) {
-                for (int i = 0; i < mSubActions.length; i++) {
-                    if (mObservationsViewModel.getAction2().equals(mSubActions[i])) {
-                        mView.selectSubAction(i);
-                        break;
+            if (mObservationViewModel.getAction1().equals(mActions[1])) {
+                if (mObservationViewModel.getAction2().isEmpty()) {
+                    mView.selectSubAction(0);
+                }else {
+                    for (int i = 0; i < mSubActions.length; i++) {
+                        if (mObservationViewModel.getAction2().equals(mSubActions[i])) {
+                            mView.selectSubAction(i);
+                            break;
+                        }
                     }
                 }
-            } else if (mObservationsViewModel.getAction1().equals(mActions[5])) {
-                mView.renderOtherSubAction(mObservationsViewModel.getAction2());
+            } else if (mObservationViewModel.getAction1().equals(mActions[5])) {
+                mView.renderOtherSubAction(mObservationViewModel.getAction2());
             }
+
+            showHideAction2();
         }
     }
 
     public void onActionSelected(String selectedAction) {
+
         if (selectedAction.equals(mActions[0])) {
-            mObservationsViewModel.setAction1(null);
-        } else {
-            mObservationsViewModel.setAction1(selectedAction);
+            selectedAction = "";
         }
 
-        mObservationsViewModel.setAction2(null);
+        if (!selectedAction.equals(mObservationViewModel.getAction1())) {
+            mObservationViewModel.setAction1(selectedAction);
+            mObservationViewModel.setAction2("");
 
-        saveObservation();
+            saveObservation();
+            showObservation();
+        }
+    }
 
-        if (selectedAction.equals(mActions[1])) {
+    public void onSubActionSelected(String selectedSubAction) {
+        if (selectedSubAction.equals(mSubActions[0])) {
+            selectedSubAction = "";
+        }
+
+        if (!selectedSubAction.equals(mObservationViewModel.getAction2())) {
+            mObservationViewModel.setAction2(selectedSubAction);
+            saveObservation();
+        }
+    }
+
+    private void showHideAction2() {
+        if (mObservationViewModel.getAction1().equals(mActions[1])) {
             mView.showSubActionOptionsView();
             mView.hideSubActionOtherView();
-        } else if (selectedAction.equals(mActions[5])) {
+        } else if (mObservationViewModel.getAction1().equals(mActions[5])) {
             mView.hideSubActionOptionsView();
             mView.showSubActionOtherView();
         } else {
             mView.hideSubActionOptionsView();
             mView.hideSubActionOtherView();
         }
+    }
 
+    public void gaspChanged(String gasp) {
+        if (!gasp.equals(mObservationViewModel.getGaps())) {
+            mObservationViewModel.setGaps(gasp);
+            saveObservation();
+        }
+    }
+
+    public void actionPlanChanged(String actionPlan) {
+        if (!actionPlan.equals(mObservationViewModel.getActionPlan())) {
+            mObservationViewModel.setActionPlan(actionPlan);
+            saveObservation();
+        }
+    }
+
+    public void providerChanged(String provider) {
+        if (!provider.equals(mObservationViewModel.getProvider())) {
+            mObservationViewModel.setProvider(provider);
+            saveObservation();
+        }
+    }
+
+
+    public void subActionOtherChanged(String subActionOther) {
+        if (!subActionOther.equals(mObservationViewModel.getAction2())) {
+            mObservationViewModel.setAction2(subActionOther);
+            saveObservation();
+        }
     }
 
     private void saveObservation() {
         Observation observation =
-                ObservationMapper.mapToObservation(mObservationsViewModel, mServerMetadata);
+                ObservationMapper.mapToObservation(mObservationViewModel, mServerMetadata);
 
         mSaveObservationUseCase.execute(observation, new SaveObservationUseCase.Callback() {
             @Override
@@ -241,39 +289,9 @@ public class ObservationsPresenter {
         });
     }
 
-    public void onSubActionSelected(String selectedSubAction) {
-        if (selectedSubAction.equals(mSubActions[0])) {
-            mObservationsViewModel.setAction2(null);
-        } else {
-            mObservationsViewModel.setAction2(selectedSubAction);
-        }
-
-        saveObservation();
-    }
-
-    public void gaspChanged(String gasp) {
-        mObservationsViewModel.setGaps(gasp);
-        saveObservation();
-    }
-
-    public void actionPlanChanged(String actionPlan) {
-        mObservationsViewModel.setPlanAction(actionPlan);
-        saveObservation();
-    }
-
-    public void providerChanged(String provider) {
-        mObservationsViewModel.setProvider(provider);
-        saveObservation();
-    }
-
-
-    public void subActionOtherChanged(String subActionOther) {
-        mObservationsViewModel.setAction2(subActionOther);
-        saveObservation();
-    }
 
     public void completeObservation() {
-        mObservationsViewModel.setStatus(COMPLETED);
+        mObservationViewModel.setStatus(COMPLETED);
         saveObservation();
 
         if (mView != null) {
@@ -285,14 +303,15 @@ public class ObservationsPresenter {
 
     private void updateStatus() {
         if (mView != null) {
-            mView.updateStatusView(mObservationsViewModel.getStatus());
+            mView.updateStatusView(mObservationViewModel.getStatus());
         }
 
 
-        switch (mObservationsViewModel.getStatus()) {
+        switch (mObservationViewModel.getStatus()) {
             case COMPLETED:
             case SENT:
                 mView.enableShareButton();
+                mView.changeToReadOnlyMode();
                 break;
 
             case IN_PROGRESS:
@@ -311,7 +330,7 @@ public class ObservationsPresenter {
             if (mSurvey.getStatus() != Constants.SURVEY_SENT) {
                 mView.shareNotSent(mContext.getString(R.string.feedback_not_sent));
             } else {
-                mView.shareByText(mObservationsViewModel, mSurvey, criticalQuestions, compositeScoresTree);
+                mView.shareByText(mObservationViewModel, mSurvey, criticalQuestions, compositeScoresTree);
             }
         }
     }
@@ -361,7 +380,7 @@ public class ObservationsPresenter {
                 new GetObservationBySurveyUidUseCase.Callback() {
                     @Override
                     public void onSuccess(Observation observation) {
-                        mObservationsViewModel =
+                        mObservationViewModel =
                                 ObservationMapper.mapToViewModel(observation, mServerMetadata);
 
                         updateStatus();
@@ -409,7 +428,7 @@ public class ObservationsPresenter {
 
         void updateStatusView(ObservationStatus status);
 
-        void shareByText(ObservationsViewModel observationsViewModel, SurveyDB survey,
+        void shareByText(ObservationViewModel observationViewModel, SurveyDB survey,
                 List<QuestionDB> criticalQuestions, List<CompositeScoreDB> compositeScoresTree);
 
         void shareNotSent(String surveyNoSentMessage);

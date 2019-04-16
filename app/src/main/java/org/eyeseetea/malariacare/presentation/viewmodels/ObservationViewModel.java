@@ -2,9 +2,7 @@ package org.eyeseetea.malariacare.presentation.viewmodels;
 
 import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
 
-public class ObservationsViewModel {
-
-    //long id_obs_action_plan;
+public class ObservationViewModel {
 
     String surveyUid;
 
@@ -12,7 +10,7 @@ public class ObservationsViewModel {
 
     String gaps;
 
-    String planAction;
+    String actionPlan;
 
     String action1;
 
@@ -20,16 +18,16 @@ public class ObservationsViewModel {
 
     ObservationStatus status = ObservationStatus.IN_PROGRESS;
 
-    public ObservationsViewModel(String surveyUid) {
+    public ObservationViewModel(String surveyUid) {
         this.surveyUid = surveyUid;
     }
 
-    public ObservationsViewModel(String surveyUid, String provider, String gaps,
-            String planAction, String action1, String action2, ObservationStatus status) {
+    public ObservationViewModel(String surveyUid, String provider, String gaps,
+            String actionPlan, String action1, String action2, ObservationStatus status) {
         this.surveyUid = surveyUid;
         this.provider = provider;
         this.gaps = gaps;
-        this.planAction = planAction;
+        this.actionPlan = actionPlan;
         this.action1 = action1;
         this.action2 = action2;
         this.status = status;
@@ -59,12 +57,12 @@ public class ObservationsViewModel {
         this.gaps = gaps;
     }
 
-    public String getPlanAction() {
-        return planAction;
+    public String getActionPlan() {
+        return actionPlan;
     }
 
-    public void setPlanAction(String planAction) {
-        this.planAction = planAction;
+    public void setActionPlan(String actionPlan) {
+        this.actionPlan = actionPlan;
     }
 
     public String getAction1() {

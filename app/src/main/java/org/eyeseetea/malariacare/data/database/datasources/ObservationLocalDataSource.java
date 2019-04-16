@@ -102,6 +102,14 @@ public class ObservationLocalDataSource{
         observationDB.setStatus_observation(observation.getStatus().getCode());
         observationDB.save();
 
+        for (ObservationValueDB observationValueDB:observationDB.getValuesDB()) {
+            ObservationValue observationValue =
+                    getObservationValue(observationValueDB.getUid_observation_value(), observation);
+
+            if (observationValue == null)
+                observationValueDB.delete();
+        }
+
         for (ObservationValue observationValue:observation.getValues()) {
             ObservationValueDB observationValueDB =
                     getObservationValueDB(observationValue.getObservationValueUid(), observationDB);
@@ -128,5 +136,18 @@ public class ObservationLocalDataSource{
         }
 
         return existedObservationValueDB;
+    }
+
+    private ObservationValue getObservationValue(String observationValueUid,
+            Observation observation) {
+
+        ObservationValue existedObservationValue = null;
+
+        for (ObservationValue observationValue:observation.getValues()) {
+            if (observationValue.getObservationValueUid().equals(observationValueUid))
+                existedObservationValue = observationValue;
+        }
+
+        return existedObservationValue;
     }
 }
