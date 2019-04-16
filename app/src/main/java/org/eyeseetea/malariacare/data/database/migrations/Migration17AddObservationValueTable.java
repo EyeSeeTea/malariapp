@@ -63,30 +63,42 @@ public class Migration17AddObservationValueTable extends BaseMigration {
                 int status = obsActionPlanDBCursor.getInt(7);
 
                 database.execSQL(
-                        String.format("INSERT INTO Observation(id_survey_observation_fk,status_observation)"
-                                + " values(%d, %d)", surveyId, status));
+                        String.format(
+                                "INSERT INTO Observation(id_survey_observation_fk,"
+                                        + "status_observation)"
+                                        + " values(%d, %d)", surveyId, status));
 
                 Cursor lastIdCursor = database.rawQuery("SELECT last_insert_rowid()", null);
 
                 lastIdCursor.moveToFirst();
                 long observationId = lastIdCursor.getLong(0);
 
-                sqlDataMigrations.add(
-                        createObservationValuesQuery(observationId, provider, providerUid));
+                if (hasValue(provider)) {
+                    sqlDataMigrations.add(
+                            createObservationValuesQuery(observationId, provider, providerUid));
+                }
 
-                sqlDataMigrations.add(
-                        createObservationValuesQuery(observationId, gaps,gapsUid));
+                if (hasValue(gaps)) {
+                    sqlDataMigrations.add(
+                            createObservationValuesQuery(observationId, gaps, gapsUid));
+                }
 
-                sqlDataMigrations.add(
-                        createObservationValuesQuery(observationId, actionPlan, actionPlanUid));
+                if (hasValue(actionPlan)) {
+                    sqlDataMigrations.add(
+                            createObservationValuesQuery(observationId, actionPlan, actionPlanUid));
+                }
 
-                sqlDataMigrations.add(
-                        createObservationValuesQuery(observationId, action1, action1Uid));
+                if (hasValue(action1)) {
+                    sqlDataMigrations.add(
+                            createObservationValuesQuery(observationId, action1, action1Uid));
+                }
 
-                sqlDataMigrations.add(
-                        createObservationValuesQuery(observationId, action2, action2Uid));
+                if (hasValue(action2)) {
+                    sqlDataMigrations.add(
+                            createObservationValuesQuery(observationId, action2, action2Uid));
+                }
 
-            } while(obsActionPlanDBCursor.moveToNext());
+            } while (obsActionPlanDBCursor.moveToNext());
 
             for (String dataMigration : sqlDataMigrations) {
                 database.execSQL(dataMigration);
@@ -94,6 +106,10 @@ public class Migration17AddObservationValueTable extends BaseMigration {
 
             database.execSQL("DROP TABLE IF EXISTS ObsActionPlan");
         }
+    }
+
+    private boolean hasValue(String observationValue) {
+        return observationValue != null && !observationValue.isEmpty();
     }
 
     private String createObservationValuesQuery(long observationId, String value, String uid) {
@@ -115,4 +131,3 @@ public class Migration17AddObservationValueTable extends BaseMigration {
                 .where(ServerMetadataDB_Table.code.eq(code)).querySingle(database);
     }
 }
-
