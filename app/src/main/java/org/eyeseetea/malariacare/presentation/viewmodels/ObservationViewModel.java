@@ -8,8 +8,6 @@ public class ObservationViewModel {
 
     String provider = "";
 
-    String gaps = "";
-
     String actionPlan = "";
 
     String action1 = "";
@@ -22,11 +20,10 @@ public class ObservationViewModel {
         this.surveyUid = surveyUid;
     }
 
-    public ObservationViewModel(String surveyUid, String provider, String gaps,
+    public ObservationViewModel(String surveyUid, String provider,
             String actionPlan, String action1, String action2, ObservationStatus status) {
         this.surveyUid = surveyUid;
         this.provider = provider;
-        this.gaps = gaps;
         this.actionPlan = actionPlan;
         this.action1 = action1;
         this.action2 = action2;
@@ -47,14 +44,6 @@ public class ObservationViewModel {
 
     public void setProvider(String provider) {
         this.provider = provider;
-    }
-
-    public String getGaps() {
-        return gaps;
-    }
-
-    public void setGaps(String gaps) {
-        this.gaps = gaps;
     }
 
     public String getActionPlan() {

@@ -307,7 +307,7 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
     }
 
     @Override
-    public void renderBasicObservations(String provider, String gasp, String actionPlan) {
+    public void renderBasicObservations(String provider, String actionPlan) {
         mCustomProviderText.setText(provider);
         mCustomActionPlanEditText.setText(actionPlan);
     }

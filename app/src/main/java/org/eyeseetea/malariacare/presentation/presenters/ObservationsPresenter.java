@@ -170,8 +170,8 @@ public class ObservationsPresenter {
 
     private void showObservation() {
         if (mView != null) {
-            mView.renderBasicObservations(mObservationViewModel.getProvider(),
-                    mObservationViewModel.getGaps(), mObservationViewModel.getActionPlan());
+            mView.renderBasicObservations(mObservationViewModel.getProvider()
+                    , mObservationViewModel.getActionPlan());
 
             if (mObservationViewModel.getAction1().isEmpty()) {
                 mView.selectAction(0);
@@ -239,13 +239,6 @@ public class ObservationsPresenter {
         } else {
             mView.hideSubActionOptionsView();
             mView.hideSubActionOtherView();
-        }
-    }
-
-    public void gaspChanged(String gasp) {
-        if (!gasp.equals(mObservationViewModel.getGaps())) {
-            mObservationViewModel.setGaps(gasp);
-            saveObservation();
         }
     }
 
@@ -407,7 +400,7 @@ public class ObservationsPresenter {
 
         void changeToReadOnlyMode();
 
-        void renderBasicObservations(String provider, String gasp, String actionPlan);
+        void renderBasicObservations(String provider, String actionPlan);
 
         void renderHeaderInfo(String orgUnitName, Float mainScore, String completionDate,
                 String nextDate, CompetencyScoreClassification classification);

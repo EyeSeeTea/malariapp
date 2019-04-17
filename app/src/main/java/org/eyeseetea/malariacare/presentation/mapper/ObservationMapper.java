@@ -13,7 +13,6 @@ public class ObservationMapper {
     public static ObservationViewModel mapToViewModel(Observation observation,
             ServerMetadata serverMetadata) {
         String provider = "";
-        String gaps = "";
         String planAction = "";
         String action1 = "";
         String action2 = "";
@@ -25,9 +24,6 @@ public class ObservationMapper {
             if (observationValue.getObservationValueUid().equals(
                     serverMetadata.getProvider().getUId()) && observationValue.getValue() != null) {
                 provider = observationValue.getValue();
-            } else if (observationValue.getObservationValueUid().equals(
-                    serverMetadata.getGaps().getUId()) && observationValue.getValue() != null) {
-                gaps = observationValue.getValue();
             } else if (observationValue.getObservationValueUid().equals(
                     serverMetadata.getPlanAction().getUId()) && observationValue.getValue() != null) {
                 planAction = observationValue.getValue();
@@ -42,7 +38,7 @@ public class ObservationMapper {
 
 
         ObservationViewModel viewModel =
-                new ObservationViewModel(surveyUid, provider, gaps, planAction, action1, action2,
+                new ObservationViewModel(surveyUid, provider, planAction, action1, action2,
                         status);
 
         return viewModel;
@@ -56,11 +52,6 @@ public class ObservationMapper {
         if (!viewModel.getProvider().isEmpty()) {
             values.add(new ObservationValue(viewModel.getProvider(),
                     serverMetadata.getProvider().getUId()));
-        }
-
-        if (!viewModel.getGaps().isEmpty()) {
-            values.add(new ObservationValue(viewModel.getGaps(),
-                    serverMetadata.getGaps().getUId()));
         }
 
         if (!viewModel.getActionPlan().isEmpty()) {
