@@ -246,7 +246,6 @@
 <string name="plan_action_today_date">បានបញ្ចប់: %s</string>
 <string name="plan_action_next_date">ការវាយតម្លៃក្រោយ: %s</string>
 <string name="plan_action_description">រៀបរាប់ពីអ្វីដែលបានគេសង្កេតឃើញក្នុងអំឡុងពេលដំណើរទស្សនកិច្ចផែនការសកម្មភាពជាក់លាក់មួយសម្រាប់ការដោះស្រាយគម្លាតនេះ។ ចំណាំផងដែរប្រសើរជាងគម្លាតកំណត់អត្តសញ្ញាណក្នុងអំឡុងដំណើរទស្សនកិច្ចចុងក្រោយនេះជាមួយ</string>
-<string name="plan_action_gasp_title">គម្លាត:</string>
 <string name="plan_action_action_plan_title">ផែនការសកម្មភាព:</string>
 <string name="plan_action_action_title">សកម្មភាព:</string>
 <string-array name="plan_action_dropdown_options">
