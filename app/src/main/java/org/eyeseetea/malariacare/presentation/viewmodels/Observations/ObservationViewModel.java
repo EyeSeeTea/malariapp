@@ -1,4 +1,4 @@
-package org.eyeseetea.malariacare.presentation.viewmodels;
+package org.eyeseetea.malariacare.presentation.viewmodels.Observations;
 
 import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
 

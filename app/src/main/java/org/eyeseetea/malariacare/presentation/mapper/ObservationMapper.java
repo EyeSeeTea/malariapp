@@ -4,7 +4,7 @@ import org.eyeseetea.malariacare.domain.entity.Observation;
 import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
 import org.eyeseetea.malariacare.domain.entity.ObservationValue;
 import org.eyeseetea.malariacare.domain.entity.ServerMetadata;
-import org.eyeseetea.malariacare.presentation.viewmodels.ObservationViewModel;
+import org.eyeseetea.malariacare.presentation.viewmodels.Observations.ObservationViewModel;
 
 import java.util.ArrayList;
 import java.util.List;

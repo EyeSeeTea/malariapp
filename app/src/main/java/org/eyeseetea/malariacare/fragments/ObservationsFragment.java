@@ -40,8 +40,6 @@ import android.widget.RelativeLayout;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.datasources.ObservationLocalDataSource;
-import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
-import org.eyeseetea.malariacare.data.database.model.QuestionDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
@@ -61,14 +59,14 @@ import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.presentation.presenters.ObservationsPresenter;
-import org.eyeseetea.malariacare.presentation.viewmodels.ObservationViewModel;
+import org.eyeseetea.malariacare.presentation.viewmodels.Observations.CriticalMissedStepViewModel;
+import org.eyeseetea.malariacare.presentation.viewmodels.Observations.ObservationViewModel;
 import org.eyeseetea.malariacare.utils.CompetencyUtils;
 import org.eyeseetea.malariacare.utils.DateParser;
 import org.eyeseetea.malariacare.views.CustomEditText;
 import org.eyeseetea.malariacare.views.CustomSpinner;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
-import java.util.Iterator;
 import java.util.List;
 
 public class ObservationsFragment extends Fragment implements IModuleFragment,
@@ -393,9 +391,8 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
 
     @Override
     public void shareByText(ObservationViewModel observationViewModel, SurveyDB survey,
-            List<QuestionDB> criticalQuestions, List<CompositeScoreDB> compositeScoresTree) {
-        String data = extractTextData(observationViewModel, survey, criticalQuestions,
-                compositeScoresTree);
+            List<CriticalMissedStepViewModel> criticalMissedStepViewModels) {
+        String data = extractTextData(observationViewModel, survey, criticalMissedStepViewModels);
 
         shareData(data);
     }
@@ -423,7 +420,7 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
     }
 
     private String extractTextData(ObservationViewModel observationViewModel, SurveyDB survey,
-            List<QuestionDB> criticalQuestions, List<CompositeScoreDB> compositeScoresTree) {
+            List<CriticalMissedStepViewModel> criticalMissedStepViewModels) {
         String data =
                 PreferencesState.getInstance().getContext().getString(
                         R.string.app_name) + "- \n";
@@ -474,20 +471,17 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
             data += "\n" + observationViewModel.getAction2();
         }
 
-        if (criticalQuestions != null && criticalQuestions.size() > 0) {
+        if (criticalMissedStepViewModels != null && criticalMissedStepViewModels.size() > 0) {
             data += "\n\n" + getString(R.string.critical_steps) + "\n";
 
             //For each score add proper items
-            for (Iterator<CompositeScoreDB> iterator = compositeScoresTree.iterator();
-                    iterator.hasNext(); ) {
-                CompositeScoreDB compositeScore = iterator.next();
-                data += compositeScore.getHierarchical_code() + " " + compositeScore.getLabel()
-                        + "\n";
-                for (QuestionDB question : criticalQuestions) {
-                    if (question.getCompositeScoreFk()
-                            == (compositeScore.getId_composite_score())) {
-                        data += "-" + question.getForm_name() + "\n";
-                    }
+            for (CriticalMissedStepViewModel criticalMissedStepViewModel :
+                    criticalMissedStepViewModels) {
+
+                if (criticalMissedStepViewModel.isCompositeScore()) {
+                    data += criticalMissedStepViewModel.getLabel() + "\n";
+                } else {
+                    data += "-" + criticalMissedStepViewModel.getLabel()  + "\n";
                 }
             }
         }

@@ -18,8 +18,10 @@ import org.eyeseetea.malariacare.domain.usecase.GetObservationBySurveyUidUseCase
 import org.eyeseetea.malariacare.domain.usecase.GetServerMetadataUseCase;
 import org.eyeseetea.malariacare.domain.usecase.SaveObservationUseCase;
 import org.eyeseetea.malariacare.observables.ObservablePush;
+import org.eyeseetea.malariacare.presentation.mapper.MissedStepMapper;
 import org.eyeseetea.malariacare.presentation.mapper.ObservationMapper;
-import org.eyeseetea.malariacare.presentation.viewmodels.ObservationViewModel;
+import org.eyeseetea.malariacare.presentation.viewmodels.Observations.CriticalMissedStepViewModel;
+import org.eyeseetea.malariacare.presentation.viewmodels.Observations.ObservationViewModel;
 import org.eyeseetea.malariacare.utils.DateParser;
 import org.eyeseetea.malariacare.utils.Constants;
 
@@ -323,7 +325,10 @@ public class ObservationsPresenter {
             if (mSurvey.getStatus() != Constants.SURVEY_SENT) {
                 mView.shareNotSent(mContext.getString(R.string.feedback_not_sent));
             } else {
-                mView.shareByText(mObservationViewModel, mSurvey, criticalQuestions, compositeScoresTree);
+                List<CriticalMissedStepViewModel> criticalMissedStepViewModels =
+                        MissedStepMapper.mapToViewModel(criticalQuestions, compositeScoresTree);
+
+                mView.shareByText(mObservationViewModel, mSurvey, criticalMissedStepViewModels);
             }
         }
     }
@@ -422,7 +427,7 @@ public class ObservationsPresenter {
         void updateStatusView(ObservationStatus status);
 
         void shareByText(ObservationViewModel observationViewModel, SurveyDB survey,
-                List<QuestionDB> criticalQuestions, List<CompositeScoreDB> compositeScoresTree);
+                List<CriticalMissedStepViewModel> criticalMissedStepViewModels);
 
         void shareNotSent(String surveyNoSentMessage);
 
