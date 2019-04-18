@@ -217,7 +217,7 @@ public class ConvertToSDKVisitor implements
     public void visit(SurveyDB survey) throws ConversionException {
         String errorMessage = "Exception creating a new event from survey. Removing survey from DB";
         try {
-            this.currentEvent = buildEventFromSurvey(survey, errorMessage, PushDataController.Kind.EVENTS);
+            this.currentEvent = buildEventFromSurvey(survey, errorMessage);
             if(currentEvent==null){
                 Log.d(TAG,"invalid survey");
                 return;
@@ -235,20 +235,16 @@ public class ConvertToSDKVisitor implements
         }
     }
 
-    private EventExtended buildEventFromSurvey(SurveyDB survey, String errorMessage, PushDataController.Kind type) throws ConversionException{
+    private EventExtended buildEventFromSurvey(SurveyDB survey, String errorMessage) throws ConversionException{
         currentSurvey = survey;
         uploadedDate = new Date();
         try {
             Log.d(TAG, String.format("Creating event for survey (%d) ...", currentSurvey.getId_survey()));
             Log.d(TAG, String.format("Creating event for survey (%s) ...", currentSurvey.toString()));
             try {
-                if(type.equals(PushDataController.Kind.OBSERVATIONS)){
-                    currentEvent = new EventExtended(survey.getEventUid());
-                    currentEvent = buildEvent();
-                }else {
-                    currentEvent = new EventExtended();
-                    currentEvent = buildEvent();
-                }
+                currentEvent = new EventExtended(survey.getEventUid());
+                currentEvent = buildEvent();
+
             } catch (Exception e) {
                 showErrorConversionMessage(errorMessage);
                 currentSurvey.delete();//invalid survey
@@ -391,7 +387,7 @@ public class ConvertToSDKVisitor implements
      * Builds an event from a survey
      */
     private EventExtended buildSentEvent(SurveyDB survey, String errorMessage) throws Exception {
-        currentEvent = buildEventFromSurvey(survey, errorMessage, PushDataController.Kind.OBSERVATIONS);
+        currentEvent = buildEventFromSurvey(survey, errorMessage);
         currentEvent.setStatus(EventExtended.STATUS_COMPLETED);
         currentEvent.setOrganisationUnitId(currentSurvey.getOrgUnit().getUid());
         currentEvent.setProgramId(currentSurvey.getProgram().getUid());

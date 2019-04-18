@@ -65,6 +65,7 @@ import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow_Table;
+import org.hisp.dhis.client.sdk.core.common.utils.CodeGenerator;
 
 import java.util.Date;
 import java.util.List;
@@ -152,6 +153,9 @@ public class SurveyDB extends BaseModel implements VisitableToSDK, IData {
         this.completion_date = null;
         this.upload_date = null;
         this.scheduled_date = null;
+
+        //// TODO: 26/07/2018  This action should be make on survey entity creation (SurveyPlanned build or when create a new survey).
+        this.uid_event_fk = CodeGenerator.generateCode();
     }
 
     public SurveyDB(OrgUnitDB orgUnit, ProgramDB program, UserDB user) {
@@ -176,10 +180,6 @@ public class SurveyDB extends BaseModel implements VisitableToSDK, IData {
 
     public String getEventUid() {
         return uid_event_fk;
-    }
-
-    public void setEventUid(EventFlow event) {
-        this.uid_event_fk = event.getUId();
     }
 
     public void setEventUid(String eventuid) {
