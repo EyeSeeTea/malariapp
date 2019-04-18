@@ -116,7 +116,7 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        mRootView = (RelativeLayout) inflater.inflate(R.layout.plan_action_fragment, container,
+        mRootView = (RelativeLayout) inflater.inflate(R.layout.fragment_observations, container,
                 false);
 
         String surveyUid = getArguments().getString(SURVEY_UID);
