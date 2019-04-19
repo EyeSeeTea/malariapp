@@ -4,10 +4,30 @@ public abstract class MissedCriticalStepViewModel {
 
     private final String label;
     private final boolean isCompositeScore;
+    private boolean visible = true;
+    private String parentKey;
+    private String key;
 
-    public MissedCriticalStepViewModel(String label, boolean isCompositeScore) {
+    protected static String COMPOSITE_KEY_PREFIX = "C-";
+    protected static String QUESTION_KEY_PREFIX = "Q-";
+
+    public MissedCriticalStepViewModel(
+            String key,
+            String parentKey,
+            String label,
+            boolean isCompositeScore) {
+        this.key = key;
+        this.parentKey = parentKey;
         this.label = label;
         this.isCompositeScore = isCompositeScore;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public String getParentKey() {
+        return parentKey;
     }
 
     public String getLabel() {
@@ -16,5 +36,13 @@ public abstract class MissedCriticalStepViewModel {
 
     public boolean isCompositeScore() {
         return isCompositeScore;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 }

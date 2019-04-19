@@ -23,7 +23,10 @@ public class MissedStepMapper {
                 CompositeScoreDB compositeScore = iterator.next();
 
                 CompositeScoreViewModel compositeScoreViewModel = new CompositeScoreViewModel(
-                        compositeScore.getHierarchical_code(), compositeScore.getLabel());
+                        compositeScore.getId_composite_score(),
+                        compositeScore.getId_composite_score_parent(),
+                        compositeScore.getHierarchical_code(),
+                        compositeScore.getLabel());
 
                 missedCriticalStepViewModels.add(compositeScoreViewModel);
 
@@ -31,6 +34,8 @@ public class MissedStepMapper {
                     if (question.getCompositeScoreFk()
                             == (compositeScore.getId_composite_score())) {
                         QuestionViewModel questionViewModel = new QuestionViewModel(
+                                question.getId_question(),
+                                question.getCompositeScoreFk(),
                                 question.getForm_name());
 
                         missedCriticalStepViewModels.add(questionViewModel);

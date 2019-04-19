@@ -14,15 +14,26 @@ import org.eyeseetea.malariacare.presentation.viewmodels.Observations.CompositeS
 import org.eyeseetea.malariacare.presentation.viewmodels.Observations.MissedCriticalStepViewModel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MissedCriticalStepsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<MissedCriticalStepViewModel> missedCriticalSteps = new ArrayList<>();
+    private Map<String,MissedCriticalStepViewModel> missedCriticalStepsMap = new HashMap<>();
 
     public void setMissedCriticalSteps(List<MissedCriticalStepViewModel> missedCriticalSteps) {
         this.missedCriticalSteps.clear();
         this.missedCriticalSteps.addAll(missedCriticalSteps);
+
+        missedCriticalStepsMap.clear();
+
+        for (MissedCriticalStepViewModel step:missedCriticalSteps) {
+            if (!missedCriticalStepsMap.containsKey(step.getKey())){
+                missedCriticalStepsMap.put(step.getKey(), step);
+            }
+        }
 
         notifyDataSetChanged();
     }
@@ -40,6 +51,36 @@ public class MissedCriticalStepsAdapter extends RecyclerView.Adapter<RecyclerVie
         MissedCriticalStepViewModel missedCriticalStep = missedCriticalSteps.get(position);
 
         ((ViewHolder) viewHolder).bindView(missedCriticalStep);
+
+        if (missedCriticalStep.isCompositeScore()) {
+            CompositeScoreViewModel compositeScore = (CompositeScoreViewModel) missedCriticalStep;
+
+            viewHolder.itemView.setOnClickListener(view -> {
+                expandOrCollapse(compositeScore);
+            });
+        }
+    }
+
+    private void expandOrCollapse(CompositeScoreViewModel compositeScore) {
+        int startIndex = missedCriticalSteps.indexOf(compositeScore);
+
+        compositeScore.setExpanded(!compositeScore.isExpanded());
+
+        for (int i = startIndex + 1; i < missedCriticalSteps.size(); i++) {
+            MissedCriticalStepViewModel currentMissedCriticalStep = missedCriticalSteps.get(i);
+
+            CompositeScoreViewModel parentMissedCriticalStep = (CompositeScoreViewModel)
+                    missedCriticalStepsMap.get(currentMissedCriticalStep.getParentKey());
+
+            if (parentMissedCriticalStep != null && parentMissedCriticalStep.isVisible()
+                    && parentMissedCriticalStep.isExpanded()){
+                currentMissedCriticalStep.setVisible(true);
+            } else {
+                currentMissedCriticalStep.setVisible(false);
+            }
+        }
+
+        notifyDataSetChanged();
     }
 
     @Override
@@ -64,28 +105,53 @@ public class MissedCriticalStepsAdapter extends RecyclerView.Adapter<RecyclerVie
         }
 
         void bindView(MissedCriticalStepViewModel missedCriticalStep) {
-            missedCriticalStepTextView.setText(missedCriticalStep.getLabel());
+            if (missedCriticalStep.isVisible()) {
+                itemView.setVisibility(View.VISIBLE);
+                itemView.setLayoutParams(
+                        new RecyclerView.LayoutParams(
+                                ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.WRAP_CONTENT));
 
-            if (missedCriticalStep.isCompositeScore()) {
-                missedCriticalStepImageView.setVisibility(View.VISIBLE);
 
-                String code = ((CompositeScoreViewModel) missedCriticalStep).getCode();
+                missedCriticalStepTextView.setText(missedCriticalStep.getLabel());
 
-                //Count number of '.' in string
-                int numDots = code.length() - code.replace(".", "").length();
+                if (missedCriticalStep.isCompositeScore()) {
+                    CompositeScoreViewModel compositeScore =
+                            (CompositeScoreViewModel) missedCriticalStep;
 
-                if (numDots == 0) {
-                    missedCriticalStepContainer.setBackgroundResource(R.color.feedbackDarkBlue);
-                } else if (numDots == 1) {
-                    missedCriticalStepContainer.setBackgroundResource(R.color.feedbackLightBlue);
+                    missedCriticalStepImageView.setVisibility(View.VISIBLE);
+
+                    if (compositeScore.isExpanded()) {
+                        missedCriticalStepImageView.setRotation(180);
+                    } else {
+                        missedCriticalStepImageView.setRotation(0);
+                    }
+
+                    setCompositeScoreBackground(compositeScore);
+
                 } else {
-                    missedCriticalStepContainer.setBackgroundResource(R.color.scoreGrandson);
+                    missedCriticalStepImageView.setVisibility(View.GONE);
+
+                    missedCriticalStepContainer.setBackgroundResource(android.R.color.white);
                 }
-
             } else {
-                missedCriticalStepImageView.setVisibility(View.GONE);
+                itemView.setVisibility(View.GONE);
+                itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
+            }
+        }
 
-                missedCriticalStepContainer.setBackgroundResource(android.R.color.white);
+        private void setCompositeScoreBackground(CompositeScoreViewModel compositeScore) {
+            String code = compositeScore.getCode();
+
+            //Count number of '.' in string
+            int numDots = code.length() - code.replace(".", "").length();
+
+            if (numDots == 0) {
+                missedCriticalStepContainer.setBackgroundResource(R.color.feedbackDarkBlue);
+            } else if (numDots == 1) {
+                missedCriticalStepContainer.setBackgroundResource(R.color.feedbackLightBlue);
+            } else {
+                missedCriticalStepContainer.setBackgroundResource(R.color.scoreGrandson);
             }
         }
     }
