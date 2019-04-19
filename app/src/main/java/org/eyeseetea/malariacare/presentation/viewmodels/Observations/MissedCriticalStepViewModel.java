@@ -1,11 +1,11 @@
 package org.eyeseetea.malariacare.presentation.viewmodels.Observations;
 
-public abstract class CriticalMissedStepViewModel {
+public abstract class MissedCriticalStepViewModel {
 
     private final String label;
     private final boolean isCompositeScore;
 
-    public CriticalMissedStepViewModel(String label, boolean isCompositeScore) {
+    public MissedCriticalStepViewModel(String label, boolean isCompositeScore) {
         this.label = label;
         this.isCompositeScore = isCompositeScore;
     }

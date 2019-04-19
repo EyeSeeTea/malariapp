@@ -20,7 +20,7 @@ import org.eyeseetea.malariacare.domain.usecase.SaveObservationUseCase;
 import org.eyeseetea.malariacare.observables.ObservablePush;
 import org.eyeseetea.malariacare.presentation.mapper.MissedStepMapper;
 import org.eyeseetea.malariacare.presentation.mapper.ObservationMapper;
-import org.eyeseetea.malariacare.presentation.viewmodels.Observations.CriticalMissedStepViewModel;
+import org.eyeseetea.malariacare.presentation.viewmodels.Observations.MissedCriticalStepViewModel;
 import org.eyeseetea.malariacare.presentation.viewmodels.Observations.ObservationViewModel;
 import org.eyeseetea.malariacare.utils.DateParser;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -47,6 +47,8 @@ public class ObservationsPresenter {
     private String mSurveyUid;
 
     private ObservationViewModel mObservationViewModel;
+
+    private List<MissedCriticalStepViewModel> missedCriticalSteps;
 
     public ObservationsPresenter(Context context,
             GetObservationBySurveyUidUseCase getObservationBySurveyUidUseCase,
@@ -104,10 +106,11 @@ public class ObservationsPresenter {
                                 ObservationMapper.mapToViewModel(observation, mServerMetadata);
 
 
-                            loadSurvey();
-                            loadActions();
-                            updateStatus();
-                            showObservation();
+                        loadSurvey();
+                        loadMissedCriticalSteps();
+                        loadActions();
+                        updateStatus();
+                        showObservation();
                     }
 
                     @Override
@@ -116,6 +119,7 @@ public class ObservationsPresenter {
                         saveObservation();
 
                         loadSurvey();
+                        loadMissedCriticalSteps();
                         loadActions();
                         updateStatus();
                         showObservation();
@@ -157,6 +161,15 @@ public class ObservationsPresenter {
         }
     }
 
+    private void loadMissedCriticalSteps() {
+        List<QuestionDB> criticalQuestions = QuestionDB.getCriticalFailedQuestions(
+                mSurvey.getId_survey());
+
+        List<CompositeScoreDB> compositeScoresTree = getValidTreeOfCompositeScores();
+        missedCriticalSteps = MissedStepMapper.mapToViewModel(criticalQuestions,
+                compositeScoresTree);
+    }
+
     private void loadActions() {
         mActions =
                 mContext.getResources().getStringArray(R.array.plan_action_dropdown_options);
@@ -172,6 +185,7 @@ public class ObservationsPresenter {
 
     private void showObservation() {
         if (mView != null) {
+            mView.renderMissedCriticalSteps(missedCriticalSteps);
             mView.renderBasicObservations(mObservationViewModel.getProvider()
                     , mObservationViewModel.getActionPlan());
 
@@ -189,7 +203,7 @@ public class ObservationsPresenter {
             if (mObservationViewModel.getAction1().equals(mActions[1])) {
                 if (mObservationViewModel.getAction2().isEmpty()) {
                     mView.selectSubAction(0);
-                }else {
+                } else {
                     for (int i = 0; i < mSubActions.length; i++) {
                         if (mObservationViewModel.getAction2().equals(mSubActions[i])) {
                             mView.selectSubAction(i);
@@ -325,10 +339,10 @@ public class ObservationsPresenter {
             if (mSurvey.getStatus() != Constants.SURVEY_SENT) {
                 mView.shareNotSent(mContext.getString(R.string.feedback_not_sent));
             } else {
-                List<CriticalMissedStepViewModel> criticalMissedStepViewModels =
+                List<MissedCriticalStepViewModel> missedCriticalStepViewModels =
                         MissedStepMapper.mapToViewModel(criticalQuestions, compositeScoresTree);
 
-                mView.shareByText(mObservationViewModel, mSurvey, criticalMissedStepViewModels);
+                mView.shareByText(mObservationViewModel, mSurvey, missedCriticalStepViewModels);
             }
         }
     }
@@ -407,6 +421,8 @@ public class ObservationsPresenter {
 
         void renderBasicObservations(String provider, String actionPlan);
 
+        void renderMissedCriticalSteps(List<MissedCriticalStepViewModel> missedCriticalSteps);
+
         void renderHeaderInfo(String orgUnitName, Float mainScore, String completionDate,
                 String nextDate, CompetencyScoreClassification classification);
 
@@ -427,7 +443,7 @@ public class ObservationsPresenter {
         void updateStatusView(ObservationStatus status);
 
         void shareByText(ObservationViewModel observationViewModel, SurveyDB survey,
-                List<CriticalMissedStepViewModel> criticalMissedStepViewModels);
+                List<MissedCriticalStepViewModel> missedCriticalStepViewModels);
 
         void shareNotSent(String surveyNoSentMessage);
 

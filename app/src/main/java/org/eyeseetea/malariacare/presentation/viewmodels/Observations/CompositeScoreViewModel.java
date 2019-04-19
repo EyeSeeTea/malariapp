@@ -1,6 +1,6 @@
 package org.eyeseetea.malariacare.presentation.viewmodels.Observations;
 
-public class CompositeScoreViewModel extends CriticalMissedStepViewModel {
+public class CompositeScoreViewModel extends MissedCriticalStepViewModel {
     private final String code;
 
     public CompositeScoreViewModel(String code, String name) {
@@ -9,5 +9,7 @@ public class CompositeScoreViewModel extends CriticalMissedStepViewModel {
         this.code = code;
     }
 
-
+    public String getCode() {
+        return code;
+    }
 }
