@@ -4,29 +4,34 @@ import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
 
 public class ObservationViewModel {
 
-    String surveyUid;
+    private ObservationStatus status = ObservationStatus.IN_PROGRESS;
 
-    String provider = "";
+    private String surveyUid;
 
-    String actionPlan = "";
+    private String provider = "";
+    private String actionPlan = "";
 
-    String action1 = "";
-
-    String action2 = "";
-
-    ObservationStatus status = ObservationStatus.IN_PROGRESS;
+    private ActionViewModel action1;
+    private ActionViewModel action2;
+    private ActionViewModel action3;
 
     public ObservationViewModel(String surveyUid) {
         this.surveyUid = surveyUid;
+
+        action1 = new ActionViewModel("","",null,"",false);
+        action2 = new ActionViewModel("","",null,"",false);
+        action3 = new ActionViewModel("","",null,"",false);
     }
 
-    public ObservationViewModel(String surveyUid, String provider,
-            String actionPlan, String action1, String action2, ObservationStatus status) {
+    public ObservationViewModel(String surveyUid, String provider, String actionPlan,
+            ActionViewModel action1, ActionViewModel action2, ActionViewModel action3,
+            ObservationStatus status) {
         this.surveyUid = surveyUid;
         this.provider = provider;
         this.actionPlan = actionPlan;
         this.action1 = action1;
         this.action2 = action2;
+        this.action3 = action3;
         this.status = status;
     }
 
@@ -54,21 +59,18 @@ public class ObservationViewModel {
         this.actionPlan = actionPlan;
     }
 
-    public String getAction1() {
+    public ActionViewModel getAction1() {
         return action1;
     }
 
-    public void setAction1(String action1) {
-        this.action1 = action1;
-    }
-
-    public String getAction2() {
+    public ActionViewModel getAction2() {
         return action2;
     }
 
-    public void setAction2(String action2) {
-        this.action2 = action2;
+    public ActionViewModel getAction3() {
+        return action3;
     }
+
 
     public ObservationStatus getStatus() {
         return status;

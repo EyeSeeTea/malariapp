@@ -19,14 +19,38 @@ public class ServerMetadata {
     private final ServerMetadataItem provider;
     private final ServerMetadataItem gaps;
     private final ServerMetadataItem planAction;
-    private final ServerMetadataItem action1;
-    private final ServerMetadataItem action2;
+    private final ServerMetadataItem activityAction1;
+    private final ServerMetadataItem subActivityAction1;
+    private final ServerMetadataItem dueDateAction1;
+    private final ServerMetadataItem responsibleAction1;
+    private final ServerMetadataItem realizedAction1;
+    private final ServerMetadataItem activityAction2;
+    private final ServerMetadataItem subActivityAction2;
+    private final ServerMetadataItem dueDateAction2;
+    private final ServerMetadataItem responsibleAction2;
+    private final ServerMetadataItem realizedAction2;
+    private final ServerMetadataItem activityAction3;
+    private final ServerMetadataItem subActivityAction3;
+    private final ServerMetadataItem dueDateAction3;
+    private final ServerMetadataItem responsibleAction3;
+    private final ServerMetadataItem realizedAction3;
 
-    public ServerMetadata(ServerMetadataItem nextAssessment, ServerMetadataItem creationDate, ServerMetadataItem completionDate, ServerMetadataItem uploadDate,
-            ServerMetadataItem uploadBy, ServerMetadataItem overallScore, ServerMetadataItem mainScoreClass, ServerMetadataItem mainScoreA,
-            ServerMetadataItem mainScoreB, ServerMetadataItem mainScoreC, ServerMetadataItem forwardOrder, ServerMetadataItem pushDevice,
-            ServerMetadataItem overallProductivity, ServerMetadataItem provider, ServerMetadataItem gaps,
-            ServerMetadataItem planAction, ServerMetadataItem action1, ServerMetadataItem action2) {
+    public ServerMetadata(ServerMetadataItem nextAssessment, ServerMetadataItem creationDate,
+            ServerMetadataItem completionDate, ServerMetadataItem uploadDate,
+            ServerMetadataItem uploadBy, ServerMetadataItem overallScore,
+            ServerMetadataItem mainScoreClass, ServerMetadataItem mainScoreA,
+            ServerMetadataItem mainScoreB, ServerMetadataItem mainScoreC,
+            ServerMetadataItem forwardOrder, ServerMetadataItem pushDevice,
+            ServerMetadataItem overallProductivity, ServerMetadataItem provider,
+            ServerMetadataItem gaps, ServerMetadataItem planAction,
+            ServerMetadataItem activityAction1, ServerMetadataItem subActivityAction1,
+            ServerMetadataItem dueDateAction1, ServerMetadataItem responsibleAction1,
+            ServerMetadataItem realizedAction1, ServerMetadataItem activityAction2,
+            ServerMetadataItem subActivityAction2, ServerMetadataItem dueDateAction2,
+            ServerMetadataItem responsibleAction2, ServerMetadataItem realizedAction2,
+            ServerMetadataItem activityAction3, ServerMetadataItem subActivityAction3,
+            ServerMetadataItem dueDateAction3, ServerMetadataItem responsibleAction3,
+            ServerMetadataItem realizedAction3) {
         this.nextAssessment = required(nextAssessment, "nextAssessment is required");
         this.creationDate = required(creationDate, "creationDate is required");
         this.completionDate = required(completionDate, "completionDate is required");
@@ -43,8 +67,24 @@ public class ServerMetadata {
         this.overallProductivity = required(overallProductivity, "overallProductivity is required");
         this.gaps = required(gaps, "gaps is required");
         this.planAction = required(planAction, "planAction is required");
-        this.action1 = required(action1, "action1 is required");
-        this.action2 = required(action2, "action2 is required");
+
+        this.activityAction1 = required(activityAction1, "activityAction1 is required");
+        this.subActivityAction1 = required(subActivityAction1, "subActivityAction1 is required");
+        this.dueDateAction1 = required(dueDateAction1, "dueDateAction1 is required");
+        this.responsibleAction1 = required(responsibleAction1, "subActivityAction1 is required");
+        this.realizedAction1 = required(realizedAction1, "realizedAction1 is required");
+
+        this.activityAction2 = required(activityAction2, "activityAction2 is required");
+        this.subActivityAction2 = required(subActivityAction2, "subActivityAction2 is required");
+        this.dueDateAction2 = required(dueDateAction2, "dueDateAction2 is required");
+        this.responsibleAction2 = required(responsibleAction2, "responsibleAction2 is required");
+        this.realizedAction2 = required(realizedAction2, "realizedAction2 is required");
+
+        this.activityAction3 = required(activityAction3, "activityAction3 is required");
+        this.subActivityAction3 = required(subActivityAction3, "subActivityAction3 is required");
+        this.dueDateAction3 = required(dueDateAction3, "dueDateAction3 is required");
+        this.responsibleAction3 = required(responsibleAction3, "responsibleAction3 is required");
+        this.realizedAction3 = required(realizedAction3, "realizedAction3 is required");
     }
 
     public ServerMetadataItem getNextAssessment() {
@@ -111,11 +151,63 @@ public class ServerMetadata {
         return planAction;
     }
 
-    public ServerMetadataItem getAction1() {
-        return action1;
+    public ServerMetadataItem getActivityAction1() {
+        return activityAction1;
     }
 
-    public ServerMetadataItem getAction2() {
-        return action2;
+    public ServerMetadataItem getSubActivityAction1() {
+        return subActivityAction1;
+    }
+
+    public ServerMetadataItem getDueDateAction1() {
+        return dueDateAction1;
+    }
+
+    public ServerMetadataItem getResponsibleAction1() {
+        return responsibleAction1;
+    }
+
+    public ServerMetadataItem getRealizedAction1() {
+        return realizedAction1;
+    }
+
+    public ServerMetadataItem getActivityAction2() {
+        return activityAction2;
+    }
+
+    public ServerMetadataItem getSubActivityAction2() {
+        return subActivityAction2;
+    }
+
+    public ServerMetadataItem getDueDateAction2() {
+        return dueDateAction2;
+    }
+
+    public ServerMetadataItem getResponsibleAction2() {
+        return responsibleAction2;
+    }
+
+    public ServerMetadataItem getRealizedAction2() {
+        return realizedAction2;
+    }
+
+    public ServerMetadataItem getActivityAction3() {
+        return activityAction3;
+    }
+
+    public ServerMetadataItem getSubActivityAction3() {
+        return subActivityAction3;
+    }
+
+    public ServerMetadataItem getDueDateAction3() {
+        return dueDateAction3;
+    }
+
+    public ServerMetadataItem getResponsibleAction3() {
+        return responsibleAction3;
+    }
+
+    public ServerMetadataItem getRealizedAction3() {
+        return realizedAction3;
     }
 }

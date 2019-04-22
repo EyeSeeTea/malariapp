@@ -189,7 +189,7 @@ public class ObservationsPresenter {
             mView.renderBasicObservations(mObservationViewModel.getProvider()
                     , mObservationViewModel.getActionPlan());
 
-            if (mObservationViewModel.getAction1().isEmpty()) {
+            if (mObservationViewModel.getAction1().getActivityAction().isEmpty()) {
                 mView.selectAction(0);
             } else {
                 for (int i = 0; i < mActions.length; i++) {
@@ -200,22 +200,22 @@ public class ObservationsPresenter {
                 }
             }
 
-            if (mObservationViewModel.getAction1().equals(mActions[1])) {
-                if (mObservationViewModel.getAction2().isEmpty()) {
+            if (mObservationViewModel.getAction1().getActivityAction().equals(mActions[1])) {
+                if (mObservationViewModel.getAction1().getSubActivityAction().isEmpty()) {
                     mView.selectSubAction(0);
                 } else {
                     for (int i = 0; i < mSubActions.length; i++) {
-                        if (mObservationViewModel.getAction2().equals(mSubActions[i])) {
+                        if (mObservationViewModel.getAction1().getSubActivityAction().equals(mSubActions[i])) {
                             mView.selectSubAction(i);
                             break;
                         }
                     }
                 }
-            } else if (mObservationViewModel.getAction1().equals(mActions[5])) {
-                mView.renderOtherSubAction(mObservationViewModel.getAction2());
+            } else if (mObservationViewModel.getAction1().getActivityAction().equals(mActions[5])) {
+                mView.renderOtherSubAction(mObservationViewModel.getAction1().getSubActivityAction());
             }
 
-            showHideAction2();
+            showHideSubActivityAction1();
         }
     }
 
@@ -226,8 +226,8 @@ public class ObservationsPresenter {
         }
 
         if (!selectedAction.equals(mObservationViewModel.getAction1())) {
-            mObservationViewModel.setAction1(selectedAction);
-            mObservationViewModel.setAction2("");
+            mObservationViewModel.getAction1().setActivityAction(selectedAction);
+            mObservationViewModel.getAction1().setSubActivityAction("");
 
             saveObservation();
             showObservation();
@@ -239,13 +239,13 @@ public class ObservationsPresenter {
             selectedSubAction = "";
         }
 
-        if (!selectedSubAction.equals(mObservationViewModel.getAction2())) {
-            mObservationViewModel.setAction2(selectedSubAction);
+        if (!selectedSubAction.equals(mObservationViewModel.getAction1().getSubActivityAction())) {
+            mObservationViewModel.getAction1().setSubActivityAction(selectedSubAction);
             saveObservation();
         }
     }
 
-    private void showHideAction2() {
+    private void showHideSubActivityAction1() {
         if (mObservationViewModel.getAction1().equals(mActions[1])) {
             mView.showSubActionOptionsView();
             mView.hideSubActionOtherView();
@@ -274,8 +274,8 @@ public class ObservationsPresenter {
 
 
     public void subActionOtherChanged(String subActionOther) {
-        if (!subActionOther.equals(mObservationViewModel.getAction2())) {
-            mObservationViewModel.setAction2(subActionOther);
+        if (!subActionOther.equals(mObservationViewModel.getAction1().getSubActivityAction())) {
+            mObservationViewModel.getAction1().setSubActivityAction(subActionOther);
             saveObservation();
         }
     }
@@ -426,7 +426,7 @@ public class ObservationsPresenter {
         void renderHeaderInfo(String orgUnitName, Float mainScore, String completionDate,
                 String nextDate, CompetencyScoreClassification classification);
 
-        void renderOtherSubAction(String action2);
+        void renderOtherSubAction(String subActivityAction1);
 
         void selectAction(int index);
 

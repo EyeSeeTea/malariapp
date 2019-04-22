@@ -486,12 +486,14 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
 
         data += "\n" + getString(R.string.plan_action_action_title) + " ";
 
-        if (observationViewModel.getAction1() != null && !observationViewModel.getAction1().isEmpty()) {
+        if (observationViewModel.getAction1() != null &&
+                !observationViewModel.getAction1().getActivityAction().isEmpty()) {
             data += observationViewModel.getAction1();
         }
 
 
-        if (observationViewModel.getAction2() != null && !observationViewModel.getAction2().isEmpty()) {
+        if (observationViewModel.getAction2() != null &&
+                !observationViewModel.getAction2().getSubActivityAction().isEmpty()) {
             data += "\n" + observationViewModel.getAction2();
         }
 

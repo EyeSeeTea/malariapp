@@ -51,10 +51,12 @@ public class ServerMetadataRepository implements IServerMetadataRepository {
                 context.getString(R.string.gaps_code));
         ServerMetadataDB planAction = ServerMetadataDB.findControlDataElementByCode(
                 context.getString(R.string.action_plan_code));
-        ServerMetadataDB action1 = ServerMetadataDB.findControlDataElementByCode(
+        ServerMetadataDB activityAction1 = ServerMetadataDB.findControlDataElementByCode(
                 context.getString(R.string.action1_code));
-        ServerMetadataDB action2 = ServerMetadataDB.findControlDataElementByCode(
+        ServerMetadataDB subActivityAction1 = ServerMetadataDB.findControlDataElementByCode(
                 context.getString(R.string.action2_code));
+
+        //TODO: Add new CDE for actions 1,2,3
 
         ServerMetadata serverMetadata = new ServerMetadata(
                 new ServerMetadataItem(nextAssessment.getCode(), nextAssessment.getUid()),
@@ -73,8 +75,22 @@ public class ServerMetadataRepository implements IServerMetadataRepository {
                 new ServerMetadataItem(provider.getCode(), provider.getUid()),
                 new ServerMetadataItem(gaps.getCode(), gaps.getUid()),
                 new ServerMetadataItem(planAction.getCode(), planAction.getUid()),
-                new ServerMetadataItem(action1.getCode(), action1.getUid()),
-                new ServerMetadataItem(action2.getCode(), action2.getUid()));
+                new ServerMetadataItem(activityAction1.getCode(), activityAction1.getUid()),
+                new ServerMetadataItem(subActivityAction1.getCode(), subActivityAction1.getUid()),
+                new ServerMetadataItem("_DueDateAction1", "FAKE1"),
+                new ServerMetadataItem("_ResponsibleAction1", "FAKE2"),
+                new ServerMetadataItem("_isRealizedAction1", "FAKE3"),
+                new ServerMetadataItem("_activityAction2", "FAKE4"),
+                new ServerMetadataItem("_subactivityAction2", "FAKE5"),
+                new ServerMetadataItem("_DueDateAction2", "FAKE6"),
+                new ServerMetadataItem("_ResponsibleAction2", "FAKE7"),
+                new ServerMetadataItem("_isRealizedAction2", "FAKE8"),
+                new ServerMetadataItem("_activityAction3", "FAKE9"),
+                new ServerMetadataItem("_subactivityAction3", "FAKE10"),
+                new ServerMetadataItem("_DueDateAction3", "FAKE11"),
+                new ServerMetadataItem("_ResponsibleAction3", "FAKE12"),
+                new ServerMetadataItem("_isRealizedAction3", "FAKE13")
+        );
         return  serverMetadata;
     }
 }
