@@ -204,10 +204,24 @@ public abstract class BaseActivity extends AppCompatActivity {
                 debugMessage("Import db");
                 showFileChooser();
                 break;
+            case R.id.learning_center:
+                debugMessage("learning center");
+                navigateToUrl(getString(R.string.learning_center_url));
+
+                break;
+            case R.id.submit_ticket:
+                debugMessage("submit ticket");
+                navigateToUrl(getString(R.string.submit_ticket_url));
+                break;
             default:
                 return super.onOptionsItemSelected(item);
         }
         return true;
+    }
+
+    private void navigateToUrl(String url) {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(browserIntent);
     }
 
     private static final int FILE_SELECT_CODE = 0;
