@@ -8,6 +8,7 @@
         <!--<item name="windowActionBar">false</item>-->
         <item name="colorPrimary">@color/navy_blue</item>
         <item name="colorPrimaryDark">@color/dark_navy_blue</item>
+        <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowBackground">@color/light_grey</item>
         <item name="displayOptions">useLogo|showHome|homeAsUp|showTitle</item>
         <item name="logo">@drawable/qualityapp_logo</item>

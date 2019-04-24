@@ -1,4 +1,4 @@
-package org.eyeseetea.malariacare.presentation.presenters;
+package org.eyeseetea.malariacare.presentation.presenters.observations;
 
 import static org.eyeseetea.malariacare.domain.entity.ObservationStatus.*;
 
@@ -18,10 +18,12 @@ import org.eyeseetea.malariacare.domain.usecase.GetObservationBySurveyUidUseCase
 import org.eyeseetea.malariacare.domain.usecase.GetServerMetadataUseCase;
 import org.eyeseetea.malariacare.domain.usecase.SaveObservationUseCase;
 import org.eyeseetea.malariacare.observables.ObservablePush;
-import org.eyeseetea.malariacare.presentation.mapper.MissedStepMapper;
-import org.eyeseetea.malariacare.presentation.mapper.ObservationMapper;
-import org.eyeseetea.malariacare.presentation.viewmodels.Observations.MissedCriticalStepViewModel;
-import org.eyeseetea.malariacare.presentation.viewmodels.Observations.ObservationViewModel;
+import org.eyeseetea.malariacare.presentation.mapper.observations.MissedStepMapper;
+import org.eyeseetea.malariacare.presentation.mapper.observations.ObservationMapper;
+import org.eyeseetea.malariacare.presentation.viewmodels.observations.ActionViewModel;
+import org.eyeseetea.malariacare.presentation.viewmodels.observations.MissedCriticalStepViewModel;
+import org.eyeseetea.malariacare.presentation.viewmodels.observations.ObservationViewModel;
+import org.eyeseetea.malariacare.presentation.views.observations.ActionView;
 import org.eyeseetea.malariacare.utils.DateParser;
 import org.eyeseetea.malariacare.utils.Constants;
 
@@ -39,8 +41,6 @@ public class ObservationsPresenter {
 
     private final Context mContext;
     private View mView;
-    private String[] mActions;
-    private String[] mSubActions;
     private SurveyDB mSurvey;
 
     private ServerMetadata mServerMetadata;
@@ -108,7 +108,6 @@ public class ObservationsPresenter {
 
                         loadSurvey();
                         loadMissedCriticalSteps();
-                        loadActions();
                         updateStatus();
                         showObservation();
                     }
@@ -120,7 +119,6 @@ public class ObservationsPresenter {
 
                         loadSurvey();
                         loadMissedCriticalSteps();
-                        loadActions();
                         updateStatus();
                         showObservation();
                     }
@@ -170,91 +168,14 @@ public class ObservationsPresenter {
                 compositeScoresTree);
     }
 
-    private void loadActions() {
-        mActions =
-                mContext.getResources().getStringArray(R.array.plan_action_dropdown_options);
-
-        mSubActions =
-                mContext.getResources().getStringArray(R.array.plan_action_dropdown_suboptions);
-
-        if (mView != null) {
-            mView.loadActions(mActions);
-            mView.loadSubActions(mSubActions);
-        }
-    }
 
     private void showObservation() {
         if (mView != null) {
             mView.renderMissedCriticalSteps(missedCriticalSteps);
             mView.renderBasicObservations(mObservationViewModel.getProvider()
                     , mObservationViewModel.getActionPlan());
-
-            if (mObservationViewModel.getAction1().getActivityAction().isEmpty()) {
-                mView.selectAction(0);
-            } else {
-                for (int i = 0; i < mActions.length; i++) {
-                    if (mObservationViewModel.getAction1().equals(mActions[i])) {
-                        mView.selectAction(i);
-                        break;
-                    }
-                }
-            }
-
-            if (mObservationViewModel.getAction1().getActivityAction().equals(mActions[1])) {
-                if (mObservationViewModel.getAction1().getSubActivityAction().isEmpty()) {
-                    mView.selectSubAction(0);
-                } else {
-                    for (int i = 0; i < mSubActions.length; i++) {
-                        if (mObservationViewModel.getAction1().getSubActivityAction().equals(mSubActions[i])) {
-                            mView.selectSubAction(i);
-                            break;
-                        }
-                    }
-                }
-            } else if (mObservationViewModel.getAction1().getActivityAction().equals(mActions[5])) {
-                mView.renderOtherSubAction(mObservationViewModel.getAction1().getSubActivityAction());
-            }
-
-            showHideSubActivityAction1();
-        }
-    }
-
-    public void onActionSelected(String selectedAction) {
-
-        if (selectedAction.equals(mActions[0])) {
-            selectedAction = "";
-        }
-
-        if (!selectedAction.equals(mObservationViewModel.getAction1())) {
-            mObservationViewModel.getAction1().setActivityAction(selectedAction);
-            mObservationViewModel.getAction1().setSubActivityAction("");
-
-            saveObservation();
-            showObservation();
-        }
-    }
-
-    public void onSubActionSelected(String selectedSubAction) {
-        if (selectedSubAction.equals(mSubActions[0])) {
-            selectedSubAction = "";
-        }
-
-        if (!selectedSubAction.equals(mObservationViewModel.getAction1().getSubActivityAction())) {
-            mObservationViewModel.getAction1().setSubActivityAction(selectedSubAction);
-            saveObservation();
-        }
-    }
-
-    private void showHideSubActivityAction1() {
-        if (mObservationViewModel.getAction1().equals(mActions[1])) {
-            mView.showSubActionOptionsView();
-            mView.hideSubActionOtherView();
-        } else if (mObservationViewModel.getAction1().equals(mActions[5])) {
-            mView.hideSubActionOptionsView();
-            mView.showSubActionOtherView();
-        } else {
-            mView.hideSubActionOptionsView();
-            mView.hideSubActionOtherView();
+            
+            mView.renderAction1(mObservationViewModel.getAction1());
         }
     }
 
@@ -268,14 +189,6 @@ public class ObservationsPresenter {
     public void providerChanged(String provider) {
         if (!provider.equals(mObservationViewModel.getProvider())) {
             mObservationViewModel.setProvider(provider);
-            saveObservation();
-        }
-    }
-
-
-    public void subActionOtherChanged(String subActionOther) {
-        if (!subActionOther.equals(mObservationViewModel.getAction1().getSubActivityAction())) {
-            mObservationViewModel.getAction1().setSubActivityAction(subActionOther);
             saveObservation();
         }
     }
@@ -347,6 +260,11 @@ public class ObservationsPresenter {
         }
     }
 
+    public void action1Changed(ActionViewModel actionViewModel) {
+        mObservationViewModel.setAction1(actionViewModel);
+        saveObservation();
+    }
+
     @NonNull
     private List<CompositeScoreDB> getValidTreeOfCompositeScores() {
         List<CompositeScoreDB> compositeScoreList = QuestionDB.getCSOfriticalFailedQuestions(
@@ -412,11 +330,9 @@ public class ObservationsPresenter {
                 });
     }
 
+
+
     public interface View {
-        void loadActions(String[] actions);
-
-        void loadSubActions(String[] subActions);
-
         void changeToReadOnlyMode();
 
         void renderBasicObservations(String provider, String actionPlan);
@@ -425,20 +341,6 @@ public class ObservationsPresenter {
 
         void renderHeaderInfo(String orgUnitName, Float mainScore, String completionDate,
                 String nextDate, CompetencyScoreClassification classification);
-
-        void renderOtherSubAction(String subActivityAction1);
-
-        void selectAction(int index);
-
-        void selectSubAction(int index);
-
-        void showSubActionOptionsView();
-
-        void showSubActionOtherView();
-
-        void hideSubActionOptionsView();
-
-        void hideSubActionOtherView();
 
         void updateStatusView(ObservationStatus status);
 
@@ -451,5 +353,6 @@ public class ObservationsPresenter {
 
         void disableShareButton();
 
+        void renderAction1(ActionViewModel action1);
     }
 }

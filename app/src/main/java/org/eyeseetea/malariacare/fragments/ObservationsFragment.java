@@ -30,13 +30,10 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
@@ -61,9 +58,12 @@ import org.eyeseetea.malariacare.layout.adapters.MissedCriticalStepsAdapter;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
-import org.eyeseetea.malariacare.presentation.presenters.ObservationsPresenter;
-import org.eyeseetea.malariacare.presentation.viewmodels.Observations.MissedCriticalStepViewModel;
-import org.eyeseetea.malariacare.presentation.viewmodels.Observations.ObservationViewModel;
+import org.eyeseetea.malariacare.presentation.presenters.observations.ObservationsPresenter;
+import org.eyeseetea.malariacare.presentation.viewmodels.observations.ActionViewModel;
+import org.eyeseetea.malariacare.presentation.viewmodels.observations.MissedCriticalStepViewModel;
+import org.eyeseetea.malariacare.presentation.viewmodels.observations.ObservationViewModel;
+import org.eyeseetea.malariacare.presentation.views.CustomTextWatcher;
+import org.eyeseetea.malariacare.presentation.views.observations.ActionView;
 import org.eyeseetea.malariacare.utils.CompetencyUtils;
 import org.eyeseetea.malariacare.utils.DateParser;
 import org.eyeseetea.malariacare.views.CustomEditText;
@@ -77,28 +77,25 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
 
     public static final String TAG = ".ObservationsFragment";
     private static final String SURVEY_UID = "surveyUid";
-    private ArrayAdapter<CharSequence> mActionsAdapter;
-    private ArrayAdapter<CharSequence> mSubActionsAdapter;
+
 
     private CustomTextView mTotalScoreTextView;
     private CustomTextView mCompetencyTextView;
     private CustomTextView mOrgUnitTextView;
     private CustomTextView mNextDateTextView;
     private CustomTextView mCompletionDateTextView;
-    private View otherView;
-    private View secondaryView;
     private ImageButton mGoBack;
     private CustomEditText mCustomProviderText;
     private CustomEditText mCustomActionPlanEditText;
-    private CustomEditText mCustomActionOtherEditText;
-    private CustomSpinner actionSpinner;
-    private CustomSpinner secondaryActionSpinner;
+
     private FloatingActionButton mFabComplete;
     private FloatingActionButton fabShare;
     private RelativeLayout mRootView;
     private ObservationsPresenter presenter;
     private RecyclerView missedCriticalStepsView;
     private MissedCriticalStepsAdapter missedCriticalStepsAdapter;
+
+    private ActionView action1View;
 
     public static ObservationsFragment newInstance(String surveyUid) {
         ObservationsFragment myFragment = new ObservationsFragment();
@@ -124,16 +121,26 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
 
         String surveyUid = getArguments().getString(SURVEY_UID);
 
-        initActions();
-        initSubActions();
         initLayoutHeaders();
         initEditTexts();
         initFAB();
+        initActions();
         initBackButton();
         initRecyclerView();
         initPresenter(surveyUid);
 
         return mRootView;
+    }
+
+    private void initActions() {
+        action1View = mRootView.findViewById(R.id.action1_view);
+
+        action1View.setOnActionChangedListener(new ActionView.OnActionChangedListener() {
+            @Override
+            public void onActionChanged(ActionViewModel actionViewModel) {
+                presenter.action1Changed(actionViewModel);
+            }
+        });
     }
 
     private void initRecyclerView() {
@@ -203,15 +210,7 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
                 presenter.actionPlanChanged(editable.toString());
             }
         });
-        mCustomActionOtherEditText = mRootView.findViewById(
-                R.id.plan_action_others_edit_text);
 
-        mCustomActionOtherEditText.addTextChangedListener(new CustomTextWatcher() {
-            @Override
-            public void afterTextChanged(Editable editable) {
-                presenter.subActionOtherChanged(editable.toString());
-            }
-        });
     }
 
     private void initBackButton() {
@@ -242,52 +241,6 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
                 .setNegativeButton(android.R.string.no, null).create().show());
     }
 
-    private void initActions() {
-        actionSpinner = mRootView.findViewById(R.id.plan_action_spinner);
-
-        mActionsAdapter =
-                new ArrayAdapter(mRootView.getContext(), android.R.layout.simple_spinner_item);
-
-        actionSpinner.setAdapter(mActionsAdapter);
-        actionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position,
-                    long l) {
-                presenter.onActionSelected(adapterView.getItemAtPosition(position).toString());
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
-        });
-    }
-
-    private void initSubActions() {
-        secondaryActionSpinner = mRootView.findViewById(
-                R.id.plan_action_secondary_spinner);
-        secondaryView = mRootView.findViewById(R.id.secondaryView);
-        otherView = mRootView.findViewById(R.id.otherView);
-
-        mSubActionsAdapter = new ArrayAdapter(
-                mRootView.getContext(), android.R.layout.simple_spinner_item);
-
-
-        secondaryActionSpinner.setAdapter(mSubActionsAdapter);
-
-
-        secondaryActionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position,
-                    long l) {
-                presenter.onSubActionSelected(adapterView.getItemAtPosition(position).toString());
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
-        });
-    }
-
     private void initLayoutHeaders() {
         mCompetencyTextView = mRootView.findViewById(R.id.feedback_competency);
         mTotalScoreTextView = mRootView.findViewById(R.id.feedback_total_score);
@@ -303,22 +256,10 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
     }
 
     @Override
-    public void loadActions(String[] actions) {
-        mActionsAdapter.addAll(actions);
-    }
-
-    @Override
-    public void loadSubActions(String[] subActions) {
-        mSubActionsAdapter.addAll(subActions);
-    }
-
-    @Override
     public void changeToReadOnlyMode() {
         mCustomProviderText.setEnabled(false);
         mCustomActionPlanEditText.setEnabled(false);
-        mCustomActionOtherEditText.setEnabled(false);
-        actionSpinner.setEnabled(false);
-        secondaryActionSpinner.setEnabled(false);
+        action1View.setEnabled(false);
         mFabComplete.setEnabled(false);
     }
 
@@ -332,30 +273,6 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
     public void renderMissedCriticalSteps(
             List<MissedCriticalStepViewModel> missedCriticalSteps) {
         missedCriticalStepsAdapter.setMissedCriticalSteps(missedCriticalSteps);
-    }
-
-    @Override
-    public void showSubActionOptionsView() {
-        secondaryActionSpinner.setVisibility(View.VISIBLE);
-        secondaryView.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void hideSubActionOptionsView() {
-        secondaryActionSpinner.setVisibility(View.GONE);
-        secondaryView.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void showSubActionOtherView() {
-        mCustomActionOtherEditText.setVisibility(View.VISIBLE);
-        otherView.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void hideSubActionOtherView() {
-        mCustomActionOtherEditText.setVisibility(View.GONE);
-        otherView.setVisibility(View.GONE);
     }
 
     @Override
@@ -398,20 +315,7 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
 
     }
 
-    @Override
-    public void selectAction(int index) {
-        actionSpinner.setSelection(index);
-    }
 
-    @Override
-    public void selectSubAction(int index) {
-        secondaryActionSpinner.setSelection(index);
-    }
-
-    @Override
-    public void renderOtherSubAction(String subAction) {
-        mCustomActionOtherEditText.setText(subAction);
-    }
 
     @Override
     public void shareByText(ObservationViewModel observationViewModel, SurveyDB survey,
@@ -441,6 +345,11 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
     public void disableShareButton() {
         fabShare.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
         fabShare.setEnabled(false);
+    }
+
+    @Override
+    public void renderAction1(ActionViewModel action1) {
+        action1View.setAction(action1);
     }
 
     private String extractTextData(ObservationViewModel observationViewModel, SurveyDB survey,
@@ -530,22 +439,6 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
         getActivity().startActivity(sendIntent);
 
         System.out.println("data:" + data);
-    }
-
-    class CustomTextWatcher implements TextWatcher {
-        @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-        }
-
-        @Override
-        public void afterTextChanged(Editable editable) {
-        }
     }
 }
 

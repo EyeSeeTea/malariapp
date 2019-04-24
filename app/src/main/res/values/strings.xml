@@ -235,6 +235,8 @@ evaluation"</string>
 <string name="plan_action_description">Describe what was observed during the visit a specific action plan for addressing gaps. Also note an improvement over a gap identified during the last visit</string>
 <string name="plan_action_action_plan_title">Action plan:</string>
 <string name="plan_action_action_title">Action:</string>
+<string name="observation_action_due_date">Due Date:</string>
+<string name="observation_action_responsible">Responsible:</string>
 <string-array name="plan_action_dropdown_options">
 <item>"..."</item>
 <item>Refresher training during SSV</item>

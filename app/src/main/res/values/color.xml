@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="colorAccent">@color/new_blue</color>
+
     <color name="green">#84b467</color>
     <color name="amber">#F1C232</color>
     <color name="red">#ff060D</color>

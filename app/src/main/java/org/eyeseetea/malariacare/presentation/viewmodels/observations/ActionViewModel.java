@@ -1,4 +1,4 @@
-package org.eyeseetea.malariacare.presentation.viewmodels.Observations;
+package org.eyeseetea.malariacare.presentation.viewmodels.observations;
 
 import java.util.Date;
 

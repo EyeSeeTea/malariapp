@@ -1,4 +1,4 @@
-package org.eyeseetea.malariacare.presentation.viewmodels.Observations;
+package org.eyeseetea.malariacare.presentation.viewmodels.observations;
 
 public class QuestionViewModel extends MissedCriticalStepViewModel {
     public QuestionViewModel(long questionId, long compositeScoreParentId, String name) {

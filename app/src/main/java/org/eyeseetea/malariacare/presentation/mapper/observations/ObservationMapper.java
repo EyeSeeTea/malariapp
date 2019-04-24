@@ -1,12 +1,12 @@
-package org.eyeseetea.malariacare.presentation.mapper;
+package org.eyeseetea.malariacare.presentation.mapper.observations;
 
 import org.eyeseetea.malariacare.domain.entity.Observation;
 import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
 import org.eyeseetea.malariacare.domain.entity.ObservationValue;
 import org.eyeseetea.malariacare.domain.entity.ServerMetadata;
 import org.eyeseetea.malariacare.domain.entity.ServerMetadataItem;
-import org.eyeseetea.malariacare.presentation.viewmodels.Observations.ActionViewModel;
-import org.eyeseetea.malariacare.presentation.viewmodels.Observations.ObservationViewModel;
+import org.eyeseetea.malariacare.presentation.viewmodels.observations.ActionViewModel;
+import org.eyeseetea.malariacare.presentation.viewmodels.observations.ObservationViewModel;
 import org.eyeseetea.malariacare.utils.DateParser;
 
 import java.util.ArrayList;
@@ -134,7 +134,6 @@ public class ObservationMapper {
         Observation observation = Observation.createStoredObservation(viewModel.getSurveyUid(),
                 viewModel.getStatus(), values);
 
-
         return observation;
     }
 
@@ -160,8 +159,10 @@ public class ObservationMapper {
                     serverMetadata.getResponsibleAction1().getUId()));
         }
 
-        values.add(new ObservationValue(String.valueOf(action.isRealized()),
-                serverMetadata.getRealizedAction1().getUId()));
+        if (!action.getActivityAction().isEmpty()) {
+            values.add(new ObservationValue(String.valueOf(action.isRealized()),
+                    serverMetadata.getRealizedAction1().getUId()));
+        }
     }
 
     private static String dateToUTCString(Date localDate) {

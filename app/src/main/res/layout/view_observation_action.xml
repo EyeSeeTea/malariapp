@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <org.eyeseetea.malariacare.views.CustomTextView
+        style="@style/EyeSeeTheme.observation.valueTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/plan_action_action_title"
+        app:tDimension="@string/font_size_level2"
+        app:tFontName="@string/font_name_medium"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginTop="8dp"
+        android:background="@color/assess_grey"/>
+
+    <org.eyeseetea.malariacare.views.CustomSpinner
+        android:id="@+id/activities_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_feedback_top_bottom_radiobutton"
+        android:layout_marginLeft="@dimen/margin_lateral_feedback_radiobutton"
+        android:layout_marginTop="@dimen/margin_feedback_top_bottom_radiobutton">
+
+    </org.eyeseetea.malariacare.views.CustomSpinner>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="14dp"
+        android:layout_marginTop="2dp"
+        android:background="@color/assess_grey"/>
+
+    <org.eyeseetea.malariacare.views.CustomSpinner
+        android:id="@+id/sub_activities_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_feedback_top_bottom_radiobutton"
+        android:layout_marginLeft="@dimen/margin_lateral_feedback_radiobutton"
+        android:layout_marginTop="@dimen/margin_feedback_top_bottom_radiobutton"
+        android:visibility="gone">
+
+    </org.eyeseetea.malariacare.views.CustomSpinner>
+
+    <View
+        android:id="@+id/sub_activity_divider_view"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="14dp"
+        android:layout_marginTop="2dp"
+        android:background="@color/assess_grey"/>
+
+    <org.eyeseetea.malariacare.views.CustomEditText
+        android:id="@+id/other_sub_activity_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_feedback_top_bottom_radiobutton"
+        android:layout_marginLeft="@dimen/margin_lateral_feedback_radiobutton"
+        android:layout_marginRight="@dimen/margin_lateral_feedback_radiobutton"
+        android:layout_marginTop="@dimen/margin_feedback_top_bottom_radiobutton"
+        android:background="@android:color/transparent"
+        android:minLines="1"
+        android:scrollbars="none"
+        android:visibility="gone" />
+
+    <View
+        android:id="@+id/other_sub_activity_divider_view"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="14dp"
+        android:layout_marginTop="2dp"
+        android:background="@color/assess_grey"
+
+        android:visibility="gone"/>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:gravity="center_vertical"
+        android:layout_height="48dp"
+        android:layout_marginTop="@dimen/margin_feedback_top_bottom_radiobutton"
+        android:layout_marginBottom="@dimen/margin_feedback_top_bottom_radiobutton"
+        android:layout_marginLeft="@dimen/margin_lateral_feedback_radiobutton"
+        android:layout_marginRight="@dimen/margin_lateral_feedback_radiobutton">
+        <EditText
+            android:id="@+id/due_date_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:inputType="text"
+            android:hint="@string/observation_action_due_date"
+            />
+    </android.support.design.widget.TextInputLayout>
+
+    <View
+        android:id="@+id/due_date_view"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="14dp"
+        android:layout_marginTop="2dp"
+        android:background="@color/assess_grey"/>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:gravity="center_vertical"
+        android:layout_height="48dp"
+        android:layout_marginBottom="@dimen/margin_feedback_top_bottom_radiobutton"
+        android:layout_marginLeft="@dimen/margin_lateral_feedback_radiobutton"
+        android:layout_marginRight="@dimen/margin_lateral_feedback_radiobutton"
+        android:layout_marginTop="@dimen/margin_feedback_top_bottom_radiobutton">
+        <EditText
+            android:id="@+id/responsible_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:inputType="text"
+            android:hint="@string/observation_action_responsible"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <View
+        android:id="@+id/responsible_divider_view"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="14dp"
+        android:layout_marginTop="2dp"
+        android:background="@color/assess_grey"/>
+
+</LinearLayout>

@@ -1,4 +1,4 @@
-package org.eyeseetea.malariacare.presentation.viewmodels.Observations;
+package org.eyeseetea.malariacare.presentation.viewmodels.observations;
 
 import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
 
@@ -63,6 +63,10 @@ public class ObservationViewModel {
         return action1;
     }
 
+    public void setAction1(ActionViewModel action1) {
+        this.action1 = action1;
+    }
+
     public ActionViewModel getAction2() {
         return action2;
     }
@@ -79,4 +83,6 @@ public class ObservationViewModel {
     public void setStatus(ObservationStatus status) {
         this.status = status;
     }
+
+
 }
