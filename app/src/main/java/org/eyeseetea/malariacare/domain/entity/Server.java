@@ -7,6 +7,10 @@ public class Server {
     String url;
     NextScheduleMonths nextScheduleMatrix;
 
+    public Server(String url){
+        this.url = required(url,"url is required");
+    }
+
     public Server(String url, NextScheduleMonths nextScheduleMatrix){
         this.url = required(url,"url is required");
         this.nextScheduleMatrix = required(nextScheduleMatrix,"nextScheduleMatrix is required");

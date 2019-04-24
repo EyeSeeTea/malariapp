@@ -61,9 +61,13 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.remote.api.PullDhisApiDataSource;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
+import org.eyeseetea.malariacare.domain.entity.Server;
+import org.eyeseetea.malariacare.domain.usecase.GetServersUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.factories.AuthenticationFactory;
+import org.eyeseetea.malariacare.factories.ServerFactory;
+import org.eyeseetea.malariacare.layout.adapters.general.ServerArrayAdapter;
 import org.eyeseetea.malariacare.strategies.LoginActivityStrategy;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Permissions;
@@ -185,25 +189,29 @@ public class LoginActivity extends Activity {
     }
 
     private void initServerAdapter() {
-        String[] serverList = getResources().getStringArray(R.array.server_list);
-        if (serverList.length < 1) {
-            return;
-        }
-        ArrayAdapter serversListAdapter = new ArrayAdapter<>(getBaseContext(),
-                android.R.layout.simple_spinner_item, serverList);
-        serverSpinner.setAdapter(serversListAdapter);
+
+        ServerFactory serverFactory = new ServerFactory();
+
+        GetServersUseCase getServersUseCase = serverFactory.getServersUseCase(this);
+        getServersUseCase.execute(servers -> {
+            ArrayAdapter serversListAdapter =
+                    new ServerArrayAdapter(LoginActivity.this, servers);
+            serverSpinner.setAdapter(serversListAdapter);
+        });
+
+
         serverSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String value = parent.getItemAtPosition(position).toString();
-                if (value.equals(parent.getContext().getResources().getString(R.string.other))) {
+                Server server =(Server) parent.getItemAtPosition(position);
+                if (server.getUrl().equals(parent.getContext().getResources().getString(R.string.other))) {
                     serverEditText.setText("");
                     serverContainer.setVisibility(View.VISIBLE);
                 } else {
                     if (serverContainer.getVisibility() == View.VISIBLE) {
                         serverContainer.setVisibility(View.GONE);
                     }
-                    serverEditText.setText(parent.getItemAtPosition(position).toString());
+                    serverEditText.setText(server.getUrl());
                 }
             }
 
