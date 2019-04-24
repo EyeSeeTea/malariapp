@@ -62,8 +62,12 @@ import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
+import org.eyeseetea.malariacare.domain.entity.Server;
+import org.eyeseetea.malariacare.domain.usecase.GetServersUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
+import org.eyeseetea.malariacare.factories.ServerFactory;
+import org.eyeseetea.malariacare.layout.adapters.general.ServerArrayAdapter;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.strategies.LoginActivityStrategy;
@@ -72,6 +76,7 @@ import org.eyeseetea.malariacare.utils.Permissions;
 import org.hisp.dhis.client.sdk.ui.activities.AbsLoginActivity;
 
 import java.io.InputStream;
+import java.util.List;
 
 import fr.castorflex.android.circularprogressbar.CircularProgressBar;
 
@@ -122,24 +127,29 @@ public class LoginActivity extends AbsLoginActivity {
     }
 
     private void initServerAdapter() {
-        String[] serverList = getResources().getStringArray(R.array.server_list);
-        if(serverList.length<1) {
-            return;
-        }
-        ArrayAdapter serversListAdapter = new ArrayAdapter<>(getBaseContext(),android.R.layout.simple_spinner_item, serverList);
-        serverSpinner.setAdapter(serversListAdapter);
+
+        ServerFactory serverFactory = new ServerFactory();
+
+        GetServersUseCase getServersUseCase = serverFactory.getServersUseCase(this);
+        getServersUseCase.execute(servers -> {
+            ArrayAdapter serversListAdapter =
+                    new ServerArrayAdapter(LoginActivity.this, servers);
+            serverSpinner.setAdapter(serversListAdapter);
+        });
+
+
         serverSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String value = parent.getItemAtPosition(position).toString();
-                if(value.equals(parent.getContext().getResources().getString(R.string.other))){
+                Server server =(Server) parent.getItemAtPosition(position);
+                if (server.getUrl().equals(parent.getContext().getResources().getString(R.string.other))) {
                     serverEditText.setText("");
                     serverContainer.setVisibility(View.VISIBLE);
                 } else {
-                    if(serverContainer.getVisibility()==View.VISIBLE){
+                    if (serverContainer.getVisibility() == View.VISIBLE) {
                         serverContainer.setVisibility(View.GONE);
                     }
-                    serverEditText.setText(parent.getItemAtPosition(position).toString());
+                    serverEditText.setText(server.getUrl());
                 }
             }
 
@@ -152,9 +162,11 @@ public class LoginActivity extends AbsLoginActivity {
 
     private void replaceDhisLogoToHNQISLogo() {
         FrameLayout progressBarContainer = (FrameLayout) findViewById(R.id.layout_dhis_logo);
-        ((org.hisp.dhis.client.sdk.ui.views.FontTextView)progressBarContainer.getChildAt(2)).setText("");
+        ((org.hisp.dhis.client.sdk.ui.views.FontTextView) progressBarContainer.getChildAt(
+                2)).setText("");
 
-        LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(
+                Context.LAYOUT_INFLATER_SERVICE);
         progressBarContainer.addView(inflater.inflate(R.layout.progress_logo_item, null));
     }
 
@@ -233,11 +245,15 @@ public class LoginActivity extends AbsLoginActivity {
 
         final Credentials credentials = new Credentials(serverUrl, username, password);
 
-        ServerInfoLocalDataSource mServerLocalDataSource = new ServerInfoLocalDataSource(getApplicationContext());
-        ServerInfoRemoteDataSource mServerRemoteDataSource = new ServerInfoRemoteDataSource(credentials);
-        ServerInfoRepository serverInfoRepository = new ServerInfoRepository(mServerLocalDataSource, mServerRemoteDataSource);
+        ServerInfoLocalDataSource mServerLocalDataSource = new ServerInfoLocalDataSource(
+                getApplicationContext());
+        ServerInfoRemoteDataSource mServerRemoteDataSource = new ServerInfoRemoteDataSource(
+                credentials);
+        ServerInfoRepository serverInfoRepository = new ServerInfoRepository(mServerLocalDataSource,
+                mServerRemoteDataSource);
 
-        LoginUseCase mLoginUseCase = new LoginUseCase(mUserAccountRepository, serverInfoRepository, mainExecutor, asyncExecutor);
+        LoginUseCase mLoginUseCase = new LoginUseCase(mUserAccountRepository, serverInfoRepository,
+                mainExecutor, asyncExecutor);
         mLoginUseCase.execute(credentials,
                 new LoginUseCase.Callback() {
                     @Override
