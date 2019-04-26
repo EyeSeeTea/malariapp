@@ -41,8 +41,7 @@ public class ServerFactory {
 
     public IServerRepository getServerRepository(Context context) {
         ServerLocalDataSource serverLocalDataSource = new ServerLocalDataSource(context);
-        ServerRemoteDataSource serverRemoteDataSource =
-                new ServerRemoteDataSource(PreferencesState.getInstance().getCreedentials());
+        ServerRemoteDataSource serverRemoteDataSource = new ServerRemoteDataSource();
 
         return new ServerRepository(serverLocalDataSource, serverLocalDataSource,
                 serverRemoteDataSource);

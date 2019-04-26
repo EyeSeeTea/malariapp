@@ -83,7 +83,7 @@ public class UserAccountLocalDataSource implements IUserAccountDataSource {
 
         saveServer(credentials.getServerURL());
 
-        PreferencesState.getInstance().reloadServerUrl();
+        PreferencesState.getInstance().reloadPreferences();
         Session.setCredentials(credentials);
     }
 

@@ -8,6 +8,7 @@ import android.util.Log;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import org.eyeseetea.malariacare.data.IServerDataSource;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.Server;
 
@@ -31,14 +32,14 @@ public class ServerRemoteDataSource implements IServerDataSource {
     private static final String TAG = ".ServerRemoteDataSource";
     private Credentials credentials;
 
-    public ServerRemoteDataSource(Credentials credentials) {
-        this.credentials = credentials;
+    public ServerRemoteDataSource() {
     }
 
     @Override
     public Server get() throws Exception {
-        Server server = new Server(credentials.getServerURL());
+        Server server;
         try {
+            credentials = PreferencesState.getInstance().getCreedentials();
             Response response = executeCall(new BasicAuthenticator(credentials),
                     credentials.getServerURL(), SERVER_VERSION_CALL);
             JsonNode jsonNode = parseResponse(response.body().string());
