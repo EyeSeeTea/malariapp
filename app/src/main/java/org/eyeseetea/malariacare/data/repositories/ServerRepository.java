@@ -1,31 +1,48 @@
 package org.eyeseetea.malariacare.data.repositories;
 
-import android.content.Context;
-
-import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.data.IAllServersDataSource;
+import org.eyeseetea.malariacare.data.IServerDataSource;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerRepository;
 import org.eyeseetea.malariacare.domain.entity.Server;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ServerRepository implements IServerRepository {
-    private Context context;
+    IAllServersDataSource allServersDataSource;
+    IServerDataSource serverLocalDataSource;
+    IServerDataSource serverRemoteDataSource;
 
-    public ServerRepository (Context context){
-        this.context = context;
+    public ServerRepository(
+            IAllServersDataSource allServersDataSource,
+            IServerDataSource serverLocalDataSource,
+            IServerDataSource serverRemoteDataSource) {
+        this.allServersDataSource = allServersDataSource;
+        this.serverLocalDataSource = serverLocalDataSource;
+        this.serverRemoteDataSource = serverRemoteDataSource;
     }
 
     @Override
     public List<Server> getAll() {
-        String[] serverUrls = context.getResources().getStringArray(R.array.server_list);
-        List<Server> servers = new ArrayList<>();
+        return allServersDataSource.getAll();
+    }
 
-        for (String url:serverUrls) {
-            Server server = new Server(url);
-            servers.add(server);
+    @Override
+    public Server getLoggedServer() throws Exception {
+        Server cachedServer = serverLocalDataSource.get();
+
+        if (cachedServer.getUrl() != null &&
+                cachedServer.getName() != null && cachedServer.getLogo() != null){
+            return cachedServer;
+        } else {
+            try{
+                Server remoteServer = serverRemoteDataSource.get();
+
+                serverLocalDataSource.save(remoteServer);
+
+                return remoteServer;
+            } catch (Exception e){
+                return cachedServer;
+            }
         }
-
-        return servers;
     }
 }

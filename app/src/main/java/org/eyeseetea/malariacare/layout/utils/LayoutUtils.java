@@ -19,8 +19,13 @@
 
 package org.eyeseetea.malariacare.layout.utils;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
@@ -108,6 +113,16 @@ public class LayoutUtils {
     // Used to setup the usual actionbar with the logo and the app name
     public static void setActionBarLogo(ActionBar actionBar) {
         actionBar.setLogo(R.drawable.qualityapp_logo);
+        actionBar.setDisplayUseLogoEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+    }
+
+    public static void setActionBarLogo(Context context, ActionBar actionBar, byte[] logo) {
+        Bitmap logoBitmap = BitmapFactory.decodeByteArray(logo, 0, logo.length);
+        Drawable logoDrawable = new BitmapDrawable( context.getResources(), logoBitmap);
+        actionBar.setLogo(logoDrawable);
+
         actionBar.setDisplayUseLogoEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.WHITE));

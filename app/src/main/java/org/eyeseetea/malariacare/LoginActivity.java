@@ -60,6 +60,7 @@ import org.eyeseetea.malariacare.data.repositories.ServerInfoRepository;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IServerRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.Server;
@@ -76,7 +77,6 @@ import org.eyeseetea.malariacare.utils.Permissions;
 import org.hisp.dhis.client.sdk.ui.activities.AbsLoginActivity;
 
 import java.io.InputStream;
-import java.util.List;
 
 import fr.castorflex.android.circularprogressbar.CircularProgressBar;
 
@@ -252,8 +252,11 @@ public class LoginActivity extends AbsLoginActivity {
         ServerInfoRepository serverInfoRepository = new ServerInfoRepository(mServerLocalDataSource,
                 mServerRemoteDataSource);
 
-        LoginUseCase mLoginUseCase = new LoginUseCase(mUserAccountRepository, serverInfoRepository,
-                mainExecutor, asyncExecutor);
+        ServerFactory serverFactory = new ServerFactory();
+        IServerRepository serverRepository = serverFactory.getServerRepository(this);
+
+        LoginUseCase mLoginUseCase = new LoginUseCase(mUserAccountRepository,serverRepository,
+                serverInfoRepository, mainExecutor, asyncExecutor);
         mLoginUseCase.execute(credentials,
                 new LoginUseCase.Callback() {
                     @Override
