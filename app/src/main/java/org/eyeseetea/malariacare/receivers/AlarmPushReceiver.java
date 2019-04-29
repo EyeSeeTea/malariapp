@@ -80,7 +80,8 @@ public class AlarmPushReceiver extends BroadcastReceiver {
         Log.d(TAG, "onReceive asking for push");
         Intent pushIntent = new Intent(context, PushService.class);
         pushIntent.putExtra(SurveyService.SERVICE_METHOD, PushService.PENDING_SURVEYS_ACTION);
-        context.startService(pushIntent);
+
+        PushService.enqueueWork(context, pushIntent);
     }
 
     public void setPushAlarm(Context context) {
