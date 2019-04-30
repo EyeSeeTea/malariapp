@@ -83,6 +83,14 @@ public class CompetencyUtils {
         textView.setText(competencyText);
     }
 
+    public static void setTextByCompetencyAbbreviation(
+            TextView textView, CompetencyScoreClassification classification) {
+
+        String competencyText = getAbbreviationTextByCompetency(classification, textView.getContext());
+
+        textView.setText(competencyText);
+    }
+
     public static void setBackgroundByCompetency(
             TextView textView, CompetencyScoreClassification classification) {
 

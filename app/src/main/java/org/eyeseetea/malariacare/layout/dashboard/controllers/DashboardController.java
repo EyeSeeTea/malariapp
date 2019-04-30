@@ -38,8 +38,10 @@ import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyScheduleDB;
 import org.eyeseetea.malariacare.data.database.utils.planning.ScheduleListener;
+import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardSettings;
+import org.eyeseetea.malariacare.utils.CompetencyUtils;
 import org.eyeseetea.malariacare.utils.DateParser;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
@@ -510,6 +512,20 @@ public class DashboardController {
 
         CustomTextView programTextView = (CustomTextView) v.findViewById(R.id.planned_program);
         programTextView.setText(survey.getProgram().getName());
+
+        CustomTextView productivityTextView = (CustomTextView) v.findViewById(R.id.planned_productivity);
+        productivityTextView.setText("Productivity: Low");
+
+        CustomTextView nextDateTextView = (CustomTextView) v.findViewById(R.id.planned_next_date);
+        DateParser dateParser = new DateParser();
+        nextDateTextView.setText("Next QA: " + dateParser.getEuropeanFormattedDate(survey.getScheduledDate()));
+
+        CustomTextView competencyTextView = v.findViewById(R.id.planned_competency);
+
+        CompetencyScoreClassification classification =
+                CompetencyScoreClassification.get(survey.getCompetencyScoreClassification());
+
+        competencyTextView.setText("Competency: " + CompetencyUtils.getTextByCompetency(classification,dashboardActivity ));
 
         if (survey.isInProgress()) {
             add.setText(R.string.option_edit);
