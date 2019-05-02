@@ -1,6 +1,6 @@
 package org.eyeseetea.malariacare.presentation.viewmodels.Observations;
 
-public class CompositeScoreViewModel extends MissedCriticalStepViewModel {
+public class CompositeScoreViewModel extends MissedStepViewModel {
     private final String code;
     private boolean expanded = true;
 

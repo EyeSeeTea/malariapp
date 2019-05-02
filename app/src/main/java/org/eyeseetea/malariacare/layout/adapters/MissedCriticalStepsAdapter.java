@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.presentation.viewmodels.Observations.CompositeScoreViewModel;
-import org.eyeseetea.malariacare.presentation.viewmodels.Observations.MissedCriticalStepViewModel;
+import org.eyeseetea.malariacare.presentation.viewmodels.Observations.MissedStepViewModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,18 +20,18 @@ import java.util.Map;
 
 public class MissedCriticalStepsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<MissedCriticalStepViewModel> missedCriticalSteps = new ArrayList<>();
-    private Map<String,MissedCriticalStepViewModel> missedCriticalStepsMap = new HashMap<>();
+    private List<MissedStepViewModel> missedSteps = new ArrayList<>();
+    private Map<String, MissedStepViewModel> missedStepsMap = new HashMap<>();
 
-    public void setMissedCriticalSteps(List<MissedCriticalStepViewModel> missedCriticalSteps) {
-        this.missedCriticalSteps.clear();
-        this.missedCriticalSteps.addAll(missedCriticalSteps);
+    public void setMissedSteps(List<MissedStepViewModel> missedSteps) {
+        this.missedSteps.clear();
+        this.missedSteps.addAll(missedSteps);
 
-        missedCriticalStepsMap.clear();
+        missedStepsMap.clear();
 
-        for (MissedCriticalStepViewModel step:missedCriticalSteps) {
-            if (!missedCriticalStepsMap.containsKey(step.getKey())){
-                missedCriticalStepsMap.put(step.getKey(), step);
+        for (MissedStepViewModel step: missedSteps) {
+            if (!missedStepsMap.containsKey(step.getKey())){
+                missedStepsMap.put(step.getKey(), step);
             }
         }
 
@@ -48,7 +48,7 @@ public class MissedCriticalStepsAdapter extends RecyclerView.Adapter<RecyclerVie
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
-        MissedCriticalStepViewModel missedCriticalStep = missedCriticalSteps.get(position);
+        MissedStepViewModel missedCriticalStep = missedSteps.get(position);
 
         ((ViewHolder) viewHolder).bindView(missedCriticalStep);
 
@@ -62,15 +62,15 @@ public class MissedCriticalStepsAdapter extends RecyclerView.Adapter<RecyclerVie
     }
 
     private void expandOrCollapse(CompositeScoreViewModel compositeScore) {
-        int startIndex = missedCriticalSteps.indexOf(compositeScore);
+        int startIndex = missedSteps.indexOf(compositeScore);
 
         compositeScore.setExpanded(!compositeScore.isExpanded());
 
-        for (int i = startIndex + 1; i < missedCriticalSteps.size(); i++) {
-            MissedCriticalStepViewModel currentMissedCriticalStep = missedCriticalSteps.get(i);
+        for (int i = startIndex + 1; i < missedSteps.size(); i++) {
+            MissedStepViewModel currentMissedCriticalStep = missedSteps.get(i);
 
             CompositeScoreViewModel parentMissedCriticalStep = (CompositeScoreViewModel)
-                    missedCriticalStepsMap.get(currentMissedCriticalStep.getParentKey());
+                    missedStepsMap.get(currentMissedCriticalStep.getParentKey());
 
             if (parentMissedCriticalStep != null && parentMissedCriticalStep.isVisible()
                     && parentMissedCriticalStep.isExpanded()){
@@ -85,7 +85,7 @@ public class MissedCriticalStepsAdapter extends RecyclerView.Adapter<RecyclerVie
 
     @Override
     public int getItemCount() {
-        return missedCriticalSteps.size();
+        return missedSteps.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -104,7 +104,7 @@ public class MissedCriticalStepsAdapter extends RecyclerView.Adapter<RecyclerVie
                     itemView.findViewById(R.id.missed_critical_step_container);
         }
 
-        void bindView(MissedCriticalStepViewModel missedCriticalStep) {
+        void bindView(MissedStepViewModel missedCriticalStep) {
             if (missedCriticalStep.isVisible()) {
                 itemView.setVisibility(View.VISIBLE);
                 itemView.setLayoutParams(

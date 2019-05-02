@@ -62,7 +62,7 @@ import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.presentation.presenters.ObservationsPresenter;
-import org.eyeseetea.malariacare.presentation.viewmodels.Observations.MissedCriticalStepViewModel;
+import org.eyeseetea.malariacare.presentation.viewmodels.Observations.MissedStepViewModel;
 import org.eyeseetea.malariacare.presentation.viewmodels.Observations.ObservationViewModel;
 import org.eyeseetea.malariacare.utils.CompetencyUtils;
 import org.eyeseetea.malariacare.utils.DateParser;
@@ -330,8 +330,8 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
 
     @Override
     public void renderMissedCriticalSteps(
-            List<MissedCriticalStepViewModel> missedCriticalSteps) {
-        missedCriticalStepsAdapter.setMissedCriticalSteps(missedCriticalSteps);
+            List<MissedStepViewModel> missedCriticalSteps) {
+        missedCriticalStepsAdapter.setMissedSteps(missedCriticalSteps);
     }
 
     @Override
@@ -415,8 +415,8 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
 
     @Override
     public void shareByText(ObservationViewModel observationViewModel, SurveyDB survey,
-            List<MissedCriticalStepViewModel> missedCriticalStepViewModels) {
-        String data = extractTextData(observationViewModel, survey, missedCriticalStepViewModels);
+            List<MissedStepViewModel> missedStepViewModels) {
+        String data = extractTextData(observationViewModel, survey, missedStepViewModels);
 
         shareData(data);
     }
@@ -444,7 +444,7 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
     }
 
     private String extractTextData(ObservationViewModel observationViewModel, SurveyDB survey,
-            List<MissedCriticalStepViewModel> missedCriticalStepViewModels) {
+            List<MissedStepViewModel> missedStepViewModels) {
         String data =
                 PreferencesState.getInstance().getContext().getString(
                         R.string.app_name) + "- \n";
@@ -495,17 +495,17 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
             data += "\n" + observationViewModel.getAction2();
         }
 
-        if (missedCriticalStepViewModels != null && missedCriticalStepViewModels.size() > 0) {
+        if (missedStepViewModels != null && missedStepViewModels.size() > 0) {
             data += "\n\n" + getString(R.string.critical_steps) + "\n";
 
             //For each score add proper items
-            for (MissedCriticalStepViewModel missedCriticalStepViewModel :
-                    missedCriticalStepViewModels) {
+            for (MissedStepViewModel missedStepViewModel :
+                    missedStepViewModels) {
 
-                if (missedCriticalStepViewModel.isCompositeScore()) {
-                    data += missedCriticalStepViewModel.getLabel() + "\n";
+                if (missedStepViewModel.isCompositeScore()) {
+                    data += missedStepViewModel.getLabel() + "\n";
                 } else {
-                    data += "-" + missedCriticalStepViewModel.getLabel()  + "\n";
+                    data += "-" + missedStepViewModel.getLabel()  + "\n";
                 }
             }
         }

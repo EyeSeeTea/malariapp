@@ -1,6 +1,6 @@
 package org.eyeseetea.malariacare.presentation.viewmodels.Observations;
 
-public abstract class MissedCriticalStepViewModel {
+public abstract class MissedStepViewModel {
 
     private final String label;
     private final boolean isCompositeScore;
@@ -11,7 +11,7 @@ public abstract class MissedCriticalStepViewModel {
     protected static String COMPOSITE_KEY_PREFIX = "C-";
     protected static String QUESTION_KEY_PREFIX = "Q-";
 
-    public MissedCriticalStepViewModel(
+    public MissedStepViewModel(
             String key,
             String parentKey,
             String label,
