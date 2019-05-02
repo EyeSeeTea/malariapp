@@ -343,19 +343,12 @@ public class ObservationsPresenter {
     }
 
     public void shareObsActionPlan() {
-        List<QuestionDB> criticalQuestions = QuestionDB.getFailedQuestions(
-                mSurvey.getId_survey(), true);
-
-        List<CompositeScoreDB> compositeScoresTree = getValidTreeOfCompositeScores(true);
         if (mView != null) {
 
             if (mSurvey.getStatus() != Constants.SURVEY_SENT) {
                 mView.shareNotSent(mContext.getString(R.string.feedback_not_sent));
             } else {
-                List<MissedStepViewModel> missedStepViewModels =
-                        MissedStepMapper.mapToViewModel(criticalQuestions, compositeScoresTree);
-
-                mView.shareByText(mObservationViewModel, mSurvey, missedStepViewModels);
+                mView.shareByText(mObservationViewModel, mSurvey, missedCriticalSteps, missedNonCriticalSteps);
             }
         }
     }
@@ -454,7 +447,8 @@ public class ObservationsPresenter {
         void updateStatusView(ObservationStatus status);
 
         void shareByText(ObservationViewModel observationViewModel, SurveyDB survey,
-                List<MissedStepViewModel> missedStepViewModels);
+                List<MissedStepViewModel> missedCriticalStepViewModels,
+                List<MissedStepViewModel> missedNonCriticalStepViewModels);
 
         void shareNotSent(String surveyNoSentMessage);
 

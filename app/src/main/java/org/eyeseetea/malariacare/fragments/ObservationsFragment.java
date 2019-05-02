@@ -435,8 +435,10 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
 
     @Override
     public void shareByText(ObservationViewModel observationViewModel, SurveyDB survey,
-            List<MissedStepViewModel> missedStepViewModels) {
-        String data = extractTextData(observationViewModel, survey, missedStepViewModels);
+            List<MissedStepViewModel> missedCriticalStepViewModels,
+            List<MissedStepViewModel> missedNonCriticalStepViewModels) {
+        String data = extractTextData(observationViewModel, survey, missedCriticalStepViewModels,
+                missedNonCriticalStepViewModels);
 
         shareData(data);
     }
@@ -464,7 +466,8 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
     }
 
     private String extractTextData(ObservationViewModel observationViewModel, SurveyDB survey,
-            List<MissedStepViewModel> missedStepViewModels) {
+            List<MissedStepViewModel> missedCriticalStepViewModels,
+            List<MissedStepViewModel> missedNonCriticalStepViewModels) {
         String data =
                 PreferencesState.getInstance().getContext().getString(
                         R.string.app_name) + "- \n";
@@ -515,12 +518,11 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
             data += "\n" + observationViewModel.getAction2();
         }
 
-        if (missedStepViewModels != null && missedStepViewModels.size() > 0) {
+        if (missedCriticalStepViewModels != null && missedCriticalStepViewModels.size() > 0) {
             data += "\n\n" + getString(R.string.critical_steps) + "\n";
 
             //For each score add proper items
-            for (MissedStepViewModel missedStepViewModel :
-                    missedStepViewModels) {
+            for (MissedStepViewModel missedStepViewModel : missedCriticalStepViewModels) {
 
                 if (missedStepViewModel.isCompositeScore()) {
                     data += missedStepViewModel.getLabel() + "\n";
@@ -529,6 +531,21 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
                 }
             }
         }
+
+        if (missedNonCriticalStepViewModels != null && missedNonCriticalStepViewModels.size() > 0) {
+            data += "\n\n" + getString(R.string.plan_action_non_critical_steps_missed_title) + "\n";
+
+            //For each score add proper items
+            for (MissedStepViewModel missedStepViewModel : missedNonCriticalStepViewModels) {
+
+                if (missedStepViewModel.isCompositeScore()) {
+                    data += missedStepViewModel.getLabel() + "\n";
+                } else {
+                    data += "-" + missedStepViewModel.getLabel()  + "\n";
+                }
+            }
+        }
+
         data += "\n\n" + getString(R.string.see_full_assessment) + "\n";
         if (survey.isSent()) {
             data += String.format(getActivity().getString(R.string.feedback_url),
