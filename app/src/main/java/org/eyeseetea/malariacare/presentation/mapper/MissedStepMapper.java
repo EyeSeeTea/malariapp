@@ -31,8 +31,9 @@ public class MissedStepMapper {
                 missedStepViewModels.add(compositeScoreViewModel);
 
                 for (QuestionDB question : criticalQuestions) {
-                    if (question.getCompositeScoreFk()
-                            == (compositeScore.getId_composite_score())) {
+                    if (question.getCompositeScoreFk() != null &&
+                            question.getCompositeScoreFk().longValue()
+                                    == (compositeScore.getId_composite_score())) {
                         QuestionViewModel questionViewModel = new QuestionViewModel(
                                 question.getId_question(),
                                 question.getCompositeScoreFk(),

@@ -274,6 +274,7 @@ evaluation"</string>
 <string name="schedule_title">Schedule survey</string>
 <string name="save">"Save"</string>
 <string name="plan_action_critical_steps_missed_title" >"CRITICAL STEPS MISSED:"</string>
+<string name="plan_action_non_critical_steps_missed_title" >"NON-CRITICAL STEPS MISSED:"</string>
 <string name="plan_action_provider_title" >"PROVIDER NAME:"</string>
 <string name="monitor_no_surveys_to_show">"No surveys to show"</string>
 <string name="health_facility">Health Facility</string>

@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MissedCriticalStepsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class MissedStepsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<MissedStepViewModel> missedSteps = new ArrayList<>();
     private Map<String, MissedStepViewModel> missedStepsMap = new HashMap<>();

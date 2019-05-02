@@ -49,6 +49,7 @@ public class ObservationsPresenter {
     private ObservationViewModel mObservationViewModel;
 
     private List<MissedStepViewModel> missedCriticalSteps;
+    private List<MissedStepViewModel> missedNonCriticalSteps;
 
     public ObservationsPresenter(Context context,
             GetObservationBySurveyUidUseCase getObservationBySurveyUidUseCase,
@@ -107,7 +108,7 @@ public class ObservationsPresenter {
 
 
                         loadSurvey();
-                        loadMissedCriticalSteps();
+                        loadMissedSteps();
                         loadActions();
                         updateStatus();
                         showObservation();
@@ -119,7 +120,7 @@ public class ObservationsPresenter {
                         saveObservation();
 
                         loadSurvey();
-                        loadMissedCriticalSteps();
+                        loadMissedSteps();
                         loadActions();
                         updateStatus();
                         showObservation();
@@ -161,13 +162,24 @@ public class ObservationsPresenter {
         }
     }
 
-    private void loadMissedCriticalSteps() {
+    private void loadMissedSteps() {
         List<QuestionDB> criticalQuestions = QuestionDB.getFailedQuestions(
                 mSurvey.getId_survey(), true);
 
-        List<CompositeScoreDB> compositeScoresTree = getValidTreeOfCompositeScores();
+        List<CompositeScoreDB> compositeScoresOfCriticalFailedQuestions =
+                getValidTreeOfCompositeScores(true);
+
         missedCriticalSteps = MissedStepMapper.mapToViewModel(criticalQuestions,
-                compositeScoresTree);
+                compositeScoresOfCriticalFailedQuestions);
+
+        List<QuestionDB> nonCriticalQuestions = QuestionDB.getFailedQuestions(
+                mSurvey.getId_survey(), false);
+
+        List<CompositeScoreDB> compositeScoresOfNonCriticalFailedQuestions =
+                getValidTreeOfCompositeScores(false);
+
+        missedNonCriticalSteps = MissedStepMapper.mapToViewModel(nonCriticalQuestions,
+                compositeScoresOfNonCriticalFailedQuestions);
     }
 
     private void loadActions() {
@@ -186,6 +198,7 @@ public class ObservationsPresenter {
     private void showObservation() {
         if (mView != null) {
             mView.renderMissedCriticalSteps(missedCriticalSteps);
+            mView.renderMissedNonCriticalSteps(missedNonCriticalSteps);
             mView.renderBasicObservations(mObservationViewModel.getProvider()
                     , mObservationViewModel.getActionPlan());
 
@@ -333,7 +346,7 @@ public class ObservationsPresenter {
         List<QuestionDB> criticalQuestions = QuestionDB.getFailedQuestions(
                 mSurvey.getId_survey(), true);
 
-        List<CompositeScoreDB> compositeScoresTree = getValidTreeOfCompositeScores();
+        List<CompositeScoreDB> compositeScoresTree = getValidTreeOfCompositeScores(true);
         if (mView != null) {
 
             if (mSurvey.getStatus() != Constants.SURVEY_SENT) {
@@ -348,9 +361,9 @@ public class ObservationsPresenter {
     }
 
     @NonNull
-    private List<CompositeScoreDB> getValidTreeOfCompositeScores() {
-        List<CompositeScoreDB> compositeScoreList = QuestionDB.getCSOfriticalFailedQuestions(
-                mSurvey.getId_survey());
+    private List<CompositeScoreDB> getValidTreeOfCompositeScores(boolean critical) {
+        List<CompositeScoreDB> compositeScoreList = QuestionDB.getCompositeScoreOfFailedQuestions(
+                mSurvey.getId_survey(), critical);
 
         List<CompositeScoreDB> compositeScoresTree = new ArrayList<>();
         for (CompositeScoreDB compositeScore : compositeScoreList) {
@@ -358,16 +371,12 @@ public class ObservationsPresenter {
         }
 
         //Order composite scores
-        Collections.sort(compositeScoresTree, new Comparator() {
+        Collections.sort(compositeScoresTree, (Comparator) (o1, o2) -> {
 
-            @Override
-            public int compare(Object o1, Object o2) {
+            CompositeScoreDB cs1 = (CompositeScoreDB) o1;
+            CompositeScoreDB cs2 = (CompositeScoreDB) o2;
 
-                CompositeScoreDB cs1 = (CompositeScoreDB) o1;
-                CompositeScoreDB cs2 = (CompositeScoreDB) o2;
-
-                return new Integer(cs1.getOrder_pos().compareTo(cs2.getOrder_pos()));
-            }
+            return new Integer(cs1.getOrder_pos().compareTo(cs2.getOrder_pos()));
         });
         return compositeScoresTree;
     }
@@ -423,6 +432,8 @@ public class ObservationsPresenter {
 
         void renderMissedCriticalSteps(List<MissedStepViewModel> missedCriticalSteps);
 
+        void renderMissedNonCriticalSteps(List<MissedStepViewModel> missedNonCriticalSteps);
+
         void renderHeaderInfo(String orgUnitName, Float mainScore, String completionDate,
                 String nextDate, CompetencyScoreClassification classification);
 
@@ -450,6 +461,5 @@ public class ObservationsPresenter {
         void enableShareButton();
 
         void disableShareButton();
-
     }
 }

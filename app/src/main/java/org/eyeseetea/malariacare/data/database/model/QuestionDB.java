@@ -347,7 +347,7 @@ public class QuestionDB extends BaseModel {
         }
         return compositeScore;
     }
-    public long getCompositeScoreFk() {
+    public Long getCompositeScoreFk() {
         return id_composite_score_fk;
     }
 
@@ -927,7 +927,7 @@ public class QuestionDB extends BaseModel {
                 .queryList();
     }
 
-    public static List<CompositeScoreDB> getCSOfriticalFailedQuestions(long idSurvey) {
+    public static List<CompositeScoreDB> getCompositeScoreOfFailedQuestions(long idSurvey, boolean critical) {
         return new Select()
                 .from(CompositeScoreDB.class).as(compositeScoreName)
                 .join(QuestionDB.class, Join.JoinType.LEFT_OUTER).as(questionName)
@@ -941,7 +941,7 @@ public class QuestionDB extends BaseModel {
                         .eq(QuestionDB_Table.id_answer_fk.withTable(questionAlias)))
                 .where(ValueDB_Table.id_survey_fk.eq(idSurvey))
                 .and(OptionDB_Table.factor.is(0.0f))
-                .and(QuestionDB_Table.compulsory.is(true))
+                .and(QuestionDB_Table.compulsory.is(critical))
                 .and(ValueDB_Table.value.withTable(valueAlias).is(OptionDB_Table.name.withTable(optionFlowAlias)))
                 .groupBy(CompositeScoreDB_Table.hierarchical_code)
                 .orderBy(CompositeScoreDB_Table.hierarchical_code.withTable(compositeScoreAlias),true)
