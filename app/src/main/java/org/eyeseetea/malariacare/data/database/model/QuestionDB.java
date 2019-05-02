@@ -911,7 +911,7 @@ public class QuestionDB extends BaseModel {
     }
 
 
-    public static List<QuestionDB> getCriticalFailedQuestions(long idSurvey) {
+    public static List<QuestionDB> getFailedQuestions(long idSurvey, boolean critical) {
         return SQLite.select()
                 .from(QuestionDB.class).as(questionName)
                 .join(ValueDB.class, Join.JoinType.LEFT_OUTER).as(valueName)
@@ -922,7 +922,7 @@ public class QuestionDB extends BaseModel {
                         .eq(QuestionDB_Table.id_answer_fk.withTable(questionAlias)))
                 .where(ValueDB_Table.id_survey_fk.eq(idSurvey))
                 .and(OptionDB_Table.factor.is(0.0f))
-                .and(QuestionDB_Table.compulsory.is(true))
+                .and(QuestionDB_Table.compulsory.is(critical))
                 .and(ValueDB_Table.value.withTable(valueAlias).is(OptionDB_Table.name.withTable(optionFlowAlias)))
                 .queryList();
     }

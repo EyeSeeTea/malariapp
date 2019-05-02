@@ -162,8 +162,8 @@ public class ObservationsPresenter {
     }
 
     private void loadMissedCriticalSteps() {
-        List<QuestionDB> criticalQuestions = QuestionDB.getCriticalFailedQuestions(
-                mSurvey.getId_survey());
+        List<QuestionDB> criticalQuestions = QuestionDB.getFailedQuestions(
+                mSurvey.getId_survey(), true);
 
         List<CompositeScoreDB> compositeScoresTree = getValidTreeOfCompositeScores();
         missedCriticalSteps = MissedStepMapper.mapToViewModel(criticalQuestions,
@@ -330,8 +330,8 @@ public class ObservationsPresenter {
     }
 
     public void shareObsActionPlan() {
-        List<QuestionDB> criticalQuestions = QuestionDB.getCriticalFailedQuestions(
-                mSurvey.getId_survey());
+        List<QuestionDB> criticalQuestions = QuestionDB.getFailedQuestions(
+                mSurvey.getId_survey(), true);
 
         List<CompositeScoreDB> compositeScoresTree = getValidTreeOfCompositeScores();
         if (mView != null) {
