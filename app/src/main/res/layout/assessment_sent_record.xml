@@ -63,7 +63,7 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.5"
+            android:layout_weight="0.45"
             android:id="@+id/dateContainer"
             android:weightSum="1" >
 
@@ -84,7 +84,7 @@
             <org.eyeseetea.malariacare.views.CustomTextView
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
-                android:layout_weight="0.3"
+                android:layout_weight="0.27"
                 android:id="@+id/sentDate"
                 android:layout_gravity="left|center"
                 android:gravity="left|center"
@@ -97,7 +97,7 @@
             <org.eyeseetea.malariacare.views.CustomTextView
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
-                android:layout_weight="0.3"
+                android:layout_weight="0.29"
                 android:id="@+id/score"
                 android:layout_gravity="left|center"
                 android:gravity="left|center"
