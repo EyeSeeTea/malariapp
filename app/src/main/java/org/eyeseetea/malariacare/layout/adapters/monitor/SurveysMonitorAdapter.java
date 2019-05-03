@@ -98,7 +98,7 @@ public class SurveysMonitorAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                             survey.getCompetencyScoreClassification());
 
             CompetencyUtils.setBackgroundByCompetency(competencyView, classification);
-            CompetencyUtils.setTextByCompetency(competencyView, classification);
+            CompetencyUtils.setTextByCompetencyAbbreviation(competencyView, classification);
             CompetencyUtils.setTextColorByCompetency(competencyView, classification);
         }
     }

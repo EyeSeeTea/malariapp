@@ -300,7 +300,7 @@ clínica"</string>
 
 <string name="competency_classification_not_available_name">No disponible</string>
 <string name="competency_classification_competent_name">Competente</string>
-<string name="competency_classification_competent_improvement_name">Comp. Mejorar</string>
+<string name="competency_classification_competent_improvement_name">Competente, pero necesita mejorar</string>
 <string name="competency_classification_not_competent_name">No Competente</string>
 
 <string name="competency_classification_not_available_description">NA = No disponible. Encuesta creada en la última versión de la aplicación y competencia no esta disponible.</string>
