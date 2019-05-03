@@ -113,7 +113,8 @@ Mensuelle"</string>
 <string name="dashboard_title_planned_type_overdue">"En retard"</string>
 <string name="dashboard_title_planned_type_next_30">"30 prochains jours"</string>
 <string name="dashboard_title_planned_type_future">"Futurs"</string>
-<string name="dashboard_title_planned_productivity">"Prd"</string>
+<string name="dashboard_title_planned_productivity_abreviation">"Prd"</string>
+<string name="dashboard_title_planned_productivity">"Productivité"</string>
 <string name="competency_title">"Compétence"</string>
 <string name="dashboard_title_planned_next_qa">"Proch. éval."</string>
 <string name="assessment_sent_competency">"Compétence"</string>
@@ -303,4 +304,7 @@ Mensuelle"</string>
 <string name="competency_classification_competent_abbreviation">"C</string>
 <string name="competency_classification_competent_improvement_abbreviation">"CDA"</string>
 <string name="competency_classification_not_competent_abbreviation">"NC"</string>
+
+<string name="productivity_low_name">Faible</string>
+<string name="productivity_high_name">Grande</string>
 </resources>

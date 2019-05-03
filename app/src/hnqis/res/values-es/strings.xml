@@ -115,7 +115,8 @@ clínica"</string>
 <string name="dashboard_title_planned_type_overdue">"Atrasado"</string>
 <string name="dashboard_title_planned_type_next_30">"Próximos 30 días"</string>
 <string name="dashboard_title_planned_type_future">"Futuro"</string>
-<string name="dashboard_title_planned_productivity">"Prd"</string>
+<string name="dashboard_title_planned_productivity_abreviation">"Prd"</string>
+<string name="dashboard_title_planned_productivity">"Productividad"</string>
 <string name="competency_title">"Competencia"</string>
 <string name="dashboard_title_planned_next_qa">"Próx. eval."</string>
 <string name="assessment_sent_competency">"Competencia"</string>
@@ -313,4 +314,7 @@ El proveedor ha omitido al menos un paso crítico o, en caso de que no haya paso
 <string name="competency_classification_competent_abbreviation">C</string>
 <string name="competency_classification_competent_improvement_abbreviation">CNM</string>
 <string name="competency_classification_not_competent_abbreviation">NC</string>
+
+<string name="productivity_low_name">Baja</string>
+<string name="productivity_high_name">Alta</string>
 </resources>

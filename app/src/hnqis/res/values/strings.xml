@@ -116,7 +116,8 @@ evaluation"</string>
 <string name="dashboard_title_planned_type_overdue">"Overdue"</string>
 <string name="dashboard_title_planned_type_next_30">"Next 30 days"</string>
 <string name="dashboard_title_planned_type_future">"Future"</string>
-<string name="dashboard_title_planned_productivity">"Prd"</string>
+<string name="dashboard_title_planned_productivity_abreviation">"Prd"</string>
+<string name="dashboard_title_planned_productivity">"Productivity"</string>
 <string name="competency_title">"Competency"</string>
 <string name="dashboard_title_planned_next_qa">"Next QA"</string>
 <string name="assessment_sent_competency">"Competency"</string>
@@ -314,4 +315,7 @@ evaluation"</string>
 <string name="competency_classification_competent_abbreviation">C</string>
 <string name="competency_classification_competent_improvement_abbreviation">CNI</string>
 <string name="competency_classification_not_competent_abbreviation">NC</string>
+
+<string name="productivity_low_name">Low</string>
+<string name="productivity_high_name">High</string>
 </resources>
