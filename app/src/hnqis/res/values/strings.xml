@@ -300,10 +300,15 @@ evaluation"</string>
 <string name="server_version_error">The server version is not supported.</string>
 <string name="recommend_upgrade">Please upgrade the app from Google Play.</string>
 
-<string name="competency_classification_not_available">Not Available</string>
-<string name="competency_classification_competent">Competent</string>
-<string name="competency_classification_competent_improvement">Competent, but needs improvement</string>
-<string name="competency_classification_not_competent">Not Competent</string>
+<string name="competency_classification_not_available_name">Not Available</string>
+<string name="competency_classification_competent_name">Competent</string>
+<string name="competency_classification_competent_improvement_name">Competent, but needs improvement</string>
+<string name="competency_classification_not_competent_name">Not Competent</string>
+
+<string name="competency_classification_not_available_description">NA = Not Available. Survey created on the last application version and competency is not available.</string>
+<string name="competency_classification_competent_description">C = Competent. The provider has met all critical steps and ≥ 90% of non-critical steps</string>
+<string name="competency_classification_competent_improvement_description">CNI = Competent, but needs improvement. The provider has met all critical steps correct, but between 80% and 90% of non-critical steps</string>
+<string name="competency_classification_not_competent_description">NC = Not competent. The provider has missed at least one critical step or in case there are no critical steps, less than 80% of non-critical steps</string>
 
 <string name="competency_classification_not_available_abbreviation">NA</string>
 <string name="competency_classification_competent_abbreviation">C</string>

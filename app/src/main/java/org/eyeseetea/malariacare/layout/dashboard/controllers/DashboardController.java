@@ -47,7 +47,6 @@ import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Controller for the dashboard based on modules
@@ -525,7 +524,7 @@ public class DashboardController {
         CompetencyScoreClassification classification =
                 CompetencyScoreClassification.get(survey.getCompetencyScoreClassification());
 
-        competencyTextView.setText("Competency: " + CompetencyUtils.getTextByCompetency(classification,dashboardActivity ));
+        competencyTextView.setText("Competency: " + CompetencyUtils.getTextByCompetencyName(classification,dashboardActivity ));
 
         if (survey.isInProgress()) {
             add.setText(R.string.option_edit);

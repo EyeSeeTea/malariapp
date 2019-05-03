@@ -1,7 +1,6 @@
 package org.eyeseetea.malariacare.utils;
 
 import android.content.Context;
-import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.widget.TextView;
 
@@ -10,28 +9,49 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
 
 public class CompetencyUtils {
-    public static String getTextByCompetency(
+    public static String getTextByCompetencyName(
             CompetencyScoreClassification classification, Context context) {
 
         String competencyText = "";
 
         if (classification == CompetencyScoreClassification.NOT_AVAILABLE) {
             competencyText = context.getString(
-                    R.string.competency_classification_not_available);
+                    R.string.competency_classification_not_available_name);
         } else if (classification == CompetencyScoreClassification.COMPETENT) {
-            competencyText = context.getString(R.string.competency_classification_competent);
+            competencyText = context.getString(R.string.competency_classification_competent_name);
         } else if (classification == CompetencyScoreClassification.COMPETENT_NEEDS_IMPROVEMENT) {
             competencyText = context.getString(
-                    R.string.competency_classification_competent_improvement);
+                    R.string.competency_classification_competent_improvement_name);
         } else if (classification == CompetencyScoreClassification.NOT_COMPETENT) {
             competencyText = context.getString(
-                    R.string.competency_classification_not_competent);
+                    R.string.competency_classification_not_competent_name);
         }
 
         return competencyText;
     }
 
-    public static String getAbbreviationTextByCompetency(
+    public static String getTextByCompetencyDescription(
+            CompetencyScoreClassification classification, Context context) {
+
+        String competencyText = "";
+
+        if (classification == CompetencyScoreClassification.NOT_AVAILABLE) {
+            competencyText = context.getString(
+                    R.string.competency_classification_not_available_description);
+        } else if (classification == CompetencyScoreClassification.COMPETENT) {
+            competencyText = context.getString(R.string.competency_classification_competent_description);
+        } else if (classification == CompetencyScoreClassification.COMPETENT_NEEDS_IMPROVEMENT) {
+            competencyText = context.getString(
+                    R.string.competency_classification_competent_improvement_description);
+        } else if (classification == CompetencyScoreClassification.NOT_COMPETENT) {
+            competencyText = context.getString(
+                    R.string.competency_classification_not_competent_description);
+        }
+
+        return competencyText;
+    }
+
+    public static String getTextByCompetencyAbbreviation(
             CompetencyScoreClassification classification, Context context) {
 
         String competencyText = "";
@@ -78,7 +98,7 @@ public class CompetencyUtils {
     public static void setTextByCompetency(
             TextView textView, CompetencyScoreClassification classification) {
 
-        String competencyText = getTextByCompetency(classification, textView.getContext());
+        String competencyText = getTextByCompetencyName(classification, textView.getContext());
 
         textView.setText(competencyText);
     }
@@ -86,7 +106,7 @@ public class CompetencyUtils {
     public static void setTextByCompetencyAbbreviation(
             TextView textView, CompetencyScoreClassification classification) {
 
-        String competencyText = getAbbreviationTextByCompetency(classification, textView.getContext());
+        String competencyText = getTextByCompetencyAbbreviation(classification, textView.getContext());
 
         textView.setText(competencyText);
     }
