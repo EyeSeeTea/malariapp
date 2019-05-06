@@ -177,6 +177,10 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         try{
             nextScheduleConfiguration = new NextScheduleConfiguration(nextScheduleDeltaMatrix);
         } catch (IllegalArgumentException e) {
+            Log.w(TAG, "Invalid delta matrix value: " + nextScheduleDeltaMatrix +
+                    " for program: " + program.getUid() +
+                    " . Assigning default value: " + DEFAULT_PROGRAM_DELTA_MATRIX);
+
             nextScheduleConfiguration = new NextScheduleConfiguration(DEFAULT_PROGRAM_DELTA_MATRIX);
         }
 
