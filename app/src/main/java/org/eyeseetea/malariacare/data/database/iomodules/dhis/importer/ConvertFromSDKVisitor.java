@@ -61,6 +61,8 @@ import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.Progra
 import org.eyeseetea.malariacare.data.remote.sdk.SdkQueries;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.DateParser;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeValueFlow;
+import org.hisp.dhis.client.sdk.models.attribute.Attribute;
 import org.hisp.dhis.client.sdk.models.program.ProgramType;
 
 import java.text.DateFormat;
@@ -133,12 +135,15 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
      * Turns a sdk Program into an app Program
      */
     public void visit(ProgramExtended program) {
+        String nextScheduleDeltaMatrix = getNextScheduleDeltaMatrixForProgram(program);
+
         //Build program
         actualProgram = program;
         ProgramDB appProgram =
                 new ProgramDB();
         appProgram.setUid(program.getUid());
         appProgram.setName(program.getDisplayName());
+        appProgram.setNextScheduleDeltaMatrix(nextScheduleDeltaMatrix);
         appProgram.save();
 
 
@@ -149,6 +154,24 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         for (ProgramStageExtended ps : program.getProgramStages()) {
             new ProgramStageExtended(ps).accept(this);
         }
+
+
+    }
+
+    private String getNextScheduleDeltaMatrixForProgram(ProgramExtended program) {
+        String PROGRAM_DELTA_MATRIX_ATTRIBUTE_UID = "e7RtPgv94uh";
+        String DEFAULT_PROGRAM_DELTA_MATRIX = "6,6;4,4;4,2";
+
+        List<AttributeValueFlow> attributeValues = program.getProgram().getAttributeValueFlow();
+
+        String nextScheduleDeltaMatrix = DEFAULT_PROGRAM_DELTA_MATRIX;
+
+        for (AttributeValueFlow attributeValue:attributeValues) {
+            if (attributeValue.getAttribute().getUId().equals(PROGRAM_DELTA_MATRIX_ATTRIBUTE_UID)) {
+                nextScheduleDeltaMatrix = attributeValue.getValue();
+            }
+        }
+        return nextScheduleDeltaMatrix;
     }
 
     /**
