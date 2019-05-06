@@ -44,6 +44,9 @@ public class ProgramDB extends BaseModel{
     @Column
     String stage_uid;
 
+    @Column
+    String next_schedule_delta_matrix;
+
     /**
      * List of tabs that belongs to this programstage
      */
@@ -96,6 +99,14 @@ public class ProgramDB extends BaseModel{
 
     public void setStageUid(String stage_uid) {
         this.stage_uid = stage_uid;
+    }
+
+    public String getNextScheduleDeltaMatrix() {
+        return next_schedule_delta_matrix;
+    }
+
+    public void setNextScheduleDeltaMatrix(String nextScheduleDeltaMatrix) {
+        this.next_schedule_delta_matrix = nextScheduleDeltaMatrix;
     }
 
     public static List<ProgramDB> getAllPrograms(){
