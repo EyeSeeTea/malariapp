@@ -59,10 +59,10 @@ import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.Progra
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramSurveyDict;
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramTabDict;
 import org.eyeseetea.malariacare.data.remote.sdk.SdkQueries;
+import org.eyeseetea.malariacare.domain.entity.NextScheduleConfiguration;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.DateParser;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeValueFlow;
-import org.hisp.dhis.client.sdk.models.attribute.Attribute;
 import org.hisp.dhis.client.sdk.models.program.ProgramType;
 
 import java.text.DateFormat;
@@ -171,7 +171,16 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
                 nextScheduleDeltaMatrix = attributeValue.getValue();
             }
         }
-        return nextScheduleDeltaMatrix;
+
+        NextScheduleConfiguration nextScheduleConfiguration;
+
+        try{
+            nextScheduleConfiguration = new NextScheduleConfiguration(nextScheduleDeltaMatrix);
+        } catch (IllegalArgumentException e) {
+            nextScheduleConfiguration = new NextScheduleConfiguration(DEFAULT_PROGRAM_DELTA_MATRIX);
+        }
+
+        return nextScheduleConfiguration.getNextScheduleDeltaMatrix();
     }
 
     /**
