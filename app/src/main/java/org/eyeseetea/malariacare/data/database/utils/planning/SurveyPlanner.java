@@ -19,16 +19,13 @@
 
 package org.eyeseetea.malariacare.data.database.utils.planning;
 
-import android.util.Log;
-
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitProgramRelationDB;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
-import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
-import org.eyeseetea.malariacare.domain.entity.ScoreType;
-import org.eyeseetea.malariacare.domain.entity.Server;
+import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
+import org.eyeseetea.malariacare.domain.entity.NextScheduleConfiguration;
 import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.Calendar;
@@ -176,26 +173,52 @@ public class SurveyPlanner {
             return null;
         }
 
-        //Load main score
-        Log.d(TAG, String.format(
-                "finding scheduledDate for a survey with: eventDate: %s, score: %f , "
-                        + "lowProductivity: %b",
-                eventDate.toString(), survey.getMainScore(), survey.isLowProductivity()));
+        CompetencyScoreClassification competencyScoreClassification =
+                CompetencyScoreClassification.get(survey.getCompetencyScoreClassification());
 
-        Server server = PreferencesState.getInstance().getServer();
+        NextScheduleConfiguration nextScheduleConfiguration =
+                new NextScheduleConfiguration(survey.getProgram().getNextScheduleDeltaMatrix());
 
-        ScoreType scoreType = new ScoreType(survey.getMainScore());
-        if (scoreType.isTypeA()) {
-            return getInXMonths(eventDate, server.getNextScheduleMatrix().getScoreAMonths());
+        Date nextScheduleDate;
+
+        if (competencyScoreClassification == CompetencyScoreClassification.COMPETENT) {
+            if (survey.isLowProductivity()) {
+                nextScheduleDate = getInXMonths(eventDate,
+                        nextScheduleConfiguration.getCompetentLowProductivityMonths());
+            } else {
+                nextScheduleDate = getInXMonths(eventDate,
+                        nextScheduleConfiguration.getCompetentHighProductivityMonths());
+            }
+        } else if (competencyScoreClassification
+                == CompetencyScoreClassification.COMPETENT_NEEDS_IMPROVEMENT) {
+            if (survey.isLowProductivity()) {
+                nextScheduleDate = getInXMonths(eventDate,
+                        nextScheduleConfiguration.getCompetentNeedsImprovementLowProductivityMonths());
+            } else {
+                nextScheduleDate = getInXMonths(eventDate,
+                        nextScheduleConfiguration.getCompetentNeedsImprovementHighProductivityMonths());
+            }
+        } else if (competencyScoreClassification
+                == CompetencyScoreClassification.NOT_COMPETENT) {
+            if (survey.isLowProductivity()) {
+                nextScheduleDate = getInXMonths(eventDate,
+                        nextScheduleConfiguration.getNotCompetentLowProductivityMonths());
+            } else {
+                nextScheduleDate = getInXMonths(eventDate,
+                        nextScheduleConfiguration.getNotCompetentHighProductivityMonths());
+            }
+        } else {
+            // NA
+            if (survey.isLowProductivity()) {
+                nextScheduleDate = getInXMonths(eventDate,
+                        nextScheduleConfiguration.getNotCompetentLowProductivityMonths());
+            } else {
+                nextScheduleDate = getInXMonths(eventDate,
+                        nextScheduleConfiguration.getNotCompetentHighProductivityMonths());
+            }
         }
 
-        //BC + Low OrgUnit -> 4
-        if (survey.isLowProductivity()) {
-            return getInXMonths(eventDate,  server.getNextScheduleMatrix().getLowProductivityMonths());
-        }
-
-        //BC + High OrgUnit -> 2
-        return getInXMonths(eventDate,  server.getNextScheduleMatrix().getHighProductivityMonths());
+        return nextScheduleDate;
     }
 
     /**
@@ -211,7 +234,8 @@ public class SurveyPlanner {
     private void buildNonExistentCombinations() {
         List<OrgUnitProgramRelationDB> orgUnitProgramRelations = OrgUnitProgramRelationDB.getAll();
         for (OrgUnitProgramRelationDB orgUnitProgramRelation : orgUnitProgramRelations) {
-            SurveyDB survey = SurveyDB.findPlannedByOrgUnitAndProgram(orgUnitProgramRelation.getOrgUnit(), orgUnitProgramRelation.getProgram());
+            SurveyDB survey = SurveyDB.findPlannedByOrgUnitAndProgram(
+                    orgUnitProgramRelation.getOrgUnit(), orgUnitProgramRelation.getProgram());
             //Already built
             if (survey != null) {
                 continue;
