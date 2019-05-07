@@ -33,7 +33,6 @@ import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
-import org.eyeseetea.malariacare.domain.entity.NextScheduleMonths;
 import org.eyeseetea.malariacare.domain.entity.Server;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardListFilter;
@@ -46,15 +45,6 @@ import java.util.Locale;
 import java.util.Map;
 
 public class PreferencesState {
-
-    public static final String DEFAULT_SCHEDULE_MONTHS_VALUE ="https://data.psi-mis.org/";
-    public static final HashMap<String, int[]> nextScheduleMonths = new HashMap<>();
-
-    static {
-        nextScheduleMonths.put(DEFAULT_SCHEDULE_MONTHS_VALUE, new int[]{2, 4, 6});
-        nextScheduleMonths.put("https://zw.hnqis.org/", new int[]{1, 1, 6});
-        nextScheduleMonths.put("https://clone-zw.hnqis.org/", new int[]{1, 1, 6});
-    }
 
     static Context context;
     private static String TAG = ".PreferencesState";
@@ -491,19 +481,8 @@ public class PreferencesState {
 
     private Server loadServer() {
         String serverUrl=getServerUrl();
-        server = new Server(getServerUrl(), new NextScheduleMonths(getMonthArray(serverUrl)));
+        server = new Server(serverUrl);
         return server;
-    }
-
-    private int[] getMonthArray(String serverUrl) {
-        serverUrl = formatUrl(serverUrl);
-
-        if(nextScheduleMonths.containsKey(serverUrl))
-        {
-            return nextScheduleMonths.get(serverUrl);
-        } else {
-            return nextScheduleMonths.get(DEFAULT_SCHEDULE_MONTHS_VALUE);
-        }
     }
 
     private String formatUrl(String serverUrl) {
