@@ -2,7 +2,7 @@ package org.eyeseetea.malariacare.domain.entity;
 
 import static java.lang.Integer.*;
 
-public class NextScheduleConfiguration {
+public class NextScheduleDateConfiguration {
     private final String nextScheduleDeltaMatrix;
     private int competentHighProductivityMonths;
     private int competentLowProductivityMonths;
@@ -15,21 +15,21 @@ public class NextScheduleConfiguration {
 
     /**
      *
-     * @param nextScheduleDeltaMatrix provide next schedule by competency and by productivity
+     * @param nextScheduleDeltaMatrix provide next schedule Date by competency and productivity
      * Example: 4,4;3,3;3,1
      *
-     *  |      Program A          | High Productivity | Low Productivity |
-     *  |-------------------------|-------------------|------------------|
-     *  |Competency A (Competent) |         4         |        4         |
-     *  |-------------------------|-------------------|------------------|
-     *  |Competency B (Competent  |                   |                  |
-     *  |needs improvement)       |         3         |        3         |
-     *  |-------------------------|-------------------|------------------|
-     *  |Competency A (Competent) |         3         |        1         |
-     *  |-------------------------|-------------------|------------------|
+     *  |      Program A          | Low Productivity  | High Productivity |
+     *  |-------------------------|-------------------|-------------------|
+     *  |Competency A (Competent) |         4         |        4          |
+     *  |-------------------------|-------------------|-------------------|
+     *  |Competency B (Competent  |                   |                   |
+     *  |needs improvement)       |         3         |        3          |
+     *  |-------------------------|-------------------|-------------------|
+     *  |Competency A (Competent) |         3         |        1          |
+     *  |-------------------------|-------------------|-------------------|
      */
 
-    public NextScheduleConfiguration(String nextScheduleDeltaMatrix) {
+    public NextScheduleDateConfiguration(String nextScheduleDeltaMatrix) {
         if (nextScheduleDeltaMatrix == null){
             throw new IllegalArgumentException("nextScheduleDeltaMatrix is required");
         }
@@ -62,18 +62,18 @@ public class NextScheduleConfiguration {
     }
 
     private void extractCompetentNextSchedule(String[] nextSchedulesProductivity) {
-        competentHighProductivityMonths = parseInt(nextSchedulesProductivity[0]);
-        competentLowProductivityMonths = parseInt(nextSchedulesProductivity[1]);
+        competentLowProductivityMonths = parseInt(nextSchedulesProductivity[0]);
+        competentHighProductivityMonths = parseInt(nextSchedulesProductivity[1]);
     }
 
     private void extractCompetentNeedsImprovementNextSchedule(String[] nextSchedulesProductivity) {
-        competentNeedsImprovementHighProductivityMonths = parseInt(nextSchedulesProductivity[0]);
-        competentNeedsImprovementLowProductivityMonths = parseInt(nextSchedulesProductivity[1]);
+        competentNeedsImprovementLowProductivityMonths = parseInt(nextSchedulesProductivity[0]);
+        competentNeedsImprovementHighProductivityMonths = parseInt(nextSchedulesProductivity[1]);
     }
 
     private void extractNotCompetentNextSchedule(String[] nextSchedulesProductivity) {
-        notCompetentHighProductivityMonths = parseInt(nextSchedulesProductivity[0]);
-        notCompetentLowProductivityMonths = parseInt(nextSchedulesProductivity[1]);
+        notCompetentLowProductivityMonths = parseInt(nextSchedulesProductivity[0]);
+        notCompetentHighProductivityMonths = parseInt(nextSchedulesProductivity[1]);
     }
 
     public String getNextScheduleDeltaMatrix() {

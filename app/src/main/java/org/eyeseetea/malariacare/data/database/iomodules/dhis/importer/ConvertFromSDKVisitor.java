@@ -59,7 +59,7 @@ import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.Progra
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramSurveyDict;
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramTabDict;
 import org.eyeseetea.malariacare.data.remote.sdk.SdkQueries;
-import org.eyeseetea.malariacare.domain.entity.NextScheduleConfiguration;
+import org.eyeseetea.malariacare.domain.entity.NextScheduleDateConfiguration;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.DateParser;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeValueFlow;
@@ -172,19 +172,19 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             }
         }
 
-        NextScheduleConfiguration nextScheduleConfiguration;
+        NextScheduleDateConfiguration nextScheduleDateConfiguration;
 
         try{
-            nextScheduleConfiguration = new NextScheduleConfiguration(nextScheduleDeltaMatrix);
+            nextScheduleDateConfiguration = new NextScheduleDateConfiguration(nextScheduleDeltaMatrix);
         } catch (IllegalArgumentException e) {
             Log.w(TAG, "Invalid delta matrix value: " + nextScheduleDeltaMatrix +
                     " for program: " + program.getUid() +
                     " . Assigning default value: " + DEFAULT_PROGRAM_DELTA_MATRIX);
 
-            nextScheduleConfiguration = new NextScheduleConfiguration(DEFAULT_PROGRAM_DELTA_MATRIX);
+            nextScheduleDateConfiguration = new NextScheduleDateConfiguration(DEFAULT_PROGRAM_DELTA_MATRIX);
         }
 
-        return nextScheduleConfiguration.getNextScheduleDeltaMatrix();
+        return nextScheduleDateConfiguration.getNextScheduleDeltaMatrix();
     }
 
     /**

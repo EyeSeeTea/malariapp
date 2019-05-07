@@ -25,7 +25,7 @@ import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
-import org.eyeseetea.malariacare.domain.entity.NextScheduleConfiguration;
+import org.eyeseetea.malariacare.domain.entity.NextScheduleDateConfiguration;
 import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.Calendar;
@@ -176,45 +176,45 @@ public class SurveyPlanner {
         CompetencyScoreClassification competencyScoreClassification =
                 CompetencyScoreClassification.get(survey.getCompetencyScoreClassification());
 
-        NextScheduleConfiguration nextScheduleConfiguration =
-                new NextScheduleConfiguration(survey.getProgram().getNextScheduleDeltaMatrix());
+        NextScheduleDateConfiguration nextScheduleDateConfiguration =
+                new NextScheduleDateConfiguration(survey.getProgram().getNextScheduleDeltaMatrix());
 
         Date nextScheduleDate;
 
         if (competencyScoreClassification == CompetencyScoreClassification.COMPETENT) {
             if (survey.isLowProductivity()) {
                 nextScheduleDate = getInXMonths(eventDate,
-                        nextScheduleConfiguration.getCompetentLowProductivityMonths());
+                        nextScheduleDateConfiguration.getCompetentLowProductivityMonths());
             } else {
                 nextScheduleDate = getInXMonths(eventDate,
-                        nextScheduleConfiguration.getCompetentHighProductivityMonths());
+                        nextScheduleDateConfiguration.getCompetentHighProductivityMonths());
             }
         } else if (competencyScoreClassification
                 == CompetencyScoreClassification.COMPETENT_NEEDS_IMPROVEMENT) {
             if (survey.isLowProductivity()) {
                 nextScheduleDate = getInXMonths(eventDate,
-                        nextScheduleConfiguration.getCompetentNeedsImprovementLowProductivityMonths());
+                        nextScheduleDateConfiguration.getCompetentNeedsImprovementLowProductivityMonths());
             } else {
                 nextScheduleDate = getInXMonths(eventDate,
-                        nextScheduleConfiguration.getCompetentNeedsImprovementHighProductivityMonths());
+                        nextScheduleDateConfiguration.getCompetentNeedsImprovementHighProductivityMonths());
             }
         } else if (competencyScoreClassification
                 == CompetencyScoreClassification.NOT_COMPETENT) {
             if (survey.isLowProductivity()) {
                 nextScheduleDate = getInXMonths(eventDate,
-                        nextScheduleConfiguration.getNotCompetentLowProductivityMonths());
+                        nextScheduleDateConfiguration.getNotCompetentLowProductivityMonths());
             } else {
                 nextScheduleDate = getInXMonths(eventDate,
-                        nextScheduleConfiguration.getNotCompetentHighProductivityMonths());
+                        nextScheduleDateConfiguration.getNotCompetentHighProductivityMonths());
             }
         } else {
             // NA
             if (survey.isLowProductivity()) {
                 nextScheduleDate = getInXMonths(eventDate,
-                        nextScheduleConfiguration.getNotCompetentLowProductivityMonths());
+                        nextScheduleDateConfiguration.getNotCompetentLowProductivityMonths());
             } else {
                 nextScheduleDate = getInXMonths(eventDate,
-                        nextScheduleConfiguration.getNotCompetentHighProductivityMonths());
+                        nextScheduleDateConfiguration.getNotCompetentHighProductivityMonths());
             }
         }
 
