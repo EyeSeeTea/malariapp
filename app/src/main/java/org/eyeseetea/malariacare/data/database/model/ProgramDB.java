@@ -34,6 +34,8 @@ import java.util.List;
 @Table(database = AppDatabase.class, name = "Program")
 public class ProgramDB extends BaseModel{
 
+    public static String DEFAULT_PROGRAM_DELTA_MATRIX = "6,6;4,4;4,2";
+
     @Column
     @PrimaryKey(autoincrement = true)
     long id_program;

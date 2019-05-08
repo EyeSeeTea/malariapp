@@ -19,6 +19,8 @@
 
 package org.eyeseetea.malariacare.data.database.iomodules.dhis.importer;
 
+import static org.eyeseetea.malariacare.data.database.model.ProgramDB.DEFAULT_PROGRAM_DELTA_MATRIX;
+
 import android.content.Context;
 import android.util.Log;
 
@@ -160,7 +162,6 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
     private String getNextScheduleDeltaMatrixForProgram(ProgramExtended program) {
         String PROGRAM_DELTA_MATRIX_ATTRIBUTE_UID = "e7RtPgv94uh";
-        String DEFAULT_PROGRAM_DELTA_MATRIX = "6,6;4,4;4,2";
 
         List<AttributeValueFlow> attributeValues = program.getProgram().getAttributeValueFlow();
 
