@@ -26,6 +26,7 @@ import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
 import org.eyeseetea.malariacare.domain.entity.NextScheduleDateConfiguration;
+import org.eyeseetea.malariacare.domain.service.SurveyNextScheduleDomainService;
 import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.Calendar;
@@ -163,15 +164,12 @@ public class SurveyPlanner {
 
     }
 
-    public Date findScheduledDateBySurvey(SurveyDB survey) {
+    private Date findScheduledDateBySurvey(SurveyDB survey) {
         if (survey == null) {
             return null;
         }
 
         Date eventDate = survey.getCompletionDate();
-        if (eventDate == null) {
-            return null;
-        }
 
         CompetencyScoreClassification competencyScoreClassification =
                 CompetencyScoreClassification.get(survey.getCompetencyScoreClassification());
@@ -179,56 +177,16 @@ public class SurveyPlanner {
         NextScheduleDateConfiguration nextScheduleDateConfiguration =
                 new NextScheduleDateConfiguration(survey.getProgram().getNextScheduleDeltaMatrix());
 
-        Date nextScheduleDate;
+        SurveyNextScheduleDomainService surveyNextScheduleDomainService = new
+                SurveyNextScheduleDomainService();
 
-        if (competencyScoreClassification == CompetencyScoreClassification.COMPETENT) {
-            if (survey.isLowProductivity()) {
-                nextScheduleDate = getInXMonths(eventDate,
-                        nextScheduleDateConfiguration.getCompetentLowProductivityMonths());
-            } else {
-                nextScheduleDate = getInXMonths(eventDate,
-                        nextScheduleDateConfiguration.getCompetentHighProductivityMonths());
-            }
-        } else if (competencyScoreClassification
-                == CompetencyScoreClassification.COMPETENT_NEEDS_IMPROVEMENT) {
-            if (survey.isLowProductivity()) {
-                nextScheduleDate = getInXMonths(eventDate,
-                        nextScheduleDateConfiguration.getCompetentNeedsImprovementLowProductivityMonths());
-            } else {
-                nextScheduleDate = getInXMonths(eventDate,
-                        nextScheduleDateConfiguration.getCompetentNeedsImprovementHighProductivityMonths());
-            }
-        } else if (competencyScoreClassification
-                == CompetencyScoreClassification.NOT_COMPETENT) {
-            if (survey.isLowProductivity()) {
-                nextScheduleDate = getInXMonths(eventDate,
-                        nextScheduleDateConfiguration.getNotCompetentLowProductivityMonths());
-            } else {
-                nextScheduleDate = getInXMonths(eventDate,
-                        nextScheduleDateConfiguration.getNotCompetentHighProductivityMonths());
-            }
-        } else {
-            // NA
-            if (survey.isLowProductivity()) {
-                nextScheduleDate = getInXMonths(eventDate,
-                        nextScheduleDateConfiguration.getNotCompetentLowProductivityMonths());
-            } else {
-                nextScheduleDate = getInXMonths(eventDate,
-                        nextScheduleDateConfiguration.getNotCompetentHighProductivityMonths());
-            }
-        }
+        Date nextScheduleDate = surveyNextScheduleDomainService.calculate(
+                nextScheduleDateConfiguration,
+                eventDate,
+                competencyScoreClassification,
+                survey.isLowProductivity());
 
         return nextScheduleDate;
-    }
-
-    /**
-     * Returns +30 days from the given date
-     */
-    private Date getInXMonths(Date date, int numMonths) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        calendar.add(Calendar.MONTH, numMonths);
-        return calendar.getTime();
     }
 
     private void buildNonExistentCombinations() {

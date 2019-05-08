@@ -373,9 +373,10 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
 
     @Override
     public void shareByText(ObsActionPlanDB obsActionPlan, SurveyDB survey,
-            List<QuestionDB> criticalQuestions, List<CompositeScoreDB> compositeScoresTree) {
-        String data = extractTextData(obsActionPlan, survey, criticalQuestions,
-                compositeScoresTree);
+            String formattedNextScheduleDate, List<QuestionDB> criticalQuestions,
+            List<CompositeScoreDB> compositeScoresTree) {
+        String data = extractTextData(obsActionPlan, survey, formattedNextScheduleDate,
+                criticalQuestions, compositeScoresTree);
 
         shareData(data);
     }
@@ -403,7 +404,8 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
     }
 
     private String extractTextData(ObsActionPlanDB obsActionPlan, SurveyDB survey,
-            List<QuestionDB> criticalQuestions, List<CompositeScoreDB> compositeScoresTree) {
+            String formattedNextScheduleDate, List<QuestionDB> criticalQuestions,
+            List<CompositeScoreDB> compositeScoresTree) {
         String data =
                 PreferencesState.getInstance().getContext().getString(
                         R.string.app_name) + "- \n";
@@ -427,9 +429,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
         int roundedScore = Math.round(survey.getMainScore());
         data += getString(R.string.quality_of_care) + " " + roundedScore + "% \n";
 
-        data += String.format(getString(R.string.plan_action_next_date),
-                dateParser.format(SurveyPlanner.getInstance().findScheduledDateBySurvey(survey),
-                        DateParser.EUROPEAN_DATE_FORMAT));
+        data += String.format(getString(R.string.plan_action_next_date),formattedNextScheduleDate);
 
         if (obsActionPlan.getProvider() != null && !obsActionPlan.getProvider().isEmpty()) {
             data += "\n\n" + getString(R.string.plan_action_provider_title) + " "

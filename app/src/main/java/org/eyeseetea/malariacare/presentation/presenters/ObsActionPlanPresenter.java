@@ -14,6 +14,8 @@ import org.eyeseetea.malariacare.data.database.model.QuestionDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
+import org.eyeseetea.malariacare.domain.entity.NextScheduleDateConfiguration;
+import org.eyeseetea.malariacare.domain.service.SurveyNextScheduleDomainService;
 import org.eyeseetea.malariacare.observables.ObservablePush;
 import org.eyeseetea.malariacare.utils.DateParser;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -21,6 +23,7 @@ import org.eyeseetea.malariacare.utils.Constants;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -32,6 +35,8 @@ public class ObsActionPlanPresenter {
     private String[] mActions;
     private String[] mSubActions;
     SurveyDB mSurvey;
+
+    private String formattedNextScheduleDate;
 
     public ObsActionPlanPresenter(Context context) {
         this.mContext = context;
@@ -65,10 +70,27 @@ public class ObsActionPlanPresenter {
                         DateParser.EUROPEAN_DATE_FORMAT);
             }
 
-            String formattedNextDate = "NaN";
+            formattedNextScheduleDate = "NaN";
             if (mSurvey != null) {
-                formattedNextDate = dateParser.format(
-                        SurveyPlanner.getInstance().findScheduledDateBySurvey(mSurvey),
+                Date eventDate = mSurvey.getCompletionDate();
+
+                CompetencyScoreClassification competencyScoreClassification =
+                        CompetencyScoreClassification.get(mSurvey.getCompetencyScoreClassification());
+
+                NextScheduleDateConfiguration nextScheduleDateConfiguration =
+                        new NextScheduleDateConfiguration(mSurvey.getProgram().getNextScheduleDeltaMatrix());
+
+                SurveyNextScheduleDomainService surveyNextScheduleDomainService = new
+                        SurveyNextScheduleDomainService();
+
+                Date nextScheduleDate = surveyNextScheduleDomainService.calculate(
+                        nextScheduleDateConfiguration,
+                        eventDate,
+                        competencyScoreClassification,
+                        mSurvey.isLowProductivity());
+
+                formattedNextScheduleDate = dateParser.format(
+                        nextScheduleDate,
                         DateParser.EUROPEAN_DATE_FORMAT);
             }
 
@@ -77,7 +99,7 @@ public class ObsActionPlanPresenter {
                             mSurvey.getCompetencyScoreClassification());
 
             mView.renderHeaderInfo(mSurvey.getOrgUnit().getName(), mSurvey.getMainScore(),
-                    formattedCompletionDate, formattedNextDate, classification);
+                    formattedCompletionDate, formattedNextScheduleDate, classification);
         }
     }
 
@@ -237,7 +259,8 @@ public class ObsActionPlanPresenter {
             if(mSurvey.getStatus() != Constants.SURVEY_SENT){
                 mView.shareNotSent(mContext.getString(R.string.feedback_not_sent));
             }else {
-                mView.shareByText(mObsActionPlan, mSurvey, criticalQuestions, compositeScoresTree);
+                mView.shareByText(mObsActionPlan, mSurvey, formattedNextScheduleDate,
+                        criticalQuestions, compositeScoresTree);
             }
         }
     }
@@ -316,7 +339,8 @@ public class ObsActionPlanPresenter {
 
         void updateStatusView(Integer status);
 
-        void shareByText(ObsActionPlanDB obsActionPlan,SurveyDB survey, List<QuestionDB> criticalQuestions,
+        void shareByText(ObsActionPlanDB obsActionPlan,SurveyDB survey, String nextScheduleDate,
+                List<QuestionDB> criticalQuestions,
                 List<CompositeScoreDB> compositeScoresTree);
 
         void shareNotSent(String surveyNoSentMessage);
