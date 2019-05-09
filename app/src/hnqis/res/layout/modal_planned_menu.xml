@@ -23,22 +23,26 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:padding="8dp"
+                android:paddingTop="0dp"
+                android:paddingBottom="4dp"
                 android:textColor="@color/darkGrey"
                 android:textSize="18dp"
                 android:textStyle="bold"
                 app:font_name="@string/font_name_medium"
-                app:tDimension="@string/font_size_level4" />
+                app:tDimension="@string/font_size_level4"
+                android:text="_Text KE"/>
 
             <org.eyeseetea.malariacare.views.CustomTextView
                 android:id="@+id/planned_program"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/planned_org_unit"
-                android:padding="8dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
                 android:textColor="@color/darkGrey"
                 android:textSize="18dp"
                 android:textStyle="bold"
+                android:text="KE HNQIS Family Planning Long-Acting and Permanent Methods"
                 app:font_name="@string/font_name_medium"
                 app:tDimension="@string/font_size_level4" />
 
@@ -47,10 +51,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/planned_program"
-                android:padding="8dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
                 android:textColor="@color/darkGrey"
                 android:textSize="18dp"
                 android:textStyle="bold"
+                android:text="Productivity: Low"
                 app:font_name="@string/font_name_medium"
                 app:tDimension="@string/font_size_level4" />
 
@@ -59,10 +65,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/planned_productivity"
-                android:padding="8dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
                 android:textColor="@color/darkGrey"
                 android:textSize="18dp"
                 android:textStyle="bold"
+                android:text="CNI = Competent, but needs improvement. The provider has met all critical steps correct, but between 80% and 90% of non-critical steps"
                 app:font_name="@string/font_name_medium"
                 app:tDimension="@string/font_size_level4" />
 
@@ -71,10 +79,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/planned_competency"
-                android:padding="8dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="0dp"
                 android:textColor="@color/darkGrey"
                 android:textSize="18dp"
                 android:textStyle="bold"
+                android:text="Next QA: 2019-56-89"
                 app:font_name="@string/font_name_medium"
                 app:tDimension="@string/font_size_level4" />
 
