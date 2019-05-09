@@ -22,9 +22,9 @@ public class Migration17AddNextScheduleDeltaMatrixProgramColumn extends BaseMigr
 
     @Override
     public void migrate(DatabaseWrapper database) {
-        addColumn(database, SurveyDB.class, "next_schedule_delta_matrix", "String");
+        addColumn(database, ProgramDB.class, "next_schedule_delta_matrix", "String");
 
-        database.execSQL("update survey set next_schedule_delta_matrix = '" +
+        database.execSQL("update program set next_schedule_delta_matrix = '" +
                 ProgramDB.DEFAULT_PROGRAM_DELTA_MATRIX + "'");
     }
 
