@@ -27,7 +27,6 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
-import org.eyeseetea.malariacare.domain.entity.ScoreType;
 import org.eyeseetea.malariacare.utils.CompetencyUtils;
 
 import java.util.List;
@@ -91,21 +90,21 @@ public class FacilityTableBuilderBase {
         webView.loadUrl(injectColor);
 
         String injectClassification = String.format(JAVASCRIPT_SET_CLASSIFICATION,
-                "{competentText:'" + CompetencyUtils.getTextByCompetency(
+                "{competentText:'" + CompetencyUtils.getTextByCompetencyAbbreviation(
                         CompetencyScoreClassification.COMPETENT, context) + "'," +
-                        "competentImprovementText:'" + CompetencyUtils.getTextByCompetency(
+                        "competentImprovementText:'" + CompetencyUtils.getTextByCompetencyAbbreviation(
                         CompetencyScoreClassification.COMPETENT_NEEDS_IMPROVEMENT, context) + "'," +
-                        "notCompetentText:'" + CompetencyUtils.getTextByCompetency(
+                        "notCompetentText:'" + CompetencyUtils.getTextByCompetencyAbbreviation(
                         CompetencyScoreClassification.NOT_COMPETENT, context)+ "'," +
-                        "notAvailableText:'" + CompetencyUtils.getTextByCompetency(
+                        "notAvailableText:'" + CompetencyUtils.getTextByCompetencyAbbreviation(
                         CompetencyScoreClassification.NOT_AVAILABLE, context)+ "'," +
-                        "competentAbbreviationText:'" + CompetencyUtils.getAbbreviationTextByCompetency(
+                        "competentAbbreviationText:'" + CompetencyUtils.getTextByCompetencyAbbreviation(
                 CompetencyScoreClassification.COMPETENT, context) + "'," +
-                        "competentImprovementAbbreviationText:'" + CompetencyUtils.getAbbreviationTextByCompetency(
+                        "competentImprovementAbbreviationText:'" + CompetencyUtils.getTextByCompetencyAbbreviation(
                         CompetencyScoreClassification.COMPETENT_NEEDS_IMPROVEMENT, context) + "'," +
-                        "notCompetentAbbreviationText:'" + CompetencyUtils.getAbbreviationTextByCompetency(
+                        "notCompetentAbbreviationText:'" + CompetencyUtils.getTextByCompetencyAbbreviation(
                         CompetencyScoreClassification.NOT_COMPETENT, context) + "'," +
-                        "notAvailableAbbreviationText:'" + CompetencyUtils.getAbbreviationTextByCompetency(
+                        "notAvailableAbbreviationText:'" + CompetencyUtils.getTextByCompetencyAbbreviation(
                             CompetencyScoreClassification.NOT_AVAILABLE, context) + "'}");
 
         Log.d(TAG, injectClassification);

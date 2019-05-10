@@ -126,7 +126,7 @@
 <string name="dashboard_title_planned_type_overdue"></string>
 <string name="dashboard_title_planned_type_next_30"></string>
 <string name="dashboard_title_planned_type_future"></string>
-<string name="dashboard_title_planned_productivity"></string>
+<string name="dashboard_title_planned_productivity_abreviation"></string>
 <string name="dashboard_title_planned_quality_of_care"></string>
 <string name="dashboard_title_planned_next_qa"></string>
 <string name="assessment_sent_score"></string>

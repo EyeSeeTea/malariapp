@@ -129,7 +129,8 @@
 <string name="dashboard_title_planned_type_overdue">"ກາຍກຳນົດ"</string>
 <string name="dashboard_title_planned_type_next_30">"ໃນ 30 ວັນຕໍ່ໜ້າ"</string>
 <string name="dashboard_title_planned_type_future">"ຄັ້ງຕໍ່ໄປ"</string>
-<string name="dashboard_title_planned_productivity">"ຈຳນວນ"</string>
+<string name="dashboard_title_planned_productivity_abreviation">"ຈຳນວນ"</string>
+<string name="dashboard_title_planned_productivity">"ຜະລິດຕະພັນ"</string>
 <string name="competency_title">"ຄວາມສາມາດ"</string>
 <string name="dashboard_title_planned_next_qa">"ການປະເມີນຄຸນນະພາບຄັ້ງຕໍ່ໄປ"</string>
 <string name="assessment_sent_competency">"ຄວາມສາມາດ"</string>
@@ -304,8 +305,21 @@
 <string name="feedback_not_sent">"URL ຄວາມຄິດເຫັນບໍ່ສາມາດໃຊ້ໄດ້ເນື່ອງຈາກການສໍາຫຼວດ. ລອງແບ່ງປັນຄວາມຄິດເຫັນຕໍ່ອີກເທື່ອຫນຶ່ງ."</string>
 <string name="recommend_upgrade">"ກະລຸນາອັບເກດແອັບຯຈາກ Google Play."</string>
 
-<string name="competency_classification_not_available">ບໍ່​ສາ​ມາດ​ໃຊ້​ໄດ້</string>
-<string name="competency_classification_competent">ມີຄວາມສາມາດ</string>
-<string name="competency_classification_competent_improvement">ການປັບປຸງທີ່ມີຄວາມສາມາດ</string>
-<string name="competency_classification_not_competent">ບໍ່ມີຄວາມສາມາດ</string>
+<string name="competency_classification_not_available_name">ບໍ່​ສາ​ມາດ​ໃຊ້​ໄດ້</string>
+<string name="competency_classification_competent_name">ມີຄວາມສາມາດ</string>
+<string name="competency_classification_competent_improvement_name">ມີຄວາມສາມາດ, ແຕ່ຕ້ອງການປັບປຸງ</string>
+<string name="competency_classification_not_competent_name">ບໍ່ມີຄວາມສາມາດ</string>
+
+<string name="competency_classification_not_available_description">NA = ບໍ່ມີ. ການສໍາຫຼວດທີ່ສ້າງຂື້ນໃນສະບັບພາສາຂອງແອັບພລິເຄຊັນຄັ້ງສຸດທ້າຍແລະບໍ່ມີຄວາມສາມາດ</string>
+<string name="competency_classification_competent_description">C = ມີປະສິດທິພາບ. ຜູ້ໃຫ້ບໍລິການໄດ້ພົບທຸກຂັ້ນຕອນທີ່ສໍາຄັນແລະ≥ 90% ຂອງຂັ້ນຕອນທີ່ບໍ່ມີຄວາມສໍາຄັນ</string>
+<string name="competency_classification_competent_improvement_description">CNI = ມີຄວາມສາມາດ, ແຕ່ຕ້ອງການປັບປຸງ. ຜູ້ໃຫ້ບໍລິການໄດ້ພົບທຸກຂັ້ນຕອນສໍາຄັນທີ່ຖືກຕ້ອງ, ແຕ່ວ່າໃນລະຫວ່າງ 80% ແລະ 90% ຂອງຂັ້ນຕອນທີ່ບໍ່ມີຄວາມສໍາຄັນ</string>
+<string name="competency_classification_not_competent_description">NC = ບໍ່ຖືກຕ້ອງ. ຜູ້ໃຫ້ບໍລິການໄດ້ພາດໂອກາດຢ່າງຫນ້ອຍຫນຶ່ງບາດກ້າວທີ່ສໍາຄັນຫຼືໃນກໍລະນີທີ່ບໍ່ມີຂັ້ນຕອນທີ່ສໍາຄັນ, ຫນ້ອຍກວ່າ 80% ຂອງຂັ້ນຕອນທີ່ບໍ່ມີຄວາມສໍາຄັນ</string>
+
+<string name="competency_classification_not_available_abbreviation">NA</string>
+<string name="competency_classification_competent_abbreviation">C</string>
+<string name="competency_classification_competent_improvement_abbreviation">CNI</string>
+<string name="competency_classification_not_competent_abbreviation">NC</string>
+
+<string name="productivity_low_name">ຕ່ໍາ</string>
+<string name="productivity_high_name">ສູງ</string>
 </resources>

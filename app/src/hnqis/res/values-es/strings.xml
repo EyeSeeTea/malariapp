@@ -115,7 +115,8 @@ clínica"</string>
 <string name="dashboard_title_planned_type_overdue">"Atrasado"</string>
 <string name="dashboard_title_planned_type_next_30">"Próximos 30 días"</string>
 <string name="dashboard_title_planned_type_future">"Futuro"</string>
-<string name="dashboard_title_planned_productivity">"Prd"</string>
+<string name="dashboard_title_planned_productivity_abreviation">"Prd"</string>
+<string name="dashboard_title_planned_productivity">"Productividad"</string>
 <string name="competency_title">"Competencia"</string>
 <string name="dashboard_title_planned_next_qa">"Próx. eval."</string>
 <string name="assessment_sent_competency">"Competencia"</string>
@@ -298,9 +299,23 @@ clínica"</string>
 <string name="server_version_error">Versión del servidor no soportada.</string>
 <string name="recommend_upgrade">Por favor actualice la aplicación desde Google Play.</string>
 
+<string name="competency_classification_not_available_name">No disponible</string>
+<string name="competency_classification_competent_name">Competente</string>
+<string name="competency_classification_competent_improvement_name">Competente, pero necesita mejorar</string>
+<string name="competency_classification_not_competent_name">No Competente</string>
 
-<string name="competency_classification_not_available">No disponible</string>
-<string name="competency_classification_competent">Competente</string>
-<string name="competency_classification_competent_improvement">Comp. Mejorar</string>
-<string name="competency_classification_not_competent">No Competente</string>
+<string name="competency_classification_not_available_description">NA = No disponible. Encuesta creada en la última versión de la aplicación y competencia no esta disponible.</string>
+<string name="competency_classification_competent_description">C = Competente. El proveedor ha cumplido con todos los pasos críticos y ≥ 90% de los pasos no críticos</string>
+<string name="competency_classification_competent_improvement_description">CNM = Competente, pero necesita mejorar. El proveedor ha cumplido con todos los pasos críticos correctos, pero entre el 80% y el 90% de los pasos no críticos</string>
+<string name="competency_classification_not_competent_description">NC = No competente.
+126/5000
+El proveedor ha omitido al menos un paso crítico o, en caso de que no haya pasos críticos, menos del 80% de los pasos no críticos.</string>
+
+<string name="competency_classification_not_available_abbreviation">NA</string>
+<string name="competency_classification_competent_abbreviation">C</string>
+<string name="competency_classification_competent_improvement_abbreviation">CNM</string>
+<string name="competency_classification_not_competent_abbreviation">NC</string>
+
+<string name="productivity_low_name">Baja</string>
+<string name="productivity_high_name">Alta</string>
 </resources>

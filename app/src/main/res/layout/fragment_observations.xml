@@ -98,27 +98,16 @@
                 android:layout_margin="8dp">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <org.eyeseetea.malariacare.views.CustomTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="left|center_vertical"
-                        android:gravity="left"
-                        android:text="@string/competency_title"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/xsmall_text_size"
-                        android:textStyle="bold"
-                        android:padding="4dp"
-                        app:tDimension="@string/font_size_level1"
-                        app:tFontName="@string/medium_font_name" />
+
 
                     <org.eyeseetea.malariacare.views.CustomTextView
                         android:id="@+id/feedback_competency"
-                        android:layout_width="wrap_content"
+                        android:layout_weight="0.74"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left|center_vertical"
                         android:layout_marginLeft="4dp"
@@ -126,35 +115,22 @@
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textColor="@color/white"
                         android:textSize="@dimen/xsmall_text_size"
-                        android:padding="4dp"
+                        android:padding="6dp"
                         app:tDimension="@string/font_size_level1"
                         app:tFontName="@string/medium_font_name" />
 
-                    <org.eyeseetea.malariacare.views.CustomTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="left|center_vertical"
-                        android:gravity="left"
-                        android:text="@string/overall_quality_of_care"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/xsmall_text_size"
-                        android:textStyle="bold"
-                        android:layout_marginLeft="16dp"
-                        app:tDimension="@string/font_size_level1"
-                        app:tFontName="@string/medium_font_name" />
 
                     <org.eyeseetea.malariacare.views.CustomTextView
                         android:id="@+id/feedback_total_score"
-                        android:layout_width="wrap_content"
+                        android:layout_weight="0.26"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left|center_vertical"
-                        android:layout_marginLeft="4dp"
                         android:gravity="center_horizontal"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textColor="@color/white"
                         android:textSize="@dimen/xsmall_text_size"
-                        android:padding="4dp"
+                        android:padding="6dp"
                         app:tDimension="@string/font_size_level1"
                         app:tFontName="@string/medium_font_name" />
                 </LinearLayout>
@@ -173,7 +149,7 @@
                         android:textColor="@color/new_grey_text_color"
                         android:textSize="@dimen/xsmall_text_size"
                         android:textStyle="normal"
-                        android:padding="4dp"
+                        android:padding="6dp"
                         app:tDimension="@string/font_size_level1"
                         app:tFontName="@string/font_name_regular" />
 
@@ -189,7 +165,7 @@
                         android:singleLine="true"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textColor="@color/new_grey_text_color"
-                        android:padding="4dp"
+                        android:padding="6dp"
                         android:textSize="@dimen/xsmall_text_size"
                         app:tDimension="@string/font_size_level1"
                         app:tFontName="@string/font_name_regular" />
