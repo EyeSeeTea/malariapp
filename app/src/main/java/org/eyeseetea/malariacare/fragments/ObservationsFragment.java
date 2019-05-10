@@ -54,20 +54,19 @@ import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
 import org.eyeseetea.malariacare.domain.usecase.GetObservationBySurveyUidUseCase;
 import org.eyeseetea.malariacare.domain.usecase.GetServerMetadataUseCase;
 import org.eyeseetea.malariacare.domain.usecase.SaveObservationUseCase;
-import org.eyeseetea.malariacare.layout.adapters.MissedCriticalStepsAdapter;
+import org.eyeseetea.malariacare.layout.adapters.MissedStepsAdapter;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.presentation.presenters.observations.ObservationsPresenter;
-import org.eyeseetea.malariacare.presentation.viewmodels.observations.ActionViewModel;
-import org.eyeseetea.malariacare.presentation.viewmodels.observations.MissedCriticalStepViewModel;
+import org.eyeseetea.malariacare.presentation.viewmodels.observations.MissedStepViewModel;
 import org.eyeseetea.malariacare.presentation.viewmodels.observations.ObservationViewModel;
+import org.eyeseetea.malariacare.presentation.viewmodels.observations.ActionViewModel;
 import org.eyeseetea.malariacare.presentation.views.CustomTextWatcher;
 import org.eyeseetea.malariacare.presentation.views.observations.ActionView;
 import org.eyeseetea.malariacare.utils.CompetencyUtils;
 import org.eyeseetea.malariacare.utils.DateParser;
 import org.eyeseetea.malariacare.views.CustomEditText;
-import org.eyeseetea.malariacare.views.CustomSpinner;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.List;
@@ -93,7 +92,9 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
     private RelativeLayout mRootView;
     private ObservationsPresenter presenter;
     private RecyclerView missedCriticalStepsView;
-    private MissedCriticalStepsAdapter missedCriticalStepsAdapter;
+    private MissedStepsAdapter missedCriticalStepsAdapter;
+    private RecyclerView missedNonCriticalStepsView;
+    private MissedStepsAdapter missedNonCriticalStepsAdapter;
 
     private ActionView action1View;
 
@@ -126,7 +127,8 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
         initFAB();
         initActions();
         initBackButton();
-        initRecyclerView();
+        initMissedCriticalStepsRecyclerView();
+        initMissedNonCriticalStepsRecyclerView();
         initPresenter(surveyUid);
 
         return mRootView;
@@ -143,16 +145,28 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
         });
     }
 
-    private void initRecyclerView() {
+    private void initMissedCriticalStepsRecyclerView() {
         missedCriticalStepsView = mRootView.findViewById(R.id.missed_critical_steps_view);
         DividerItemDecoration dividerItemDecoration =
                 new DividerItemDecoration(missedCriticalStepsView.getContext(),
                         DividerItemDecoration.VERTICAL);
         missedCriticalStepsView.addItemDecoration(dividerItemDecoration);
 
-        missedCriticalStepsAdapter = new MissedCriticalStepsAdapter();
+        missedCriticalStepsAdapter = new MissedStepsAdapter();
 
         missedCriticalStepsView.setAdapter(missedCriticalStepsAdapter);
+    }
+
+    private void initMissedNonCriticalStepsRecyclerView() {
+        missedNonCriticalStepsView = mRootView.findViewById(R.id.missed_non_critical_steps_view);
+        DividerItemDecoration dividerItemDecoration =
+                new DividerItemDecoration(missedCriticalStepsView.getContext(),
+                        DividerItemDecoration.VERTICAL);
+        missedNonCriticalStepsView.addItemDecoration(dividerItemDecoration);
+
+        missedNonCriticalStepsAdapter = new MissedStepsAdapter();
+
+        missedNonCriticalStepsView.setAdapter(missedNonCriticalStepsAdapter);
     }
 
     @Override
@@ -271,8 +285,13 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
 
     @Override
     public void renderMissedCriticalSteps(
-            List<MissedCriticalStepViewModel> missedCriticalSteps) {
-        missedCriticalStepsAdapter.setMissedCriticalSteps(missedCriticalSteps);
+            List<MissedStepViewModel> missedCriticalSteps) {
+        missedCriticalStepsAdapter.setMissedSteps(missedCriticalSteps);
+    }
+
+    @Override
+    public void renderMissedNonCriticalSteps(List<MissedStepViewModel> missedNonCriticalSteps) {
+        missedNonCriticalStepsAdapter.setMissedSteps(missedNonCriticalSteps);
     }
 
     @Override
@@ -319,8 +338,10 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
 
     @Override
     public void shareByText(ObservationViewModel observationViewModel, SurveyDB survey,
-            List<MissedCriticalStepViewModel> missedCriticalStepViewModels) {
-        String data = extractTextData(observationViewModel, survey, missedCriticalStepViewModels);
+            List<MissedStepViewModel> missedCriticalStepViewModels,
+            List<MissedStepViewModel> missedNonCriticalStepViewModels) {
+        String data = extractTextData(observationViewModel, survey, missedCriticalStepViewModels,
+                missedNonCriticalStepViewModels);
 
         shareData(data);
     }
@@ -353,7 +374,8 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
     }
 
     private String extractTextData(ObservationViewModel observationViewModel, SurveyDB survey,
-            List<MissedCriticalStepViewModel> missedCriticalStepViewModels) {
+            List<MissedStepViewModel> missedCriticalStepViewModels,
+            List<MissedStepViewModel> missedNonCriticalStepViewModels) {
         String data =
                 PreferencesState.getInstance().getContext().getString(
                         R.string.app_name) + "- \n";
@@ -410,16 +432,30 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
             data += "\n\n" + getString(R.string.critical_steps) + "\n";
 
             //For each score add proper items
-            for (MissedCriticalStepViewModel missedCriticalStepViewModel :
-                    missedCriticalStepViewModels) {
+            for (MissedStepViewModel missedStepViewModel : missedCriticalStepViewModels) {
 
-                if (missedCriticalStepViewModel.isCompositeScore()) {
-                    data += missedCriticalStepViewModel.getLabel() + "\n";
+                if (missedStepViewModel.isCompositeScore()) {
+                    data += missedStepViewModel.getLabel() + "\n";
                 } else {
-                    data += "-" + missedCriticalStepViewModel.getLabel()  + "\n";
+                    data += "-" + missedStepViewModel.getLabel()  + "\n";
                 }
             }
         }
+
+        if (missedNonCriticalStepViewModels != null && missedNonCriticalStepViewModels.size() > 0) {
+            data += "\n\n" + getString(R.string.plan_action_non_critical_steps_missed_title) + "\n";
+
+            //For each score add proper items
+            for (MissedStepViewModel missedStepViewModel : missedNonCriticalStepViewModels) {
+
+                if (missedStepViewModel.isCompositeScore()) {
+                    data += missedStepViewModel.getLabel() + "\n";
+                } else {
+                    data += "-" + missedStepViewModel.getLabel()  + "\n";
+                }
+            }
+        }
+
         data += "\n\n" + getString(R.string.see_full_assessment) + "\n";
         if (survey.isSent()) {
             data += String.format(getActivity().getString(R.string.feedback_url),
