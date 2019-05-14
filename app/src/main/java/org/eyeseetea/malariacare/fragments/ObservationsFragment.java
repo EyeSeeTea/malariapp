@@ -138,19 +138,22 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
 
     private void initActions() {
         action1View = mRootView.findViewById(R.id.action1_view);
-        action1View.setTitle (getActivity().getString(R.string.plan_action_action_plan_title) + " 1: ");
+        action1View.setTitle(
+                getActivity().getString(R.string.plan_action_action_plan_title) + " 1: ");
 
         action1View.setOnActionChangedListener(
                 actionViewModel -> presenter.onAction1Changed(actionViewModel));
 
         action2View = mRootView.findViewById(R.id.action2_view);
-        action2View.setTitle (getActivity().getString(R.string.plan_action_action_plan_title) + " 2:");
+        action2View.setTitle(
+                getActivity().getString(R.string.plan_action_action_plan_title) + " 2:");
 
         action2View.setOnActionChangedListener(
                 actionViewModel -> presenter.onAction2Changed(actionViewModel));
 
         action3View = mRootView.findViewById(R.id.action3_view);
-        action3View.setTitle (getActivity().getString(R.string.plan_action_action_plan_title) + " 3:");
+        action3View.setTitle(
+                getActivity().getString(R.string.plan_action_action_plan_title) + " 3:");
 
         action3View.setOnActionChangedListener(
                 actionViewModel -> presenter.onAction3Changed(actionViewModel));
@@ -337,7 +340,6 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
     }
 
 
-
     @Override
     public void shareByText(ObservationViewModel observationViewModel, SurveyDB survey,
             List<MissedStepViewModel> missedCriticalStepViewModels,
@@ -387,7 +389,8 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
 
     @Override
     public void showInvalidObservationErrorMessage() {
-        Toast.makeText(getActivity(), R.string.observations_invalid_error_message, Toast.LENGTH_LONG)
+        Toast.makeText(getActivity(), R.string.observations_invalid_error_message,
+                Toast.LENGTH_LONG)
                 .show();
     }
 
@@ -410,7 +413,8 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
                 CompetencyScoreClassification.get(
                         survey.getCompetencyScoreClassification());
 
-        String competencyText = CompetencyUtils.getTextByCompetencyName(classification, getActivity());
+        String competencyText = CompetencyUtils.getTextByCompetencyName(classification,
+                getActivity());
         data += getString(R.string.competency_title).toUpperCase() + ": "
                 + competencyText + "\n";
 
@@ -421,16 +425,46 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
                 dateParser.format(SurveyPlanner.getInstance().findScheduledDateBySurvey(survey),
                         DateParser.EUROPEAN_DATE_FORMAT));
 
-        if (observationViewModel.getProvider() != null && !observationViewModel.getProvider().isEmpty()) {
+        if (observationViewModel.getProvider() != null
+                && !observationViewModel.getProvider().isEmpty()) {
             data += "\n\n" + getString(R.string.plan_action_provider_title) + " "
                     + observationViewModel.getProvider();
         }
 
-        data += "\n" + getString(R.string.plan_action_action_plan_title) + " ";
+        if (observationViewModel.getAction1() != null
+                && observationViewModel.getAction1().isValid()) {
+            data += "\n\n" + getString(R.string.plan_action_action_plan_title) + " 1: ";
 
-        if (observationViewModel.getAction1() != null &&
-                !observationViewModel.getAction1().getDescription().isEmpty()) {
-            data += observationViewModel.getAction1();
+            data += "\n   " + observationViewModel.getAction1().getDescription();
+            data += "\n   " + getString(R.string.observation_action_responsible) + " "
+                    + observationViewModel.getAction1().getResponsible();
+            data += "\n   " + getString(R.string.observation_action_due_date) + " "
+                    + new DateParser().format(observationViewModel.getAction1().getDueDate(),
+                    DateParser.AMERICAN_DATE_FORMAT);
+        }
+
+        if (observationViewModel.getAction2() != null
+                && observationViewModel.getAction2().isValid()) {
+            data += "\n\n" + getString(R.string.plan_action_action_plan_title) + " 2: ";
+
+            data += "\n   " + observationViewModel.getAction2().getDescription();
+            data += "\n   " + getString(R.string.observation_action_responsible) + " "
+                    + observationViewModel.getAction2().getResponsible();
+            data += "\n   " + getString(R.string.observation_action_due_date) + " "
+                    + new DateParser().format(observationViewModel.getAction2().getDueDate(),
+                    DateParser.AMERICAN_DATE_FORMAT);
+        }
+
+        if (observationViewModel.getAction3() != null
+                && observationViewModel.getAction3().isValid()) {
+            data += "\n\n" + getString(R.string.plan_action_action_plan_title) + " 3: ";
+
+            data += "\n   " + observationViewModel.getAction3().getDescription();
+            data += "\n   " + getString(R.string.observation_action_responsible) + " "
+                    + observationViewModel.getAction3().getResponsible();
+            data += "\n   " + getString(R.string.observation_action_due_date) + " "
+                    + new DateParser().format(observationViewModel.getAction3().getDueDate(),
+                    DateParser.AMERICAN_DATE_FORMAT);
         }
 
         if (missedCriticalStepViewModels != null && missedCriticalStepViewModels.size() > 0) {
@@ -442,7 +476,7 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
                 if (missedStepViewModel.isCompositeScore()) {
                     data += missedStepViewModel.getLabel() + "\n";
                 } else {
-                    data += "-" + missedStepViewModel.getLabel()  + "\n";
+                    data += "-" + missedStepViewModel.getLabel() + "\n";
                 }
             }
         }
@@ -456,7 +490,7 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
                 if (missedStepViewModel.isCompositeScore()) {
                     data += missedStepViewModel.getLabel() + "\n";
                 } else {
-                    data += "-" + missedStepViewModel.getLabel()  + "\n";
+                    data += "-" + missedStepViewModel.getLabel() + "\n";
                 }
             }
         }
