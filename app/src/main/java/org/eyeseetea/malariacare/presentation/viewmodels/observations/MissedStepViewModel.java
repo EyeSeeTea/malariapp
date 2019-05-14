@@ -1,4 +1,4 @@
-package org.eyeseetea.malariacare.presentation.viewmodels.observation;
+package org.eyeseetea.malariacare.presentation.viewmodels.observations;
 
 public abstract class MissedStepViewModel {
 

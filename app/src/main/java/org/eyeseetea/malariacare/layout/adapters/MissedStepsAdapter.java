@@ -10,8 +10,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.presentation.viewmodels.observation.CompositeScoreViewModel;
-import org.eyeseetea.malariacare.presentation.viewmodels.observation.MissedStepViewModel;
+import org.eyeseetea.malariacare.presentation.viewmodels.observations.CompositeScoreViewModel;
+import org.eyeseetea.malariacare.presentation.viewmodels.observations.MissedStepViewModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;

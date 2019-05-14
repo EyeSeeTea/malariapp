@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.presentation.presenters.observations.ActionPresenter;
-import org.eyeseetea.malariacare.presentation.viewmodels.observation.ActionViewModel;
+import org.eyeseetea.malariacare.presentation.viewmodels.observations.ActionViewModel;
 import org.eyeseetea.malariacare.presentation.views.CustomTextWatcher;
 import org.eyeseetea.malariacare.utils.DateParser;
 import org.eyeseetea.malariacare.views.CustomEditText;
