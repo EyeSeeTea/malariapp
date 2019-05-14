@@ -1,6 +1,6 @@
 package org.eyeseetea.malariacare.presentation.presenters.observations;
 
-import org.eyeseetea.malariacare.presentation.viewmodels.observations.ActionViewModel;
+import org.eyeseetea.malariacare.presentation.viewmodels.observation.ActionViewModel;
 
 import java.util.Date;
 

@@ -5,8 +5,8 @@ import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
 import org.eyeseetea.malariacare.domain.entity.ObservationValue;
 import org.eyeseetea.malariacare.domain.entity.ServerMetadata;
 import org.eyeseetea.malariacare.domain.entity.ServerMetadataItem;
-import org.eyeseetea.malariacare.presentation.viewmodels.observations.ActionViewModel;
-import org.eyeseetea.malariacare.presentation.viewmodels.observations.ObservationViewModel;
+import org.eyeseetea.malariacare.presentation.viewmodels.observation.ActionViewModel;
+import org.eyeseetea.malariacare.presentation.viewmodels.observation.ObservationViewModel;
 import org.eyeseetea.malariacare.utils.DateParser;
 
 import java.util.ArrayList;

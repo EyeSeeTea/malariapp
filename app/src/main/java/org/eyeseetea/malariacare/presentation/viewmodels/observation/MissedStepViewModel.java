@@ -1,4 +1,4 @@
-package org.eyeseetea.malariacare.presentation.viewmodels.observations;
+package org.eyeseetea.malariacare.presentation.viewmodels.observation;
 
 public abstract class MissedStepViewModel {
 
@@ -8,10 +8,10 @@ public abstract class MissedStepViewModel {
     private String parentKey;
     private String key;
 
-    protected static String COMPOSITE_KEY_PREFIX = "C-";
-    protected static String QUESTION_KEY_PREFIX = "Q-";
+    static String COMPOSITE_KEY_PREFIX = "C-";
+    static String QUESTION_KEY_PREFIX = "Q-";
 
-    public MissedStepViewModel(
+    MissedStepViewModel(
             String key,
             String parentKey,
             String label,

@@ -20,9 +20,9 @@ import org.eyeseetea.malariacare.domain.usecase.SaveObservationUseCase;
 import org.eyeseetea.malariacare.observables.ObservablePush;
 import org.eyeseetea.malariacare.presentation.mapper.observations.MissedStepMapper;
 import org.eyeseetea.malariacare.presentation.mapper.observations.ObservationMapper;
-import org.eyeseetea.malariacare.presentation.viewmodels.observations.ActionViewModel;
-import org.eyeseetea.malariacare.presentation.viewmodels.observations.MissedStepViewModel;
-import org.eyeseetea.malariacare.presentation.viewmodels.observations.ObservationViewModel;
+import org.eyeseetea.malariacare.presentation.viewmodels.observation.ActionViewModel;
+import org.eyeseetea.malariacare.presentation.viewmodels.observation.MissedStepViewModel;
+import org.eyeseetea.malariacare.presentation.viewmodels.observation.ObservationViewModel;
 import org.eyeseetea.malariacare.utils.DateParser;
 import org.eyeseetea.malariacare.utils.Constants;
 
