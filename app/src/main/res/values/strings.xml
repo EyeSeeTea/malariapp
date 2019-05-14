@@ -233,23 +233,9 @@ evaluation"</string>
 <string name="plan_action_today_date">Completed: %s</string>
 <string name="plan_action_next_date">Next: %s</string>
 <string name="plan_action_description">Describe what was observed during the visit a specific action plan for addressing gaps. Also note an improvement over a gap identified during the last visit</string>
-<string name="plan_action_action_plan_title">Action plan:</string>
-<string name="plan_action_action_title">Action:</string>
+<string name="plan_action_action_plan_title">Action plan</string>
 <string name="observation_action_due_date">Due Date:</string>
 <string name="observation_action_responsible">Responsible:</string>
-<string-array name="plan_action_dropdown_options">
-<item>"..."</item>
-<item>Refresher training during SSV</item>
-<item>Group refresher training at a later date</item>
-<item>Plan CME activity</item>
-<item>Demonstrate technique with client</item>
-<item>Other</item>
-</string-array>
-<string-array name="plan_action_dropdown_suboptions">
-<item>...</item>
-<item>Watch video</item>
-<item>Practice proper insertion technique at time of visit</item>
-</string-array>
 <string name="supervision_on">Results supervision on:</string>
 <string name="critical_steps">Critical Steps missed:</string>
 <string name="url_not_available">"The feedback URL is not available because the survey hasn't been sent to the server yet. Try sharing the feedback again later."</string>

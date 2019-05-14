@@ -1,23 +1,25 @@
 package org.eyeseetea.malariacare.presentation.views.observations;
 
-import android.app.DatePickerDialog;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.presentation.presenters.observations.ActionPresenter;
 import org.eyeseetea.malariacare.presentation.viewmodels.observations.ActionViewModel;
 import org.eyeseetea.malariacare.presentation.views.CustomTextWatcher;
+import org.eyeseetea.malariacare.utils.DateParser;
 import org.eyeseetea.malariacare.views.CustomEditText;
-import org.eyeseetea.malariacare.views.CustomSpinner;
+import org.eyeseetea.malariacare.views.CustomTextView;
+
+import java.util.Calendar;
+import java.util.Date;
 
 public class ActionView extends LinearLayout implements ActionPresenter.View {
 
@@ -29,15 +31,10 @@ public class ActionView extends LinearLayout implements ActionPresenter.View {
 
     private OnActionChangedListener onActionChangedListener;
 
-    private CustomSpinner activitiesSpinner;
-    private CustomSpinner subActivitiesSpinner;
-    private ArrayAdapter<CharSequence> activitiesAdapter;
-    private ArrayAdapter<CharSequence> subActivitiesAdapter;
-
-    private View subActivityDividerView;
-    private View otherSubActivityDividerView;
-
-    private CustomEditText otherSubActivityEditText;
+    private CustomTextView titleView;
+    private CustomEditText descriptionView;
+    private CustomEditText dueDateView;
+    private CustomEditText responsibleView;
 
     public ActionView(Context context) {
         super(context);
@@ -60,24 +57,33 @@ public class ActionView extends LinearLayout implements ActionPresenter.View {
         presenter.setAction(actionViewModel);
     }
 
-    @Override
-    public void selectActivity(int position) {
-        activitiesSpinner.setSelection(position);
+    public void setTitle (String title){
+        if (titleView == null){
+            titleView = findViewById(R.id.action_title_view);
+        }
+        titleView.setText(title);
     }
 
     @Override
-    public void selectSubActivity(int position) {
-        subActivitiesSpinner.setSelection(position);
+    public void setEnabled(boolean value) {
+        descriptionView.setEnabled(value);
+        responsibleView.setEnabled(value);
+        dueDateView.setEnabled(value);
     }
 
     @Override
-    public void loadActivities(String[] actions) {
-        activitiesAdapter.addAll(actions);
+    public void showActionData(ActionViewModel actionViewModel) {
+        descriptionView.setText(actionViewModel.getDescription());
+        responsibleView.setText(actionViewModel.getResponsible());
+
+        showDueDate(actionViewModel.getDueDate());
     }
 
-    @Override
-    public void loadSubActivities(String[] subActions) {
-        subActivitiesAdapter.addAll(subActions);
+    private void showDueDate(Date dueDate) {
+        if (dueDate != null) {
+            String dueDateText = new DateParser().format(dueDate, DateParser.AMERICAN_DATE_FORMAT);
+            dueDateView.setText(dueDateText);
+        }
     }
 
     @Override
@@ -87,131 +93,74 @@ public class ActionView extends LinearLayout implements ActionPresenter.View {
         }
     }
 
-    @Override
-    public void showSubActivitiesView() {
-        subActivitiesSpinner.setVisibility(View.VISIBLE);
-        subActivityDividerView.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void hideSubActivitiesView() {
-        subActivitiesSpinner.setVisibility(View.GONE);
-        subActivityDividerView.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void showSubActivityOtherView() {
-        otherSubActivityEditText.setVisibility(View.VISIBLE);
-        otherSubActivityDividerView.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void hideSubActivityOtherView() {
-        otherSubActivityEditText.setVisibility(View.GONE);
-        otherSubActivityDividerView.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void renderOtherSubActivity(String subActivityAction) {
-        otherSubActivityEditText.setText(subActivityAction);
-    }
-
     private void initialize(final Context context) {
         inflate(context, R.layout.view_observation_action, this);
 
-        initializeActivities();
-        initializeSubActivities();
-        initializeOtherView();
+        initializeDescription();
         initializeResponsibleView();
         initializeDueDateView();
         initializePresenter();
     }
 
+    private void initializeDescription() {
+        descriptionView = findViewById(R.id.description_view);
+
+        descriptionView.addTextChangedListener(new CustomTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable editable) {
+                presenter.onDescriptionChange(editable.toString());
+            }
+        });
+    }
+
     private void initializeResponsibleView() {
+        responsibleView = findViewById(R.id.responsible_view);
+
+        responsibleView.addTextChangedListener(new CustomTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable editable) {
+                presenter.onResponsibleChange(editable.toString());
+            }
+        });
     }
 
     private void initializeDueDateView() {
-        TextView responsibleTextView = findViewById(R.id.due_date_text_view);
+        dueDateView = findViewById(R.id.due_date_view);
 
-/*        responsibleTextView.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DatePickerDialog datePickerDialog = new DatePickerDialog(
-                        getContext(), new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        dueDateView.setOnClickListener(v -> showDatePickerDialog());
+    }
 
-                    }
-                }, startYear, starthMonth, startDay);
-            }
-        });*/
+    private void showDatePickerDialog() {
+        View v = LayoutInflater.from(getContext())
+                .inflate(R.layout.dialog_date,null);
+        DatePicker datePicker = v.findViewById(R.id.dialog_date_date_picker);
+
+        AlertDialog dialog = new AlertDialog.Builder(getContext())
+                .setView(v)
+                //.setTitle(R.string.date_picker_title)
+                .setPositiveButton(android.R.string.ok,
+                        (dialog1, which) -> {
+                            int year = datePicker.getYear();
+                            int month = datePicker.getMonth();
+                            int day = datePicker.getDayOfMonth();
+
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.set(year,month,day);
+                            Date dueDate = calendar.getTime();
+
+                            presenter.onDueDateChange(dueDate);
+
+                            showDueDate(dueDate);
+
+                            dialog1.dismiss();
+                        })
+                .create();
+
+        dialog.show();
     }
 
     private void initializePresenter() {
-
-        String[] activities =
-                getResources().getStringArray(R.array.plan_action_dropdown_options);
-
-        String[] subActivities =
-                getResources().getStringArray(R.array.plan_action_dropdown_suboptions);
-
         presenter = new ActionPresenter();
-        presenter.attachView(this, activities, subActivities);
+        presenter.attachView(this);
     }
-
-    private void initializeActivities() {
-        activitiesSpinner = findViewById(R.id.activities_spinner);
-
-        activitiesAdapter =
-                new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item);
-
-        activitiesSpinner.setAdapter(activitiesAdapter);
-        activitiesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position,
-                    long l) {
-                presenter.onActivitySelected(adapterView.getItemAtPosition(position).toString());
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
-        });
-    }
-
-    private void initializeSubActivities() {
-        subActivitiesSpinner = findViewById(R.id.sub_activities_spinner);
-
-        subActivitiesAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item);
-
-
-        subActivitiesSpinner.setAdapter(subActivitiesAdapter);
-
-
-        subActivitiesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position,
-                    long l) {
-                presenter.onSubActivitySelected(adapterView.getItemAtPosition(position).toString());
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
-        });
-    }
-
-    private void initializeOtherView() {
-        subActivityDividerView = findViewById(R.id.sub_activity_divider_view);
-        otherSubActivityEditText = findViewById(R.id.other_sub_activity_edit_text);
-        otherSubActivityDividerView = findViewById(R.id.other_sub_activity_divider_view);
-
-        otherSubActivityEditText.addTextChangedListener(new CustomTextWatcher() {
-            @Override
-            public void afterTextChanged(Editable editable) {
-                presenter.subActivityOtherChanged(editable.toString());
-            }
-        });
-    }
-
 }

@@ -49,14 +49,37 @@ public class ServerMetadataRepository implements IServerMetadataRepository {
                 context.getString(R.string.providerCode));
         ServerMetadataDB gaps = ServerMetadataDB.findControlDataElementByCode(
                 context.getString(R.string.gaps_code));
-        ServerMetadataDB planAction = ServerMetadataDB.findControlDataElementByCode(
-                context.getString(R.string.action_plan_code));
         ServerMetadataDB activityAction1 = ServerMetadataDB.findControlDataElementByCode(
                 context.getString(R.string.action1_code));
         ServerMetadataDB subActivityAction1 = ServerMetadataDB.findControlDataElementByCode(
                 context.getString(R.string.action2_code));
 
-        //TODO: Add new CDE for actions 1,2,3
+        ServerMetadataDB action1_1_code = ServerMetadataDB.findControlDataElementByCode(
+                context.getString(R.string.action1_1_code));
+        ServerMetadataDB due_date_1_code = ServerMetadataDB.findControlDataElementByCode(
+                context.getString(R.string.due_date_1_code));
+        ServerMetadataDB responsible_1_code = ServerMetadataDB.findControlDataElementByCode(
+                context.getString(R.string.responsible_1_code));
+        ServerMetadataDB completion_date_1_code = ServerMetadataDB.findControlDataElementByCode(
+                context.getString(R.string.completion_date_1_code));
+
+        ServerMetadataDB action2_1_code = ServerMetadataDB.findControlDataElementByCode(
+                context.getString(R.string.action2_1_code));
+        ServerMetadataDB due_date_2_code = ServerMetadataDB.findControlDataElementByCode(
+                context.getString(R.string.due_date_2_code));
+        ServerMetadataDB responsible_2_code = ServerMetadataDB.findControlDataElementByCode(
+                context.getString(R.string.responsible_2_code));
+        ServerMetadataDB completion_date_2_code = ServerMetadataDB.findControlDataElementByCode(
+                context.getString(R.string.completion_date_2_code));
+
+        ServerMetadataDB action3_1_code = ServerMetadataDB.findControlDataElementByCode(
+                context.getString(R.string.action3_1_code));
+        ServerMetadataDB due_date_3_code = ServerMetadataDB.findControlDataElementByCode(
+                context.getString(R.string.due_date_3_code));
+        ServerMetadataDB responsible_3_code = ServerMetadataDB.findControlDataElementByCode(
+                context.getString(R.string.responsible_3_code));
+        ServerMetadataDB completion_date_3_code = ServerMetadataDB.findControlDataElementByCode(
+                context.getString(R.string.completion_date_3_code));
 
         ServerMetadata serverMetadata = new ServerMetadata(
                 new ServerMetadataItem(nextAssessment.getCode(), nextAssessment.getUid()),
@@ -73,24 +96,19 @@ public class ServerMetadataRepository implements IServerMetadataRepository {
                 new ServerMetadataItem(pushDevice.getCode(), pushDevice.getUid()),
                 new ServerMetadataItem(overallProductivity.getCode(), overallProductivity.getUid()),
                 new ServerMetadataItem(provider.getCode(), provider.getUid()),
-                new ServerMetadataItem(gaps.getCode(), gaps.getUid()),
-                new ServerMetadataItem(planAction.getCode(), planAction.getUid()),
-                new ServerMetadataItem(activityAction1.getCode(), activityAction1.getUid()),
-                new ServerMetadataItem(subActivityAction1.getCode(), subActivityAction1.getUid()),
-                new ServerMetadataItem("_DueDateAction1", "FAKE1"),
-                new ServerMetadataItem("_ResponsibleAction1", "FAKE2"),
-                new ServerMetadataItem("_isRealizedAction1", "FAKE3"),
-                new ServerMetadataItem("_activityAction2", "FAKE4"),
-                new ServerMetadataItem("_subactivityAction2", "FAKE5"),
-                new ServerMetadataItem("_DueDateAction2", "FAKE6"),
-                new ServerMetadataItem("_ResponsibleAction2", "FAKE7"),
-                new ServerMetadataItem("_isRealizedAction2", "FAKE8"),
-                new ServerMetadataItem("_activityAction3", "FAKE9"),
-                new ServerMetadataItem("_subactivityAction3", "FAKE10"),
-                new ServerMetadataItem("_DueDateAction3", "FAKE11"),
-                new ServerMetadataItem("_ResponsibleAction3", "FAKE12"),
-                new ServerMetadataItem("_isRealizedAction3", "FAKE13")
+                new ServerMetadataItem(action1_1_code.getCode(), action1_1_code.getUid()),
+                new ServerMetadataItem(due_date_1_code.getCode(), due_date_1_code.getUid()),
+                new ServerMetadataItem(responsible_1_code.getCode(), responsible_1_code.getUid()),
+                new ServerMetadataItem(completion_date_1_code.getCode(), completion_date_1_code.getUid()),
+                new ServerMetadataItem(action2_1_code.getCode(), action2_1_code.getUid()),
+                new ServerMetadataItem(due_date_2_code.getCode(), due_date_2_code.getUid()),
+                new ServerMetadataItem(responsible_2_code.getCode(), responsible_2_code.getUid()),
+                new ServerMetadataItem(completion_date_2_code.getCode(), completion_date_2_code.getUid()),
+                new ServerMetadataItem(action3_1_code.getCode(), action3_1_code.getUid()),
+                new ServerMetadataItem(due_date_3_code.getCode(), due_date_3_code.getUid()),
+                new ServerMetadataItem(responsible_3_code.getCode(), responsible_3_code.getUid()),
+                new ServerMetadataItem(completion_date_3_code.getCode(), completion_date_3_code.getUid())
         );
-        return  serverMetadata;
+        return serverMetadata;
     }
 }

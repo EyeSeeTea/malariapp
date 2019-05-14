@@ -23,7 +23,6 @@ import org.eyeseetea.malariacare.presentation.mapper.observations.ObservationMap
 import org.eyeseetea.malariacare.presentation.viewmodels.observations.ActionViewModel;
 import org.eyeseetea.malariacare.presentation.viewmodels.observations.MissedStepViewModel;
 import org.eyeseetea.malariacare.presentation.viewmodels.observations.ObservationViewModel;
-import org.eyeseetea.malariacare.presentation.views.observations.ActionView;
 import org.eyeseetea.malariacare.utils.DateParser;
 import org.eyeseetea.malariacare.utils.Constants;
 
@@ -185,17 +184,11 @@ public class ObservationsPresenter {
         if (mView != null) {
             mView.renderMissedCriticalSteps(missedCriticalSteps);
             mView.renderMissedNonCriticalSteps(missedNonCriticalSteps);
-            mView.renderBasicObservations(mObservationViewModel.getProvider()
-                    , mObservationViewModel.getActionPlan());
+            mView.renderProvider(mObservationViewModel.getProvider());
 
             mView.renderAction1(mObservationViewModel.getAction1());
-        }
-    }
-
-    public void actionPlanChanged(String actionPlan) {
-        if (!actionPlan.equals(mObservationViewModel.getActionPlan())) {
-            mObservationViewModel.setActionPlan(actionPlan);
-            saveObservation();
+            mView.renderAction2(mObservationViewModel.getAction2());
+            mView.renderAction3(mObservationViewModel.getAction3());
         }
     }
 
@@ -266,11 +259,20 @@ public class ObservationsPresenter {
         }
     }
 
-    public void action1Changed(ActionViewModel actionViewModel) {
+    public void onAction1Changed(ActionViewModel actionViewModel) {
         mObservationViewModel.setAction1(actionViewModel);
         saveObservation();
     }
 
+    public void onAction2Changed(ActionViewModel actionViewModel) {
+         mObservationViewModel.setAction2(actionViewModel);
+        saveObservation();
+    }
+
+    public void onAction3Changed(ActionViewModel actionViewModel) {
+        mObservationViewModel.setAction3(actionViewModel);
+        saveObservation();
+    }
     @NonNull
     private List<CompositeScoreDB> getValidTreeOfCompositeScores(boolean critical) {
         List<CompositeScoreDB> compositeScoreList = QuestionDB.getCompositeScoreOfFailedQuestions(
@@ -337,7 +339,7 @@ public class ObservationsPresenter {
     public interface View {
         void changeToReadOnlyMode();
 
-        void renderBasicObservations(String provider, String actionPlan);
+        void renderProvider(String provider);
 
         void renderMissedCriticalSteps(List<MissedStepViewModel> missedCriticalSteps);
 
@@ -359,5 +361,7 @@ public class ObservationsPresenter {
         void disableShareButton();
 
         void renderAction1(ActionViewModel action1);
+        void renderAction2(ActionViewModel action2);
+        void renderAction3(ActionViewModel action3);
     }
 }

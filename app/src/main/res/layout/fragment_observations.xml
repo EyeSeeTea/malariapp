@@ -284,38 +284,23 @@
                 android:minLines="1"
                 android:scrollbars="none" />
 
-            <org.eyeseetea.malariacare.views.CustomTextView
-                style="@style/EyeSeeTheme.observation.valueTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/plan_action_action_plan_title"
-                app:tDimension="@string/font_size_level2"
-                app:tFontName="@string/font_name_medium"/>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:layout_marginTop="8dp"
-                android:background="@color/assess_grey"/>
-
-            <org.eyeseetea.malariacare.views.CustomEditText
-                android:id="@+id/plan_action_action_plan_edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_feedback_top_bottom_radiobutton"
-                android:layout_marginLeft="@dimen/margin_lateral_feedback_radiobutton"
-                android:layout_marginRight="@dimen/margin_lateral_feedback_radiobutton"
-                android:layout_marginTop="@dimen/margin_feedback_top_bottom_radiobutton"
-                android:background="@android:color/transparent"
-                android:gravity="top"
-                android:inputType="textMultiLine"
-                android:minLines="5"
-                android:scrollbars="none" />
-
             <org.eyeseetea.malariacare.presentation.views.observations.ActionView
                 android:id="@+id/action1_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"/>
+
+            <org.eyeseetea.malariacare.presentation.views.observations.ActionView
+                android:id="@+id/action2_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"/>
+
+            <org.eyeseetea.malariacare.presentation.views.observations.ActionView
+                android:id="@+id/action3_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"/>
 
             <View
                 android:layout_width="match_parent"

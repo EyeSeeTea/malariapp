@@ -236,23 +236,9 @@ clínica"</string>
 <string name="plan_action_today_date">Terminado: %s</string>
 <string name="plan_action_next_date">Próxima: %s</string>
 <string name="plan_action_description">Describa lo que se observó durante la visita de un plan de acción específico para abordar las lagunas. Obsérvese también una mejora respecto a la brecha identificada durante la última visita</string>
-<string name="plan_action_action_plan_title">Plan de acción:</string>
-<string name="plan_action_action_title">Acción:</string>
+<string name="plan_action_action_plan_title">Plan de acción</string>
 <string name="observation_action_due_date">Fecha de vencimiento:</string>
 <string name="observation_action_responsible">Responsable:</string>
-<string-array name="plan_action_dropdown_options">
-<item>"..."</item>
-<item>Entrenamiento de actualización durante SSV</item>
-<item>Entrenamiento de grupo en una fecha posterior</item>
-<item>Actividad de Plan CME</item>
-<item>Demostrar la técnica con el cliente</item>
-<item>Otro</item>
-</string-array>
-<string-array name="plan_action_dropdown_suboptions">
-<item>...</item>
-<item>Ver video</item>
-<item>Practicar la técnica adecuada de inserción en el momento de la visita</item>
-</string-array>
 <string name="supervision_on">Supervisión de resultados en:</string>
 <string name="critical_steps">Pasos críticos perdidos:</string>
 <string name="url_not_available">La URL de comentarios no está disponible porque la encuesta aún no se ha enviado al servidor. Intenta compartir los comentarios de nuevo más tarde.</string>

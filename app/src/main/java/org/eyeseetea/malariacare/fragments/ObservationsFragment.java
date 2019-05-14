@@ -85,7 +85,6 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
     private CustomTextView mCompletionDateTextView;
     private ImageButton mGoBack;
     private CustomEditText mCustomProviderText;
-    private CustomEditText mCustomActionPlanEditText;
 
     private FloatingActionButton mFabComplete;
     private FloatingActionButton fabShare;
@@ -97,6 +96,8 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
     private MissedStepsAdapter missedNonCriticalStepsAdapter;
 
     private ActionView action1View;
+    private ActionView action2View;
+    private ActionView action3View;
 
     public static ObservationsFragment newInstance(String surveyUid) {
         ObservationsFragment myFragment = new ObservationsFragment();
@@ -123,7 +124,7 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
         String surveyUid = getArguments().getString(SURVEY_UID);
 
         initLayoutHeaders();
-        initEditTexts();
+        initProviderTexts();
         initFAB();
         initActions();
         initBackButton();
@@ -136,13 +137,23 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
 
     private void initActions() {
         action1View = mRootView.findViewById(R.id.action1_view);
+        action1View.setTitle (getActivity().getString(R.string.plan_action_action_plan_title) + " 1: ");
 
-        action1View.setOnActionChangedListener(new ActionView.OnActionChangedListener() {
-            @Override
-            public void onActionChanged(ActionViewModel actionViewModel) {
-                presenter.action1Changed(actionViewModel);
-            }
-        });
+        action1View.setOnActionChangedListener(
+                actionViewModel -> presenter.onAction1Changed(actionViewModel));
+
+        action2View = mRootView.findViewById(R.id.action2_view);
+        action2View.setTitle (getActivity().getString(R.string.plan_action_action_plan_title) + " 2:");
+
+        action2View.setOnActionChangedListener(
+                actionViewModel -> presenter.onAction2Changed(actionViewModel));
+
+        action3View = mRootView.findViewById(R.id.action3_view);
+        action3View.setTitle (getActivity().getString(R.string.plan_action_action_plan_title) + " 3:");
+
+        action3View.setOnActionChangedListener(
+                actionViewModel -> presenter.onAction3Changed(actionViewModel));
+
     }
 
     private void initMissedCriticalStepsRecyclerView() {
@@ -204,7 +215,7 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
 
     }
 
-    private void initEditTexts() {
+    private void initProviderTexts() {
         mCustomProviderText = mRootView.findViewById(
                 R.id.plan_action_provider_text);
 
@@ -214,17 +225,6 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
                 presenter.providerChanged(editable.toString());
             }
         });
-
-        mCustomActionPlanEditText = mRootView.findViewById(
-                R.id.plan_action_action_plan_edit_text);
-
-        mCustomActionPlanEditText.addTextChangedListener(new CustomTextWatcher() {
-            @Override
-            public void afterTextChanged(Editable editable) {
-                presenter.actionPlanChanged(editable.toString());
-            }
-        });
-
     }
 
     private void initBackButton() {
@@ -272,15 +272,16 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
     @Override
     public void changeToReadOnlyMode() {
         mCustomProviderText.setEnabled(false);
-        mCustomActionPlanEditText.setEnabled(false);
         action1View.setEnabled(false);
         mFabComplete.setEnabled(false);
+        action1View.setEnabled(false);
+        action2View.setEnabled(false);
+        action3View.setEnabled(false);
     }
 
     @Override
-    public void renderBasicObservations(String provider, String actionPlan) {
+    public void renderProvider(String provider) {
         mCustomProviderText.setText(provider);
-        mCustomActionPlanEditText.setText(actionPlan);
     }
 
     @Override
@@ -373,6 +374,16 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
         action1View.setAction(action1);
     }
 
+    @Override
+    public void renderAction2(ActionViewModel action1) {
+        action2View.setAction(action1);
+    }
+
+    @Override
+    public void renderAction3(ActionViewModel action1) {
+        action3View.setAction(action1);
+    }
+
     private String extractTextData(ObservationViewModel observationViewModel, SurveyDB survey,
             List<MissedStepViewModel> missedCriticalStepViewModels,
             List<MissedStepViewModel> missedNonCriticalStepViewModels) {
@@ -408,24 +419,11 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
                     + observationViewModel.getProvider();
         }
 
-
         data += "\n" + getString(R.string.plan_action_action_plan_title) + " ";
 
-        if (observationViewModel.getActionPlan() != null && !observationViewModel.getActionPlan().isEmpty()) {
-            data += observationViewModel.getActionPlan();
-        }
-
-        data += "\n" + getString(R.string.plan_action_action_title) + " ";
-
         if (observationViewModel.getAction1() != null &&
-                !observationViewModel.getAction1().getActivityAction().isEmpty()) {
+                !observationViewModel.getAction1().getDescription().isEmpty()) {
             data += observationViewModel.getAction1();
-        }
-
-
-        if (observationViewModel.getAction2() != null &&
-                !observationViewModel.getAction2().getSubActivityAction().isEmpty()) {
-            data += "\n" + observationViewModel.getAction2();
         }
 
         if (missedCriticalStepViewModels != null && missedCriticalStepViewModels.size() > 0) {
