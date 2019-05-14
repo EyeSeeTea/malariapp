@@ -267,4 +267,5 @@ evaluation"</string>
 
 <string name="other">Other</string>
 <string name="feedback_not_sent">"The feedback URL is not available because the survey hasn't been sent to the server yet. Try sharing the feedback again later."</string>
+<string name="observations_invalid_error_message">"It's mandatory to fill out at least one action plan and each filled action plan must have a description, due date and responsible"</string>
 </resources>

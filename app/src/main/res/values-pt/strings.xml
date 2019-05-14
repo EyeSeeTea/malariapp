@@ -258,4 +258,5 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="reschedule_title_multiple_survey">"%1$d número de pesquisas sendo reprogramadas para OU %2$s"</string>
 <string name="other">outros</string>
 <string name="feedback_not_sent">"O URL de comentários não está disponível devido à pesquisa. Tente compartilhar o feedback novamente mais tarde."</string>
+<string name="observations_invalid_error_message">"É obrigatório preencher pelo menos um plano de ação e cada plano de ação preenchido deve ter uma descrição, data de vencimento e responsabilidade"</string>
 </resources>

@@ -263,4 +263,5 @@ clínica"</string>
 
 <string name="other">Otro</string>
 <string name="feedback_not_sent">"La URL de feedback no está disponible porque la encuesta aún no se ha enviado al servidor. Intenta compartir los comentarios de nuevo más tarde"</string>
+<string name="observations_invalid_error_message">"Es obligatorio completar al menos un plan de acción y cada plan de acción completado debe tener una descripción, fecha de vencimiento y responsabilidad."</string>
 </resources>

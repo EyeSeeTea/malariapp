@@ -38,4 +38,14 @@ public class ActionViewModel {
     public void setResponsible(String responsible) {
         this.responsible = responsible;
     }
+
+    public boolean isEmpty(){
+        return (description == null || description.isEmpty()) && dueDate == null &&
+                (responsible == null || responsible.isEmpty());
+    }
+
+    public boolean isValid(){
+        return description != null && !description.isEmpty() && dueDate != null &&
+                responsible != null && !responsible.isEmpty();
+    }
 }

@@ -36,6 +36,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.datasources.ObservationLocalDataSource;
@@ -382,6 +383,12 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
     @Override
     public void renderAction3(ActionViewModel action1) {
         action3View.setAction(action1);
+    }
+
+    @Override
+    public void showInvalidObservationErrorMessage() {
+        Toast.makeText(getActivity(), R.string.observations_invalid_error_message, Toast.LENGTH_LONG)
+                .show();
     }
 
     private String extractTextData(ObservationViewModel observationViewModel, SurveyDB survey,

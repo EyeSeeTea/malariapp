@@ -80,4 +80,13 @@ public class ObservationViewModel {
     public void setStatus(ObservationStatus status) {
         this.status = status;
     }
+
+    public boolean isValid(){
+        boolean atLeastOneFilled = !(action1.isEmpty() && action2.isEmpty() && action3.isEmpty());
+
+        return atLeastOneFilled &&
+                (action1.isValid() || action1.isEmpty()) &&
+                (action2.isValid() || action2.isEmpty()) &&
+                (action3.isValid() || action3.isEmpty());
+    }
 }

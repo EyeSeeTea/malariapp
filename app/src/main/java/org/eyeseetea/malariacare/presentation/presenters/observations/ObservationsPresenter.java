@@ -217,15 +217,20 @@ public class ObservationsPresenter {
         });
     }
 
-
     public void completeObservation() {
-        mObservationViewModel.setStatus(COMPLETED);
-        saveObservation();
+        if (mObservationViewModel.isValid()) {
+            mObservationViewModel.setStatus(COMPLETED);
+            saveObservation();
 
-        if (mView != null) {
-            mView.changeToReadOnlyMode();
+            if (mView != null) {
+                mView.changeToReadOnlyMode();
 
-            updateStatus();
+                updateStatus();
+            }
+        } else {
+            if (mView != null) {
+                mView.showInvalidObservationErrorMessage();
+            }
         }
     }
 
@@ -363,5 +368,7 @@ public class ObservationsPresenter {
         void renderAction1(ActionViewModel action1);
         void renderAction2(ActionViewModel action2);
         void renderAction3(ActionViewModel action3);
+
+        void showInvalidObservationErrorMessage();
     }
 }
