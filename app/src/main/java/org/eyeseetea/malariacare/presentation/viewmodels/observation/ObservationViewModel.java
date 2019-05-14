@@ -80,6 +80,4 @@ public class ObservationViewModel {
     public void setStatus(ObservationStatus status) {
         this.status = status;
     }
-
-
 }
