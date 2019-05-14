@@ -21,7 +21,7 @@
             app:tFontName="@string/font_name_medium"/>
 
         <ImageView
-            android:id="@+id/missed_critical_step_image_view"
+            android:id="@+id/expand_collapse_view"
             android:layout_weight="0.1"
             android:layout_width="0dp"
             android:layout_height="36dp"
@@ -29,12 +29,6 @@
 
             android:src="@drawable/ic_media_arrow"/>
     </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:layout_marginTop="8dp"
-        android:background="@color/assess_grey"/>
 
     <org.eyeseetea.malariacare.views.CustomEditText
         android:id="@+id/description_view"
@@ -51,6 +45,7 @@
         android:scrollbars="none" />
 
     <LinearLayout
+        android:id="@+id/responsible_container_view"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:background="@drawable/action_field_container_background"
@@ -77,6 +72,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/due_date_container_view"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:background="@drawable/action_field_container_background">

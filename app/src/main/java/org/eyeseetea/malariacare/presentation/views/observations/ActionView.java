@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import org.eyeseetea.malariacare.R;
@@ -23,8 +24,8 @@ import java.util.Date;
 
 public class ActionView extends LinearLayout implements ActionPresenter.View {
 
-    public interface OnActionChangedListener{
-        void onActionChanged (ActionViewModel actionViewModel);
+    public interface OnActionChangedListener {
+        void onActionChanged(ActionViewModel actionViewModel);
     }
 
     private ActionPresenter presenter;
@@ -35,6 +36,9 @@ public class ActionView extends LinearLayout implements ActionPresenter.View {
     private CustomEditText descriptionView;
     private CustomEditText dueDateView;
     private CustomEditText responsibleView;
+    private ImageView expandCollapseView;
+    private LinearLayout responsibleContainer;
+    private LinearLayout dueDateContainer;
 
     public ActionView(Context context) {
         super(context);
@@ -49,16 +53,16 @@ public class ActionView extends LinearLayout implements ActionPresenter.View {
         initialize(context);
     }
 
-    public void setOnActionChangedListener (OnActionChangedListener listener){
+    public void setOnActionChangedListener(OnActionChangedListener listener) {
         onActionChangedListener = listener;
     }
 
-    public void setAction (ActionViewModel actionViewModel){
+    public void setAction(ActionViewModel actionViewModel) {
         presenter.setAction(actionViewModel);
     }
 
-    public void setTitle (String title){
-        if (titleView == null){
+    public void setTitle(String title) {
+        if (titleView == null) {
             titleView = findViewById(R.id.action_title_view);
         }
         titleView.setText(title);
@@ -79,18 +83,27 @@ public class ActionView extends LinearLayout implements ActionPresenter.View {
         showDueDate(actionViewModel.getDueDate());
     }
 
-    private void showDueDate(Date dueDate) {
-        if (dueDate != null) {
-            String dueDateText = new DateParser().format(dueDate, DateParser.AMERICAN_DATE_FORMAT);
-            dueDateView.setText(dueDateText);
+    @Override
+    public void notifyOnActionChanged(ActionViewModel actionViewModel) {
+        if (onActionChangedListener != null) {
+            onActionChangedListener.onActionChanged(actionViewModel);
         }
     }
 
     @Override
-    public void notifyOnActionChanged(ActionViewModel actionViewModel){
-        if (onActionChangedListener != null){
-            onActionChangedListener.onActionChanged(actionViewModel);
-        }
+    public void expand() {
+        expandCollapseView.setRotation(180);
+        descriptionView.setVisibility(VISIBLE);
+        responsibleContainer.setVisibility(VISIBLE);
+        dueDateContainer.setVisibility(VISIBLE);
+    }
+
+    @Override
+    public void collapse() {
+        expandCollapseView.setRotation(0);
+        descriptionView.setVisibility(GONE);
+        responsibleContainer.setVisibility(GONE);
+        dueDateContainer.setVisibility(GONE);
     }
 
     private void initialize(final Context context) {
@@ -99,7 +112,21 @@ public class ActionView extends LinearLayout implements ActionPresenter.View {
         initializeDescription();
         initializeResponsibleView();
         initializeDueDateView();
+        initializeExpandCollapseView();
         initializePresenter();
+    }
+
+    private void showDueDate(Date dueDate) {
+        if (dueDate != null) {
+            String dueDateText = new DateParser().format(dueDate, DateParser.AMERICAN_DATE_FORMAT);
+            dueDateView.setText(dueDateText);
+        }
+    }
+
+    private void initializeExpandCollapseView() {
+        expandCollapseView = findViewById(R.id.expand_collapse_view);
+
+        expandCollapseView.setOnClickListener(v -> presenter.expandOrCollapse());
     }
 
     private void initializeDescription() {
@@ -114,6 +141,7 @@ public class ActionView extends LinearLayout implements ActionPresenter.View {
     }
 
     private void initializeResponsibleView() {
+        responsibleContainer = findViewById(R.id.responsible_container_view);
         responsibleView = findViewById(R.id.responsible_view);
 
         responsibleView.addTextChangedListener(new CustomTextWatcher() {
@@ -125,6 +153,7 @@ public class ActionView extends LinearLayout implements ActionPresenter.View {
     }
 
     private void initializeDueDateView() {
+        dueDateContainer = findViewById(R.id.due_date_container_view);
         dueDateView = findViewById(R.id.due_date_view);
 
         dueDateView.setOnClickListener(v -> showDatePickerDialog());
@@ -132,7 +161,7 @@ public class ActionView extends LinearLayout implements ActionPresenter.View {
 
     private void showDatePickerDialog() {
         View v = LayoutInflater.from(getContext())
-                .inflate(R.layout.dialog_date,null);
+                .inflate(R.layout.dialog_date, null);
         DatePicker datePicker = v.findViewById(R.id.dialog_date_date_picker);
 
         AlertDialog dialog = new AlertDialog.Builder(getContext())
@@ -145,7 +174,7 @@ public class ActionView extends LinearLayout implements ActionPresenter.View {
                             int day = datePicker.getDayOfMonth();
 
                             Calendar calendar = Calendar.getInstance();
-                            calendar.set(year,month,day);
+                            calendar.set(year, month, day);
                             Date dueDate = calendar.getTime();
 
                             presenter.onDueDateChange(dueDate);

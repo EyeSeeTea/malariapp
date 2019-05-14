@@ -8,11 +8,14 @@ public class ActionPresenter {
     private View view;
 
     private ActionViewModel actionViewModel;
+    private boolean expanded = false;
 
     public void attachView(View view){
         this.view = view;
 
         this.actionViewModel = new ActionViewModel("",null,"");
+
+        expandOrCollapse();
     }
 
     public ActionViewModel getAction(ActionViewModel actionViewModel) {
@@ -54,8 +57,23 @@ public class ActionPresenter {
         }
     }
 
+
+    public void expandOrCollapse() {
+        if (view != null) {
+            if (expanded) {
+                view.collapse();
+                expanded = false;
+            } else {
+                view.expand();
+                expanded = true;
+            }
+        }
+    }
+
     public interface View{
         void showActionData(ActionViewModel actionViewModel);
         void notifyOnActionChanged(ActionViewModel actionViewModel);
+        void expand();
+        void collapse();
     }
 }
