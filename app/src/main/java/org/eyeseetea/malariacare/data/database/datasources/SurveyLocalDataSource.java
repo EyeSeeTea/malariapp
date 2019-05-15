@@ -11,6 +11,8 @@ import com.raizlabs.android.dbflow.sql.language.Where;
 import org.eyeseetea.malariacare.data.boundaries.ISurveyDataSource;
 import org.eyeseetea.malariacare.data.database.mapper.SurveyDBMapper;
 import org.eyeseetea.malariacare.data.database.mapper.SurveyMapper;
+import org.eyeseetea.malariacare.data.database.model.ObservationDB;
+import org.eyeseetea.malariacare.data.database.model.ObservationDB_Table;
 import org.eyeseetea.malariacare.data.database.model.OptionDB;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitProgramRelationDB;
@@ -22,6 +24,8 @@ import org.eyeseetea.malariacare.data.database.model.SurveyDB_Table;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.model.ValueDB;
 import org.eyeseetea.malariacare.data.database.model.ValueDB_Table;
+import org.eyeseetea.malariacare.domain.entity.Observation;
+import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
 import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.entity.SurveyStatus;
 
@@ -34,15 +38,21 @@ public class SurveyLocalDataSource implements ISurveyDataSource {
     private final static String TAG = ".SurveyLocalDataSource";
 
     @Override
-    public List<Survey> getSurveys(SurveyStatus status) {
+    public List<Survey> getSurveysByStatus(SurveyStatus status) {
 
-        List<SurveyDB> surveyDBS = getSurveysDB(status);
+        List<SurveyDB> surveyDBS = getSurveysDBByStatus(status);
 
-        SurveyMapper surveyMapper = new SurveyMapper(
-                OrgUnitDB.list(), ProgramDB.getAllPrograms(), QuestionDB.list(),
-                OptionDB.list(), UserDB.list(), ScoreDB.list(), OrgUnitProgramRelationDB.list());
+        List<Survey> surveys = mapSurveys(surveyDBS);
 
-        List<Survey> surveys = surveyMapper.mapSurveys(surveyDBS);
+        return surveys;
+    }
+
+    @Override
+    public List<Survey> getSurveysByObservationStatus(ObservationStatus observationStatus)
+            throws Exception {
+        List<SurveyDB> surveyDBS = getSurveysDBByObservationStatus(observationStatus);
+
+        List<Survey> surveys = mapSurveys(surveyDBS);
 
         return surveys;
     }
@@ -50,6 +60,14 @@ public class SurveyLocalDataSource implements ISurveyDataSource {
     @Override
     public void save(List<Survey> surveys) throws Exception {
         saveSurveys(surveys);
+    }
+
+    private List<Survey> mapSurveys(List<SurveyDB> surveyDBS) {
+        SurveyMapper surveyMapper = new SurveyMapper(
+                OrgUnitDB.list(), ProgramDB.getAllPrograms(), QuestionDB.list(),
+                OptionDB.list(), UserDB.list(), ScoreDB.list(), OrgUnitProgramRelationDB.list());
+
+        return surveyMapper.mapSurveys(surveyDBS);
     }
 
     private void saveSurveys(List<Survey> surveys) {
@@ -140,7 +158,7 @@ public class SurveyLocalDataSource implements ISurveyDataSource {
         }
     }
 
-    private List<SurveyDB> getSurveysDB(SurveyStatus status){
+    private List<SurveyDB> getSurveysDBByStatus(SurveyStatus status){
         List<SurveyDB> surveyDBS = null;
 
         From from = new Select().from(SurveyDB.class);
@@ -149,6 +167,28 @@ public class SurveyLocalDataSource implements ISurveyDataSource {
 
         if (status != null){
             where = from.where(SurveyDB_Table.status.in(status.getCode()));
+        }
+
+        surveyDBS = where.orderBy(OrderBy.fromProperty(SurveyDB_Table.completion_date))
+                .orderBy(OrderBy.fromProperty(SurveyDB_Table.id_org_unit_fk)).queryList();
+
+        if (surveyDBS.size() > 0)
+            loadValuesInSurveys(surveyDBS);
+
+        return surveyDBS;
+    }
+
+    private List<SurveyDB> getSurveysDBByObservationStatus(ObservationStatus status){
+        List<SurveyDB> surveyDBS = null;
+
+        From from = new Select().from(SurveyDB.class)
+                .leftOuterJoin(ObservationDB.class).on(SurveyDB_Table.id_survey.eq(
+                        ObservationDB_Table.id_survey_observation_fk));
+
+        Where where = from.where(ObservationDB_Table.status_observation.isNotNull());
+
+        if (status != null){
+            where = from.where(ObservationDB_Table.status_observation.in(status.getCode()));
         }
 
         surveyDBS = where.orderBy(OrderBy.fromProperty(SurveyDB_Table.completion_date))

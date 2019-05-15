@@ -2,6 +2,7 @@ package org.eyeseetea.malariacare.data.repositories;
 
 import org.eyeseetea.malariacare.data.boundaries.ISurveyDataSource;
 import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyRepository;
+import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
 import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.entity.SurveyStatus;
 
@@ -17,8 +18,14 @@ public class SurveyRepository implements ISurveyRepository{
     }
 
     @Override
-    public List<Survey> getSurveys(SurveyStatus surveyStatus) throws Exception {
-        return localDataSource.getSurveys(surveyStatus);
+    public List<Survey> getSurveysByStatus(SurveyStatus surveyStatus) throws Exception {
+        return localDataSource.getSurveysByStatus(surveyStatus);
+    }
+
+    @Override
+    public List<Survey> getSurveysByObservationStatus(ObservationStatus observationStatus)
+            throws Exception {
+        return localDataSource.getSurveysByObservationStatus(observationStatus);
     }
 
     @Override

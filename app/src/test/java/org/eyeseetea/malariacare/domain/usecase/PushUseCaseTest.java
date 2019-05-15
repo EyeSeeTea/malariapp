@@ -62,7 +62,7 @@ public class PushUseCaseTest {
                 runnable.run();
             }
         };
-        Credentials credentials = new Credentials("", "", "");
+        Credentials credentials = new Credentials("serverURL", "username", "password");
         IServerInfoRepository serverInfoRepository = new IServerInfoRepository() {
             @Override
             public ServerInfo getServerInfo(ReadPolicy readPolicy) throws Exception {

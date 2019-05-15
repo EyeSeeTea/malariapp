@@ -82,19 +82,14 @@ public class ObservationsPresenter {
     }
 
     private void LoadData() {
-        mGetServerMetadataUseCase.execute(new GetServerMetadataUseCase.Callback() {
-            @Override
-            public void onSuccess(ServerMetadata serverMetadata) {
-                ObservationsPresenter.this.mServerMetadata = serverMetadata;
-                loadObservation();
-            }
-
-            @Override
-            public void onError(Exception e) {
-                System.out.println(
-                        "An error has occur retrieving server metadata: " + e.getMessage());
-            }
-        });
+        try{
+            ServerMetadata serverMetadata = mGetServerMetadataUseCase.execute();
+            ObservationsPresenter.this.mServerMetadata = serverMetadata;
+            loadObservation();
+        } catch (Exception e){
+            System.out.println(
+                    "An error has occur retrieving server metadata: " + e.getMessage());
+        }
     }
 
     private void loadObservation() {
