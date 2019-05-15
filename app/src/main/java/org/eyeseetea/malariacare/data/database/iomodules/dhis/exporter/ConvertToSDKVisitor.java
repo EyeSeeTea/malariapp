@@ -459,7 +459,7 @@ public class ConvertToSDKVisitor implements
     private void buildControlDataElements(SurveyDB survey) {
         //Overall score
         if (controlDataElementExistsInServer(overallScoreCode) && survey.hasMainScore()) {
-            addOrUpdateDataValue(overallScoreCode, survey.getMainScore().toString());
+            addOrUpdateDataValue(overallScoreCode, survey.getMainScoreValue().toString());
         }
 
         DateParser dateParser = new DateParser();
@@ -501,7 +501,7 @@ public class ConvertToSDKVisitor implements
         }
 
         //init scoreType
-        ScoreType scoreType = new ScoreType(survey.getMainScore());
+        ScoreType scoreType = new ScoreType(survey.getMainScoreValue());
 
         //MainScoreUID
         if (controlDataElementExistsInServer(mainScoreClassCode) && survey.hasMainScore()) {

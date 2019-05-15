@@ -122,7 +122,7 @@ public class AssessmentSentAdapter extends
     }
 
     private int getColorByScore(SurveyDB survey) {
-        return LayoutUtils.trafficColor(survey.hasMainScore() ? survey.getMainScore() : 0f);
+        return LayoutUtils.trafficColor(survey.hasMainScore() ? survey.getMainScoreValue() : 0f);
     }
 
 

@@ -77,6 +77,14 @@ public class OrgUnitProgramRelationDB extends BaseModel {
         this.productivity=productivity;
     }
 
+    public static List<OrgUnitProgramRelationDB> list() {
+        return new Select().from(OrgUnitProgramRelationDB.class).queryList();
+    }
+
+    public Long getId_org_unit_fk() {
+        return id_org_unit_fk;
+    }
+
     public OrgUnitDB getOrgUnit() {
         if(orgUnit==null){
             if(id_org_unit_fk==null) return null;

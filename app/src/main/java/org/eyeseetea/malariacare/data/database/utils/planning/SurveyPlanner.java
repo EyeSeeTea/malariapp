@@ -88,7 +88,7 @@ public class SurveyPlanner {
                 newSurvey.getProgram().getId_program());
         if (lastSurveyScore != null) {
             if (lastSurveyScore.hasMainScore()) {
-                newSurvey.setMainScore(lastSurveyScore.getMainScore());
+                newSurvey.setMainScore(lastSurveyScore.getMainScoreValue());
                 newSurvey.saveMainScore();
             } else {
                 newSurvey.setMainScore(0f);
@@ -109,7 +109,7 @@ public class SurveyPlanner {
         plannedSurvey.setOrgUnit(survey.getOrgUnit());
         plannedSurvey.setUser(Session.getUser());
         plannedSurvey.setProgram(survey.getProgram());
-        plannedSurvey.setMainScore(survey.getMainScore());
+        plannedSurvey.setMainScore(survey.getMainScoreValue());
         plannedSurvey.setCompetencyScoreClassification(survey.getCompetencyScoreClassification());
         plannedSurvey.setScheduledDate(findScheduledDateBySurvey(survey));
         plannedSurvey.save();
@@ -180,11 +180,11 @@ public class SurveyPlanner {
         Log.d(TAG, String.format(
                 "finding scheduledDate for a survey with: eventDate: %s, score: %f , "
                         + "lowProductivity: %b",
-                eventDate.toString(), survey.getMainScore(), survey.isLowProductivity()));
+                eventDate.toString(), survey.getMainScoreValue(), survey.isLowProductivity()));
 
         Server server = PreferencesState.getInstance().getServer();
 
-        ScoreType scoreType = new ScoreType(survey.getMainScore());
+        ScoreType scoreType = new ScoreType(survey.getMainScoreValue());
         if (scoreType.isTypeA()) {
             return getInXMonths(eventDate, server.getNextScheduleMatrix().getScoreAMonths());
         }

@@ -154,7 +154,7 @@ public class ObservationsPresenter {
                     CompetencyScoreClassification.get(
                             mSurvey.getCompetencyScoreClassification());
 
-            mView.renderHeaderInfo(mSurvey.getOrgUnit().getName(), mSurvey.getMainScore(),
+            mView.renderHeaderInfo(mSurvey.getOrgUnit().getName(), mSurvey.getMainScoreValue(),
                     formattedCompletionDate, formattedNextDate, classification);
         }
     }

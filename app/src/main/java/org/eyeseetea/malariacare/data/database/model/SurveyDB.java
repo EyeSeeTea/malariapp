@@ -146,6 +146,7 @@ public class SurveyDB extends BaseModel implements VisitableToSDK, IData {
     Integer productivity;
 
     private SurveyAnsweredRatioDB mSurveyAnsweredRatio;
+    private ScoreDB scoreDB;
 
     public SurveyDB() {
         //Set dates
@@ -184,6 +185,18 @@ public class SurveyDB extends BaseModel implements VisitableToSDK, IData {
 
     public void setEventUid(String eventuid) {
         this.uid_event_fk = eventuid;
+    }
+
+    public Long getId_program_fk() {
+        return id_program_fk;
+    }
+
+    public Long getId_org_unit_fk() {
+        return id_org_unit_fk;
+    }
+
+    public Long getId_user_fk() {
+        return id_user_fk;
     }
 
     public OrgUnitDB getOrgUnit() {
@@ -352,13 +365,21 @@ public class SurveyDB extends BaseModel implements VisitableToSDK, IData {
         return (isCompleted() || isSent());
     }
 
-    public Float getMainScore() {
+    public Float getMainScoreValue() {
+        float score = 0;
+
+        if (getMainScore() != null)
+            score = getMainScore().getScore();
+
+        return score;
+    }
+
+    public ScoreDB getMainScore() {
         //The main score is only return from a query 1 time
-        if (this.mainScore == null) {
-            ScoreDB score = getScore();
-            this.mainScore = (score == null) ? 0f : score.getScore();
+        if (this.scoreDB == null) {
+            scoreDB = getScore();
         }
-        return mainScore;
+        return scoreDB;
     }
 
     public Boolean hasMainScore() {
@@ -397,6 +418,14 @@ public class SurveyDB extends BaseModel implements VisitableToSDK, IData {
         return new Select()
                 .from(ScoreDB.class)
                 .where(ScoreDB_Table.id_survey_fk.eq(this.getId_survey())).querySingle();
+    }
+
+    public ScoreDB getScoreDB() {
+        return scoreDB;
+    }
+
+    public void setScoreDB(ScoreDB scoreDB) {
+        this.scoreDB = scoreDB;
     }
 
     /**
@@ -438,6 +467,10 @@ public class SurveyDB extends BaseModel implements VisitableToSDK, IData {
                             .eq(this.getId_survey())).queryList();
         }
         return values;
+    }
+
+    public void setValues(List<ValueDB> values) {
+        this.values = values;
     }
 
     /**
@@ -1048,5 +1081,13 @@ public class SurveyDB extends BaseModel implements VisitableToSDK, IData {
                 ", status=" + status +
                 ", uid_event_fk=" + uid_event_fk +
                 '}';
+    }
+
+    public void resetMainScore() {
+        ScoreDB scoreDB = getMainScore();
+        if(scoreDB!=null){
+            scoreDB.delete();
+        }
+        scoreDB = null;
     }
 }

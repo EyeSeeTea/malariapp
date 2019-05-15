@@ -81,10 +81,10 @@ public class SurveysMonitorAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             DateParser dateParser = new DateParser();
             completionDateView.setText(
                     dateParser.getEuropeanFormattedDate(survey.getCompletionDate()));
-            scoreView.setText(Math.round(survey.getMainScore()) + "");
+            scoreView.setText(Math.round(survey.getMainScoreValue()) + "");
             Resources resources = itemView.getContext().getResources();
 
-            ScoreType scoreType = new ScoreType(survey.getMainScore());
+            ScoreType scoreType = new ScoreType(survey.getMainScoreValue());
             if (scoreType.isTypeA()) {
                 scoreView.setBackgroundColor(resources.getColor(R.color.high_score_color));
             } else if (scoreType.isTypeB()) {

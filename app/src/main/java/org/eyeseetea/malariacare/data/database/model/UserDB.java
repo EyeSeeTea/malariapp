@@ -65,6 +65,10 @@ public class UserDB extends BaseModel {
         this.name = name;
     }
 
+    public static List<UserDB> list() {
+        return new Select().from(UserDB.class).queryList();
+    }
+
     public Long getId_user() {
         return id_user;
     }
