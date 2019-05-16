@@ -206,7 +206,7 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
                 new ServerMetadataRepository(getActivity());
 
         GetServerMetadataUseCase getServerMetadataUseCase =
-                new GetServerMetadataUseCase(asyncExecutor, mainExecutor, serverMetadataRepository);
+                new GetServerMetadataUseCase(serverMetadataRepository);
 
         SaveObservationUseCase saveObservationUseCase =
                 new SaveObservationUseCase(asyncExecutor, mainExecutor, observationRepository);
