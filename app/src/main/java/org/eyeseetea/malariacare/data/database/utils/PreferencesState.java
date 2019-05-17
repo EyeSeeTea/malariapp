@@ -490,8 +490,14 @@ public class PreferencesState {
     }
 
     private Server loadServer() {
+        server = null;
+
         String serverUrl=getServerUrl();
-        server = new Server(getServerUrl(), new NextScheduleMonths(getMonthArray(serverUrl)));
+
+        if (serverUrl != null && !serverUrl.isEmpty() ){
+            server = new Server(getServerUrl(), new NextScheduleMonths(getMonthArray(serverUrl)));
+        }
+
         return server;
     }
 
