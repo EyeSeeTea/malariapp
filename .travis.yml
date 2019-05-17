@@ -23,8 +23,8 @@ android:
   - sys-img-armeabi-v7a-android-22
   - extra-android-support
 script:
-#- "./gradlew --no-daemon testEyeseeteaDebugUnitTest"
-- "./gradlew --no-daemon testHnqisDebugUnitTest"
+#- "./gradlew ktlint --no-daemon testEyeseeteaDebugUnitTest"
+- "./gradlew ktlint --no-daemon testHnqisDebugUnitTest"
 before_script:
 - "./travis_before_script.sh"
 install:
