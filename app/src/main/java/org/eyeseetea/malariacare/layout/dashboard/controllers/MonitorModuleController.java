@@ -22,12 +22,10 @@ package org.eyeseetea.malariacare.layout.dashboard.controllers;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.fragments.MonitorBySurveyActionsFragment;
 import org.eyeseetea.malariacare.fragments.MonitorFragment;
 import org.eyeseetea.malariacare.layout.dashboard.config.ModuleSettings;
 
-/**
- * Created by idelcano on 25/02/2016.
- */
 public class MonitorModuleController extends ModuleController {
 
     public MonitorModuleController(ModuleSettings moduleSettings){
@@ -38,9 +36,14 @@ public class MonitorModuleController extends ModuleController {
     @Override
     public void init(DashboardActivity activity) {
         super.init(activity);
-        MonitorFragment monitorFragment=new MonitorFragment();
+
+        MonitorBySurveyActionsFragment monitorBySurveyActionsFragment =
+                MonitorBySurveyActionsFragment.newInstance();
+
+        fragment = monitorBySurveyActionsFragment;
+/*        MonitorFragment monitorFragment=new MonitorFragment();
         monitorFragment.setFilterType(moduleSettings.getMonitorFilter());
-        fragment = monitorFragment;
+        fragment = monitorFragment;*/
     }
 
 }

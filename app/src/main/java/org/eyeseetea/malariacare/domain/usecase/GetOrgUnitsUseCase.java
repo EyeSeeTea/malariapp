@@ -12,7 +12,7 @@ public class GetOrgUnitsUseCase {
         this.orgUnitRepository = orgUnitRepository;
     }
 
-    List<OrgUnit> execute() throws Exception {
+    public List<OrgUnit> execute() throws Exception {
         return orgUnitRepository.getAll();
     }
 }

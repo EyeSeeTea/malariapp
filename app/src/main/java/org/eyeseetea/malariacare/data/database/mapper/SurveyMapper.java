@@ -9,6 +9,7 @@ import org.eyeseetea.malariacare.data.database.model.ScoreDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.model.ValueDB;
+import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
 import org.eyeseetea.malariacare.domain.entity.QuestionValue;
 import org.eyeseetea.malariacare.domain.entity.Score;
 import org.eyeseetea.malariacare.domain.entity.Survey;
@@ -101,9 +102,13 @@ public class SurveyMapper {
         if (orgUnitProgramRelationDB != null)
             productivity = orgUnitProgramRelationDB.getProductivity();
 
+        CompetencyScoreClassification competency =
+                CompetencyScoreClassification.get(
+                        surveyDB.getCompetencyScoreClassification());
+
         Survey survey = Survey.createStoredSurvey(SurveyStatus.get(surveyDB.getStatus()),
                 eventUid, programUid, orgUnitUid, userUid, creationDate, uploadDate, scheduledDate,
-                completionDate, values, score, productivity);
+                completionDate, values, score, productivity, competency);
 
         return survey;
 

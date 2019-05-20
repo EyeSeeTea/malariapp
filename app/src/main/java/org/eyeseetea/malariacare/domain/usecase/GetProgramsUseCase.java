@@ -12,7 +12,7 @@ public class GetProgramsUseCase {
         this.programRepository = programRepository;
     }
 
-    List<Program> execute() throws Exception {
+    public List<Program> execute() throws Exception {
         return programRepository.getAll();
     }
 }

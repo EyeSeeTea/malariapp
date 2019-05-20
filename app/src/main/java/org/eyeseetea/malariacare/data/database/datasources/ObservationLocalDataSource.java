@@ -15,6 +15,7 @@ import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB_Table;
 import org.eyeseetea.malariacare.domain.entity.Observation;
 import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
+import org.eyeseetea.malariacare.domain.entity.SurveyStatus;
 import org.eyeseetea.malariacare.domain.exception.ObservationNotFoundException;
 
 import java.util.ArrayList;
@@ -31,8 +32,8 @@ public class ObservationLocalDataSource {
         mObservationMapper = new ObservationMapper(surveyDBS);
     }
 
-    public List<Observation> getObservations(ObservationStatus status) {
-        List<ObservationDB> observationDBS = getObservationsDB(status);
+    public List<Observation> getSentObservationsByStatus(List<ObservationStatus> observationStatuses) {
+        List<ObservationDB> observationDBS = getObservationsDBByStatus(observationStatuses);
 
         List<Observation> observations = mObservationMapper.map(observationDBS);
 
@@ -77,19 +78,20 @@ public class ObservationLocalDataSource {
 
     }
 
-    private List<ObservationDB> getObservationsDB(ObservationStatus observationStatus){
+    private List<ObservationDB> getObservationsDBByStatus(List<ObservationStatus> observationStatuses){
 
         List<ObservationDB> observationDBS;
 
         From from = new Select().from(ObservationDB.class).leftOuterJoin(SurveyDB.class)
                 .on(SurveyDB_Table.id_survey.eq(ObservationDB_Table.id_survey_observation_fk));
 
-        Where where = from.where(ObservationDB_Table.status_observation.isNotNull());
+        Where where = from.where(ObservationDB_Table.status_observation.isNotNull())
+                .and(SurveyDB_Table.status.eq(SurveyStatus.SENT.getCode()));
 
-        if (observationStatus != null){
-            where = from.where(SurveyDB_Table.status.eq(observationStatus.getCode()))
-                    .and(ObservationDB_Table.status_observation.eq(
-                            observationStatus.getCode()));
+        if (observationStatuses != null){
+            for (ObservationStatus observationStatus:observationStatuses) {
+                where.or(ObservationDB_Table.status_observation.eq(observationStatus.getCode()));
+            }
         }
 
         observationDBS = where.queryList();

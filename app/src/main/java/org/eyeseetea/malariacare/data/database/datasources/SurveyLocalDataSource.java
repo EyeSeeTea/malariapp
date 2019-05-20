@@ -11,8 +11,6 @@ import com.raizlabs.android.dbflow.sql.language.Where;
 import org.eyeseetea.malariacare.data.boundaries.ISurveyDataSource;
 import org.eyeseetea.malariacare.data.database.mapper.SurveyDBMapper;
 import org.eyeseetea.malariacare.data.database.mapper.SurveyMapper;
-import org.eyeseetea.malariacare.data.database.model.ObservationDB;
-import org.eyeseetea.malariacare.data.database.model.ObservationDB_Table;
 import org.eyeseetea.malariacare.data.database.model.OptionDB;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitProgramRelationDB;
@@ -24,8 +22,6 @@ import org.eyeseetea.malariacare.data.database.model.SurveyDB_Table;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.model.ValueDB;
 import org.eyeseetea.malariacare.data.database.model.ValueDB_Table;
-import org.eyeseetea.malariacare.domain.entity.Observation;
-import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
 import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.entity.SurveyStatus;
 
@@ -48,9 +44,8 @@ public class SurveyLocalDataSource implements ISurveyDataSource {
     }
 
     @Override
-    public List<Survey> getSurveysByObservationStatus(ObservationStatus observationStatus)
-            throws Exception {
-        List<SurveyDB> surveyDBS = getSurveysDBByObservationStatus(observationStatus);
+    public List<Survey> getSurveysByUids(List<String> uids) throws Exception {
+        List<SurveyDB> surveyDBS = getSurveysDBByUids(uids);
 
         List<Survey> surveys = mapSurveys(surveyDBS);
 
@@ -178,21 +173,9 @@ public class SurveyLocalDataSource implements ISurveyDataSource {
         return surveyDBS;
     }
 
-    private List<SurveyDB> getSurveysDBByObservationStatus(ObservationStatus status){
-        List<SurveyDB> surveyDBS = null;
-
-        From from = new Select().from(SurveyDB.class)
-                .leftOuterJoin(ObservationDB.class).on(SurveyDB_Table.id_survey.eq(
-                        ObservationDB_Table.id_survey_observation_fk));
-
-        Where where = from.where(ObservationDB_Table.status_observation.isNotNull());
-
-        if (status != null){
-            where = from.where(ObservationDB_Table.status_observation.in(status.getCode()));
-        }
-
-        surveyDBS = where.orderBy(OrderBy.fromProperty(SurveyDB_Table.completion_date))
-                .orderBy(OrderBy.fromProperty(SurveyDB_Table.id_org_unit_fk)).queryList();
+    private List<SurveyDB> getSurveysDBByUids(List<String> uids){
+        List<SurveyDB> surveyDBS = new Select().from(SurveyDB.class)
+                .where(SurveyDB_Table.uid_event_fk.in(uids)).queryList();
 
         if (surveyDBS.size() > 0)
             loadValuesInSurveys(surveyDBS);
@@ -201,7 +184,13 @@ public class SurveyLocalDataSource implements ISurveyDataSource {
     }
 
     private void loadValuesInSurveys(List<SurveyDB> surveyDBS) {
-        List<ValueDB> allValues = new Select().from(ValueDB.class).queryList();
+        List<String> surveysUid = extractSurveyUIds(surveyDBS);
+
+        List<ValueDB> allValues =
+                new Select().from(ValueDB.class)
+                .leftOuterJoin(SurveyDB.class).on(ValueDB_Table.id_survey_fk.eq(SurveyDB_Table.id_survey))
+                .where(SurveyDB_Table.uid_event_fk.in(surveysUid)).queryList();
+
 
         Map<Long, List<ValueDB>> valuesMap = new HashMap<>();
         for (ValueDB valueDB : allValues) {
@@ -216,5 +205,15 @@ public class SurveyLocalDataSource implements ISurveyDataSource {
                 surveyDB.setValues(valuesMap.get(surveyDB.getId_survey()));
             }
         }
+    }
+
+    private List<String> extractSurveyUIds(List<SurveyDB> surveyDBS) {
+        List<String> surveysUIds = new ArrayList<>();
+
+        for (SurveyDB surveyDB:surveyDBS) {
+            surveysUIds.add(surveyDB.getEventUid());
+        }
+
+        return surveysUIds;
     }
 }
