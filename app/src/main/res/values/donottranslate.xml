@@ -101,7 +101,7 @@
 
     <string name="action3_1_code" translatable="false">_Action_3_1</string>
     <string name="responsible_3_code" translatable="false">_Responsible_3</string>
-    <string name="due_date_3_code" translatable="false">_ActionDueDate_3</string>
+    <string name="due_date_3_code" translatable="false">_DueDate_3</string>
     <string name="completion_date_3_code" translatable="false">_CompletionDate_3</string>
     <string name="program_type_code" translatable="false">PROGRAM_TYPE</string>
     <string name="no_previous_event_fakeuid" translatable="false">no_new_survey</string>
