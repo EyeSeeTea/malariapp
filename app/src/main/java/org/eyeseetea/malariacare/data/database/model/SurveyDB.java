@@ -400,18 +400,16 @@ public class SurveyDB extends BaseModel implements VisitableToSDK, IData {
     }
 
     public void saveMainScore() {
-        Float valScore = 0f;
-        if (mainScore != null) {
-            valScore = mainScore;
+        if (scoreDB == null) {
+
+            scoreDB = getScore();
+
+            if (scoreDB == null) {
+                calculateScore(this.getClass().getSimpleName());
+            }
         }
-        //Update or New row
-        ScoreDB score = getScore();
-        if (score == null) {
-            score = new ScoreDB(this, "", valScore);
-        } else {
-            score.setScore(valScore);
-        }
-        score.save();
+
+        scoreDB.save();
     }
 
     private ScoreDB getScore() {
@@ -560,6 +558,12 @@ public class SurveyDB extends BaseModel implements VisitableToSDK, IData {
     }
 
     public void saveScore(String module) {        //Prepare scores info
+        calculateScore(module);
+
+        this.saveMainScore();
+    }
+
+    private void calculateScore(String module) {
         List<CompositeScoreDB> compositeScoreList = ScoreRegister.loadCompositeScores(this, module);
 
         //Calculate main score to push later
@@ -567,7 +571,6 @@ public class SurveyDB extends BaseModel implements VisitableToSDK, IData {
         this.setMainScore(id_survey,
                 ScoreRegister.getCompositeScoreRoot(compositeScoreList).getUid(),
                 ScoreRegister.calculateMainScore(compositeScoreList, id_survey, module));
-        this.saveMainScore();
     }
 
     /**

@@ -603,6 +603,7 @@ public class ConvertToSDKVisitor implements
         currentSurvey.setMainScore(currentSurvey.getId_survey(),
                 ScoreRegister.getCompositeScoreRoot(compositeScores).getUid(),
                 ScoreRegister.calculateMainScore(compositeScores, idSurvey, module));
+        currentSurvey.saveMainScore();
 
         currentSurvey.setStatus(Constants.SURVEY_SENT);
     }
