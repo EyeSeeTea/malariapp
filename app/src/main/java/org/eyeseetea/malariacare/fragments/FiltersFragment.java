@@ -57,7 +57,8 @@ public abstract class FiltersFragment extends Fragment implements IModuleFragmen
                 new OrgUnitProgramFilterView.FilterChangedListener() {
                     @Override
                     public void onProgramFilterChanged(ProgramDB selectedProgramFilter) {
-                        if (!selectedProgramUidFilter.equals(selectedProgramFilter.getUid())){
+                        if ((selectedProgramUidFilter == null && selectedProgramFilter!= null) ||
+                            !selectedProgramUidFilter.equals(selectedProgramFilter.getUid())){
                             selectedProgramUidFilter = selectedProgramFilter.getUid();
                             saveCurrentFilters();
                             onFiltersChanged();
@@ -66,7 +67,8 @@ public abstract class FiltersFragment extends Fragment implements IModuleFragmen
 
                     @Override
                     public void onOrgUnitFilterChanged(OrgUnitDB selectedOrgUnitFilter) {
-                        if (!selectedOrgUnitFilter.equals(selectedOrgUnitFilter.getUid())) {
+                        if ((selectedOrgUnitUidFilter == null && selectedOrgUnitFilter!= null) ||
+                                !selectedOrgUnitFilter.equals(selectedOrgUnitFilter.getUid())) {
                             selectedOrgUnitUidFilter = selectedOrgUnitFilter.getUid();
                             saveCurrentFilters();
                             onFiltersChanged();

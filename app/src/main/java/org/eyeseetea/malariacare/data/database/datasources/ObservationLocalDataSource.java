@@ -2,6 +2,7 @@ package org.eyeseetea.malariacare.data.database.datasources;
 
 import com.raizlabs.android.dbflow.sql.language.Delete;
 import com.raizlabs.android.dbflow.sql.language.From;
+import com.raizlabs.android.dbflow.sql.language.SQLCondition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.sql.language.Where;
 
@@ -101,24 +102,28 @@ public class ObservationLocalDataSource {
                 .leftOuterJoin(OrgUnitDB.class)
                 .on(SurveyDB_Table.id_org_unit_fk.eq(OrgUnitDB_Table.id_org_unit));
 
-        Where where = from.where(ObservationDB_Table.status_observation.isNotNull())
+        Where basicWhere = from.where(ObservationDB_Table.status_observation.isNotNull())
                 .and(SurveyDB_Table.status.eq(SurveyStatus.SENT.getCode()));
 
         if (programUid != null && !programUid.isEmpty()){
-            where.and(ProgramDB_Table.uid_program.eq(programUid));
+            basicWhere.and(ProgramDB_Table.uid_program.eq(programUid));
         }
 
         if (orgUnitUid != null && !orgUnitUid.isEmpty()){
-            where.and(OrgUnitDB_Table.uid_org_unit.eq(orgUnitUid));
+            basicWhere.and(OrgUnitDB_Table.uid_org_unit.eq(orgUnitUid));
         }
 
-        if (observationStatuses != null){
+        if (observationStatuses != null && observationStatuses.size() > 0){
+            List<Integer> statusCodes = new ArrayList<>();
+
             for (ObservationStatus observationStatus:observationStatuses) {
-                where.or(ObservationDB_Table.status_observation.eq(observationStatus.getCode()));
+                statusCodes.add(observationStatus.getCode());
             }
+
+            basicWhere.and(ObservationDB_Table.status_observation.in(statusCodes));
         }
 
-        observationDBS = where.queryList();
+        observationDBS = basicWhere.queryList();
 
         if (observationDBS.size() > 0)
             loadValuesInObservation(observationDBS);

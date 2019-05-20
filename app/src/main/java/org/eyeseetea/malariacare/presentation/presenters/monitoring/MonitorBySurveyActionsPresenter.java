@@ -210,6 +210,7 @@ public class MonitorBySurveyActionsPresenter {
     }
 
     private void loadSentObservations() throws Exception {
+        observationsMap = new HashMap<>();
         List<Observation> observations =
                 getSentObservationsUseCase.execute(programUid, orgUnitUid);
 
