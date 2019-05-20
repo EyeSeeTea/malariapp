@@ -20,6 +20,7 @@ public class Survey {
     private SurveyStatus status;
     private List<QuestionValue> values;
     private int productivity;
+    private CompetencyScoreClassification competency;
 
     private Survey(String uId, String programUId, String orgUnitUId, String userUId,int productivity) {
         this.uId = required(uId, "Survey uid is required");
@@ -42,7 +43,7 @@ public class Survey {
     public static Survey createStoredSurvey(SurveyStatus status, String uId, String programUId,
             String orgUnitUId, String userUId, Date creationDate, Date uploadDate,
             Date scheduledDate, Date completionDate, List<QuestionValue> values, Score score,
-            int productivity) {
+            int productivity, CompetencyScoreClassification competency) {
 
         Survey survey = new Survey(uId, programUId, orgUnitUId, userUId, productivity);
         survey.changeStatus(status);
@@ -52,6 +53,7 @@ public class Survey {
         survey.assignCompletionDate(completionDate);
         survey.addQuestionValues(values);
         survey.assignScore(score);
+        survey.assignCompetency(competency);
         return survey;
     }
 
@@ -125,6 +127,14 @@ public class Survey {
 
     public void assignScheduledDate(Date scheduledDate) {
         this.scheduledDate = scheduledDate;
+    }
+
+    public CompetencyScoreClassification getCompetency() {
+        return competency;
+    }
+
+    private void assignCompetency(CompetencyScoreClassification competency) {
+        this.competency = competency;
     }
 
     public String getSurveyUid() {

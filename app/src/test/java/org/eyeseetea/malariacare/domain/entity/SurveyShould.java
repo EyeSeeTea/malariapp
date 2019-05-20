@@ -54,7 +54,7 @@ public class SurveyShould {
         values.add(QuestionValue.createOptionValue("UId2", "optionUId", "value2"));
 
         Survey survey = Survey.createStoredSurvey( SurveyStatus.SENT,"UID", "PROGRAM_UID", "ORG_UNIT_UID",
-                "USER_UID", creationDate, uploadDate, scheduledDate, completionDate, values, score,0);
+                "USER_UID", creationDate, uploadDate, scheduledDate, completionDate, values, score,0, CompetencyScoreClassification.COMPETENT);
 
         Assert.assertNotNull(survey);
         Assert.assertTrue(survey.getStatus().equals(SurveyStatus.SENT));
