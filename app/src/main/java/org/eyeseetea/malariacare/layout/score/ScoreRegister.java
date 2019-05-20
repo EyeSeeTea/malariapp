@@ -39,7 +39,6 @@ import java.util.Map;
  * Utility class for storing and dealing with survey scores.
  */
 public class ScoreRegister {
-
     public enum CalculationType {ALL_STEPS, NON_CRITICAL_STEPS}
 
     /**
@@ -368,5 +367,14 @@ public class ScoreRegister {
                 loadCompositeScores(survey, tag, CalculationType.NON_CRITICAL_STEPS);
 
         return calculateMainScore(scores, survey.getId_survey(), tag);
+    }
+
+    public static CompositeScoreDB getCompositeScoreRoot(List<CompositeScoreDB> compositeScores) {
+        for(CompositeScoreDB compositeScoreDB : compositeScores){
+            if(compositeScoreDB.hasParent()){
+                return compositeScoreDB;
+            }
+        }
+        return null;
     }
 }

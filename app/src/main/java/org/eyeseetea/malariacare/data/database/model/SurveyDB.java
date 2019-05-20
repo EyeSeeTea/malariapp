@@ -395,8 +395,8 @@ public class SurveyDB extends BaseModel implements VisitableToSDK, IData {
         return hasMainScore;
     }
 
-    public void setMainScore(Float mainScore) {
-        this.mainScore = mainScore;
+    public void setMainScore(long survey_id, String compositeScoreUid, Float mainScore) {
+        scoreDB = new ScoreDB(survey_id, compositeScoreUid, mainScore);
     }
 
     public void saveMainScore() {
@@ -563,7 +563,10 @@ public class SurveyDB extends BaseModel implements VisitableToSDK, IData {
         List<CompositeScoreDB> compositeScoreList = ScoreRegister.loadCompositeScores(this, module);
 
         //Calculate main score to push later
-        this.setMainScore(ScoreRegister.calculateMainScore(compositeScoreList, id_survey, module));
+
+        this.setMainScore(id_survey,
+                ScoreRegister.getCompositeScoreRoot(compositeScoreList).getUid(),
+                ScoreRegister.calculateMainScore(compositeScoreList, id_survey, module));
         this.saveMainScore();
     }
 
@@ -1084,7 +1087,7 @@ public class SurveyDB extends BaseModel implements VisitableToSDK, IData {
     }
 
     public void resetMainScore() {
-        ScoreDB scoreDB = getMainScore();
+        scoreDB = getMainScore();
         if(scoreDB!=null){
             scoreDB.delete();
         }

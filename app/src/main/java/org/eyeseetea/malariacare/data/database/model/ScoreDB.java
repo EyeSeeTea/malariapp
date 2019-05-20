@@ -61,6 +61,12 @@ public class ScoreDB extends BaseModel {
         this.setSurvey(survey);
     }
 
+    public ScoreDB(long survey, String uid, Float score) {
+        this.uid_score = uid;
+        this.score = score;
+        this.setSurvey(survey);
+    }
+
     public static List<ScoreDB> list() {
         return new Select().from(ScoreDB.class).queryList();
     }

@@ -600,8 +600,10 @@ public class ConvertToSDKVisitor implements
      */
     private void updateSurvey(SurveyDB currentSurvey, List<CompositeScoreDB> compositeScores,
             float idSurvey, String module) {
-        currentSurvey.setMainScore(
+        currentSurvey.setMainScore(currentSurvey.getId_survey(),
+                ScoreRegister.getCompositeScoreRoot(compositeScores).getUid(),
                 ScoreRegister.calculateMainScore(compositeScores, idSurvey, module));
+
         currentSurvey.setStatus(Constants.SURVEY_SENT);
     }
 
