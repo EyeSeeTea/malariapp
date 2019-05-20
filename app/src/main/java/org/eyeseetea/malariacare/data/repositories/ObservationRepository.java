@@ -22,8 +22,11 @@ public class ObservationRepository implements IObservationRepository {
     }
 
     @Override
-    public List<Observation> getObservationsByStatus(List<ObservationStatus> observationStatuses) throws Exception {
-        return localDataSource.getSentObservationsByStatus(observationStatuses);
+    public List<Observation> getObservations(
+            String programUid,
+            String orgUnitUid,
+            List<ObservationStatus> observationStatuses) throws Exception {
+        return localDataSource.getSentObservations(programUid, orgUnitUid, observationStatuses);
     }
 
     @Override

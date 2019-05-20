@@ -7,6 +7,9 @@ import java.util.List;
 
 public interface IObservationRepository {
     Observation getObservation(String surveyId) throws Exception;
-    List<Observation> getObservationsByStatus(List<ObservationStatus> observationStatuses) throws Exception;
+    List<Observation> getObservations(
+            String programUid,
+            String orgUnitUid,
+            List<ObservationStatus> observationStatuses) throws Exception;
     void save(Observation observation);
 }

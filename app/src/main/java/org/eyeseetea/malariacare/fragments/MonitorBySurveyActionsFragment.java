@@ -47,7 +47,6 @@ public class MonitorBySurveyActionsFragment extends FiltersFragment implements
         initializeRecyclerView();
         initializeProgressView();
         initializePresenter();
-        //loadFilter();
 
         return rootView;
     }
@@ -60,15 +59,14 @@ public class MonitorBySurveyActionsFragment extends FiltersFragment implements
 
     @Override
     protected void onFiltersChanged() {
-        //presenter.refresh (programUid, orgUnitUid);
+        presenter.refresh (selectedProgramUidFilter, selectedOrgUnitUidFilter);
     }
 
 
     @Override
     public void reloadData() {
         super.reloadData();
-
-        //presenter.refresh (programUid, orgUnitUid);
+        presenter.refresh (selectedProgramUidFilter, selectedOrgUnitUidFilter);
     }
 
 
@@ -127,6 +125,6 @@ public class MonitorBySurveyActionsFragment extends FiltersFragment implements
                 getProgramsUseCase, getOrgUnitsUseCase, getServerMetadataUseCase,
                 getSentObservationsUseCase, getSurveysUseCase);
 
-        presenter.attachView(this);
+        presenter.attachView(this, selectedProgramUidFilter, selectedOrgUnitUidFilter);
     }
 }

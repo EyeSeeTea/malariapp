@@ -37,6 +37,9 @@ public class MonitorBySurveyActionsPresenter {
     private List<Survey> surveys;
     private ServerMetadata serverMetadata;
 
+    private String programUid;
+    private String orgUnitUid;
+
     public MonitorBySurveyActionsPresenter(
             IAsyncExecutor asyncExecutor,
             IMainExecutor mainExecutor,
@@ -55,8 +58,11 @@ public class MonitorBySurveyActionsPresenter {
         this.getSurveysUseCase = getSurveysUseCase;
     }
 
-    public void attachView(View view) {
+    public void attachView(View view, String programUid, String orgUnitUid) {
         this.view = view;
+
+        this.programUid = programUid;
+        this.orgUnitUid = orgUnitUid;
 
         loadAll();
     }
@@ -65,7 +71,11 @@ public class MonitorBySurveyActionsPresenter {
         view = null;
     }
 
-    public void refresh() {
+    public void refresh(String programUid, String orgUnitUid) {
+
+        this.programUid = programUid;
+        this.orgUnitUid = orgUnitUid;
+
         asyncExecutor.run(() -> {
             showLoading();
             loadData();
@@ -200,7 +210,8 @@ public class MonitorBySurveyActionsPresenter {
     }
 
     private void loadSentObservations() throws Exception {
-        List<Observation> observations = getSentObservationsUseCase.execute();
+        List<Observation> observations =
+                getSentObservationsUseCase.execute(orgUnitUid, programUid);
 
         for (Observation observation : observations) {
             observationsMap.put(observation.getSurveyUid(), observation);

@@ -11,6 +11,10 @@ import org.eyeseetea.malariacare.data.database.model.ObservationDB;
 import org.eyeseetea.malariacare.data.database.model.ObservationDB_Table;
 import org.eyeseetea.malariacare.data.database.model.ObservationValueDB;
 import org.eyeseetea.malariacare.data.database.model.ObservationValueDB_Table;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitDB_Table;
+import org.eyeseetea.malariacare.data.database.model.ProgramDB;
+import org.eyeseetea.malariacare.data.database.model.ProgramDB_Table;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB_Table;
 import org.eyeseetea.malariacare.domain.entity.Observation;
@@ -32,8 +36,12 @@ public class ObservationLocalDataSource {
         mObservationMapper = new ObservationMapper(surveyDBS);
     }
 
-    public List<Observation> getSentObservationsByStatus(List<ObservationStatus> observationStatuses) {
-        List<ObservationDB> observationDBS = getObservationsDBByStatus(observationStatuses);
+    public List<Observation> getSentObservations(
+            String programUid,
+            String orgUnitUid,
+            List<ObservationStatus> observationStatuses) {
+        List<ObservationDB> observationDBS =
+                getObservationsDBByStatus(programUid, orgUnitUid, observationStatuses);
 
         List<Observation> observations = mObservationMapper.map(observationDBS);
 
@@ -78,15 +86,31 @@ public class ObservationLocalDataSource {
 
     }
 
-    private List<ObservationDB> getObservationsDBByStatus(List<ObservationStatus> observationStatuses){
+    private List<ObservationDB> getObservationsDBByStatus(
+            String programUid,
+            String orgUnitUid,
+            List<ObservationStatus> observationStatuses){
 
         List<ObservationDB> observationDBS;
 
-        From from = new Select().from(ObservationDB.class).leftOuterJoin(SurveyDB.class)
-                .on(SurveyDB_Table.id_survey.eq(ObservationDB_Table.id_survey_observation_fk));
+        From from = new Select().from(ObservationDB.class)
+                .leftOuterJoin(SurveyDB.class)
+                .on(SurveyDB_Table.id_survey.eq(ObservationDB_Table.id_survey_observation_fk))
+                .leftOuterJoin(ProgramDB.class)
+                .on(SurveyDB_Table.id_program_fk.eq(ProgramDB_Table.id_program))
+                .leftOuterJoin(OrgUnitDB.class)
+                .on(SurveyDB_Table.id_org_unit_fk.eq(OrgUnitDB_Table.id_org_unit));
 
         Where where = from.where(ObservationDB_Table.status_observation.isNotNull())
                 .and(SurveyDB_Table.status.eq(SurveyStatus.SENT.getCode()));
+
+        if (programUid != null && !programUid.isEmpty()){
+            where.and(ProgramDB_Table.uid_program.eq(programUid));
+        }
+
+        if (orgUnitUid != null && !orgUnitUid.isEmpty()){
+            where.and(OrgUnitDB_Table.uid_org_unit.eq(orgUnitUid));
+        }
 
         if (observationStatuses != null){
             for (ObservationStatus observationStatus:observationStatuses) {
