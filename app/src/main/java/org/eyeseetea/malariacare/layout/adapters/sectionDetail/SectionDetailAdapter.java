@@ -1,4 +1,4 @@
-package org.eyeseetea.malariacare.layout.adapters;
+package org.eyeseetea.malariacare.layout.adapters.sectionDetail;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;

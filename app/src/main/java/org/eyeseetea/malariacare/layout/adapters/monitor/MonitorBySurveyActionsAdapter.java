@@ -9,30 +9,54 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.plus.model.people.Person;
+
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.layout.adapters.SectionDetailAdapter;
+import org.eyeseetea.malariacare.layout.adapters.sectionDetail.SectionDetailAdapter;
+import org.eyeseetea.malariacare.presentation.viewmodels.SectionViewModel;
 import org.eyeseetea.malariacare.presentation.viewmodels.SurveyViewModel;
 import org.eyeseetea.malariacare.utils.CompetencyUtils;
 import org.eyeseetea.malariacare.utils.DateParser;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MonitorBySurveyActionsAdapter extends SectionDetailAdapter {
-    private List<SurveyViewModel> incompleteSurveys = new ArrayList<>();
-    private List<SurveyViewModel> completedSurveys = new ArrayList<>();
+
+    private SectionViewModel incompleteSection;
+    private SectionViewModel completeSection;
+
+    private Map<SectionViewModel, List<SurveyViewModel>> surveysMap = new HashMap<>();
     private Context context;
 
-    public MonitorBySurveyActionsAdapter(Context context){
-        this.context =  context;
+    public MonitorBySurveyActionsAdapter(Context context) {
+        this.context = context;
     }
 
-    public void setSurveys (
+    public void setSurveys(
             List<SurveyViewModel> incompleteSurveys,
-            List<SurveyViewModel> completedSurveys){
-        this.incompleteSurveys = incompleteSurveys;
-        this.completedSurveys = completedSurveys;
+            List<SurveyViewModel> completedSurveys) {
+
+        surveysMap = new HashMap<>();
+
+        incompleteSection = new
+                SectionViewModel(
+                String.format("%s (%d)", context.getString(R.string.survey_imcomplete_text),
+                        incompleteSurveys.size()),
+                R.color.red);
+
+        completeSection = new
+                SectionViewModel(
+                String.format("%s (%d)", context.getString(R.string.survey_complete_text),
+                        completedSurveys.size()),
+                R.color.green);
+
+        surveysMap.put(incompleteSection, incompleteSurveys);
+        surveysMap.put(completeSection, completedSurveys);
+
         super.refreshData();
     }
 
@@ -43,10 +67,10 @@ public class MonitorBySurveyActionsAdapter extends SectionDetailAdapter {
 
     @Override
     protected int getItemsCountInSection(int section) {
-        if (section == 0){
-            return incompleteSurveys.size();
+        if (section == 0) {
+            return surveysMap.get(incompleteSection).size();
         } else {
-            return completedSurveys.size();
+            return surveysMap.get(completeSection).size();
         }
     }
 
@@ -66,51 +90,64 @@ public class MonitorBySurveyActionsAdapter extends SectionDetailAdapter {
 
     @Override
     protected void onBindSectionViewHolder(RecyclerView.ViewHolder holder, int sectionPosition) {
-        String sectionName;
-        int sectionCount;
-        int color;
+        SectionViewModel sectionViewModel;
 
-        if (sectionPosition == 0){
-            sectionName = context.getString(R.string.survey_imcomplete_text);
-            sectionCount = incompleteSurveys.size();
-            color = R.color.red;
+        if (sectionPosition == 0) {
+            sectionViewModel = incompleteSection;
         } else {
-            sectionName = context.getString(R.string.survey_complete_text);
-            sectionCount = completedSurveys.size();
-            color = R.color.green;
+            sectionViewModel = completeSection;
         }
 
-        ((SurveySectionViewHolder) holder).bindView(sectionName, sectionCount, color);
+        ((SurveySectionViewHolder) holder).bindView(sectionViewModel);
+
+        holder.itemView.setOnClickListener(view -> expandOrCollapse(sectionViewModel));
+    }
+
+    private void expandOrCollapse(SectionViewModel sectionViewModel) {
+        sectionViewModel.setExpanded(!sectionViewModel.isExpanded());
+
+        for (SurveyViewModel surveyViewModel : surveysMap.get(sectionViewModel)) {
+            surveyViewModel.setVisible(sectionViewModel.isExpanded());
+        }
+
+        super.refreshData();
     }
 
     @Override
     protected void onBindRowViewHolder(RecyclerView.ViewHolder holder, int sectionPosition,
             int rowPositionInSection) {
-        if (sectionPosition == 0){
-            ((SurveyDetailViewHolder) holder).bindView(incompleteSurveys, rowPositionInSection);
+        if (sectionPosition == 0) {
+            ((SurveyDetailViewHolder) holder).bindView(surveysMap.get(incompleteSection),
+                    rowPositionInSection);
         } else {
-            ((SurveyDetailViewHolder) holder).bindView(incompleteSurveys, rowPositionInSection);
+            ((SurveyDetailViewHolder) holder).bindView(surveysMap.get(completeSection),
+                    rowPositionInSection);
         }
     }
 
     class SurveySectionViewHolder extends RecyclerView.ViewHolder {
 
         private TextView surveySectionNameView;
-        private ImageView explandCollapseView;
         private LinearLayout surveySectionContainer;
+        private ImageView expandCollapseView;
 
         public SurveySectionViewHolder(View itemView) {
             super(itemView);
 
             surveySectionNameView = itemView.findViewById(R.id.survey_section_name);
-            explandCollapseView = itemView.findViewById(R.id.expand_collapse_view);
             surveySectionContainer = itemView.findViewById((R.id.survey_section_container));
+            expandCollapseView = itemView.findViewById(R.id.expand_collapse_view);
         }
 
-        void bindView(String sectionName, int sectionCount, int color) {
-            String titleHeader = String.format("%s (%d)", sectionName, sectionCount);
-            surveySectionNameView.setText(titleHeader);
-            surveySectionContainer.setBackgroundResource(color);
+        void bindView(SectionViewModel section) {
+            surveySectionNameView.setText(section.getTitle());
+            surveySectionContainer.setBackgroundResource(section.getColor());
+
+            if (section.isExpanded()) {
+                expandCollapseView.setRotation(180);
+            } else {
+                expandCollapseView.setRotation(0);
+            }
         }
     }
 
@@ -140,13 +177,24 @@ public class MonitorBySurveyActionsAdapter extends SectionDetailAdapter {
             orgUnitTextView.setText(survey.getOrgUnit());
             programTextView.setText(survey.getProgram());
 
-            CompetencyUtils.setTextByCompetencyAbbreviation(competencyView,survey.getCompetency());
+            CompetencyUtils.setTextByCompetencyAbbreviation(competencyView, survey.getCompetency());
 
             scheduledDateTextView.setText(DateParser.getEuropeanFormattedDate(survey.getDate()));
 
             //dotsMenu.setOnClickListener(view -> );
 
             assignBackgroundColor();
+
+            if (survey.isVisible()) {
+                itemView.setVisibility(View.VISIBLE);
+                itemView.setLayoutParams(
+                        new RecyclerView.LayoutParams(
+                                ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.WRAP_CONTENT));
+            } else {
+                itemView.setVisibility(View.GONE);
+                itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
+            }
         }
 
         private void assignBackgroundColor() {

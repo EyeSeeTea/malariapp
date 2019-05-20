@@ -23,7 +23,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="72dp"
     android:layout_gravity="center_vertical"
     android:weightSum="1"
     android:background="@color/darkGrey">
@@ -31,7 +31,7 @@
         android:id="@+id/survey_section_name"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_width="0dp"
-        android:layout_weight=".85"
+        android:layout_weight=".9"
         android:layout_gravity="center_vertical"
         android:layout_height="wrap_content"
         android:typeface="sans"
@@ -45,9 +45,9 @@
     <ImageView
         android:id="@+id/expand_collapse_view"
         android:layout_width="0dp"
-        android:layout_weight=".15"
-        android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/dashboard_planning_padding"
+        android:layout_weight=".1"
+        android:layout_height="42dp"
+        android:layout_gravity="center"
         android:src="@drawable/ic_media_arrow"/>
 
 </LinearLayout>

@@ -5,13 +5,11 @@ import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
 import java.util.Date;
 
 public class SurveyViewModel {
-    public static String COMPLETED = "Completed";
-    public static String INCOMPLETED = "Incompleted";
-
     private final String program;
     private final String orgUnit;
     private final Date date;
     private final CompetencyScoreClassification competency;
+    private boolean visible = true;
 
     public SurveyViewModel(String program, String orgUnit, Date date,
             CompetencyScoreClassification competency) {
@@ -31,6 +29,14 @@ public class SurveyViewModel {
 
     public Date getDate() {
         return date;
+    }
+
+    public Boolean isVisible(){
+        return visible;
+    }
+
+    public void setVisible (boolean value){
+        visible = value;
     }
 
     public CompetencyScoreClassification getCompetency() {
