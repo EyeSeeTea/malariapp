@@ -211,7 +211,7 @@ public class MonitorBySurveyActionsPresenter {
 
     private void loadSentObservations() throws Exception {
         List<Observation> observations =
-                getSentObservationsUseCase.execute(orgUnitUid, programUid);
+                getSentObservationsUseCase.execute(programUid, orgUnitUid);
 
         for (Observation observation : observations) {
             observationsMap.put(observation.getSurveyUid(), observation);
