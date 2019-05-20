@@ -99,7 +99,7 @@ public class MonitorBySurveyActionsPresenter {
             loadOrgUnits();
             serverMetadata = getServerMetadata();
         } catch (Exception e) {
-            showLoadingErrorMessage();
+            showLoadingErrorMessage(e.getMessage());
         }
     }
 
@@ -123,7 +123,7 @@ public class MonitorBySurveyActionsPresenter {
 
             showSurveysByActions(incompleteSurveys, completeSurveys);
         } catch (Exception e) {
-            showLoadingErrorMessage();
+            showLoadingErrorMessage(e.getMessage());
         }
     }
 
@@ -233,13 +233,8 @@ public class MonitorBySurveyActionsPresenter {
         }
     }
 
-    private void showLoadingErrorMessage() {
-        if (view != null) {
-            mainExecutor.run(() -> {
-                hideLoading();
-                view.showLoadingErrorMessage();
-            });
-        }
+    private void showLoadingErrorMessage(String message) {
+        System.out.println("An error has occur loading monitor: " + message);
     }
 
     private void showLoading() {
@@ -258,8 +253,6 @@ public class MonitorBySurveyActionsPresenter {
         void showSurveysByActions(
                 List<SurveyViewModel> incompleteSurveys,
                 List<SurveyViewModel> completeSurveys);
-
-        void showLoadingErrorMessage();
 
         void showLoading();
 

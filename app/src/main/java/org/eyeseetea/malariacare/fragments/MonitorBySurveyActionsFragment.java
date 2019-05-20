@@ -77,11 +77,6 @@ public class MonitorBySurveyActionsFragment extends FiltersFragment implements
     }
 
     @Override
-    public void showLoadingErrorMessage() {
-
-    }
-
-    @Override
     public void showLoading() {
         progressView.setVisibility(View.VISIBLE);
     }
