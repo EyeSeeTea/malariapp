@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
+    android:background="@android:color/white">
+
+    <LinearLayout
+        android:id="@+id/header_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dialog_layout_margins"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.8"
+            android:orientation="vertical">
+
+            <org.eyeseetea.sdk.presentation.views.CustomTextView
+                android:id="@+id/org_unitName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:textColor="@color/darkGrey"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:font_name="@string/font_name_medium"
+                app:tDimension="@string/font_size_level4"
+                tools:text="KE HNQIS Family Planning Long-Acting and Permanent Method" />
+
+            <org.eyeseetea.sdk.presentation.views.CustomTextView
+                android:id="@+id/programName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/darkGrey"
+                android:textSize="18sp"
+                app:font_name="@string/font_name_medium"
+                app:tDimension="@string/font_size_level4"
+                tools:text="ORG UNIT KE HNQIS Family Planning Long-Acting and Permanent Method" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3">
+
+            <org.eyeseetea.sdk.presentation.views.CustomButton
+                android:id="@id/cancel"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:background="@drawable/action_plan_button_background"
+                android:text="@string/dashboard_info_feedback"
+                android:textColor="@android:color/white"
+                app:font_name="@string/font_name_medium"
+                app:tDimension="@string/font_size_level4" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/body_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@id/header_container">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/darkGrey"
+            android:orientation="horizontal">
+
+            <org.eyeseetea.sdk.presentation.views.CustomTextView
+                android:id="@+id/survey_completion_date_header_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0.5"
+                android:maxLines="3"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="@string/action_monitor_activity_title"
+                android:textColor="@color/white"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                app:font_name="@string/font_name_medium"
+                app:tDimension="@string/font_size_level4" />
+
+            <org.eyeseetea.sdk.presentation.views.CustomTextView
+                android:id="@+id/survey_competency_header_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="1dp"
+                android:layout_weight="0.5"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:lines="1"
+                android:padding="10dp"
+                android:text="@string/action_monitor_conducted_title"
+                android:textColor="@color/white"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                app:font_name="@string/font_name_medium"
+                app:tDimension="@string/font_size_level4" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white_grey"
+            android:orientation="horizontal">
+
+            <org.eyeseetea.sdk.presentation.views.CustomTextView
+                android:id="@+id/action1_view"
+                style="@style/EyeSeeTheme.Monitoring.ActionsDialog.ActionText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                app:font_name="@string/font_name_medium"
+                app:tDimension="@string/font_size_level4"
+                tools:text="Activity 1   frfrfrfrfrfrfrrfrfrfrfrfrfr"/>
+
+            <LinearLayout
+                android:layout_weight="0.5"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:gravity="center">
+                <CheckBox
+                    android:id="@+id/action1_conducted_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+            <org.eyeseetea.sdk.presentation.views.CustomTextView
+                android:id="@+id/action2_view"
+                style="@style/EyeSeeTheme.Monitoring.ActionsDialog.ActionText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                app:font_name="@string/font_name_medium"
+                app:tDimension="@string/font_size_level4"
+                tools:text="Activity 2   frfrfrfrfrfrfrrfrfrfrfrfrfr"/>
+
+            <LinearLayout
+                android:layout_weight="0.5"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:gravity="center">
+                <CheckBox
+                    android:id="@+id/action2_conducted_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white_grey"
+            android:orientation="horizontal">
+
+            <org.eyeseetea.sdk.presentation.views.CustomTextView
+                android:id="@+id/action3_view"
+                style="@style/EyeSeeTheme.Monitoring.ActionsDialog.ActionText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                app:font_name="@string/font_name_medium"
+                app:tDimension="@string/font_size_level4"
+                tools:text="Activity 2   frfrfrfrfrfrfrrfrfrfrfrfrfr"/>
+
+            <LinearLayout
+                android:layout_weight="0.5"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:gravity="center">
+                <CheckBox
+                    android:id="@+id/action3_conducted_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/footer_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/body_container">
+        <org.eyeseetea.sdk.presentation.views.CustomButton
+            android:id="@+id/ok_button"
+            style="@style/EyeSeeTheme.Dialog.Button"
+            android:layout_weight="0.5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            app:font_name="@string/font_name_medium"
+            app:tDimension="@string/font_size_level4"
+            android:text="@string/ok"/>
+        <org.eyeseetea.sdk.presentation.views.CustomButton
+            android:id="@+id/cancel_button"
+            style="@style/EyeSeeTheme.Dialog.Button"
+            android:layout_weight="0.5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:text="@string/cancel"/>
+    </LinearLayout>
+
+</RelativeLayout>

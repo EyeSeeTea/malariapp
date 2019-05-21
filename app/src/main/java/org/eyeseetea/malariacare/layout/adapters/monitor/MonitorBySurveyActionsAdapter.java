@@ -27,6 +27,12 @@ import java.util.Map;
 
 public class MonitorBySurveyActionsAdapter extends SectionDetailAdapter {
 
+    public interface OnItemMenuClickListener{
+        void itemMenuClick(SurveyViewModel surveyViewModel);
+    }
+
+    private OnItemMenuClickListener onItemMenuClickListener;
+
     private SectionViewModel incompleteSection;
     private SectionViewModel completeSection;
 
@@ -63,6 +69,10 @@ public class MonitorBySurveyActionsAdapter extends SectionDetailAdapter {
         numSections = 2;
 
         super.refreshData();
+    }
+
+    public void setOnItemMenuClickListener(OnItemMenuClickListener listener){
+        this.onItemMenuClickListener = listener;
     }
 
     @Override
@@ -194,7 +204,11 @@ public class MonitorBySurveyActionsAdapter extends SectionDetailAdapter {
 
             scheduledDateTextView.setText(DateParser.getEuropeanFormattedDate(survey.getDate()));
 
-            //dotsMenu.setOnClickListener(view -> );
+            dotsMenu.setOnClickListener(view -> {
+                if (onItemMenuClickListener != null){
+                    onItemMenuClickListener.itemMenuClick(survey);
+                }
+            });
 
             assignBackgroundColor();
 

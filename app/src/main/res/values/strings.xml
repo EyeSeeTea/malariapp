@@ -271,4 +271,6 @@ evaluation"</string>
 <string name="survey_imcomplete_text">Imcomplete</string>
 <string name="survey_complete_text">Complete</string>
 <string name="menu_monitoring_by_calendar_title">Old monitoring</string>
+<string name="action_monitor_activity_title">Activity</string>
+<string name="action_monitor_conducted_title">Conducted</string>
 </resources>

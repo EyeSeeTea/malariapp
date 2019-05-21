@@ -58,4 +58,30 @@
     <style name="EyeSeeTheme.observation.valueActionTitle" parent="EyeSeeTheme.observation.valueTitle">
         <item name="android:layout_marginRight">0dp</item>
     </style>
+
+    <style name="EyeSeeTheme.Monitoring">
+    </style>
+
+    <style name="EyeSeeTheme.Monitoring.ActionsDialog">
+    </style>
+
+    <style name="EyeSeeTheme.Monitoring.ActionsDialog.ActionText">
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">3</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:textColor">@color/darkGrey</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="EyeSeeTheme.Dialog">
+    </style>
+
+    <style name="EyeSeeTheme.Dialog.Button">
+        <item name="android:background">@color/dialog_button_text</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:padding">20dp</item>
+        <item name="android:layout_margin">20dp</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
 </resources>

@@ -143,7 +143,7 @@ public class MonitorBySurveyActionsPresenter {
             orgUnitName = orgUnit.getName();
         }
 
-        return new SurveyViewModel(programName, orgUnitName,
+        return new SurveyViewModel(survey.getSurveyUid(), programName, orgUnitName,
                 survey.getCompletionDate(), survey.getCompetency());
     }
 
