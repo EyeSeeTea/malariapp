@@ -16,9 +16,9 @@
         android:orientation="horizontal">
 
         <LinearLayout
+            android:layout_weight="0.7"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.8"
             android:orientation="vertical">
 
             <org.eyeseetea.sdk.presentation.views.CustomTextView
@@ -31,7 +31,7 @@
                 android:textStyle="bold"
                 app:font_name="@string/font_name_medium"
                 app:tDimension="@string/font_size_level4"
-                tools:text="KE HNQIS Family Planning Long-Acting and Permanent Method" />
+                tools:text="KE HNQIS Family " />
 
             <org.eyeseetea.sdk.presentation.views.CustomTextView
                 android:id="@+id/programName"
@@ -41,26 +41,22 @@
                 android:textSize="18sp"
                 app:font_name="@string/font_name_medium"
                 app:tDimension="@string/font_size_level4"
-                tools:text="ORG UNIT KE HNQIS Family Planning Long-Acting and Permanent Method" />
+                tools:text="ORG UNIT " />
         </LinearLayout>
 
-        <RelativeLayout
+        <org.eyeseetea.sdk.presentation.views.CustomButton
+            android:id="@+id/feedback_button"
+            android:layout_weight="0.3"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.3">
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|right"
+            android:background="@drawable/action_plan_button_background"
+            android:text="@string/dashboard_info_feedback"
+            android:layout_marginTop="8dp"
+            android:textColor="@android:color/white"
+            app:font_name="@string/font_name_medium"
+            app:tDimension="@string/font_size_level4" />
 
-            <org.eyeseetea.sdk.presentation.views.CustomButton
-                android:id="@id/cancel"
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_gravity="center"
-                android:background="@drawable/action_plan_button_background"
-                android:text="@string/dashboard_info_feedback"
-                android:textColor="@android:color/white"
-                app:font_name="@string/font_name_medium"
-                app:tDimension="@string/font_size_level4" />
-        </RelativeLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -81,7 +77,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="0.5"
+                android:layout_weight="0.65"
                 android:maxLines="3"
                 android:ellipsize="end"
                 android:gravity="center"
@@ -99,7 +95,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="1dp"
-                android:layout_weight="0.5"
+                android:layout_weight="0.35"
                 android:ellipsize="end"
                 android:gravity="center"
                 android:lines="1"
@@ -123,13 +119,13 @@
                 style="@style/EyeSeeTheme.Monitoring.ActionsDialog.ActionText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.5"
+                android:layout_weight="0.65"
                 app:font_name="@string/font_name_medium"
                 app:tDimension="@string/font_size_level4"
                 tools:text="Activity 1   frfrfrfrfrfrfrrfrfrfrfrfrfr"/>
 
             <LinearLayout
-                android:layout_weight="0.5"
+                android:layout_weight="0.35"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:gravity="center">
@@ -152,13 +148,13 @@
                 style="@style/EyeSeeTheme.Monitoring.ActionsDialog.ActionText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.5"
+                android:layout_weight="0.65"
                 app:font_name="@string/font_name_medium"
                 app:tDimension="@string/font_size_level4"
                 tools:text="Activity 2   frfrfrfrfrfrfrrfrfrfrfrfrfr"/>
 
             <LinearLayout
-                android:layout_weight="0.5"
+                android:layout_weight="0.35"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:gravity="center">
@@ -180,13 +176,13 @@
                 style="@style/EyeSeeTheme.Monitoring.ActionsDialog.ActionText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.5"
+                android:layout_weight="0.65"
                 app:font_name="@string/font_name_medium"
                 app:tDimension="@string/font_size_level4"
                 tools:text="Activity 2   frfrfrfrfrfrfrrfrfrfrfrfrfr"/>
 
             <LinearLayout
-                android:layout_weight="0.5"
+                android:layout_weight="0.35"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:gravity="center">

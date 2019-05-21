@@ -21,8 +21,10 @@ class MonitorActionsDialogFragment : DialogFragment() {
 
         super.onStart()
     }
+
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
@@ -40,7 +42,7 @@ class MonitorActionsDialogFragment : DialogFragment() {
     private fun initializeOKCancelButtons(rootView: View) {
         rootView.ok_button.setOnClickListener {
 
-            //presenter.Save
+            // presenter.Save
 
             dismiss()
         }
