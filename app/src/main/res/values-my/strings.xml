@@ -234,4 +234,7 @@
 <string name="feedback_progress_bar_text">Loading Survey scores... Please wait</string>
 <string name="observations_invalid_error_message"></string>
 
+
+<string name="survey_imcomplete_text"></string>
+<string name="survey_complete_text"></string>
 </resources>

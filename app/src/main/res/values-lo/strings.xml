@@ -271,5 +271,6 @@
 <string name="other">ອື່ນໆ</string>
 <string name="feedback_not_sent">"URL ຄວາມຄິດເຫັນບໍ່ສາມາດໃຊ້ໄດ້ເນື່ອງຈາກການສໍາຫຼວດ. ລອງແບ່ງປັນຄວາມຄິດເຫັນຕໍ່ອີກເທື່ອຫນຶ່ງ."</string>
 <string name="observations_invalid_error_message">"ມັນຕ້ອງບັງຄັບໃຫ້ປະຕິບັດແຜນການປະຕິບັດຢ່າງຫນ້ອຍຫນຶ່ງແລະແຜນປະຕິບັດທີ່ເຕັມໄປແຕ່ລະຄົນຕ້ອງມີລາຍລະອຽດ, ວັນຄົບກໍານົດແລະຄວາມຮັບຜິດຊອບ"</string>
-
+<string name="survey_imcomplete_text">ບໍ່ຄົບຖ້ວນ</string>
+<string name="survey_complete_text">ຄົບຖ້ວນ</string>
 </resources>
