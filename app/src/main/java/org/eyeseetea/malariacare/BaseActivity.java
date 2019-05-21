@@ -206,6 +206,9 @@ public abstract class BaseActivity extends AppCompatActivity {
                 debugMessage("Import db");
                 showFileChooser();
                 break;
+            case R.id.action_monitoring_by_calendar:
+                DashboardActivity.dashboardActivity.openMonitoringByCalendar();
+                break;
             default:
                 return super.onOptionsItemSelected(item);
         }

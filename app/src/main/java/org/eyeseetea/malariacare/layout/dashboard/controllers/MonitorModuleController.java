@@ -28,22 +28,45 @@ import org.eyeseetea.malariacare.layout.dashboard.config.ModuleSettings;
 
 public class MonitorModuleController extends ModuleController {
 
-    public MonitorModuleController(ModuleSettings moduleSettings){
+    MonitorBySurveyActionsFragment monitorBySurveyActionsFragment;
+    MonitorFragment monitoringByCalendar;
+
+    public MonitorModuleController(ModuleSettings moduleSettings) {
         super(moduleSettings);
-        this.tabLayout=R.id.tab_monitor_layout;
+        this.tabLayout = R.id.tab_monitor_layout;
     }
 
     @Override
     public void init(DashboardActivity activity) {
         super.init(activity);
 
-        MonitorBySurveyActionsFragment monitorBySurveyActionsFragment =
+        monitorBySurveyActionsFragment =
                 MonitorBySurveyActionsFragment.newInstance();
 
         fragment = monitorBySurveyActionsFragment;
-/*        MonitorFragment monitorFragment=new MonitorFragment();
+/*
         monitorFragment.setFilterType(moduleSettings.getMonitorFilter());
         fragment = monitorFragment;*/
     }
 
+    public void openMonitoringByCalendar() {
+        if (monitoringByCalendar == null) {
+            monitoringByCalendar = new MonitorFragment();
+            monitoringByCalendar.setFilterType(moduleSettings.getMonitorFilter());
+        }
+
+        fragment = monitoringByCalendar;
+
+        replaceFragment(R.id.dashboard_charts_container, monitoringByCalendar);
+
+        reloadData();
+    }
+
+    public void openMonitorByActions() {
+        fragment = monitorBySurveyActionsFragment;
+
+        replaceFragment(R.id.dashboard_charts_container, monitorBySurveyActionsFragment);
+
+        reloadData();
+    }
 }

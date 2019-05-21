@@ -34,6 +34,7 @@ public abstract class FiltersFragment extends Fragment implements IModuleFragmen
 
     @Override
     public void reloadData() {
+        initializeFilters();
         updateSelectedFilters();
     }
 
@@ -50,8 +51,11 @@ public abstract class FiltersFragment extends Fragment implements IModuleFragmen
     }
 
     private void initializeFilters() {
-        orgUnitProgramFilterView = DashboardActivity.dashboardActivity
-                .findViewById(R.id.monitor_org_unit_program_filter_view);
+        if (orgUnitProgramFilterView == null){
+            orgUnitProgramFilterView = DashboardActivity.dashboardActivity
+                    .findViewById(R.id.monitor_org_unit_program_filter_view);
+        }
+
 
         orgUnitProgramFilterView.setFilterChangedListener(
                 new OrgUnitProgramFilterView.FilterChangedListener() {

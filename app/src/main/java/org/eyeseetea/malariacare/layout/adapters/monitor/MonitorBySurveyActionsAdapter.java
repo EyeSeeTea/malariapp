@@ -13,6 +13,7 @@ import com.google.android.gms.plus.model.people.Person;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.layout.adapters.sectionDetail.SectionDetailAdapter;
 import org.eyeseetea.malariacare.presentation.viewmodels.SectionViewModel;
 import org.eyeseetea.malariacare.presentation.viewmodels.SurveyViewModel;
@@ -31,6 +32,8 @@ public class MonitorBySurveyActionsAdapter extends SectionDetailAdapter {
 
     private Map<SectionViewModel, List<SurveyViewModel>> surveysMap = new HashMap<>();
     private Context context;
+
+    private int numSections = 0;
 
     public MonitorBySurveyActionsAdapter(Context context) {
         this.context = context;
@@ -57,20 +60,30 @@ public class MonitorBySurveyActionsAdapter extends SectionDetailAdapter {
         surveysMap.put(incompleteSection, incompleteSurveys);
         surveysMap.put(completeSection, completedSurveys);
 
+        numSections = 2;
+
         super.refreshData();
     }
 
     @Override
     protected int getSectionsCount() {
-        return 2;
+        return numSections;
     }
 
     @Override
     protected int getItemsCountInSection(int section) {
+        List<SurveyViewModel> surveysBySection;
+
         if (section == 0) {
-            return surveysMap.get(incompleteSection).size();
+            surveysBySection = surveysMap.get(incompleteSection);
         } else {
-            return surveysMap.get(completeSection).size();
+            surveysBySection = surveysMap.get(completeSection);
+        }
+
+        if (surveysBySection != null){
+            return surveysBySection.size();
+        } else {
+            return 0;
         }
     }
 

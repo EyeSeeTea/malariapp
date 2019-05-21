@@ -18,7 +18,7 @@
   ~  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/tab_monitor_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -27,29 +27,27 @@
     <org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView
         android:id="@+id/monitor_org_unit_program_filter_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"/>
 
     <FrameLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
-        android:id="@+id/dashboard_charts_container">
-
-        <WebView
-            android:id="@+id/dashboard_monitor"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:background="@color/light_grey"
-            android:focusable="true"
-            >
-        </WebView>
-
-        <TextView
-            android:id="@+id/monitor_no_surveys_message"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/monitor_no_surveys_to_show"
-            android:visibility="gone" />
+        android:id="@+id/dashboard_charts_container"
+        android:layout_below="@id/monitor_org_unit_program_filter_view">
     </FrameLayout>
-</LinearLayout>
+
+    <ImageButton
+        android:id="@+id/back_to_monitoring_by_actions_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/transparent"
+        android:gravity="center_horizontal"
+        android:src="@drawable/ic_back"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="52dp"/>
+</RelativeLayout>

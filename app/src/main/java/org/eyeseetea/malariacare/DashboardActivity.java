@@ -431,6 +431,14 @@ public class DashboardActivity extends BaseActivity {
         dashboardController.onPlannedSurvey(survey, scheduleClickListener);
     }
 
+    public void openMonitoringByCalendar() {
+        dashboardController.openMonitoringByCalendar();
+    }
+
+    public void openMonitorByActions() {
+        dashboardController.openMonitorByActions();
+    }
+
     public void reloadActiveTab() {
         dashboardController.reloadActiveModule();
     }
