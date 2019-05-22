@@ -11,6 +11,7 @@ import org.eyeseetea.malariacare.domain.usecase.GetObservationBySurveyUidUseCase
 import org.eyeseetea.malariacare.domain.usecase.GetSentObservationsUseCase
 import org.eyeseetea.malariacare.domain.usecase.GetSurveyByUidUseCase
 import org.eyeseetea.malariacare.domain.usecase.GetSurveysUseCase
+import org.eyeseetea.malariacare.domain.usecase.SaveObservationUseCase
 
 object DataFactory {
 
@@ -22,8 +23,11 @@ object DataFactory {
 
     fun provideSurveysUseCase(): GetSurveysUseCase = GetSurveysUseCase(provideSurveyRepository())
 
-    fun provideObservationBySurveyUidUseCase(): GetObservationBySurveyUidUseCase =
+    fun provideGetObservationBySurveyUidUseCase(): GetObservationBySurveyUidUseCase =
         GetObservationBySurveyUidUseCase(provideObservationRepository())
+
+    fun provideSaveObservationUseCase(): SaveObservationUseCase =
+        SaveObservationUseCase(provideObservationRepository())
 
     fun provideSentObservationsUseCase(): GetSentObservationsUseCase =
         GetSentObservationsUseCase(provideObservationRepository())
@@ -34,8 +38,8 @@ object DataFactory {
     private fun provideObservationRepository(): IObservationRepository =
         ObservationRepository(provideObservationLocalDataSource())
 
-    private fun provideSurveyLocalDataSource():ISurveyDataSource{
-        if (surveyLocalDataSource == null){
+    private fun provideSurveyLocalDataSource(): ISurveyDataSource {
+        if (surveyLocalDataSource == null) {
             surveyLocalDataSource = SurveyLocalDataSource()
         }
 
@@ -43,7 +47,7 @@ object DataFactory {
     }
 
     private fun provideObservationLocalDataSource(): ObservationLocalDataSource {
-        if (observationLocalDataSource == null){
+        if (observationLocalDataSource == null) {
             observationLocalDataSource = ObservationLocalDataSource()
         }
 

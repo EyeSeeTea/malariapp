@@ -190,18 +190,12 @@ public class ObservationsPresenter {
         Observation observation =
                 ObservationMapper.mapToObservation(mObservationViewModel, mServerMetadata);
 
-        mSaveObservationUseCase.execute(observation, new SaveObservationUseCase.Callback() {
-            @Override
-            public void onSuccess() {
-                System.out.println("Observation saved successfully");
-            }
-
-            @Override
-            public void onError(Exception e) {
-                System.out.println(
-                        "An error has occur saving Observation: " + e.getMessage());
-            }
-        });
+        try{
+            mSaveObservationUseCase.execute(observation);
+        } catch (Exception e){
+            System.out.println(
+                    "An error has occur saving Observation: " + e.getMessage());
+        }
     }
 
     public void completeObservation() {

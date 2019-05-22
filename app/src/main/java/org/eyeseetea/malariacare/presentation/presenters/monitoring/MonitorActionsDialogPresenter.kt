@@ -8,9 +8,11 @@ import org.eyeseetea.malariacare.domain.usecase.GetProgramByUidUseCase
 import org.eyeseetea.malariacare.domain.usecase.GetServerMetadataUseCase
 import org.eyeseetea.malariacare.domain.usecase.GetSurveyByUidUseCase
 import org.eyeseetea.malariacare.domain.usecase.GetOrgUnitByUidUseCase
+import org.eyeseetea.malariacare.domain.usecase.SaveObservationUseCase
 import org.eyeseetea.malariacare.presentation.boundary.Executor
 import org.eyeseetea.malariacare.presentation.mapper.observations.ObservationMapper
 import org.eyeseetea.malariacare.presentation.viewmodels.observations.ActionViewModel
+import org.eyeseetea.malariacare.presentation.viewmodels.observations.ObservationViewModel
 import java.lang.Exception
 
 class MonitorActionsDialogPresenter(
@@ -19,10 +21,13 @@ class MonitorActionsDialogPresenter(
     private val getOrgUnitByUidUseCase: GetOrgUnitByUidUseCase,
     private val getServerMetadataUseCase: GetServerMetadataUseCase,
     private val getSurveyByUidUseCase: GetSurveyByUidUseCase,
-    private val getObservationBySurveyUidUseCase: GetObservationBySurveyUidUseCase
+    private val getObservationBySurveyUidUseCase: GetObservationBySurveyUidUseCase,
+    private val saveObservationUseCase: SaveObservationUseCase
 ) {
     private var view: View? = null
     private lateinit var surveyUid: String
+
+    private lateinit var observationViewModel: ObservationViewModel
 
     private lateinit var program: Program
     private lateinit var orgUnit: OrgUnit
@@ -40,6 +45,41 @@ class MonitorActionsDialogPresenter(
         view = null
     }
 
+    fun save(
+        completedAction1: Boolean,
+        completedAction2: Boolean,
+        completedAction3: Boolean
+    ) = executor.asyncExecute {
+
+        var hasChange = false
+
+        if (completedAction1 != observationViewModel.action1.isCompleted) {
+            observationViewModel.action1.isCompleted = completedAction1
+            hasChange = true
+        }
+
+        if (completedAction2 != observationViewModel.action2.isCompleted) {
+            observationViewModel.action2.isCompleted = completedAction2
+            hasChange = true
+        }
+
+        if (completedAction3 != observationViewModel.action3.isCompleted) {
+            observationViewModel.action3.isCompleted = completedAction3
+            hasChange = true
+        }
+
+        if (hasChange) {
+            val observation =
+                ObservationMapper.mapToObservation(observationViewModel, serverMetadata)
+
+            try {
+                saveObservationUseCase.execute(observation)
+            } catch (e: Exception) {
+                showSaveErrorMessage()
+            }
+        }
+    }
+
     private fun loadAll() = executor.asyncExecute {
         showLoading()
         loadMetadata()
@@ -55,7 +95,7 @@ class MonitorActionsDialogPresenter(
             orgUnit = getOrgUnitByUidUseCase.execute(survey.orgUnitUId)
             serverMetadata = getServerMetadataUseCase.execute()
         } catch (e: Exception) {
-            showLoadingErrorMessage()
+            showLoadErrorMessage()
         }
     }
 
@@ -63,7 +103,7 @@ class MonitorActionsDialogPresenter(
         try {
             val observation = getObservationBySurveyUidUseCase.execute(surveyUid)
 
-            val observationViewModel = ObservationMapper.mapToViewModel(observation, serverMetadata)
+            observationViewModel = ObservationMapper.mapToViewModel(observation, serverMetadata)
 
             showOrgUnitAndProgram()
             showActions(
@@ -96,14 +136,19 @@ class MonitorActionsDialogPresenter(
         view?.showActions(action1, action2, action3)
     }
 
-    private fun showLoadingErrorMessage() = executor.uiExecute {
+    private fun showLoadErrorMessage() = executor.uiExecute {
         view?.showLoadErrorMessage()
+    }
+
+    private fun showSaveErrorMessage() = executor.uiExecute {
+        view?.showSaveErrorMessage()
     }
 
     interface View {
         fun showLoading()
         fun hideLoading()
         fun showLoadErrorMessage()
+        fun showSaveErrorMessage()
 
         fun showOrgUnitAndProgram(orgUnit: String, program: String)
 

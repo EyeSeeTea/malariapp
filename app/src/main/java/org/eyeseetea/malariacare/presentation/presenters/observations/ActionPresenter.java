@@ -13,7 +13,7 @@ public class ActionPresenter {
     public void attachView(View view){
         this.view = view;
 
-        this.actionViewModel = new ActionViewModel("",null,"");
+        this.actionViewModel = new ActionViewModel("",null,"", null);
 
         expandOrCollapse();
     }

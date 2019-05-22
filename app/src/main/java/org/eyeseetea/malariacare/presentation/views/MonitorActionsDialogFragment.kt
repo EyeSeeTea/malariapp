@@ -17,7 +17,6 @@ import org.eyeseetea.malariacare.presentation.presenters.monitoring.MonitorActio
 import org.eyeseetea.malariacare.presentation.viewmodels.observations.ActionViewModel
 
 class MonitorActionsDialogFragment : DialogFragment(), MonitorActionsDialogPresenter.View {
-
     private lateinit var rootView: View
     private lateinit var surveyId: String
     private lateinit var presenter: MonitorActionsDialogPresenter
@@ -51,6 +50,11 @@ class MonitorActionsDialogFragment : DialogFragment(), MonitorActionsDialogPrese
         initializePresenter()
     }
 
+    override fun onDestroy() {
+        presenter.detachView()
+        super.onDestroy()
+    }
+
     override fun showLoading() {
         rootView.progress_view.visibility = View.VISIBLE
     }
@@ -61,6 +65,10 @@ class MonitorActionsDialogFragment : DialogFragment(), MonitorActionsDialogPrese
 
     override fun showLoadErrorMessage() {
         Toast.makeText(activity, getString(R.string.load_error_message), Toast.LENGTH_LONG).show()
+    }
+
+    override fun showSaveErrorMessage() {
+        Toast.makeText(activity, getString(R.string.save_error_message), Toast.LENGTH_LONG).show()
     }
 
     override fun showOrgUnitAndProgram(orgUnit: String, program: String) {
@@ -76,6 +84,7 @@ class MonitorActionsDialogFragment : DialogFragment(), MonitorActionsDialogPrese
         if (!action1.description.isBlank()) {
             rootView.action1_container.visibility = View.VISIBLE
             rootView.action1_view.text = action1.description
+            rootView.action1_conducted_view.isChecked = action1.isCompleted
         } else {
             rootView.action1_container.visibility = View.GONE
         }
@@ -83,6 +92,7 @@ class MonitorActionsDialogFragment : DialogFragment(), MonitorActionsDialogPrese
         if (!action2.description.isBlank()) {
             rootView.action2_container.visibility = View.VISIBLE
             rootView.action2_view.text = action2.description
+            rootView.action2_conducted_view.isChecked = action2.isCompleted
         } else {
             rootView.action2_container.visibility = View.GONE
         }
@@ -90,6 +100,7 @@ class MonitorActionsDialogFragment : DialogFragment(), MonitorActionsDialogPrese
         if (!action3.description.isBlank()) {
             rootView.action3_container.visibility = View.VISIBLE
             rootView.action3_view.text = action3.description
+            rootView.action3_conducted_view.isChecked = action3.isCompleted
         } else {
             rootView.action3_container.visibility = View.GONE
         }
@@ -98,7 +109,11 @@ class MonitorActionsDialogFragment : DialogFragment(), MonitorActionsDialogPrese
     private fun initializeOKCancelButtons(rootView: View) {
         rootView.ok_button.setOnClickListener {
 
-            // presenter.Save
+            presenter.save(
+                rootView.action1_conducted_view.isChecked,
+                rootView.action2_conducted_view.isChecked,
+                rootView.action3_conducted_view.isChecked
+            )
 
             dismiss()
         }
@@ -115,7 +130,8 @@ class MonitorActionsDialogFragment : DialogFragment(), MonitorActionsDialogPrese
             MetadataFactory.provideGetOrgUnitByUidUseCase(),
             MetadataFactory.provideServerMetadataUseCase(activity as Activity),
             DataFactory.provideGetSurveyByUidUseCase(),
-            DataFactory.provideObservationBySurveyUidUseCase()
+            DataFactory.provideGetObservationBySurveyUidUseCase(),
+            DataFactory.provideSaveObservationUseCase()
         )
 
         presenter.attachView(this, surveyId)

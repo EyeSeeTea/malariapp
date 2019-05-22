@@ -17,9 +17,9 @@ public class ObservationViewModel {
     public ObservationViewModel(String surveyUid) {
         this.surveyUid = surveyUid;
 
-        action1 = new ActionViewModel("",null,"");
-        action2 = new ActionViewModel("",null,"");
-        action3 = new ActionViewModel("",null,"");
+        action1 = new ActionViewModel("",null,"", null);
+        action2 = new ActionViewModel("",null,"", null);
+        action3 = new ActionViewModel("",null,"", null);
     }
 
     public ObservationViewModel(String surveyUid, String provider,
