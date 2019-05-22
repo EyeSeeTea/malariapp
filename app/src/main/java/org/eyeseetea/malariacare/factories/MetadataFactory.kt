@@ -11,11 +11,19 @@ import org.eyeseetea.malariacare.domain.boundary.repositories.IOrgUnitRepository
 import org.eyeseetea.malariacare.domain.boundary.repositories.IProgramRepository
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerMetadataRepository
 import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository
+import org.eyeseetea.malariacare.domain.usecase.GetOrgUnitByUidUseCase
 import org.eyeseetea.malariacare.domain.usecase.GetOrgUnitsUseCase
+import org.eyeseetea.malariacare.domain.usecase.GetProgramByUidUseCase
 import org.eyeseetea.malariacare.domain.usecase.GetProgramsUseCase
 import org.eyeseetea.malariacare.domain.usecase.GetServerMetadataUseCase
 
 object MetadataFactory {
+
+    fun provideGetProgramByUidUseCase(): GetProgramByUidUseCase =
+        GetProgramByUidUseCase(provideProgramRepository())
+
+    fun provideGetOrgUnitByUidUseCase(): GetOrgUnitByUidUseCase =
+        GetOrgUnitByUidUseCase(provideOrgUnitRepository())
 
     fun provideProgramsUseCase(): GetProgramsUseCase =
         GetProgramsUseCase(provideProgramRepository())

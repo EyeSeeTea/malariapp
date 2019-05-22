@@ -273,4 +273,5 @@ evaluation"</string>
 <string name="menu_monitoring_by_calendar_title">Old monitoring</string>
 <string name="action_monitor_activity_title">Activity</string>
 <string name="action_monitor_conducted_title">Conducted</string>
+    <string name="load_error_message">An error has occurred loading the data</string>
 </resources>

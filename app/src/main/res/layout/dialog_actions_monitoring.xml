@@ -22,7 +22,7 @@
             android:orientation="vertical">
 
             <org.eyeseetea.sdk.presentation.views.CustomTextView
-                android:id="@+id/org_unitName"
+                android:id="@+id/org_unit_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
@@ -34,7 +34,7 @@
                 tools:text="KE HNQIS Family " />
 
             <org.eyeseetea.sdk.presentation.views.CustomTextView
-                android:id="@+id/programName"
+                android:id="@+id/program_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/darkGrey"
@@ -64,7 +64,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_below="@id/header_container">
+        android:layout_below="@id/header_container"
+        android:minHeight="150dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -109,10 +110,12 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/action1_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white_grey"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <org.eyeseetea.sdk.presentation.views.CustomTextView
                 android:id="@+id/action1_view"
@@ -138,10 +141,12 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/action2_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <org.eyeseetea.sdk.presentation.views.CustomTextView
                 android:id="@+id/action2_view"
@@ -166,10 +171,12 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/action3_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white_grey"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <org.eyeseetea.sdk.presentation.views.CustomTextView
                 android:id="@+id/action3_view"
@@ -220,5 +227,14 @@
             android:layout_alignParentBottom="true"
             android:text="@string/cancel"/>
     </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progress_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:indeterminate="true"
+        android:indeterminateTint="?attr/colorPrimary"
+        android:visibility="visible" />
 
 </RelativeLayout>

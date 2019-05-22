@@ -199,8 +199,7 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
                 new ObservationRepository(observationLocalDataSource);
 
         GetObservationBySurveyUidUseCase getObservationBySurveyUidUseCase =
-                new GetObservationBySurveyUidUseCase(asyncExecutor, mainExecutor,
-                        observationRepository);
+                new GetObservationBySurveyUidUseCase(observationRepository);
 
         IServerMetadataRepository serverMetadataRepository =
                 new ServerMetadataRepository(getActivity());

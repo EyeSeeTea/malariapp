@@ -7,12 +7,21 @@ import org.eyeseetea.malariacare.data.repositories.ObservationRepository
 import org.eyeseetea.malariacare.data.repositories.SurveyRepository
 import org.eyeseetea.malariacare.domain.boundary.repositories.IObservationRepository
 import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyRepository
+import org.eyeseetea.malariacare.domain.usecase.GetObservationBySurveyUidUseCase
+import org.eyeseetea.malariacare.domain.usecase.GetOrgUnitByUidUseCase
 import org.eyeseetea.malariacare.domain.usecase.GetSentObservationsUseCase
+import org.eyeseetea.malariacare.domain.usecase.GetSurveyByUidUseCase
 import org.eyeseetea.malariacare.domain.usecase.GetSurveysUseCase
 
 object DataFactory {
 
+    fun provideGetSurveyByUidUseCase(): GetSurveyByUidUseCase =
+        GetSurveyByUidUseCase(provideSurveyRepository())
+
     fun provideSurveysUseCase(): GetSurveysUseCase = GetSurveysUseCase(provideSurveyRepository())
+
+    fun provideObservationBySurveyUidUseCase(): GetObservationBySurveyUidUseCase =
+        GetObservationBySurveyUidUseCase(provideObservationRepository())
 
     fun provideSentObservationsUseCase(): GetSentObservationsUseCase =
         GetSentObservationsUseCase(provideObservationRepository())

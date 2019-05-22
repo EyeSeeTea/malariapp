@@ -57,12 +57,29 @@ public class SurveyLocalDataSource implements ISurveyDataSource {
         saveSurveys(surveys);
     }
 
+    @Override
+    public Survey getSurveyByUid(String uid) {
+        SurveyDB surveyDB = getSurveyDB(uid);
+
+        Survey survey = mapSurvey(surveyDB);
+
+        return survey;
+    }
+
     private List<Survey> mapSurveys(List<SurveyDB> surveyDBS) {
         SurveyMapper surveyMapper = new SurveyMapper(
                 OrgUnitDB.list(), ProgramDB.getAllPrograms(), QuestionDB.list(),
                 OptionDB.list(), UserDB.list(), ScoreDB.list(), OrgUnitProgramRelationDB.list());
 
         return surveyMapper.mapSurveys(surveyDBS);
+    }
+
+    private Survey mapSurvey(SurveyDB surveyDB) {
+        SurveyMapper surveyMapper = new SurveyMapper(
+                OrgUnitDB.list(), ProgramDB.getAllPrograms(), QuestionDB.list(),
+                OptionDB.list(), UserDB.list(), ScoreDB.list(), OrgUnitProgramRelationDB.list());
+
+        return surveyMapper.map(surveyDB);
     }
 
     private void saveSurveys(List<Survey> surveys) {

@@ -6,10 +6,12 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.data.boundaries.IMetadataLocalDataSource;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitDB_Table;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitLevelDB;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitProgramRelationDB;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.domain.entity.OrgUnit;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,6 +32,16 @@ public class OrgUnitLocalDataSource
         loadDependants();
 
         return mapToDomain(orgUnitsDB);
+    }
+
+    @Override
+    public OrgUnit getByUid(String uid) {
+        OrgUnitDB orgUnitDB = new Select().from(OrgUnitDB.class)
+                .where(OrgUnitDB_Table.uid_org_unit.eq(uid)).querySingle();
+
+        loadDependants();
+
+        return mapOrgUnit(orgUnitDB);
     }
 
     private void loadDependants() {
@@ -56,15 +68,24 @@ public class OrgUnitLocalDataSource
         Map<String, Integer> productivityByProgram;
 
         for (OrgUnitDB orgUnitDB : orgUnitsDB) {
-            orgUnitLevelUid = getOrgUnitLevelUid(orgUnitDB.getId_org_unit_level_fk());
+            OrgUnit orgUnit = mapOrgUnit(orgUnitDB);
 
-            productivityByProgram = getProductivityByProgram(orgUnitDB);
-
-            orgUnits.add(new OrgUnit(orgUnitDB.getUid(), orgUnitDB.getName(),
-                    orgUnitLevelUid, productivityByProgram));
+            orgUnits.add(orgUnit);
         }
 
         return orgUnits;
+    }
+
+    @NotNull
+    private OrgUnit mapOrgUnit(OrgUnitDB orgUnitDB) {
+        String orgUnitLevelUid;
+        Map<String, Integer> productivityByProgram;
+        orgUnitLevelUid = getOrgUnitLevelUid(orgUnitDB.getId_org_unit_level_fk());
+
+        productivityByProgram = getProductivityByProgram(orgUnitDB);
+
+        return new OrgUnit(orgUnitDB.getUid(), orgUnitDB.getName(),
+                orgUnitLevelUid, productivityByProgram);
     }
 
     private String getOrgUnitLevelUid(Long orgUnitLevelId) {

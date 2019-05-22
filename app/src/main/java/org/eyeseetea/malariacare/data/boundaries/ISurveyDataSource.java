@@ -10,4 +10,6 @@ public interface ISurveyDataSource{
 
     List<Survey> getSurveysByUids(List<String> uids) throws Exception;
     void save(List<Survey> surveys) throws Exception;
+
+    Survey getSurveyByUid(String uid);
 }
