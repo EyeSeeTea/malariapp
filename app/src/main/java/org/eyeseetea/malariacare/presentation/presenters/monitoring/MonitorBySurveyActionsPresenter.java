@@ -95,9 +95,10 @@ public class MonitorBySurveyActionsPresenter {
 
     private void loadMetadata() {
         try {
+
             loadPrograms();
             loadOrgUnits();
-            serverMetadata = getServerMetadata();
+            serverMetadata = getServerMetadataUseCase.execute();
         } catch (Exception e) {
             showLoadingErrorMessage(e.getMessage());
         }
