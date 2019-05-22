@@ -8,7 +8,6 @@ import org.eyeseetea.malariacare.data.repositories.SurveyRepository
 import org.eyeseetea.malariacare.domain.boundary.repositories.IObservationRepository
 import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyRepository
 import org.eyeseetea.malariacare.domain.usecase.GetObservationBySurveyUidUseCase
-import org.eyeseetea.malariacare.domain.usecase.GetOrgUnitByUidUseCase
 import org.eyeseetea.malariacare.domain.usecase.GetSentObservationsUseCase
 import org.eyeseetea.malariacare.domain.usecase.GetSurveyByUidUseCase
 import org.eyeseetea.malariacare.domain.usecase.GetSurveysUseCase

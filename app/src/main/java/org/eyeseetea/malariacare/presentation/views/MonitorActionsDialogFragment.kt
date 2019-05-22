@@ -73,21 +73,21 @@ class MonitorActionsDialogFragment : DialogFragment(), MonitorActionsDialogPrese
         action2: ActionViewModel,
         action3: ActionViewModel
     ) {
-        if (!action1.description.isBlank()){
+        if (!action1.description.isBlank()) {
             rootView.action1_container.visibility = View.VISIBLE
             rootView.action1_view.text = action1.description
         } else {
             rootView.action1_container.visibility = View.GONE
         }
 
-        if (!action2.description.isBlank()){
+        if (!action2.description.isBlank()) {
             rootView.action2_container.visibility = View.VISIBLE
             rootView.action2_view.text = action2.description
         } else {
             rootView.action2_container.visibility = View.GONE
         }
 
-        if (!action3.description.isBlank()){
+        if (!action3.description.isBlank()) {
             rootView.action3_container.visibility = View.VISIBLE
             rootView.action3_view.text = action3.description
         } else {
