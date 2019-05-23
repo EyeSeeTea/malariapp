@@ -115,6 +115,10 @@ class MonitorActionsDialogPresenter(
                 observationViewModel.action2,
                 observationViewModel.action3
             )
+
+            if (observationViewModel.isReadOnly) {
+                changeToReadOnlyMode()
+            }
         } catch (e: Exception) {
             view?.showLoadErrorMessage()
         }
@@ -152,6 +156,10 @@ class MonitorActionsDialogPresenter(
         view?.showSaveErrorMessage()
     }
 
+    private fun changeToReadOnlyMode() = executor.uiExecute {
+        view?.changeToReadOnlyMode()
+    }
+
     interface View {
         fun showLoading()
         fun hideLoading()
@@ -167,5 +175,6 @@ class MonitorActionsDialogPresenter(
         )
 
         fun notifyOnSave()
+        fun changeToReadOnlyMode()
     }
 }

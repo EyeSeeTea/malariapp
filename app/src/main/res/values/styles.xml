@@ -77,7 +77,7 @@
     </style>
 
     <style name="EyeSeeTheme.Dialog.Button">
-        <item name="android:background">@color/dialog_button_text</item>
+        <item name="android:background">@drawable/background_dialog_button</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:padding">20dp</item>
         <item name="android:layout_margin">20dp</item>

@@ -1,6 +1,10 @@
 package org.eyeseetea.malariacare.presentation.viewmodels.observations;
 
 import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
+import org.jetbrains.annotations.NotNull;
+
+import kotlin.Unit;
+import kotlin.jvm.functions.Function0;
 
 public class ObservationViewModel {
 
@@ -88,5 +92,14 @@ public class ObservationViewModel {
                 (action1.isValid() || action1.isEmpty()) &&
                 (action2.isValid() || action2.isEmpty()) &&
                 (action3.isValid() || action3.isEmpty());
+    }
+
+    public boolean isReadOnly() {
+        boolean atLeastOneFilled = !(action1.isEmpty() && action2.isEmpty() && action3.isEmpty());
+
+        return atLeastOneFilled &&
+                (action1.isCompleted() || action1.isEmpty()) &&
+                (action2.isCompleted() || action2.isEmpty()) &&
+                (action3.isCompleted() || action3.isEmpty());
     }
 }

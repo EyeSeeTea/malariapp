@@ -121,6 +121,13 @@ class MonitorActionsDialogFragment : DialogFragment(), MonitorActionsDialogPrese
         dismiss()
     }
 
+    override fun changeToReadOnlyMode() {
+        rootView.action1_conducted_view.isEnabled = false
+        rootView.action2_conducted_view.isEnabled = false
+        rootView.action3_conducted_view.isEnabled = false
+        rootView.ok_button.isEnabled = false
+    }
+
     private fun initializeOKCancelButtons(rootView: View) {
         rootView.ok_button.setOnClickListener {
 
