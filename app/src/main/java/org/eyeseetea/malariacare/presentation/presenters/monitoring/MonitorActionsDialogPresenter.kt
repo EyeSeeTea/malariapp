@@ -74,6 +74,7 @@ class MonitorActionsDialogPresenter(
 
             try {
                 saveObservationUseCase.execute(observation)
+                notifyOnSaved()
             } catch (e: Exception) {
                 showSaveErrorMessage()
             }
@@ -111,6 +112,7 @@ class MonitorActionsDialogPresenter(
                 observationViewModel.action2,
                 observationViewModel.action3
             )
+
         } catch (e: Exception) {
             view?.showLoadErrorMessage()
         }
@@ -126,6 +128,10 @@ class MonitorActionsDialogPresenter(
 
     private fun showOrgUnitAndProgram() = executor.uiExecute {
         view?.showOrgUnitAndProgram(orgUnit.name, program.name)
+    }
+
+    private fun notifyOnSaved() = executor.uiExecute {
+        view?.notifyOnSave()
     }
 
     private fun showActions(
@@ -157,5 +163,7 @@ class MonitorActionsDialogPresenter(
             action2: ActionViewModel,
             action3: ActionViewModel
         )
+
+        fun notifyOnSave()
     }
 }

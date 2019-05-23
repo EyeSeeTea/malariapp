@@ -25,9 +25,10 @@ import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.presentation.presenters.monitoring.MonitorBySurveyActionsPresenter;
 import org.eyeseetea.malariacare.presentation.viewmodels.SurveyViewModel;
 import org.eyeseetea.malariacare.presentation.views.MonitorActionsDialogFragment;
-import org.eyeseetea.malariacare.views.MonitorSurveysDialogFragment;
 
 import java.util.List;
+
+import kotlin.Unit;
 
 public class MonitorBySurveyActionsFragment extends FiltersFragment implements
         MonitorBySurveyActionsPresenter.View {
@@ -122,6 +123,11 @@ public class MonitorBySurveyActionsFragment extends FiltersFragment implements
 
         MonitorActionsDialogFragment monitorActionsDialogFragment =
                 MonitorActionsDialogFragment.newInstance(surveyViewModel.getSurveyUid());
+
+        monitorActionsDialogFragment.setOnActionsSaved(() -> {
+            presenter.refresh(selectedProgramUidFilter, selectedOrgUnitUidFilter);
+            return Unit.INSTANCE;
+        });
 
         monitorActionsDialogFragment.show(fm, MonitorActionsDialogFragment.class.getSimpleName());
     }

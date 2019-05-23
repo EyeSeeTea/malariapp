@@ -15,8 +15,8 @@ import org.eyeseetea.malariacare.domain.usecase.SaveObservationUseCase
 
 object DataFactory {
 
-    var surveyLocalDataSource: ISurveyDataSource? = null
-    var observationLocalDataSource: ObservationLocalDataSource? = null
+    private var surveyLocalDataSource: ISurveyDataSource? = null
+    private var observationLocalDataSource: ObservationLocalDataSource? = null
 
     fun provideGetSurveyByUidUseCase(): GetSurveyByUidUseCase =
         GetSurveyByUidUseCase(provideSurveyRepository())

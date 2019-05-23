@@ -21,6 +21,8 @@ class MonitorActionsDialogFragment : DialogFragment(), MonitorActionsDialogPrese
     private lateinit var surveyId: String
     private lateinit var presenter: MonitorActionsDialogPresenter
 
+    var onActionsSaved: (() -> Unit)? = null
+
     override fun onStart() {
         dialog.window!!.setLayout(
             WindowManager.LayoutParams.MATCH_PARENT,
@@ -64,11 +66,19 @@ class MonitorActionsDialogFragment : DialogFragment(), MonitorActionsDialogPrese
     }
 
     override fun showLoadErrorMessage() {
-        Toast.makeText(activity, getString(R.string.load_error_message), Toast.LENGTH_LONG).show()
+        Toast.makeText(
+            activity as Activity,
+            getString(R.string.load_error_message),
+            Toast.LENGTH_LONG
+        ).show()
     }
 
     override fun showSaveErrorMessage() {
-        Toast.makeText(activity, getString(R.string.save_error_message), Toast.LENGTH_LONG).show()
+        Toast.makeText(
+            activity as Activity,
+            getString(R.string.save_error_message),
+            Toast.LENGTH_LONG
+        ).show()
     }
 
     override fun showOrgUnitAndProgram(orgUnit: String, program: String) {
@@ -106,6 +116,11 @@ class MonitorActionsDialogFragment : DialogFragment(), MonitorActionsDialogPrese
         }
     }
 
+    override fun notifyOnSave() {
+        onActionsSaved?.invoke()
+        dismiss()
+    }
+
     private fun initializeOKCancelButtons(rootView: View) {
         rootView.ok_button.setOnClickListener {
 
@@ -114,8 +129,6 @@ class MonitorActionsDialogFragment : DialogFragment(), MonitorActionsDialogPrese
                 rootView.action2_conducted_view.isChecked,
                 rootView.action3_conducted_view.isChecked
             )
-
-            dismiss()
         }
 
         rootView.cancel_button.setOnClickListener {
