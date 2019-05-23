@@ -1,5 +1,6 @@
 package org.eyeseetea.malariacare.presentation.presenters.monitoring
 
+import org.eyeseetea.malariacare.domain.entity.ObservationStatus
 import org.eyeseetea.malariacare.domain.entity.OrgUnit
 import org.eyeseetea.malariacare.domain.entity.Program
 import org.eyeseetea.malariacare.domain.entity.ServerMetadata
@@ -69,6 +70,8 @@ class MonitorActionsDialogPresenter(
         }
 
         if (hasChange) {
+            observationViewModel.status = ObservationStatus.COMPLETED
+
             val observation =
                 ObservationMapper.mapToObservation(observationViewModel, serverMetadata)
 
@@ -112,7 +115,6 @@ class MonitorActionsDialogPresenter(
                 observationViewModel.action2,
                 observationViewModel.action3
             )
-
         } catch (e: Exception) {
             view?.showLoadErrorMessage()
         }
