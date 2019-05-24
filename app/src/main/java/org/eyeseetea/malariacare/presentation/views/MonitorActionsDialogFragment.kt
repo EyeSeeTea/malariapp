@@ -16,9 +16,9 @@ import org.eyeseetea.malariacare.presentation.executors.WrapperExecutor
 import org.eyeseetea.malariacare.presentation.presenters.monitoring.MonitorActionsDialogPresenter
 import org.eyeseetea.malariacare.presentation.viewmodels.observations.ActionViewModel
 import android.app.AlertDialog
+import org.eyeseetea.malariacare.DashboardActivity
 
 class MonitorActionsDialogFragment : DialogFragment(), MonitorActionsDialogPresenter.View {
-
     private lateinit var rootView: View
     private lateinit var surveyId: String
     private lateinit var presenter: MonitorActionsDialogPresenter
@@ -50,7 +50,7 @@ class MonitorActionsDialogFragment : DialogFragment(), MonitorActionsDialogPrese
 
         rootView = view
 
-        initializeOKCancelButtons(view)
+        initializeButtons(view)
         initializePresenter()
     }
 
@@ -108,6 +108,10 @@ class MonitorActionsDialogFragment : DialogFragment(), MonitorActionsDialogPrese
         dismiss()
     }
 
+    override fun navigateToFeedback(surveyUid: String) {
+        DashboardActivity.dashboardActivity.openFeedback(surveyUid, false)
+    }
+
     override fun showActions(
         action1: ActionViewModel,
         action2: ActionViewModel,
@@ -150,7 +154,7 @@ class MonitorActionsDialogFragment : DialogFragment(), MonitorActionsDialogPrese
         rootView.ok_button.isEnabled = false
     }
 
-    private fun initializeOKCancelButtons(rootView: View) {
+    private fun initializeButtons(rootView: View) {
         rootView.ok_button.setOnClickListener {
 
             presenter.save(
@@ -162,6 +166,10 @@ class MonitorActionsDialogFragment : DialogFragment(), MonitorActionsDialogPrese
 
         rootView.cancel_button.setOnClickListener {
             presenter.cancel()
+        }
+
+        rootView.feedback_button.setOnClickListener {
+            presenter.feedback()
         }
     }
 

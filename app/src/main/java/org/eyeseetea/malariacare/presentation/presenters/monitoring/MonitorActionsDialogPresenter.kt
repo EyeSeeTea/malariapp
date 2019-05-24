@@ -114,6 +114,11 @@ class MonitorActionsDialogPresenter(
         exit()
     }
 
+    fun feedback() {
+        exit()
+        navigateToFeedback(observationViewModel.surveyUid)
+    }
+
     private fun loadAll() = executor.asyncExecute {
         showLoading()
         loadMetadata()
@@ -198,23 +203,28 @@ class MonitorActionsDialogPresenter(
         view?.exit()
     }
 
+    private fun navigateToFeedback(surveyUid: String) = executor.uiExecute {
+        view?.navigateToFeedback(surveyUid)
+    }
+
     interface View {
         fun showLoading()
         fun hideLoading()
+
+        fun showSaveConfirmMessage()
         fun showLoadErrorMessage()
         fun showSaveErrorMessage()
 
         fun showOrgUnitAndProgram(orgUnit: String, program: String)
-
         fun showActions(
             action1: ActionViewModel,
             action2: ActionViewModel,
             action3: ActionViewModel
         )
 
-        fun showSaveConfirmMessage()
         fun notifyOnSave()
         fun changeToReadOnlyMode()
         fun exit()
+        fun navigateToFeedback(surveyUid: String)
     }
 }

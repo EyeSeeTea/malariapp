@@ -465,8 +465,29 @@ public class DashboardController {
         alertDialog.show();
     }
 
+    public void openFeedback(String surveyUid, boolean modifyFilter){
+        activeImproveTab();
+
+        ImproveModuleController improveModuleController = (ImproveModuleController) getModuleByName(
+                ImproveModuleController.getSimpleName());
+
+        improveModuleController.onFeedbackSelected(surveyUid, modifyFilter);
+
+        improveModuleController.setActionBarDashboardWithProgram();
+    }
 
     public void openFeedback(SurveyDB survey, boolean modifyFilter) {
+        activeImproveTab();
+
+        ImproveModuleController improveModuleController = (ImproveModuleController) getModuleByName(
+                ImproveModuleController.getSimpleName());
+
+        improveModuleController.onFeedbackSelected(survey, modifyFilter);
+
+        improveModuleController.setActionBarDashboardWithProgram();
+    }
+
+    private void activeImproveTab() {
         //Vertical -> Hide improve module
         if (DashboardOrientation.VERTICAL.equals(getOrientation())) {
             //Mark currentTab (only necessary for vertical orientation)
@@ -482,11 +503,6 @@ public class DashboardController {
             }
 
         }
-
-        ImproveModuleController improveModuleController = (ImproveModuleController) getModuleByName(
-                ImproveModuleController.getSimpleName());
-        improveModuleController.onFeedbackSelected(survey, modifyFilter);
-        improveModuleController.setActionBarDashboardWithProgram();
     }
 
     public void openMonitoringByCalendar(){
