@@ -29,6 +29,7 @@ class MonitorActionsDialogPresenter(
     private lateinit var surveyUid: String
 
     private lateinit var observationViewModel: ObservationViewModel
+    private var editedObservationViewModel: ObservationViewModel? = null
 
     private lateinit var program: Program
     private lateinit var orgUnit: OrgUnit
@@ -54,34 +55,63 @@ class MonitorActionsDialogPresenter(
 
         var hasChange = false
 
+        with(observationViewModel) {
+            editedObservationViewModel =
+                ObservationViewModel(
+                    surveyUid,
+                    provider,
+                    action1.copy(),
+                    action2.copy(),
+                    action3.copy(),
+                    status
+                )
+        }
+
         if (completedAction1 != observationViewModel.action1.isCompleted) {
-            observationViewModel.action1.isCompleted = completedAction1
+            editedObservationViewModel!!.action1.isCompleted = completedAction1
             hasChange = true
         }
 
         if (completedAction2 != observationViewModel.action2.isCompleted) {
-            observationViewModel.action2.isCompleted = completedAction2
+            editedObservationViewModel!!.action2.isCompleted = completedAction2
             hasChange = true
         }
 
         if (completedAction3 != observationViewModel.action3.isCompleted) {
-            observationViewModel.action3.isCompleted = completedAction3
+            editedObservationViewModel!!.action3.isCompleted = completedAction3
             hasChange = true
         }
 
         if (hasChange) {
-            observationViewModel.status = ObservationStatus.COMPLETED
+            if (editedObservationViewModel!!.allActionsCompleted) {
+                showSaveConfirmMessage()
+            } else {
+                confirmSave()
+            }
+        } else {
+            exit()
+        }
+    }
+
+    fun confirmSave() {
+        editedObservationViewModel?.let {
+            editedObservationViewModel!!.status = ObservationStatus.COMPLETED
 
             val observation =
-                ObservationMapper.mapToObservation(observationViewModel, serverMetadata)
+                ObservationMapper.mapToObservation(editedObservationViewModel, serverMetadata)
 
             try {
                 saveObservationUseCase.execute(observation)
                 notifyOnSaved()
+                exit()
             } catch (e: Exception) {
                 showSaveErrorMessage()
             }
         }
+    }
+
+    fun cancel() {
+        exit()
     }
 
     private fun loadAll() = executor.asyncExecute {
@@ -116,7 +146,7 @@ class MonitorActionsDialogPresenter(
                 observationViewModel.action3
             )
 
-            if (observationViewModel.isReadOnly) {
+            if (observationViewModel.allActionsCompleted) {
                 changeToReadOnlyMode()
             }
         } catch (e: Exception) {
@@ -140,6 +170,10 @@ class MonitorActionsDialogPresenter(
         view?.notifyOnSave()
     }
 
+    private fun showSaveConfirmMessage() = executor.uiExecute {
+        view?.showSaveConfirmMessage()
+    }
+
     private fun showActions(
         action1: ActionViewModel,
         action2: ActionViewModel,
@@ -160,6 +194,10 @@ class MonitorActionsDialogPresenter(
         view?.changeToReadOnlyMode()
     }
 
+    private fun exit() = executor.uiExecute {
+        view?.exit()
+    }
+
     interface View {
         fun showLoading()
         fun hideLoading()
@@ -174,7 +212,9 @@ class MonitorActionsDialogPresenter(
             action3: ActionViewModel
         )
 
+        fun showSaveConfirmMessage()
         fun notifyOnSave()
         fun changeToReadOnlyMode()
+        fun exit()
     }
 }

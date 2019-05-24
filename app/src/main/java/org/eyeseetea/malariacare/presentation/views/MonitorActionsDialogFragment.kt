@@ -15,8 +15,10 @@ import org.eyeseetea.malariacare.factories.MetadataFactory
 import org.eyeseetea.malariacare.presentation.executors.WrapperExecutor
 import org.eyeseetea.malariacare.presentation.presenters.monitoring.MonitorActionsDialogPresenter
 import org.eyeseetea.malariacare.presentation.viewmodels.observations.ActionViewModel
+import android.app.AlertDialog
 
 class MonitorActionsDialogFragment : DialogFragment(), MonitorActionsDialogPresenter.View {
+
     private lateinit var rootView: View
     private lateinit var surveyId: String
     private lateinit var presenter: MonitorActionsDialogPresenter
@@ -86,6 +88,26 @@ class MonitorActionsDialogFragment : DialogFragment(), MonitorActionsDialogPrese
         rootView.org_unit_view.text = orgUnit
     }
 
+    override fun showSaveConfirmMessage() {
+        val builder = AlertDialog.Builder(activity)
+        builder
+            .setMessage(R.string.action_monitor_save_confirm_message)
+            .setPositiveButton(R.string.ok) { _, _ ->
+                presenter.confirmSave()
+            }
+            .setNegativeButton(R.string.cancel) { _, _ ->
+            }
+
+        // Create the AlertDialog object and return it
+        val dialog = builder.create()
+
+        dialog.show()
+    }
+
+    override fun exit() {
+        dismiss()
+    }
+
     override fun showActions(
         action1: ActionViewModel,
         action2: ActionViewModel,
@@ -139,7 +161,7 @@ class MonitorActionsDialogFragment : DialogFragment(), MonitorActionsDialogPrese
         }
 
         rootView.cancel_button.setOnClickListener {
-            dismiss()
+            presenter.cancel()
         }
     }
 
