@@ -22,26 +22,19 @@
             android:orientation="vertical">
 
             <org.eyeseetea.sdk.presentation.views.CustomTextView
+                style="@style/EyeSeeTheme.Dialog.OrgUnitText"
                 android:id="@+id/org_unit_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:textColor="@color/darkGrey"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:font_name="@string/font_name_medium"
-                app:tDimension="@string/font_size_level4"
-                tools:text="KE HNQIS Family " />
+                android:layout_marginBottom="8dp"
+                tools:text="ORG UNIT " />
 
             <org.eyeseetea.sdk.presentation.views.CustomTextView
+                style="@style/EyeSeeTheme.Dialog.ProgramText"
                 android:id="@+id/program_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/darkGrey"
-                android:textSize="18sp"
-                app:font_name="@string/font_name_medium"
-                app:tDimension="@string/font_size_level4"
-                tools:text="ORG UNIT " />
+                tools:text="KE HNQIS Family " />
         </LinearLayout>
 
         <org.eyeseetea.sdk.presentation.views.CustomButton
@@ -52,7 +45,6 @@
             android:layout_gravity="center_vertical|right"
             android:background="@drawable/action_plan_button_background"
             android:text="@string/dashboard_info_feedback"
-            android:layout_marginTop="8dp"
             android:textColor="@android:color/white"
             app:font_name="@string/font_name_medium"
             app:tDimension="@string/font_size_level4" />
@@ -74,7 +66,6 @@
             android:orientation="horizontal">
 
             <org.eyeseetea.sdk.presentation.views.CustomTextView
-                android:id="@+id/survey_completion_date_header_view"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -91,7 +82,6 @@
                 app:tDimension="@string/font_size_level4" />
 
             <org.eyeseetea.sdk.presentation.views.CustomTextView
-                android:id="@+id/survey_competency_header_view"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -124,8 +114,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.65"
                 app:font_name="@string/font_name_medium"
-                app:tDimension="@string/font_size_level4"
-                tools:text="Activity 1   frfrfrfrfrfrfrrfrfrfrfrfrfr"/>
+                app:tDimension="@string/font_size_level4"/>
 
             <LinearLayout
                 android:layout_weight="0.35"
@@ -155,8 +144,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.65"
                 app:font_name="@string/font_name_medium"
-                app:tDimension="@string/font_size_level4"
-                tools:text="Activity 2   frfrfrfrfrfrfrrfrfrfrfrfrfr"/>
+                app:tDimension="@string/font_size_level4"/>
 
             <LinearLayout
                 android:layout_weight="0.35"
@@ -185,8 +173,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.65"
                 app:font_name="@string/font_name_medium"
-                app:tDimension="@string/font_size_level4"
-                tools:text="Activity 2   frfrfrfrfrfrfrrfrfrfrfrfrfr"/>
+                app:tDimension="@string/font_size_level4"/>
 
             <LinearLayout
                 android:layout_weight="0.35"
