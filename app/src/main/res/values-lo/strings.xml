@@ -273,4 +273,11 @@
 <string name="observations_invalid_error_message">"ມັນຕ້ອງບັງຄັບໃຫ້ປະຕິບັດແຜນການປະຕິບັດຢ່າງຫນ້ອຍຫນຶ່ງແລະແຜນປະຕິບັດທີ່ເຕັມໄປແຕ່ລະຄົນຕ້ອງມີລາຍລະອຽດ, ວັນຄົບກໍານົດແລະຄວາມຮັບຜິດຊອບ"</string>
 <string name="survey_imcomplete_text">ບໍ່ຄົບຖ້ວນ</string>
 <string name="survey_complete_text">ຄົບຖ້ວນ</string>
+
+<string name="menu_monitoring_by_calendar_title">ການກວດສອບເກົ່າ</string>
+<string name="action_monitor_activity_title">ກິດຈະກໍາ</string>
+<string name="action_monitor_conducted_title">ດໍາເນີນການ</string>
+<string name="action_monitor_save_confirm_message">ທຸກໆກິດຈະກໍາຖືກດໍາເນີນການ, ທ່ານແນ່ໃຈວ່າທ່ານຕ້ອງການຊ່ວຍປະຢັດບໍ? ທ່ານບໍ່ສາມາດຍົກເລີກການປະຕິບັດນີ້ໄດ້</string>
+<string name="load_error_message">ມີຂໍ້ຜິດພາດທີ່ເກີດຂື້ນໃນການໂຫລດຂໍ້ມູນ</string>
+<string name="save_error_message">ມີຂໍ້ຜິດພາດທີ່ເກີດຂື້ນໃນການບັນທຶກຂໍ້ມູນ</string>
 </resources>

@@ -266,4 +266,11 @@ clínica"</string>
 <string name="observations_invalid_error_message">"Es obligatorio completar al menos un plan de acción y cada plan de acción completado debe tener una descripción, fecha de vencimiento y responsabilidad."</string>
 <string name="survey_imcomplete_text">Incompletas</string>
 <string name="survey_complete_text">Completas</string>
+
+<string name="menu_monitoring_by_calendar_title">Antigua monitorización</string>
+<string name="action_monitor_activity_title">Actividad</string>
+<string name="action_monitor_conducted_title">Conducida</string>
+<string name="action_monitor_save_confirm_message">Todas las acciones estan conducidas, estas seguro de que quierer guardar? No podrás deshacer esta acción</string>
+<string name="load_error_message">Ha ocurrido un errror cargando los datos</string>
+<string name="save_error_message">Ha ocurrido un errror guardando los datos</string>
 </resources>
