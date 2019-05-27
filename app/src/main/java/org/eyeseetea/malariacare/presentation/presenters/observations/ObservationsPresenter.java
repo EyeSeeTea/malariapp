@@ -14,6 +14,7 @@ import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
 import org.eyeseetea.malariacare.domain.entity.Observation;
 import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
 import org.eyeseetea.malariacare.domain.entity.ServerMetadata;
+import org.eyeseetea.malariacare.domain.exception.InvalidServerMetadataException;
 import org.eyeseetea.malariacare.domain.exception.ObservationNotFoundException;
 import org.eyeseetea.malariacare.domain.usecase.GetObservationBySurveyUidUseCase;
 import org.eyeseetea.malariacare.domain.usecase.GetServerMetadataUseCase;
@@ -83,10 +84,17 @@ public class ObservationsPresenter {
     }
 
     private void LoadData() {
-        try{
+        try {
             ServerMetadata serverMetadata = mGetServerMetadataUseCase.execute();
             ObservationsPresenter.this.mServerMetadata = serverMetadata;
             loadObservation();
+        } catch (InvalidServerMetadataException e){
+            if (mView != null) {
+                mView.showInvalidServerMetadataErrorMessage();
+                mView.changeToReadOnlyMode();
+            }
+            System.out.println(
+                    "InvalidServerMetadataException has occur retrieving server metadata: " + e.getMessage());
         } catch (Exception e){
             System.out.println(
                     "An error has occur retrieving server metadata: " + e.getMessage());
@@ -339,5 +347,6 @@ public class ObservationsPresenter {
         void renderAction3(ActionViewModel action3);
 
         void showInvalidObservationErrorMessage();
+        void showInvalidServerMetadataErrorMessage();
     }
 }

@@ -268,6 +268,8 @@ evaluation"</string>
 <string name="other">Other</string>
 <string name="feedback_not_sent">"The feedback URL is not available because the survey hasn't been sent to the server yet. Try sharing the feedback again later."</string>
 <string name="observations_invalid_error_message">"It's mandatory to fill out at least one action plan and each filled action plan must have a description, due date and responsible"</string>
+<string name="observations_invalid_server_metadata_error_message">An error has occurred, there is no metadata necessary to create action plan</string>
+
 <string name="survey_imcomplete_text">Imcomplete</string>
 <string name="survey_complete_text">Complete</string>
 
@@ -277,4 +279,5 @@ evaluation"</string>
 <string name="action_monitor_save_confirm_message">All actions are conducted, are you sure you want to save? You cannot undo this action</string>
 <string name="load_error_message">An error has occurred loading the data</string>
 <string name="save_error_message">An error has occurred saving the data</string>
+
 </resources>
