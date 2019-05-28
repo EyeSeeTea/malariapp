@@ -1,8 +1,5 @@
 package org.eyeseetea.malariacare.presentation.presenters.observations
 
-import android.content.Context
-
-import org.eyeseetea.malariacare.R
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB
 import org.eyeseetea.malariacare.data.database.model.QuestionDB
 import org.eyeseetea.malariacare.data.database.model.SurveyDB
@@ -17,6 +14,7 @@ import org.eyeseetea.malariacare.domain.usecase.GetObservationBySurveyUidUseCase
 import org.eyeseetea.malariacare.domain.usecase.GetServerMetadataUseCase
 import org.eyeseetea.malariacare.domain.usecase.SaveObservationUseCase
 import org.eyeseetea.malariacare.observables.ObservablePush
+import org.eyeseetea.malariacare.presentation.boundary.Executor
 import org.eyeseetea.malariacare.presentation.mapper.observations.MissedStepMapper
 import org.eyeseetea.malariacare.presentation.mapper.observations.ObservationMapper
 import org.eyeseetea.malariacare.presentation.viewmodels.observations.ActionViewModel
@@ -28,7 +26,7 @@ import org.eyeseetea.malariacare.utils.Constants
 import java.util.ArrayList
 
 class ObservationsPresenter(
-    private val context: Context,
+    private val executor: Executor,
     private val getObservationBySurveyUidUseCase: GetObservationBySurveyUidUseCase,
     private val getServerMetadataUseCase: GetServerMetadataUseCase,
     private val saveObservationUseCase: SaveObservationUseCase
@@ -44,7 +42,6 @@ class ObservationsPresenter(
     private var missedNonCriticalSteps: List<MissedStepViewModel> = mutableListOf()
 
     init {
-
         ObservablePush.getInstance().addObserver { observable, o ->
             if (view != null) {
                 refreshObservation()
@@ -63,16 +60,12 @@ class ObservationsPresenter(
         this.view = null
     }
 
-    private fun loadData() {
+    private fun loadData() = executor.asyncExecute {
         try {
-            val serverMetadata = getServerMetadataUseCase.execute()
-            this@ObservationsPresenter.serverMetadata = serverMetadata
+            serverMetadata = getServerMetadataUseCase.execute()
             loadObservation()
         } catch (e: InvalidServerMetadataException) {
-            view?.let { view ->
-                view.showInvalidServerMetadataErrorMessage()
-                view.changeToReadOnlyMode()
-            }
+            showInvalidServerMetadataErrorMessage()
 
             println(
                 "InvalidServerMetadataException has occur retrieving server metadata: " + e.message
@@ -86,7 +79,7 @@ class ObservationsPresenter(
 
     private fun loadObservation() {
         try {
-            val observation = getObservationBySurveyUidUseCase.execute(surveyUid!!)
+            val observation = getObservationBySurveyUidUseCase.execute(surveyUid)
 
             observationViewModel = ObservationMapper.mapToViewModel(observation, serverMetadata)
 
@@ -95,7 +88,7 @@ class ObservationsPresenter(
             updateStatus()
             showObservation()
         } catch (exception: ObservationNotFoundException) {
-            observationViewModel = ObservationViewModel(surveyUid!!)
+            observationViewModel = ObservationViewModel(surveyUid)
             saveObservation()
 
             loadSurvey()
@@ -112,32 +105,27 @@ class ObservationsPresenter(
     private fun loadSurvey() {
         survey = SurveyDB.getSurveyByUId(surveyUid)
 
-        if (view != null) {
-            val dateParser = DateParser()
-            var formattedCompletionDate = "NaN"
-            if (survey.completionDate != null) {
-                formattedCompletionDate = dateParser.format(
-                    survey.completionDate,
-                    DateParser.EUROPEAN_DATE_FORMAT
-                )
-            }
-
-            var formattedNextDate = "NaN"
-
-            formattedNextDate = dateParser.format(
-                SurveyPlanner.getInstance().findScheduledDateBySurvey(survey),
+        val dateParser = DateParser()
+        var formattedCompletionDate = "NaN"
+        if (survey.completionDate != null) {
+            formattedCompletionDate = dateParser.format(
+                survey.completionDate,
                 DateParser.EUROPEAN_DATE_FORMAT
             )
-
-            val classification = CompetencyScoreClassification.get(
-                survey.competencyScoreClassification
-            )
-
-            view?.renderHeaderInfo(
-                survey.orgUnit!!.name, survey.mainScoreValue,
-                formattedCompletionDate, formattedNextDate, classification
-            )
         }
+
+        var formattedNextDate = "NaN"
+
+        formattedNextDate = dateParser.format(
+            SurveyPlanner.getInstance().findScheduledDateBySurvey(survey),
+            DateParser.EUROPEAN_DATE_FORMAT
+        )
+
+        val classification = CompetencyScoreClassification.get(
+            survey.competencyScoreClassification
+        )
+
+        showHeaderInfo(formattedCompletionDate, formattedNextDate, classification)
     }
 
     private fun loadMissedSteps() {
@@ -164,27 +152,6 @@ class ObservationsPresenter(
         )
     }
 
-    private fun showObservation() {
-        view?.let { view ->
-            if (missedCriticalSteps.isNotEmpty()) {
-                view.renderMissedCriticalSteps(missedCriticalSteps)
-            } else {
-                view.showNoCriticalStepsMissedText()
-            }
-
-            if (missedNonCriticalSteps.isNotEmpty()) {
-                view.renderMissedNonCriticalSteps(missedNonCriticalSteps)
-            } else {
-                view.showNoNonCriticalStepsMissedText()
-            }
-
-            view.renderProvider(observationViewModel.provider)
-            view.renderAction1(observationViewModel.action1)
-            view.renderAction2(observationViewModel.action2)
-            view.renderAction3(observationViewModel.action3)
-        }
-    }
-
     fun providerChanged(provider: String) {
         if (provider != observationViewModel.provider) {
             observationViewModel.provider = provider
@@ -192,7 +159,7 @@ class ObservationsPresenter(
         }
     }
 
-    private fun saveObservation() {
+    private fun saveObservation() = executor.asyncExecute {
         val observation =
             ObservationMapper.mapToObservation(observationViewModel, serverMetadata)
 
@@ -208,47 +175,12 @@ class ObservationsPresenter(
     fun completeObservation() {
         if (observationViewModel.isValid) {
             observationViewModel.status = ObservationStatus.COMPLETED
+
             saveObservation()
-
-            if (view != null) {
-                view!!.changeToReadOnlyMode()
-
-                updateStatus()
-            }
+            updateStatus()
         } else {
             if (view != null) {
                 view!!.showInvalidObservationErrorMessage()
-            }
-        }
-    }
-
-    private fun updateStatus() {
-        if (view != null) {
-            view!!.updateStatusView(observationViewModel.status)
-        }
-
-        when (observationViewModel.status) {
-            ObservationStatus.COMPLETED, ObservationStatus.SENT -> {
-                view!!.enableShareButton()
-                view!!.changeToReadOnlyMode()
-            }
-
-            ObservationStatus.IN_PROGRESS -> view!!.disableShareButton()
-        }
-    }
-
-    fun shareObsActionPlan() {
-        if (view != null) {
-
-            if (survey.status != Constants.SURVEY_SENT) {
-                view!!.shareNotSent(context.getString(R.string.feedback_not_sent))
-            } else {
-                view!!.shareByText(
-                    observationViewModel,
-                    survey,
-                    missedCriticalSteps,
-                    missedNonCriticalSteps
-                )
             }
         }
     }
@@ -301,28 +233,93 @@ class ObservationsPresenter(
     }
 
     private fun refreshObservation() {
-        val observation: Observation
+        var observation: Observation
         try {
-            observation = getObservationBySurveyUidUseCase.execute(surveyUid)
+            executor.asyncExecute {
+                observation = getObservationBySurveyUidUseCase.execute(surveyUid)
 
-            observationViewModel = ObservationMapper.mapToViewModel(observation, serverMetadata)
+                observationViewModel = ObservationMapper.mapToViewModel(observation, serverMetadata)
 
-            updateStatus()
+                updateStatus()
+            }
         } catch (e: Exception) {
             println("An error has occur refreshing observation: " + e.message)
         }
     }
 
+    private fun updateStatus() = executor.uiExecute {
+        view?.let { view ->
+
+            view.updateStatusView(observationViewModel.status)
+
+            when (observationViewModel.status) {
+                ObservationStatus.COMPLETED, ObservationStatus.SENT -> {
+                    view.enableShareButton()
+                    view.changeToReadOnlyMode()
+                }
+
+                ObservationStatus.IN_PROGRESS -> view.disableShareButton()
+            }
+        }
+    }
+
+    fun shareObsActionPlan() = executor.uiExecute {
+        view?.let { view ->
+
+            if (survey.status != Constants.SURVEY_SENT) {
+                view.shareNotSent()
+            } else {
+                view.shareByText(
+                    observationViewModel,
+                    survey,
+                    missedCriticalSteps,
+                    missedNonCriticalSteps
+                )
+            }
+        }
+    }
+
+    private fun showHeaderInfo(
+        formattedCompletionDate: String,
+        formattedNextDate: String,
+        classification: CompetencyScoreClassification
+    ) = executor.uiExecute {
+        view?.showHeaderInfo(
+            survey.orgUnit!!.name, survey.mainScoreValue,
+            formattedCompletionDate, formattedNextDate, classification
+        )
+    }
+
+    private fun showObservation() = executor.uiExecute {
+        view?.let { view ->
+            if (missedCriticalSteps.isNotEmpty()) {
+                view.showMissedCriticalSteps(missedCriticalSteps)
+            } else {
+                view.showNoCriticalStepsMissedText()
+            }
+
+            if (missedNonCriticalSteps.isNotEmpty()) {
+                view.showMissedNonCriticalSteps(missedNonCriticalSteps)
+            } else {
+                view.showNoNonCriticalStepsMissedText()
+            }
+
+            view.showProvider(observationViewModel.provider)
+            view.showAction1(observationViewModel.action1)
+            view.showAction2(observationViewModel.action2)
+            view.showAction3(observationViewModel.action3)
+        }
+    }
+
+    private fun showInvalidServerMetadataErrorMessage() = executor.uiExecute {
+        view?.let { view ->
+            view.showInvalidServerMetadataErrorMessage()
+            view.changeToReadOnlyMode()
+        }
+    }
+
     interface View {
-        fun changeToReadOnlyMode()
-
-        fun renderProvider(provider: String)
-
-        fun renderMissedCriticalSteps(missedCriticalSteps: List<@JvmSuppressWildcards MissedStepViewModel>)
-
-        fun renderMissedNonCriticalSteps(missedNonCriticalSteps: List<@JvmSuppressWildcards MissedStepViewModel>)
-
-        fun renderHeaderInfo(
+        fun showHeaderInfo(
             orgUnitName: String,
             mainScore: Float?,
             completionDate: String,
@@ -330,7 +327,18 @@ class ObservationsPresenter(
             classification: CompetencyScoreClassification
         )
 
+        fun showMissedCriticalSteps(missedCriticalSteps: List<@JvmSuppressWildcards MissedStepViewModel>)
+        fun showMissedNonCriticalSteps(missedNonCriticalSteps: List<@JvmSuppressWildcards MissedStepViewModel>)
+        fun showNoCriticalStepsMissedText()
+        fun showNoNonCriticalStepsMissedText()
+        fun showProvider(provider: String)
+        fun showAction1(action1: ActionViewModel)
+        fun showAction2(action2: ActionViewModel)
+        fun showAction3(action3: ActionViewModel)
+
         fun updateStatusView(status: ObservationStatus)
+
+        fun changeToReadOnlyMode()
 
         fun shareByText(
             observationViewModel: ObservationViewModel?,
@@ -339,21 +347,13 @@ class ObservationsPresenter(
             missedNonCriticalStepViewModels: List<@JvmSuppressWildcards MissedStepViewModel>?
         )
 
-        fun shareNotSent(surveyNoSentMessage: String)
+        fun shareNotSent()
 
         fun enableShareButton()
 
         fun disableShareButton()
 
-        fun renderAction1(action1: ActionViewModel)
-        fun renderAction2(action2: ActionViewModel)
-        fun renderAction3(action3: ActionViewModel)
-
         fun showInvalidObservationErrorMessage()
         fun showInvalidServerMetadataErrorMessage()
-
-        fun showNoCriticalStepsMissedText()
-
-        fun showNoNonCriticalStepsMissedText()
     }
 }

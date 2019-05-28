@@ -49,6 +49,7 @@ import org.eyeseetea.malariacare.factories.DataFactory;
 import org.eyeseetea.malariacare.factories.MetadataFactory;
 import org.eyeseetea.malariacare.layout.adapters.MissedStepsAdapter;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.presentation.executors.WrapperExecutor;
 import org.eyeseetea.malariacare.presentation.presenters.observations.ObservationsPresenter;
 import org.eyeseetea.malariacare.presentation.viewmodels.observations.MissedStepViewModel;
 import org.eyeseetea.malariacare.presentation.viewmodels.observations.ObservationViewModel;
@@ -191,7 +192,8 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
     }
 
     private void initPresenter(String surveyUid) {
-        presenter = new ObservationsPresenter(getActivity(),
+        presenter = new ObservationsPresenter(
+                new WrapperExecutor(),
                 DataFactory.INSTANCE.provideGetObservationBySurveyUidUseCase(),
                 MetadataFactory.INSTANCE.provideServerMetadataUseCase(getActivity()),
                 DataFactory.INSTANCE.provideSaveObservationUseCase());
@@ -265,12 +267,12 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
     }
 
     @Override
-    public void renderProvider(String provider) {
+    public void showProvider(String provider) {
         mCustomProviderText.setText(provider);
     }
 
     @Override
-    public void renderMissedCriticalSteps(
+    public void showMissedCriticalSteps(
             List<MissedStepViewModel> missedCriticalSteps) {
         noCriticalStepsMissedTextView.setVisibility(View.GONE);
         missedCriticalStepsView.setVisibility(View.VISIBLE);
@@ -278,7 +280,7 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
     }
 
     @Override
-    public void renderMissedNonCriticalSteps(List<MissedStepViewModel> missedNonCriticalSteps) {
+    public void showMissedNonCriticalSteps(List<MissedStepViewModel> missedNonCriticalSteps) {
         noNonCriticalStepsMissedTextView.setVisibility(View.GONE);
         missedNonCriticalStepsView.setVisibility(View.VISIBLE);
         missedNonCriticalStepsAdapter.setMissedSteps(missedNonCriticalSteps);
@@ -296,7 +298,7 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
     }
 
     @Override
-    public void renderHeaderInfo(String orgUnitName, Float mainScore, String completionDate,
+    public void showHeaderInfo(String orgUnitName, Float mainScore, String completionDate,
             String nextDate,
             CompetencyScoreClassification classification) {
 
@@ -336,8 +338,8 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
     }
 
     @Override
-    public void shareNotSent(String surveyNoSentMessage) {
-        shareData(surveyNoSentMessage);
+    public void shareNotSent() {
+        shareData(getActivity().getString(R.string.feedback_not_sent));
     }
 
     @Override
@@ -358,17 +360,17 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
     }
 
     @Override
-    public void renderAction1(ActionViewModel action1) {
+    public void showAction1(ActionViewModel action1) {
         action1View.setAction(action1);
     }
 
     @Override
-    public void renderAction2(ActionViewModel action1) {
+    public void showAction2(ActionViewModel action1) {
         action2View.setAction(action1);
     }
 
     @Override
-    public void renderAction3(ActionViewModel action1) {
+    public void showAction3(ActionViewModel action1) {
         action3View.setAction(action1);
     }
 
