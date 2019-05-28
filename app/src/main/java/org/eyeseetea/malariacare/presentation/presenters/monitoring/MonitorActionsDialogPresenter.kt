@@ -94,11 +94,11 @@ class MonitorActionsDialogPresenter(
     }
 
     fun confirmSave() {
-        editedObservationViewModel?.let {
-            editedObservationViewModel!!.status = ObservationStatus.COMPLETED
+        editedObservationViewModel?.let { editedObservation ->
+            editedObservation.status = ObservationStatus.COMPLETED
 
             val observation =
-                ObservationMapper.mapToObservation(editedObservationViewModel, serverMetadata)
+                ObservationMapper.mapToObservation(editedObservation, serverMetadata)
 
             try {
                 saveObservationUseCase.execute(observation)
