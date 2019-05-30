@@ -47,7 +47,7 @@ import java.util.List;
 /**
  * Created by ivan.arrizabalaga on 15/12/2015.
  */
-public class PlannedFragment extends ListFragment implements IModuleFragment{
+public class PlannedFragment extends ListFragment implements IModuleFragment {
     public static final String TAG = ".PlannedFragment";
 
     private PlannedItemsReceiver plannedItemsReceiver;
@@ -60,21 +60,23 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
     private List<ProgramDB> programList;
     private List<OrgUnitDB> orgUnitList;
 
-    private ProgramDB programFilter;
+    private String programUidFilter;
     List<PlannedItem> plannedItemList;
+
     public PlannedFragment() {
 
     }
 
 
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView");
         if (container == null) {
             return null;
@@ -92,26 +94,26 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
     }
 
     private void prepareUI(List<PlannedItem> plannedItemList) {
-        this.adapter = new PlannedAdapter(plannedItemList,getActivity());
+        this.adapter = new PlannedAdapter(plannedItemList, getActivity());
         this.setListAdapter(adapter);
 
         reloadFilter();
     }
 
-    public void reloadFilter(){
+    public void reloadFilter() {
 
-        ProgramDB selectedProgram = orgUnitProgramFilterView.getSelectedProgramFilter();
+        String selectedProgram = orgUnitProgramFilterView.getSelectedProgramFilter();
 
-        if(selectedProgram!=null) {
+        if (selectedProgram != null) {
             loadProgram(selectedProgram);
         }
-        if(adapter!=null){
+        if (adapter != null) {
             adapter.notifyDataSetChanged();
         }
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         Log.d(TAG, "onResume");
         //Loading...
         setListShown(false);
@@ -121,14 +123,14 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
     }
 
     @Override
-    public void onStop(){
+    public void onStop() {
         Log.d(TAG, "onStop");
         unregisterPlannedItemsReceiver();
         super.onStop();
     }
 
     @Override
-    public void onPause(){
+    public void onPause() {
         Log.d(TAG, "onPause");
         unregisterPlannedItemsReceiver();
 
@@ -162,6 +164,7 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
                     new IntentFilter(PlannedSurveyService.PLANNED_SURVEYS_ACTION));
         }
     }
+
     /**
      * Unregisters the survey receiver.
      * It really important to do this, otherwise each receiver will invoke its code.
@@ -169,13 +172,14 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
     public void unregisterPlannedItemsReceiver() {
         Log.d(TAG, "unregisterPlannedItemsReceiver");
         if (plannedItemsReceiver != null) {
-            LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(plannedItemsReceiver);
+            LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(
+                    plannedItemsReceiver);
             plannedItemsReceiver = null;
         }
     }
 
     @Override
-    public void reloadData(){
+    public void reloadData() {
         updateSelectedFilters();
 
         //Reload data using service
@@ -184,17 +188,17 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
                 PlannedSurveyService.class);
         surveysIntent.putExtra(PlannedSurveyService.SERVICE_METHOD,
                 PlannedSurveyService.PLANNED_SURVEYS_ACTION);
-        PreferencesState.getInstance().getContext().getApplicationContext().startService(surveysIntent);
+        PreferencesState.getInstance().getContext().getApplicationContext().startService(
+                surveysIntent);
     }
 
-    public void loadProgram(ProgramDB program) {
-        Log.d(TAG,"Loading program: "+program.getUid());
-        programFilter=program;
-        if(adapter!=null){
-            adapter.applyFilter(programFilter);
+    public void loadProgram(String programUid) {
+        Log.d(TAG, "Loading program: " + programUid);
+        programUidFilter = programUid;
+        if (adapter != null) {
+            adapter.applyFilter(programUidFilter);
             adapter.notifyDataSetChanged();
-        }
-        else {
+        } else {
             reloadData();
         }
     }

@@ -89,13 +89,13 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
         orgUnitProgramFilterView.setFilterChangedListener(
                 new OrgUnitProgramFilterView.FilterChangedListener() {
                     @Override
-                    public void onProgramFilterChanged(ProgramDB selectedProgramFilter) {
+                    public void onProgramFilterChanged(String selectedProgramFilter) {
                         reloadInProgressSurveys();
                         saveCurrentFilters();
                     }
 
                     @Override
-                    public void onOrgUnitFilterChanged(OrgUnitDB selectedOrgUnitFilter) {
+                    public void onOrgUnitFilterChanged(String selectedOrgUnitFilter) {
                         reloadInProgressSurveys();
                         saveCurrentFilters();
                     }
@@ -109,9 +109,9 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
 
     private void saveCurrentFilters() {
         PreferencesState.getInstance().setProgramUidFilter(
-                orgUnitProgramFilterView.getSelectedProgramFilter().getUid());
+                orgUnitProgramFilterView.getSelectedProgramFilter());
         PreferencesState.getInstance().setOrgUnitUidFilter(
-                orgUnitProgramFilterView.getSelectedOrgUnitFilter().getUid());
+                orgUnitProgramFilterView.getSelectedOrgUnitFilter());
     }
 
     @Override
@@ -147,15 +147,15 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
     }
 
     private void showOrHiddenButton(SurveyDB survey) {
-        OrgUnitDB orgUnit = orgUnitProgramFilterView.getSelectedOrgUnitFilter();
-        ProgramDB program = orgUnitProgramFilterView.getSelectedProgramFilter();
-        if(orgUnit.getName().equals(
-                PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_units))
-        || program.getName().equals(
-                PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments))){
+        String orgUnitFilter = orgUnitProgramFilterView.getSelectedOrgUnitFilter();
+        String programFilter = orgUnitProgramFilterView.getSelectedProgramFilter();
+
+
+        if(orgUnitFilter == "" || programFilter == ""){
             startButton.setVisibility(View.VISIBLE);
             noSurveysText.setText(R.string.assess_no_surveys);
-        }else if (survey != null || !OrgUnitProgramRelationDB.existProgramAndOrgUnitRelation(program.getId_program(), orgUnit.getId_org_unit())){
+        }else if (survey != null ||
+                !OrgUnitProgramRelationDB.existProgramAndOrgUnitRelation(programFilter, orgUnitFilter)){
             startButton.setVisibility(View.INVISIBLE);
             noSurveysText.setText(R.string.survey_not_assigned_facility);
         }else{
@@ -278,23 +278,18 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
         return filteredSurveys;
     }
 
-    private boolean surveyHasOrgUnitFilter(SurveyDB survey) {
-        OrgUnitDB orgUnitFilter = orgUnitProgramFilterView.getSelectedOrgUnitFilter();
+    private boolean surveyHasOrgUnitFilter(SurveyDB survey){
+        String orgUnitFilter = orgUnitProgramFilterView.getSelectedOrgUnitFilter();
 
-        return survey.getOrgUnit().getUid().equals(orgUnitFilter.getUid()) ||
-                orgUnitFilter.getName().equals(
-                        PreferencesState.getInstance().getContext().getString(
-                                R.string.filter_all_org_units));
+        return (orgUnitFilter.equals("") || survey.getOrgUnit().getUid().equals(orgUnitFilter));
     }
 
-    private boolean surveyHasProgramFilter(SurveyDB survey) {
-        ProgramDB programFilter = orgUnitProgramFilterView.getSelectedProgramFilter();
+    private boolean surveyHasProgramFilter(SurveyDB survey){
+        String programFilter = orgUnitProgramFilterView.getSelectedProgramFilter();
 
-        return survey.getProgram().getUid().equals(programFilter.getUid()) ||
-                programFilter.getName().equals(
-                        PreferencesState.getInstance().getContext().getString(
-                                R.string.filter_all_org_assessments));
+        return (programFilter.equals("") || survey.getProgram().getUid().equals(programFilter));
     }
+
 
     public void reloadSurveys(List<SurveyDB> newListSurveys) {
         if (newListSurveys != null) {

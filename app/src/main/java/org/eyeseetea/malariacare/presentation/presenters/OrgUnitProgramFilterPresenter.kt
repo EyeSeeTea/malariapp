@@ -6,21 +6,22 @@ import org.eyeseetea.malariacare.data.database.model.ProgramDB
 class OrgUnitProgramFilterPresenter {
     internal var view: View? = null
 
-    private lateinit var programs: MutableList<ProgramDB>
-    private lateinit var orgUnits: MutableList<OrgUnitDB>
-    private lateinit var programDefaultOption: ProgramDB
-    private lateinit var orgUnitDefaultOption: OrgUnitDB
+    private lateinit var programs: List<ProgramDB>
+    private lateinit var orgUnits: List<OrgUnitDB>
+
+    private lateinit var programsNames: MutableList<String>
+    private lateinit var orgUnitsNames: MutableList<String>
 
     private var exclusiveFilter: Boolean = false
 
     private lateinit var allOrgUnitText: String
     private lateinit var allProgramsText: String
 
-    lateinit var selectedProgramFilter: ProgramDB
-        private set
+    private lateinit var selectedProgramName: String
+    private lateinit var selectedOrgUnitName: String
 
-    lateinit var selectedOrgUnitFilter: OrgUnitDB
-        private set
+    lateinit var selectedProgram: String
+    lateinit var selectedOrgUnit: String
 
     fun attachView(view: View, allOrgUnitText: String, allProgramsText: String) {
         this.view = view
@@ -34,73 +35,91 @@ class OrgUnitProgramFilterPresenter {
 
     private fun loadOrgUnits() {
         orgUnits = OrgUnitDB.list()
+        orgUnitsNames = orgUnits.map { orgUnit -> orgUnit.name } as MutableList<String>
 
-        orgUnitDefaultOption = OrgUnitDB(allOrgUnitText)
+        changeSelectedOrgUnit(allOrgUnitText)
 
-        selectedOrgUnitFilter = orgUnitDefaultOption
+        orgUnitsNames.add(0, selectedOrgUnitName)
 
-        orgUnits.add(0, orgUnitDefaultOption)
-
-        view?.renderOrgUnits(orgUnits)
+        view?.renderOrgUnits(orgUnitsNames as List<String>)
     }
 
     private fun loadPrograms() {
         programs = ProgramDB.list()
+        programsNames = programs.map { program -> program.name } as MutableList<String>
 
-        programDefaultOption = ProgramDB(allProgramsText)
+        changeSelectedProgram(allProgramsText)
 
-        selectedProgramFilter = programDefaultOption
+        programsNames.add(0, selectedProgramName)
 
-        programs.add(0, programDefaultOption)
-
-        view?.renderPrograms(programs)
+        view?.renderPrograms(programsNames as List<String>)
     }
 
-    fun onProgramSelected(program: ProgramDB) {
-        if (selectedProgramFilter != program) {
-            selectedProgramFilter = program
+    fun onProgramSelected(programName: String) {
+        if (selectedProgramName != programName) {
+            changeSelectedProgram(programName)
 
             if (exclusiveFilter) {
                 unSelectOrgUnit()
             }
 
-            view?.notifyProgramFilterChange(selectedProgramFilter)
+            view?.notifyProgramFilterChange(selectedProgram)
+        }
+    }
+
+    private fun changeSelectedProgram(programName: String) {
+        selectedProgramName = programName
+
+        if (selectedProgramName == allProgramsText) {
+            selectedProgram = ""
+        } else {
+            selectedProgram = programs.first { program -> program.name == selectedProgramName }.uid
+        }
+    }
+
+    private fun changeSelectedOrgUnit(orgUnitName: String) {
+        selectedOrgUnitName = orgUnitName
+
+        if (selectedOrgUnitName == allOrgUnitText) {
+            selectedOrgUnit = ""
+        } else {
+            selectedOrgUnit = orgUnits.first { orgUnit -> orgUnit.name == selectedOrgUnitName }.uid
         }
     }
 
     private fun unSelectOrgUnit() {
-        selectedOrgUnitFilter = orgUnitDefaultOption
+        changeSelectedOrgUnit(allOrgUnitText)
 
         view?.unSelectOrgUnitFilter()
     }
 
     private fun unSelectProgram() {
-        selectedProgramFilter = programDefaultOption
+        changeSelectedProgram(allProgramsText)
 
         view?.unSelectProgramFilter()
     }
 
     private fun notifySelectOrgUnit() {
-        val indexToSelect = orgUnits.indexOf(selectedOrgUnitFilter)
+        val indexToSelect = orgUnitsNames.indexOf(selectedOrgUnitName)
 
         view?.selectOrgUnitFilter(indexToSelect)
     }
 
     private fun notifySelectProgram() {
-        val indexToSelect = programs.indexOf(selectedProgramFilter)
+        val indexToSelect = programsNames.indexOf(selectedProgramName)
 
         view?.selectProgramFilter(indexToSelect)
     }
 
-    fun onOrgUnitSelected(orgUnit: OrgUnitDB) {
-        if (selectedOrgUnitFilter != orgUnit) {
-            selectedOrgUnitFilter = orgUnit
+    fun onOrgUnitSelected(orgUnitName: String) {
+        if (selectedOrgUnitName != orgUnitName) {
+            changeSelectedOrgUnit(orgUnitName)
 
             if (exclusiveFilter) {
                 unSelectProgram()
             }
 
-            view?.notifyOrgUnitFilterChange(selectedOrgUnitFilter)
+            view?.notifyOrgUnitFilterChange(selectedOrgUnit)
         }
     }
 
@@ -109,27 +128,31 @@ class OrgUnitProgramFilterPresenter {
     }
 
     fun changeSelectedFilters(programUidFilter: String, orgUnitUidFilter: String) {
-        var programToSelect: ProgramDB? = ProgramDB.getProgram(programUidFilter)
-        var orgUnitToSelect: OrgUnitDB? = OrgUnitDB.getOrgUnit(orgUnitUidFilter)
+        var programNameToSelect = allProgramsText
+        var orgUnitNameToSelect = allOrgUnitText
 
-        if (programToSelect == null)
-            programToSelect = programDefaultOption
+        if (programUidFilter.isNotBlank()) {
+            programNameToSelect =
+                programs.first { program -> program.uid == programUidFilter }.name
+        }
 
-        if (orgUnitToSelect == null)
-            orgUnitToSelect = orgUnitDefaultOption
+        if (orgUnitUidFilter.isNotBlank()) {
+            orgUnitNameToSelect =
+                orgUnits.first { orgUnit -> orgUnit.uid == orgUnitUidFilter }.name
+        }
 
-        onOrgUnitSelected(orgUnitToSelect)
-        onProgramSelected(programToSelect)
+        onOrgUnitSelected(orgUnitNameToSelect)
+        onProgramSelected(programNameToSelect)
 
         notifySelectOrgUnit()
         notifySelectProgram()
     }
 
     interface View {
-        fun renderPrograms(programs: List<@JvmSuppressWildcards ProgramDB>)
-        fun renderOrgUnits(orgUnits: List<@JvmSuppressWildcards OrgUnitDB>)
-        fun notifyProgramFilterChange(programFilter: ProgramDB?)
-        fun notifyOrgUnitFilterChange(orgUnitFilter: OrgUnitDB?)
+        fun renderPrograms(programs: List<@JvmSuppressWildcards String>)
+        fun renderOrgUnits(orgUnits: List<@JvmSuppressWildcards String>)
+        fun notifyProgramFilterChange(programFilter: String)
+        fun notifyOrgUnitFilterChange(orgUnitFilter: String)
         fun unSelectOrgUnitFilter()
         fun unSelectProgramFilter()
 

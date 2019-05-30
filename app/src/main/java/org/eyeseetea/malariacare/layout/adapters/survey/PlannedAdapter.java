@@ -58,7 +58,7 @@ public class PlannedAdapter extends BaseAdapter {
     /**
      * Items filtered by this program
      */
-    ProgramDB programFilter;
+    String programUidFilter;
 
     /**
      * Current selected header (working like an accordeon)
@@ -90,7 +90,7 @@ public class PlannedAdapter extends BaseAdapter {
         //Annotate currentHeader
         Log.d(TAG, "toggleSection: " + header);
         currentHeader = (currentHeader == header) ? null : header;
-        applyFilter(programFilter);
+        applyFilter(programUidFilter);
     }
 
     @Override
@@ -105,11 +105,11 @@ public class PlannedAdapter extends BaseAdapter {
         applyFilter(null);
     }
 
-    public void applyFilter(ProgramDB program) {
-        Log.d(TAG, "applyFilter:" + program);
+    public void applyFilter(String programUid) {
+        Log.d(TAG, "applyFilter:" + programUid);
 
         //Annotate filter
-        programFilter = program;
+        programUidFilter = programUid;
 
         //Update header counters according to new program filter
         updateHeaderCounters();
@@ -137,9 +137,7 @@ public class PlannedAdapter extends BaseAdapter {
                 numItems++;
             } else {
                 //Surveys are shown
-                if ((plannedItem.isShownByProgram(programFilter) || programFilter.getName().equals(
-                        PreferencesState.getInstance().getContext().getResources().getString(
-                                R.string.filter_all_org_assessments)))
+                if ((plannedItem.isShownByProgram(programUidFilter) || programUidFilter.equals(""))
                         && plannedItem.isShownByHeader(currentHeader)) {
                     numItems++;
                 }
@@ -160,9 +158,7 @@ public class PlannedAdapter extends BaseAdapter {
             }
             //Check match survey/program -> update header.counter
             PlannedSurvey plannedSurvey = (PlannedSurvey) plannedItem;
-            if (plannedSurvey.isShownByProgram(programFilter) || programFilter.getName().equals(
-                    PreferencesState.getInstance().getContext().getResources().getString(
-                            R.string.filter_all_org_assessments))) {
+            if (plannedSurvey.isShownByProgram(programUidFilter) || programUidFilter.equals("")) {
                 plannedSurvey.incHeaderCounter();
             }
         }
@@ -178,9 +174,7 @@ public class PlannedAdapter extends BaseAdapter {
         for (int i = 0; i < items.size(); i++) {
             PlannedItem plannedItem = items.get(i);
 
-            if ((plannedItem.isShownByProgram(programFilter) || programFilter.getName().equals(
-                    PreferencesState.getInstance().getContext().getResources().getString(
-                            R.string.filter_all_org_assessments)))
+            if ((plannedItem.isShownByProgram(programUidFilter) || programUidFilter.equals(""))
                     && plannedItem.isShownByHeader(currentHeader)) {
                 numShownItems++;
                 if (position == (numShownItems - 1)) {

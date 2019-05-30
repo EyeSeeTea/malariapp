@@ -4,13 +4,10 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.FrameLayout
 import kotlinx.android.synthetic.main.view_orgunit_program_filter.view.*
 import org.eyeseetea.malariacare.R
-import org.eyeseetea.malariacare.data.database.model.OrgUnitDB
-import org.eyeseetea.malariacare.data.database.model.ProgramDB
-import org.eyeseetea.malariacare.layout.adapters.filters.FilterOrgUnitArrayAdapter
-import org.eyeseetea.malariacare.layout.adapters.filters.FilterProgramArrayAdapter
 import org.eyeseetea.malariacare.presentation.presenters.OrgUnitProgramFilterPresenter
 
 class OrgUnitProgramFilterView(context: Context, attributeSet: AttributeSet) :
@@ -18,8 +15,8 @@ class OrgUnitProgramFilterView(context: Context, attributeSet: AttributeSet) :
 
     // TODO: When all callers be converted to kotlin change this interface by functions
     interface FilterChangedListener {
-        fun onProgramFilterChanged(programFilter: ProgramDB?)
-        fun onOrgUnitFilterChanged(orgUnitFilter: OrgUnitDB?)
+        fun onProgramFilterChanged(programFilter: String)
+        fun onOrgUnitFilterChanged(orgUnitFilter: String)
     }
 
     enum class FilterType {
@@ -30,11 +27,11 @@ class OrgUnitProgramFilterView(context: Context, attributeSet: AttributeSet) :
 
     private lateinit var presenter: OrgUnitProgramFilterPresenter
 
-    val selectedProgramFilter: ProgramDB
-        get() = presenter.selectedProgramFilter
+    val selectedProgramFilter: String
+        get() = presenter.selectedProgram
 
-    val selectedOrgUnitFilter: OrgUnitDB
-        get() = presenter.selectedOrgUnitFilter
+    val selectedOrgUnitFilter: String
+        get() = presenter.selectedOrgUnit
 
     init {
         init(context)
@@ -55,20 +52,22 @@ class OrgUnitProgramFilterView(context: Context, attributeSet: AttributeSet) :
         presenter.changeSelectedFilters(programUidFilter, orgUnitUidFilter)
     }
 
-    override fun renderPrograms(programs: List<ProgramDB>) {
-        spinner_program_filter.adapter = FilterProgramArrayAdapter(context, programs)
+    override fun renderPrograms(programNames: List<String>) {
+        spinner_program_filter.adapter =
+            ArrayAdapter(context, R.layout.simple_spinner_item, programNames)
     }
 
-    override fun renderOrgUnits(orgUnits: List<OrgUnitDB>) {
-        spinner_orgUnit_filter.adapter = FilterOrgUnitArrayAdapter(context, orgUnits)
+    override fun renderOrgUnits(orgUnitNames: List<String>) {
+        spinner_orgUnit_filter.adapter =
+            ArrayAdapter(context, R.layout.simple_spinner_item, orgUnitNames)
     }
 
-    override fun notifyProgramFilterChange(programFilter: ProgramDB?) {
+    override fun notifyProgramFilterChange(programFilter: String) {
         mFilterChangedListener?.onProgramFilterChanged(programFilter)
     }
 
-    override fun notifyOrgUnitFilterChange(orgUnitFilter: OrgUnitDB?) {
-        mFilterChangedListener!!.onOrgUnitFilterChanged(orgUnitFilter)
+    override fun notifyOrgUnitFilterChange(orgUnitFilter: String) {
+        mFilterChangedListener?.onOrgUnitFilterChanged(orgUnitFilter)
     }
 
     override fun unSelectOrgUnitFilter() {
@@ -115,9 +114,9 @@ class OrgUnitProgramFilterView(context: Context, attributeSet: AttributeSet) :
                     position: Int,
                     id: Long
                 ) {
-                    val orgUnit = parent.getItemAtPosition(position) as OrgUnitDB
+                    val orgUnitName = parent.getItemAtPosition(position) as String
 
-                    presenter.onOrgUnitSelected(orgUnit)
+                    presenter.onOrgUnitSelected(orgUnitName)
                 }
 
                 override fun onNothingSelected(arg0: AdapterView<*>) {
@@ -135,9 +134,9 @@ class OrgUnitProgramFilterView(context: Context, attributeSet: AttributeSet) :
                     position: Int,
                     id: Long
                 ) {
-                    val program = parent.getItemAtPosition(position) as ProgramDB
+                    val programName = parent.getItemAtPosition(position) as String
 
-                    presenter.onProgramSelected(program)
+                    presenter.onProgramSelected(programName)
                 }
 
                 override fun onNothingSelected(adapterView: AdapterView<*>) {
