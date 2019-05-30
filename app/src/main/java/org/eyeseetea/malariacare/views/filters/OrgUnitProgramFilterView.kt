@@ -97,7 +97,12 @@ class OrgUnitProgramFilterView(context: Context, attributeSet: AttributeSet) :
 
     private fun initializePresenter() {
         presenter = OrgUnitProgramFilterPresenter()
-        presenter.attachView(this)
+
+        presenter.attachView(
+            this,
+            context.getString(R.string.filter_all_org_units),
+            context.getString(R.string.filter_all_org_assessments)
+        )
     }
 
     private fun initializeOrgUnitViews() {

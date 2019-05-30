@@ -1,9 +1,7 @@
 package org.eyeseetea.malariacare.presentation.presenters
 
-import org.eyeseetea.malariacare.R
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB
 import org.eyeseetea.malariacare.data.database.model.ProgramDB
-import org.eyeseetea.malariacare.data.database.utils.PreferencesState
 
 class OrgUnitProgramFilterPresenter {
     internal var view: View? = null
@@ -15,14 +13,21 @@ class OrgUnitProgramFilterPresenter {
 
     private var exclusiveFilter: Boolean = false
 
+    private lateinit var allOrgUnitText: String
+    private lateinit var allProgramsText: String
+
     lateinit var selectedProgramFilter: ProgramDB
         private set
 
     lateinit var selectedOrgUnitFilter: OrgUnitDB
         private set
 
-    fun attachView(view: View) {
+    fun attachView(view: View, allOrgUnitText: String, allProgramsText: String) {
         this.view = view
+
+        this.allOrgUnitText = allOrgUnitText
+        this.allProgramsText = allProgramsText
+
         loadOrgUnits()
         loadPrograms()
     }
@@ -30,11 +35,7 @@ class OrgUnitProgramFilterPresenter {
     private fun loadOrgUnits() {
         orgUnits = OrgUnitDB.list()
 
-        orgUnitDefaultOption = OrgUnitDB(
-            PreferencesState.getInstance().context.resources.getString(
-                R.string.filter_all_org_units
-            )
-        )
+        orgUnitDefaultOption = OrgUnitDB(allOrgUnitText)
 
         selectedOrgUnitFilter = orgUnitDefaultOption
 
@@ -45,11 +46,8 @@ class OrgUnitProgramFilterPresenter {
 
     private fun loadPrograms() {
         programs = ProgramDB.list()
-        programDefaultOption = ProgramDB(
-            PreferencesState.getInstance().context.resources.getString(
-                R.string.filter_all_org_assessments
-            )
-        )
+
+        programDefaultOption = ProgramDB(allProgramsText)
 
         selectedProgramFilter = programDefaultOption
 
