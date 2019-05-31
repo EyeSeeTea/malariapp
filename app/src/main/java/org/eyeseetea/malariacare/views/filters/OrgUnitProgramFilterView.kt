@@ -8,6 +8,8 @@ import android.widget.ArrayAdapter
 import android.widget.FrameLayout
 import kotlinx.android.synthetic.main.view_orgunit_program_filter.view.*
 import org.eyeseetea.malariacare.R
+import org.eyeseetea.malariacare.factories.MetadataFactory
+import org.eyeseetea.malariacare.presentation.executors.WrapperExecutor
 import org.eyeseetea.malariacare.presentation.presenters.OrgUnitProgramFilterPresenter
 
 class OrgUnitProgramFilterView(context: Context, attributeSet: AttributeSet) :
@@ -28,10 +30,10 @@ class OrgUnitProgramFilterView(context: Context, attributeSet: AttributeSet) :
     private lateinit var presenter: OrgUnitProgramFilterPresenter
 
     val selectedProgramFilter: String
-        get() = presenter.selectedProgram
+        get() = presenter.selectedUidProgram
 
     val selectedOrgUnitFilter: String
-        get() = presenter.selectedOrgUnit
+        get() = presenter.selectedUidOrgUnit
 
     init {
         init(context)
@@ -52,12 +54,12 @@ class OrgUnitProgramFilterView(context: Context, attributeSet: AttributeSet) :
         presenter.changeSelectedFilters(programUidFilter, orgUnitUidFilter)
     }
 
-    override fun renderPrograms(programNames: List<String>) {
+    override fun showPrograms(programNames: List<String>) {
         spinner_program_filter.adapter =
             ArrayAdapter(context, R.layout.simple_spinner_item, programNames)
     }
 
-    override fun renderOrgUnits(orgUnitNames: List<String>) {
+    override fun showOrgUnits(orgUnitNames: List<String>) {
         spinner_orgUnit_filter.adapter =
             ArrayAdapter(context, R.layout.simple_spinner_item, orgUnitNames)
     }
@@ -95,7 +97,11 @@ class OrgUnitProgramFilterView(context: Context, attributeSet: AttributeSet) :
     }
 
     private fun initializePresenter() {
-        presenter = OrgUnitProgramFilterPresenter()
+        presenter = OrgUnitProgramFilterPresenter(
+            WrapperExecutor(),
+            MetadataFactory.provideGetOrgUnitsUseCase(),
+            MetadataFactory.provideGetProgramsUseCase()
+        )
 
         presenter.attachView(
             this,

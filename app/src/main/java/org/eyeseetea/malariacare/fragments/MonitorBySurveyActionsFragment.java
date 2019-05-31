@@ -137,10 +137,10 @@ public class MonitorBySurveyActionsFragment extends FiltersFragment implements
         IMainExecutor mainExecutor = new UIThreadExecutor();
 
         GetProgramsUseCase getProgramsUseCase =
-                MetadataFactory.INSTANCE.provideProgramsUseCase();
+                MetadataFactory.INSTANCE.provideGetProgramsUseCase();
 
         GetOrgUnitsUseCase getOrgUnitsUseCase =
-                MetadataFactory.INSTANCE.provideOrgUnitsUseCase();
+                MetadataFactory.INSTANCE.provideGetOrgUnitsUseCase();
 
         GetServerMetadataUseCase getServerMetadataUseCase =
                 MetadataFactory.INSTANCE.provideServerMetadataUseCase(getActivity());

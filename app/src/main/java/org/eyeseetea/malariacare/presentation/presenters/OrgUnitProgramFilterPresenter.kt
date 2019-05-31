@@ -1,13 +1,20 @@
 package org.eyeseetea.malariacare.presentation.presenters
 
-import org.eyeseetea.malariacare.data.database.model.OrgUnitDB
-import org.eyeseetea.malariacare.data.database.model.ProgramDB
+import org.eyeseetea.malariacare.domain.entity.OrgUnit
+import org.eyeseetea.malariacare.domain.entity.Program
+import org.eyeseetea.malariacare.domain.usecase.GetOrgUnitsUseCase
+import org.eyeseetea.malariacare.domain.usecase.GetProgramsUseCase
+import org.eyeseetea.malariacare.presentation.boundary.Executor
 
-class OrgUnitProgramFilterPresenter {
+class OrgUnitProgramFilterPresenter(
+    private val executor: Executor,
+    private val getOrgUnitsUseCase: GetOrgUnitsUseCase,
+    private val getProgramsUseCase: GetProgramsUseCase
+) {
     internal var view: View? = null
 
-    private lateinit var programs: List<ProgramDB>
-    private lateinit var orgUnits: List<OrgUnitDB>
+    private lateinit var programs: List<Program>
+    private lateinit var orgUnits: List<OrgUnit>
 
     private lateinit var programsNames: MutableList<String>
     private lateinit var orgUnitsNames: MutableList<String>
@@ -20,8 +27,8 @@ class OrgUnitProgramFilterPresenter {
     private lateinit var selectedProgramName: String
     private lateinit var selectedOrgUnitName: String
 
-    lateinit var selectedProgram: String
-    lateinit var selectedOrgUnit: String
+    lateinit var selectedUidProgram: String
+    lateinit var selectedUidOrgUnit: String
 
     fun attachView(view: View, allOrgUnitText: String, allProgramsText: String) {
         this.view = view
@@ -29,30 +36,7 @@ class OrgUnitProgramFilterPresenter {
         this.allOrgUnitText = allOrgUnitText
         this.allProgramsText = allProgramsText
 
-        loadOrgUnits()
-        loadPrograms()
-    }
-
-    private fun loadOrgUnits() {
-        orgUnits = OrgUnitDB.list()
-        orgUnitsNames = orgUnits.map { orgUnit -> orgUnit.name } as MutableList<String>
-
-        changeSelectedOrgUnit(allOrgUnitText)
-
-        orgUnitsNames.add(0, selectedOrgUnitName)
-
-        view?.renderOrgUnits(orgUnitsNames as List<String>)
-    }
-
-    private fun loadPrograms() {
-        programs = ProgramDB.list()
-        programsNames = programs.map { program -> program.name } as MutableList<String>
-
-        changeSelectedProgram(allProgramsText)
-
-        programsNames.add(0, selectedProgramName)
-
-        view?.renderPrograms(programsNames as List<String>)
+        loadMetadata()
     }
 
     fun onProgramSelected(programName: String) {
@@ -63,52 +47,8 @@ class OrgUnitProgramFilterPresenter {
                 unSelectOrgUnit()
             }
 
-            view?.notifyProgramFilterChange(selectedProgram)
+            notifyProgramFilterChange()
         }
-    }
-
-    private fun changeSelectedProgram(programName: String) {
-        selectedProgramName = programName
-
-        if (selectedProgramName == allProgramsText) {
-            selectedProgram = ""
-        } else {
-            selectedProgram = programs.first { program -> program.name == selectedProgramName }.uid
-        }
-    }
-
-    private fun changeSelectedOrgUnit(orgUnitName: String) {
-        selectedOrgUnitName = orgUnitName
-
-        if (selectedOrgUnitName == allOrgUnitText) {
-            selectedOrgUnit = ""
-        } else {
-            selectedOrgUnit = orgUnits.first { orgUnit -> orgUnit.name == selectedOrgUnitName }.uid
-        }
-    }
-
-    private fun unSelectOrgUnit() {
-        changeSelectedOrgUnit(allOrgUnitText)
-
-        view?.unSelectOrgUnitFilter()
-    }
-
-    private fun unSelectProgram() {
-        changeSelectedProgram(allProgramsText)
-
-        view?.unSelectProgramFilter()
-    }
-
-    private fun notifySelectOrgUnit() {
-        val indexToSelect = orgUnitsNames.indexOf(selectedOrgUnitName)
-
-        view?.selectOrgUnitFilter(indexToSelect)
-    }
-
-    private fun notifySelectProgram() {
-        val indexToSelect = programsNames.indexOf(selectedProgramName)
-
-        view?.selectProgramFilter(indexToSelect)
     }
 
     fun onOrgUnitSelected(orgUnitName: String) {
@@ -119,7 +59,7 @@ class OrgUnitProgramFilterPresenter {
                 unSelectProgram()
             }
 
-            view?.notifyOrgUnitFilterChange(selectedOrgUnit)
+            notifyOrgUnitFilterChange()
         }
     }
 
@@ -148,9 +88,98 @@ class OrgUnitProgramFilterPresenter {
         notifySelectProgram()
     }
 
+    private fun loadMetadata() = executor.asyncExecute {
+        loadOrgUnits()
+        loadPrograms()
+    }
+
+    private fun loadOrgUnits() {
+        orgUnits = getOrgUnitsUseCase.execute()
+        orgUnitsNames = orgUnits.map { orgUnit -> orgUnit.name } as MutableList<String>
+
+        changeSelectedOrgUnit(allOrgUnitText)
+
+        orgUnitsNames.add(0, selectedOrgUnitName)
+
+        showOrgUnits()
+    }
+
+    private fun loadPrograms() {
+        programs = getProgramsUseCase.execute()
+        programsNames = programs.map { program -> program.name } as MutableList<String>
+
+        changeSelectedProgram(allProgramsText)
+
+        programsNames.add(0, selectedProgramName)
+
+        showPrograms()
+    }
+
+    private fun changeSelectedProgram(programName: String) {
+        selectedProgramName = programName
+
+        if (selectedProgramName == allProgramsText) {
+            selectedUidProgram = ""
+        } else {
+            selectedUidProgram =
+                programs.first { program -> program.name == selectedProgramName }.uid
+        }
+    }
+
+    private fun changeSelectedOrgUnit(orgUnitName: String) {
+        selectedOrgUnitName = orgUnitName
+
+        if (selectedOrgUnitName == allOrgUnitText) {
+            selectedUidOrgUnit = ""
+        } else {
+            selectedUidOrgUnit =
+                orgUnits.first { orgUnit -> orgUnit.name == selectedOrgUnitName }.uid
+        }
+    }
+
+    private fun showOrgUnits() = executor.uiExecute {
+        view?.showOrgUnits(orgUnitsNames as List<String>)
+    }
+
+    private fun showPrograms() = executor.uiExecute {
+        view?.showPrograms(programsNames as List<String>)
+    }
+
+    private fun notifyProgramFilterChange() = executor.uiExecute {
+        view?.notifyProgramFilterChange(selectedUidProgram)
+    }
+
+    private fun notifyOrgUnitFilterChange() = executor.uiExecute {
+        view?.notifyOrgUnitFilterChange(selectedUidOrgUnit)
+    }
+
+    private fun unSelectOrgUnit() = executor.uiExecute {
+        changeSelectedOrgUnit(allOrgUnitText)
+
+        view?.unSelectOrgUnitFilter()
+    }
+
+    private fun unSelectProgram() = executor.uiExecute {
+        changeSelectedProgram(allProgramsText)
+
+        view?.unSelectProgramFilter()
+    }
+
+    private fun notifySelectOrgUnit() = executor.uiExecute {
+        val indexToSelect = orgUnitsNames.indexOf(selectedOrgUnitName)
+
+        view?.selectOrgUnitFilter(indexToSelect)
+    }
+
+    private fun notifySelectProgram() = executor.uiExecute {
+        val indexToSelect = programsNames.indexOf(selectedProgramName)
+
+        view?.selectProgramFilter(indexToSelect)
+    }
+
     interface View {
-        fun renderPrograms(programs: List<@JvmSuppressWildcards String>)
-        fun renderOrgUnits(orgUnits: List<@JvmSuppressWildcards String>)
+        fun showPrograms(programs: List<@JvmSuppressWildcards String>)
+        fun showOrgUnits(orgUnits: List<@JvmSuppressWildcards String>)
         fun notifyProgramFilterChange(programFilter: String)
         fun notifyOrgUnitFilterChange(orgUnitFilter: String)
         fun unSelectOrgUnitFilter()

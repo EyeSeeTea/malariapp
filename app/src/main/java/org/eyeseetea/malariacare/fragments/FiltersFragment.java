@@ -54,6 +54,8 @@ public abstract class FiltersFragment extends Fragment implements IModuleFragmen
         if (orgUnitProgramFilterView == null){
             orgUnitProgramFilterView = DashboardActivity.dashboardActivity
                     .findViewById(R.id.monitor_org_unit_program_filter_view);
+
+            orgUnitProgramFilterView.setFilterType(OrgUnitProgramFilterView.FilterType.NON_EXCLUSIVE);
         }
 
 
@@ -85,6 +87,6 @@ public abstract class FiltersFragment extends Fragment implements IModuleFragmen
 
     private void saveCurrentFilters() {
         PreferencesState.getInstance().setProgramUidFilter(selectedProgramUidFilter);
-        PreferencesState.getInstance().setOrgUnitUidFilter(selectedProgramUidFilter);
+        PreferencesState.getInstance().setOrgUnitUidFilter(selectedOrgUnitUidFilter);
     }
 }
