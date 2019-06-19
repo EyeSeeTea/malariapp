@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare;
 
+import android.animation.LayoutTransition;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -26,9 +27,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.text.Editable;
 import android.text.Html;
@@ -39,12 +42,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -69,14 +76,15 @@ import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.strategies.LoginActivityStrategy;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Permissions;
-import org.hisp.dhis.client.sdk.ui.activities.AbsLoginActivity;
 
 import java.io.InputStream;
 
 import fr.castorflex.android.circularprogressbar.CircularProgressBar;
+import fr.castorflex.android.circularprogressbar.CircularProgressDrawable;
 
-public class LoginActivity extends AbsLoginActivity {
+public class LoginActivity extends Activity {
     private static final String TAG = ".LoginActivity";
+    private static final String IS_LOADING = "state:isLoading";
 
     public IUserAccountRepository mUserAccountRepository = new UserAccountRepository(this);
     IAsyncExecutor asyncExecutor = new AsyncExecutor();
@@ -91,10 +99,29 @@ public class LoginActivity extends AbsLoginActivity {
     private EditText serverEditText;
     private static LoginActivity mLoginActivity;
 
+    private EditText mServerUrl;
+    private EditText mUsername;
+    private EditText mPassword;
+    private Button mLoginButton;
+
+    // Action which should be executed after animation is finished
+    private OnPostAnimationRunnable onPostAnimationAction;
+
+    private OnPostAnimationListener onPostAnimationListener;
+
+
+    // LayoutTransition (for JellyBean+ devices only)
+    private LayoutTransition layoutTransition;
+
+    // Animations for pre-JellyBean devices
+    private Animation layoutTransitionSlideIn;
+    private Animation layoutTransitionSlideOut;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
         mLoginActivity = this;
         requestPermissions();
         PreferencesState.getInstance().initalizateActivityDependencies();
@@ -105,20 +132,81 @@ public class LoginActivity extends AbsLoginActivity {
                 getApplicationContext().getResources().getString(R.string.pull_metadata), false)) {
             launchActivity(LoginActivity.this, DashboardActivity.class);
         }
-        ProgressActivity.PULL_CANCEL = false;
-        getServerUrl().setText(R.string.login_info_dhis_default_server_url);
 
-        progressBar = (CircularProgressBar) findViewById(R.id.progress_bar_circular);
+        ProgressActivity.PULL_CANCEL = false;
+
+        initViews();
+        initServerAdapter();
+    }
+
+    private void initViews() {
+        serverSpinner = findViewById(R.id.server_spinner);
+        serverContainer = findViewById(R.id.edittext_server_url_container);
+        serverEditText = findViewById(R.id.edittext_server_url);
+
+
+        mServerUrl = findViewById(R.id.edittext_server_url);
+        mUsername = findViewById(R.id.edittext_username);
+        mPassword = findViewById(R.id.edittext_password);
+        mLoginButton = findViewById(R.id.button_log_in);
+
+        mServerUrl.setText(R.string.login_info_dhis_default_server_url);
+
+        float progressBarStrokeWidth = getResources()
+                .getDimensionPixelSize(R.dimen.progressbar_stroke_width);
+        progressBar = findViewById(R.id.progress_bar_circular);
+        progressBar.setIndeterminateDrawable(new CircularProgressDrawable.Builder(this)
+                .color(ContextCompat.getColor(this,
+                        R.color.color_primary_default))
+                .style(CircularProgressDrawable.STYLE_ROUNDED)
+                .strokeWidth(progressBarStrokeWidth)
+                .rotationSpeed(1f)
+                .sweepSpeed(1f)
+                .build());
 
         replaceDhisLogoToHNQISLogo();
 
         loginViewsContainer = (CardView) findViewById(R.id.layout_login_views);
 
-        serverSpinner = (Spinner) findViewById(R.id.server_spinner);
-        serverContainer = (LinearLayout) findViewById(R.id.edittext_server_url_container);
-        serverEditText = (EditText) findViewById(R.id.edittext_server_url);
+        mLoginButton.setOnClickListener(v -> onLoginButtonClicked(mServerUrl.getText(), mUsername.getText(),
+                mPassword.getText()));
 
-        initServerAdapter();
+        onPostAnimationListener = new OnPostAnimationListener();
+
+        if (isGreaterThanOrJellyBean()) {
+            layoutTransition = new LayoutTransition();
+            layoutTransition.enableTransitionType(LayoutTransition.CHANGING);
+            layoutTransition.addTransitionListener(onPostAnimationListener);
+
+            RelativeLayout loginLayoutContent = findViewById(R.id.layout_content);
+            loginLayoutContent.setLayoutTransition(layoutTransition);
+        } else {
+            layoutTransitionSlideIn = AnimationUtils.loadAnimation(this,
+                    R.anim.in_up);
+            layoutTransitionSlideOut = AnimationUtils.loadAnimation(this,
+                    R.anim.out_down);
+
+            layoutTransitionSlideIn.setAnimationListener(onPostAnimationListener);
+            layoutTransitionSlideOut.setAnimationListener(onPostAnimationListener);
+        }
+
+        hideProgress();
+    }
+
+    private boolean isGreaterThanOrJellyBean() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
+    }
+
+    @Override
+    protected final void onSaveInstanceState(Bundle outState) {
+        if (onPostAnimationAction != null) {
+            outState.putBoolean(IS_LOADING,
+                    onPostAnimationAction.isProgressBarWillBeShown());
+        } else {
+            outState.putBoolean(IS_LOADING, progressBar.isShown());
+        }
+
+        super.onSaveInstanceState(outState);
     }
 
     private void initServerAdapter() {
@@ -151,8 +239,8 @@ public class LoginActivity extends AbsLoginActivity {
     }
 
     private void replaceDhisLogoToHNQISLogo() {
-        FrameLayout progressBarContainer = (FrameLayout) findViewById(R.id.layout_dhis_logo);
-        ((org.hisp.dhis.client.sdk.ui.views.FontTextView)progressBarContainer.getChildAt(2)).setText("");
+        FrameLayout progressBarContainer =  findViewById(R.id.layout_dhis_logo);
+        ((TextView)progressBarContainer.getChildAt(2)).setText("");
 
         LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         progressBarContainer.addView(inflater.inflate(R.layout.progress_logo_item, null));
@@ -163,14 +251,13 @@ public class LoginActivity extends AbsLoginActivity {
         ActivityCompat.startActivity(LoginActivity.this, intent, null);
     }
 
-    @Override
     protected void onLoginButtonClicked(Editable server, Editable username, Editable password) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         if (!sharedPreferences.getBoolean(getString(R.string.eula_accepted), false)) {
             askEula(R.string.settings_menu_eula, R.raw.eula, LoginActivity.this);
         } else {
-            login(getServerUrl().getText().toString(), getUsername().getText().toString(),
-                    getPassword().getText().toString());
+            login(mServerUrl.getText().toString(), mUsername.getText().toString(),
+                    mPassword.getText().toString());
         }
     }
 
@@ -192,9 +279,9 @@ public class LoginActivity extends AbsLoginActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         rememberEulaAccepted(context);
-                        login(getServerUrl().getText().toString(),
-                                getUsername().getText().toString(),
-                                getPassword().getText().toString());
+                        login(mServerUrl.getText().toString(),
+                                mUsername.getText().toString(),
+                                mPassword.getText().toString());
                     }
                 })
                 .setNegativeButton(android.R.string.no, null).create();
@@ -251,18 +338,21 @@ public class LoginActivity extends AbsLoginActivity {
 
                     @Override
                     public void onServerURLNotValid() {
+
                         showError(PreferencesState.getInstance().getContext().getText(
                                 R.string.error_not_found).toString());
                     }
 
                     @Override
                     public void onInvalidCredentials() {
+
                         showError(PreferencesState.getInstance().getContext().getText(
                                 R.string.error_unauthorized).toString());
                     }
 
                     @Override
                     public void onNetworkError() {
+
                         showError(PreferencesState.getInstance().getContext().getString(
                                 R.string.title_error_unexpected));
                     }
@@ -319,12 +409,21 @@ public class LoginActivity extends AbsLoginActivity {
     }
 
     public void showProgress() {
-        hideSoftKeyboard();
+        Log.d(TAG, "Showing progress");
+        if (layoutTransitionSlideOut != null) {
+            loginViewsContainer.startAnimation(layoutTransitionSlideOut);
+        }
+
         loginViewsContainer.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
     }
 
     public void hideProgress() {
+        Log.d(TAG, "Hiding progress");
+        if (layoutTransitionSlideIn != null) {
+            loginViewsContainer.startAnimation(layoutTransitionSlideIn);
+        }
+
         loginViewsContainer.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);
     }
@@ -383,6 +482,84 @@ public class LoginActivity extends AbsLoginActivity {
         Context context = LanguageContextWrapper.wrap(newBase, currentLanguage);
         super.attachBaseContext(context);
     }
+
+    private static class OnPostAnimationRunnable implements Runnable {
+        private final OnAnimationFinishListener listener;
+        private final LoginActivity loginActivity;
+        private final boolean showProgress;
+
+        public OnPostAnimationRunnable(OnAnimationFinishListener listener,
+                LoginActivity loginActivity, boolean showProgress) {
+            this.listener = listener;
+            this.loginActivity = loginActivity;
+            this.showProgress = showProgress;
+        }
+
+        @Override
+        public void run() {
+            if (loginActivity != null) {
+                if (showProgress) {
+                    loginActivity.showProgress();
+                } else {
+                    loginActivity.hideProgress();
+                }
+            }
+
+            if (listener != null) {
+                listener.onFinish();
+            }
+        }
+
+        public boolean isProgressBarWillBeShown() {
+            return showProgress;
+        }
+    }
+
+    protected interface OnAnimationFinishListener {
+        void onFinish();
+    }
+
+    private class OnPostAnimationListener implements LayoutTransition.TransitionListener,
+            Animation.AnimationListener {
+
+        @Override
+        public void onAnimationStart(Animation animation) {
+            // stub implementation
+        }
+
+        @Override
+        public void onAnimationRepeat(Animation animation) {
+            // stub implementation
+        }
+
+        @Override
+        public void onAnimationEnd(Animation animation) {
+            onPostAnimation();
+        }
+
+        @Override
+        public void startTransition(
+                LayoutTransition transition, ViewGroup container, View view, int type) {
+            // stub implementation
+        }
+
+        @Override
+        public void endTransition(
+                LayoutTransition transition, ViewGroup container, View view, int type) {
+            if (LayoutTransition.CHANGE_APPEARING == type ||
+                    LayoutTransition.CHANGE_DISAPPEARING == type) {
+                onPostAnimation();
+            }
+        }
+
+        private void onPostAnimation() {
+            if (onPostAnimationAction != null) {
+                onPostAnimationAction.run();
+                onPostAnimationAction = null;
+            }
+        }
+    }
+
 }
 
 
