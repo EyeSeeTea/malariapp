@@ -252,22 +252,19 @@ public class LoginActivity extends AbsLoginActivity {
                     @Override
                     public void onServerURLNotValid() {
                         showError(PreferencesState.getInstance().getContext().getText(
-                                org.hisp.dhis.client.sdk.ui.bindings.R.string
-                                        .error_not_found).toString());
+                                R.string.error_not_found).toString());
                     }
 
                     @Override
                     public void onInvalidCredentials() {
                         showError(PreferencesState.getInstance().getContext().getText(
-                                org.hisp.dhis.client.sdk.ui.bindings.R.string.error_unauthorized)
-                                .toString());
+                                R.string.error_unauthorized).toString());
                     }
 
                     @Override
                     public void onNetworkError() {
                         showError(PreferencesState.getInstance().getContext().getString(
-                                org.hisp.dhis.client.sdk.ui.bindings.R.string
-                                        .title_error_unexpected));
+                                R.string.title_error_unexpected));
                     }
 
                     @Override

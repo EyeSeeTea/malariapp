@@ -286,4 +286,8 @@ evaluation"</string>
 <string name="action_monitor_save_confirm_message">សកម្មភាពទាំងអស់ត្រូវបានធ្វើឡើងតើអ្នកប្រាកដថាអ្នកចង់សន្សំ? អ្នកមិនអាចធ្វើសកម្មភាពនេះវិញបានទេ</string>
 <string name="load_error_message">កំហុសមួយបានកើតឡើងពេលផ្ទុកទិន្នន័យ</string>
 <string name="save_error_message">កំហុសមួយបានកើតឡើងការរក្សាទុកទិន្នន័យ</string>
+
+<string name="error_unauthorized">"ឈ្មោះអ្នកប្រើប្រាស់ឬលេខសំងាត់ខុស។"</string>
+<string name="title_error_unexpected">"កំហុសដែលមិននឹកស្មានដល់"</string>
+<string name="error_not_found">រកមិនឃើញម៉ាស៊ីនមេ។</string>
 </resources>

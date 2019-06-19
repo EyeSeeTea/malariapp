@@ -244,4 +244,8 @@
 <string name="action_monitor_save_confirm_message"></string>
 <string name="load_error_message"></string>
 <string name="save_error_message"></string>
+
+<string name="error_unauthorized"></string>
+<string name="title_error_unexpected"></string>
+<string name="error_not_found"></string>
 </resources>

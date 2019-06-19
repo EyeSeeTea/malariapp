@@ -271,4 +271,8 @@ Mensuelle"</string>
 <string name="action_monitor_save_confirm_message">Toutes les actions sont effectuées, êtes-vous sûr de vouloir sauvegarder? Vous ne pouvez pas annuler cette action</string>
 <string name="load_error_message">"Une erreur s'est produite lors du chargement des données"</string>
 <string name="save_error_message">"Une erreur s'est produite lors de l'enregistrement des données"</string>
+
+<string name="error_unauthorized">"Nom d'utilisateur ou mot de passe incorrect."</string>
+<string name="title_error_unexpected">"Erreur inattendue"</string>
+<string name="error_not_found">Serveur introuvable.</string>
 </resources>

@@ -277,4 +277,8 @@ clínica"</string>
 <string name="action_monitor_save_confirm_message">Todas las acciones estan conducidas, estas seguro de que quierer guardar? No podrás deshacer esta acción</string>
 <string name="load_error_message">Ha ocurrido un errror cargando los datos</string>
 <string name="save_error_message">Ha ocurrido un errror guardando los datos</string>
+
+<string name="error_unauthorized">"Usuario o password incorrectos."</string>
+<string name="title_error_unexpected">"Error inesperado"</string>
+<string name="error_not_found">Servidor no encontrado.</string>
 </resources>
