@@ -89,7 +89,7 @@ public class PushService extends IntentService {
 
         IMainExecutor mainExecutor = new UIThreadExecutor();
         IAsyncExecutor asyncExecutor = new AsyncExecutor();
-        ServerInfoRemoteDataSource serverInfoRemoteDataSource = new ServerInfoRemoteDataSource(Session.getCredentials());
+        ServerInfoRemoteDataSource serverInfoRemoteDataSource = new ServerInfoRemoteDataSource(this);
         ServerInfoLocalDataSource serverInfoLocalDataSource = new ServerInfoLocalDataSource(this);
         pushUseCase = new PushUseCase(pushController, mainExecutor, asyncExecutor, new ServerInfoRepository(serverInfoLocalDataSource, serverInfoRemoteDataSource));
     }

@@ -96,7 +96,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         mUserAccountRepository = new UserAccountRepository(this);
         mLogoutUseCase = new LogoutUseCase(mUserAccountRepository);
         IServerInfoRepository serverStatusRepository = new ServerInfoRepository(new ServerInfoLocalDataSource(getApplicationContext()),
-                new ServerInfoRemoteDataSource(Session.getCredentials()));
+                new ServerInfoRemoteDataSource(this));
         GetServerInfoUseCase serverStatusUseCase = new GetServerInfoUseCase(serverStatusRepository,
                 new UIThreadExecutor(), new AsyncExecutor());
         serverStatusUseCase.execute(new GetServerInfoUseCase.Callback() {

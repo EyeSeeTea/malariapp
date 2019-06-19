@@ -56,23 +56,15 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.eyeseetea.malariacare.data.database.datasources.ServerInfoLocalDataSource;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.LanguageContextWrapper;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.remote.api.PullDhisApiDataSource;
-import org.eyeseetea.malariacare.data.remote.api.ServerInfoRemoteDataSource;
-import org.eyeseetea.malariacare.data.repositories.ServerInfoRepository;
-import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
-import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
-import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
-import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
-import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
-import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
+import org.eyeseetea.malariacare.factories.AuthenticationFactory;
 import org.eyeseetea.malariacare.strategies.LoginActivityStrategy;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Permissions;
@@ -86,10 +78,6 @@ public class LoginActivity extends Activity {
     private static final String TAG = ".LoginActivity";
     private static final String IS_LOADING = "state:isLoading";
 
-    public IUserAccountRepository mUserAccountRepository = new UserAccountRepository(this);
-    IAsyncExecutor asyncExecutor = new AsyncExecutor();
-    IMainExecutor mainExecutor = new UIThreadExecutor();
-    LogoutUseCase mLogoutUseCase = new LogoutUseCase(mUserAccountRepository);
     public LoginActivityStrategy mLoginActivityStrategy = new LoginActivityStrategy(this);
 
     private CircularProgressBar progressBar;
@@ -320,11 +308,8 @@ public class LoginActivity extends Activity {
 
         final Credentials credentials = new Credentials(serverUrl, username, password);
 
-        ServerInfoLocalDataSource mServerLocalDataSource = new ServerInfoLocalDataSource(getApplicationContext());
-        ServerInfoRemoteDataSource mServerRemoteDataSource = new ServerInfoRemoteDataSource(credentials);
-        ServerInfoRepository serverInfoRepository = new ServerInfoRepository(mServerLocalDataSource, mServerRemoteDataSource);
+        LoginUseCase mLoginUseCase = AuthenticationFactory.INSTANCE.provideLoginUseCase(this);
 
-        LoginUseCase mLoginUseCase = new LoginUseCase(mUserAccountRepository, serverInfoRepository, mainExecutor, asyncExecutor);
         mLoginUseCase.execute(credentials,
                 new LoginUseCase.Callback() {
                     @Override
@@ -395,7 +380,9 @@ public class LoginActivity extends Activity {
 
     //Todo: This code is repeated in DashboardActivity
     public void executeLogout() {
-        mLogoutUseCase.execute(new LogoutUseCase.Callback() {
+        LogoutUseCase logoutUseCase = AuthenticationFactory.INSTANCE.provideLogoutUseCase(this);
+
+        logoutUseCase.execute(new LogoutUseCase.Callback() {
             @Override
             public void onLogoutSuccess() {
                 Log.e("." + this.getClass().getSimpleName(), "Logout success");
@@ -561,6 +548,4 @@ public class LoginActivity extends Activity {
     }
 
 }
-
-
 

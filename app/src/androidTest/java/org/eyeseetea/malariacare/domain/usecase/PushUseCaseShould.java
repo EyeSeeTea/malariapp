@@ -40,6 +40,8 @@ import org.mockito.junit.MockitoRule;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
 
+import android.support.test.InstrumentationRegistry;
+
 public class PushUseCaseShould {
 
     private static final String SYSTEM_INFO_VERSION_30 = "system_info_30.json";
@@ -323,7 +325,8 @@ public class PushUseCaseShould {
             }
         };
         when(mServerLocalDataSource.get()).thenReturn(new ServerInfo(serverVersion));
-        ServerInfoRemoteDataSource serverInfoRemoteDataSource = new ServerInfoRemoteDataSource(credentials);
+        ServerInfoRemoteDataSource serverInfoRemoteDataSource = new ServerInfoRemoteDataSource(
+                InstrumentationRegistry.getTargetContext());
         return new PushUseCase(pushController, mainExecutor, asyncExecutor, new ServerInfoRepository(mServerLocalDataSource, serverInfoRemoteDataSource));
     }
 }

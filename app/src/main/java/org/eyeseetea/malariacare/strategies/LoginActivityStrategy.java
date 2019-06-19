@@ -100,7 +100,7 @@ public class LoginActivityStrategy {
                 IAsyncExecutor asyncExecutor = new AsyncExecutor();
                 IMainExecutor mainExecutor = new UIThreadExecutor();
                 ServerInfoLocalDataSource mServerLocalDataSource = new ServerInfoLocalDataSource(loginActivity);
-                ServerInfoRemoteDataSource mServerRemoteDataSource = new ServerInfoRemoteDataSource(demoCrededentials);
+                ServerInfoRemoteDataSource mServerRemoteDataSource = new ServerInfoRemoteDataSource(loginActivity);
                 ServerInfoRepository serverInfoRepository = new ServerInfoRepository(mServerLocalDataSource, mServerRemoteDataSource);
 
                 LoginUseCase mLoginUseCase = new LoginUseCase(mUserAccountRepository, serverInfoRepository, mainExecutor, asyncExecutor);

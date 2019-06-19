@@ -133,7 +133,7 @@ public class LoginUseCaseShould {
             }
         };
         when(mServerLocalDataSource.get()).thenReturn(new ServerInfo(serverVersion));
-        ServerInfoRemoteDataSource mServerRemoteDataSource = new ServerInfoRemoteDataSource(credentials);
+        ServerInfoRemoteDataSource mServerRemoteDataSource = new ServerInfoRemoteDataSource(InstrumentationRegistry.getTargetContext());
         ServerInfoRepository serverInfoRepository = new ServerInfoRepository(mServerLocalDataSource, mServerRemoteDataSource);
         return new LoginUseCase(new UserAccountRepository(InstrumentationRegistry.getTargetContext()),
                 serverInfoRepository, mainExecutor, asyncExecutor);
