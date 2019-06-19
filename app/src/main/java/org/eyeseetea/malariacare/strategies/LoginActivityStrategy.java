@@ -46,6 +46,7 @@ import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullUseCase;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
+import org.eyeseetea.malariacare.views.CustomButton;
 import org.hisp.dhis.client.sdk.ui.views.FontButton;
 
 public class LoginActivityStrategy {
@@ -87,7 +88,7 @@ public class LoginActivityStrategy {
         loginActivity.getLayoutInflater().inflate(R.layout.demo_login_button, loginViewsContainer,
                 true);
 
-        FontButton demoButton = (FontButton) loginActivity.findViewById(R.id.demo_login_button);
+        CustomButton demoButton = loginActivity.findViewById(R.id.demo_login_button);
 
         demoButton.setOnClickListener(new View.OnClickListener() {
             @Override
