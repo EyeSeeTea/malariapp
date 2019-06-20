@@ -44,7 +44,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -76,7 +75,6 @@ import fr.castorflex.android.circularprogressbar.CircularProgressDrawable;
 
 public class LoginActivity extends Activity {
     private static final String TAG = ".LoginActivity";
-    private static final String IS_LOADING = "state:isLoading";
 
     public LoginActivityStrategy mLoginActivityStrategy = new LoginActivityStrategy(this);
 
@@ -156,8 +154,9 @@ public class LoginActivity extends Activity {
 
         loginViewsContainer = (CardView) findViewById(R.id.layout_login_views);
 
-        mLoginButton.setOnClickListener(v -> onLoginButtonClicked(mServerUrl.getText(), mUsername.getText(),
-                mPassword.getText()));
+        mLoginButton.setOnClickListener(
+                v -> onLoginButtonClicked(mServerUrl.getText(), mUsername.getText(),
+                        mPassword.getText()));
 
         onPostAnimationListener = new OnPostAnimationListener();
 
@@ -185,34 +184,23 @@ public class LoginActivity extends Activity {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
     }
 
-    @Override
-    protected final void onSaveInstanceState(Bundle outState) {
-        if (onPostAnimationAction != null) {
-            outState.putBoolean(IS_LOADING,
-                    onPostAnimationAction.isProgressBarWillBeShown());
-        } else {
-            outState.putBoolean(IS_LOADING, progressBar.isShown());
-        }
-
-        super.onSaveInstanceState(outState);
-    }
-
     private void initServerAdapter() {
         String[] serverList = getResources().getStringArray(R.array.server_list);
-        if(serverList.length<1) {
+        if (serverList.length < 1) {
             return;
         }
-        ArrayAdapter serversListAdapter = new ArrayAdapter<>(getBaseContext(),android.R.layout.simple_spinner_item, serverList);
+        ArrayAdapter serversListAdapter = new ArrayAdapter<>(getBaseContext(),
+                android.R.layout.simple_spinner_item, serverList);
         serverSpinner.setAdapter(serversListAdapter);
         serverSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String value = parent.getItemAtPosition(position).toString();
-                if(value.equals(parent.getContext().getResources().getString(R.string.other))){
+                if (value.equals(parent.getContext().getResources().getString(R.string.other))) {
                     serverEditText.setText("");
                     serverContainer.setVisibility(View.VISIBLE);
                 } else {
-                    if(serverContainer.getVisibility()==View.VISIBLE){
+                    if (serverContainer.getVisibility() == View.VISIBLE) {
                         serverContainer.setVisibility(View.GONE);
                     }
                     serverEditText.setText(parent.getItemAtPosition(position).toString());
@@ -227,10 +215,11 @@ public class LoginActivity extends Activity {
     }
 
     private void replaceDhisLogoToHNQISLogo() {
-        FrameLayout progressBarContainer =  findViewById(R.id.layout_dhis_logo);
-        ((TextView)progressBarContainer.getChildAt(2)).setText("");
+        FrameLayout progressBarContainer = findViewById(R.id.layout_dhis_logo);
+        ((TextView) progressBarContainer.getChildAt(2)).setText("");
 
-        LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(
+                Context.LAYOUT_INFLATER_SERVICE);
         progressBarContainer.addView(inflater.inflate(R.layout.progress_logo_item, null));
     }
 
@@ -239,7 +228,7 @@ public class LoginActivity extends Activity {
         ActivityCompat.startActivity(LoginActivity.this, intent, null);
     }
 
-    protected void onLoginButtonClicked(Editable server, Editable username, Editable password) {
+    private void onLoginButtonClicked(Editable server, Editable username, Editable password) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         if (!sharedPreferences.getBoolean(getString(R.string.eula_accepted), false)) {
             askEula(R.string.settings_menu_eula, R.raw.eula, LoginActivity.this);
@@ -413,14 +402,6 @@ public class LoginActivity extends Activity {
 
         loginViewsContainer.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);
-    }
-
-    public void hideSoftKeyboard() {
-        if (getCurrentFocus() != null) {
-            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(
-                    INPUT_METHOD_SERVICE);
-            inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-        }
     }
 
     /**

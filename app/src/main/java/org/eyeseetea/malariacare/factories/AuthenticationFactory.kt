@@ -6,8 +6,6 @@ import org.eyeseetea.malariacare.data.database.datasources.ServerInfoLocalDataSo
 import org.eyeseetea.malariacare.data.remote.api.ServerInfoRemoteDataSource
 import org.eyeseetea.malariacare.data.repositories.ServerInfoRepository
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository
-import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor
-import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor
 import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase
@@ -34,7 +32,7 @@ object AuthenticationFactory {
         )
     }
 
-    fun provideLogoutUseCase(context: Context): LogoutUseCase{
+    fun provideLogoutUseCase(context: Context): LogoutUseCase {
         var mUserAccountRepository: IUserAccountRepository = provideUserAccountRepository(context)
 
         return LogoutUseCase(mUserAccountRepository)
