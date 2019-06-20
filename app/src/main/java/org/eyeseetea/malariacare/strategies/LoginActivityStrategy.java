@@ -23,7 +23,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.LoginActivity;
@@ -53,8 +52,6 @@ public class LoginActivityStrategy {
 
     protected LoginActivity loginActivity;
 
-    private static final String TAG = ".LoginActivityStrategy";
-
     public LoginActivityStrategy(LoginActivity loginActivity) {
         this.loginActivity = loginActivity;
     }
@@ -68,11 +65,7 @@ public class LoginActivityStrategy {
 
             finishAndGo(DashboardActivity.class);
         } else {
-            loginActivity.runOnUiThread(new Runnable() {
-                public void run() {
-                    addDemoButton();
-                }
-            });
+            addDemoButton();
         }
     }
 
@@ -82,12 +75,6 @@ public class LoginActivityStrategy {
     }
 
     private void addDemoButton() {
-        ViewGroup loginViewsContainer = (ViewGroup) loginActivity.findViewById(
-                R.id.layout_login_views);
-
-        loginActivity.getLayoutInflater().inflate(R.layout.demo_login_button, loginViewsContainer,
-                true);
-
         CustomButton demoButton = loginActivity.findViewById(R.id.demo_login_button);
 
         demoButton.setOnClickListener(new View.OnClickListener() {
@@ -96,14 +83,19 @@ public class LoginActivityStrategy {
 
                 Credentials demoCrededentials = Credentials.createDemoCredentials();
 
-                IUserAccountRepository mUserAccountRepository = new UserAccountRepository(loginActivity);
+                IUserAccountRepository mUserAccountRepository = new UserAccountRepository(
+                        loginActivity);
                 IAsyncExecutor asyncExecutor = new AsyncExecutor();
                 IMainExecutor mainExecutor = new UIThreadExecutor();
-                ServerInfoLocalDataSource mServerLocalDataSource = new ServerInfoLocalDataSource(loginActivity);
-                ServerInfoRemoteDataSource mServerRemoteDataSource = new ServerInfoRemoteDataSource(loginActivity);
-                ServerInfoRepository serverInfoRepository = new ServerInfoRepository(mServerLocalDataSource, mServerRemoteDataSource);
+                ServerInfoLocalDataSource mServerLocalDataSource = new ServerInfoLocalDataSource(
+                        loginActivity);
+                ServerInfoRemoteDataSource mServerRemoteDataSource = new ServerInfoRemoteDataSource(
+                        loginActivity);
+                ServerInfoRepository serverInfoRepository = new ServerInfoRepository(
+                        mServerLocalDataSource, mServerRemoteDataSource);
 
-                LoginUseCase mLoginUseCase = new LoginUseCase(mUserAccountRepository, serverInfoRepository, mainExecutor, asyncExecutor);
+                LoginUseCase mLoginUseCase = new LoginUseCase(mUserAccountRepository,
+                        serverInfoRepository, mainExecutor, asyncExecutor);
 
                 mLoginUseCase.execute(demoCrededentials,
                         new LoginUseCase.Callback() {
