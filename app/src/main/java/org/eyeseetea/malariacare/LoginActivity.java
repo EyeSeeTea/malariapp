@@ -60,11 +60,15 @@ import org.eyeseetea.malariacare.data.database.utils.LanguageContextWrapper;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.remote.api.PullDhisApiDataSource;
+import org.eyeseetea.malariacare.domain.entity.AppSettings;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.Server;
 import org.eyeseetea.malariacare.domain.usecase.GetServersUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
+import org.eyeseetea.malariacare.domain.usecase.appsettings.GetAppSettingsUseCase;
+import org.eyeseetea.malariacare.domain.usecase.appsettings.SaveAppSettingsUseCase;
+import org.eyeseetea.malariacare.factories.AppSettingsFactory;
 import org.eyeseetea.malariacare.factories.AuthenticationFactory;
 import org.eyeseetea.malariacare.factories.ServerFactory;
 import org.eyeseetea.malariacare.layout.adapters.general.ServerArrayAdapter;
@@ -241,9 +245,15 @@ public class LoginActivity extends Activity implements LoginPresenter.View{
         ActivityCompat.startActivity(LoginActivity.this, intent, null);
     }
 
+    AppSettings appSettings;
+
     private void onLoginButtonClicked(Editable server, Editable username, Editable password) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (!sharedPreferences.getBoolean(getString(R.string.eula_accepted), false)) {
+        GetAppSettingsUseCase getAppSettingsUseCase  =
+                AppSettingsFactory.INSTANCE.provideGetAppSettingsUseCase(this);
+
+        appSettings = getAppSettingsUseCase.execute();
+
+        if (!appSettings.isEulaAccepted()) {
             askEula(R.string.settings_menu_eula, R.raw.eula, LoginActivity.this);
         } else {
             login(mServerUrl.getText().toString(), mUsername.getText().toString(),
@@ -284,11 +294,10 @@ public class LoginActivity extends Activity implements LoginPresenter.View{
      * Save a preference to remember that EULA was already accepted
      */
     public void rememberEulaAccepted(Context context) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
-                context);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(getString(R.string.eula_accepted), true);
-        editor.commit();
+        SaveAppSettingsUseCase saveAppSettingsUseCase  =
+                AppSettingsFactory.INSTANCE.provideSaveAppSettingsUseCase(this);
+        appSettings = appSettings.copy(true);
+        saveAppSettingsUseCase.execute(appSettings);
     }
 
     /**
