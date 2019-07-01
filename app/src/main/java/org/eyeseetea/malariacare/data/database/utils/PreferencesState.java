@@ -374,15 +374,6 @@ public class PreferencesState {
         return DashboardListFilter.NONE.equals(AppSettingsBuilder.getDashboardListFilter());
     }
 
-    public Class getMainActivity() {
-        if (getPullFromServer()) {
-            return ProgressActivity.class;
-        }
-
-        return DashboardActivity.class;
-    }
-
-
     public void clearOrgUnitPreference() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
                 context);

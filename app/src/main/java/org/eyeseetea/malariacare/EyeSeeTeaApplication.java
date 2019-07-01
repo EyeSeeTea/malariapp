@@ -83,19 +83,6 @@ public class EyeSeeTeaApplication extends Application {
     }
 
 
-    public Class<? extends Activity> getMainActivity() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (UserDB.getLoggedUser() != null && sharedPreferences.getBoolean(
-                getApplicationContext().getResources().getString(R.string.pull_metadata), false)) {
-            return new DashboardActivity().getClass();
-        } else if (!ProgressActivity.PULL_CANCEL) {
-            return PreferencesState.getInstance().getMainActivity();
-        } else {
-            return LoginActivity.class;
-        }
-
-    }
-
     private void createDBIndexes() {
         // NOTE: This is to speed up some DB requests, and avoid some anoying messages from the
         // DB on execution time
