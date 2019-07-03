@@ -37,7 +37,6 @@ import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -46,7 +45,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -91,7 +89,6 @@ public class LoginActivity extends Activity implements LoginPresenter.View {
     private ViewGroup loginViewsContainer;
     private Spinner serverSpinner;
     private LinearLayout serverContainer;
-    private EditText serverEditText;
     private static LoginActivity mLoginActivity;
 
     private EditText mServerUrl;
@@ -143,7 +140,6 @@ public class LoginActivity extends Activity implements LoginPresenter.View {
     private void initViews() {
         serverSpinner = findViewById(R.id.server_spinner);
         serverContainer = findViewById(R.id.edittext_server_url_container);
-        serverEditText = findViewById(R.id.edittext_server_url);
 
 
         mServerUrl = findViewById(R.id.edittext_server_url);
@@ -164,8 +160,6 @@ public class LoginActivity extends Activity implements LoginPresenter.View {
                 .rotationSpeed(1f)
                 .sweepSpeed(1f)
                 .build());
-
-        replaceDhisLogoToHNQISLogo();
 
         loginViewsContainer = (CardView) findViewById(R.id.layout_login_views);
 
@@ -233,16 +227,6 @@ public class LoginActivity extends Activity implements LoginPresenter.View {
                 getAppSettingsUseCase, saveAppSettingsUseCase);
 
         presenter.attachView(this);
-    }
-
-
-    private void replaceDhisLogoToHNQISLogo() {
-        FrameLayout progressBarContainer = findViewById(R.id.layout_dhis_logo);
-        ((TextView) progressBarContainer.getChildAt(2)).setText("");
-
-        LayoutInflater inflater = (LayoutInflater) this.getSystemService(
-                Context.LAYOUT_INFLATER_SERVICE);
-        progressBarContainer.addView(inflater.inflate(R.layout.progress_logo_item, null));
     }
 
     private void launchActivity(Activity activity, Class<?> activityClass) {
@@ -459,7 +443,7 @@ public class LoginActivity extends Activity implements LoginPresenter.View {
 
     @Override
     public void showServerViews() {
-        serverEditText.setText("");
+        mServerUrl.setText("");
         serverContainer.setVisibility(android.view.View.VISIBLE);
     }
 

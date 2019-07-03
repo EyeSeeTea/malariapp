@@ -63,14 +63,21 @@
                 android:layout_height="match_parent"
                 android:indeterminate="true"/>
 
-            <org.eyeseetea.malariacare.views.CustomTextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="@string/two"
-                android:textColor="@android:color/white"
-                android:textSize="74sp"
-                app:font="@string/font_name_regular"/>
+            <LinearLayout
+                android:layout_width="110dp"
+                android:layout_height="110dp"
+                android:layout_gravity="center"
+                android:gravity="center_horizontal"
+                android:weightSum="1">
+
+                <ImageView
+                    android:id="@+id/image_view_logo"
+                    android:orientation="vertical" android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.65"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_logo_loading"/>
+            </LinearLayout>
 
         </FrameLayout>
 
