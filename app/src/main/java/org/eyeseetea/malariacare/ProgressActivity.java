@@ -39,11 +39,15 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
 import org.eyeseetea.malariacare.domain.boundary.IPullController;
+import org.eyeseetea.malariacare.domain.entity.AppSettings;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
+import org.eyeseetea.malariacare.domain.usecase.appsettings.GetAppSettingsUseCase;
+import org.eyeseetea.malariacare.domain.usecase.appsettings.SaveAppSettingsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullFilters;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullUseCase;
+import org.eyeseetea.malariacare.factories.AppSettingsFactory;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 
 import java.util.Calendar;
@@ -102,6 +106,10 @@ public class ProgressActivity extends Activity {
     private Handler handler;
     private ProgressActivity mProgressActivity;
 
+    private GetAppSettingsUseCase getAppSettingsUseCase;
+
+    private SaveAppSettingsUseCase saveAppSettingsUseCase;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,6 +130,17 @@ public class ProgressActivity extends Activity {
         intent = getIntent();
         handler = new Handler();
         mProgressActivity = this;
+
+
+        initializeSettingsUseCases();
+    }
+
+    private void initializeSettingsUseCases() {
+        getAppSettingsUseCase =
+                AppSettingsFactory.INSTANCE.provideGetAppSettingsUseCase(this);
+
+        saveAppSettingsUseCase =
+                AppSettingsFactory.INSTANCE.provideSaveAppSettingsUseCase(this);
     }
 
     private void initializeDependencies() {
@@ -151,14 +170,13 @@ public class ProgressActivity extends Activity {
         });
     }
 
-    private static void annotateFirstPull(boolean value) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
-                PreferencesState.getInstance().getContext());
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(
-                PreferencesState.getInstance().getContext().getString(R.string.pull_metadata),
-                value);
-        editor.commit();
+    private void annotateFirstPull(boolean pullCompleted) {
+        AppSettings appSettings = getAppSettingsUseCase.execute();
+
+        appSettings = appSettings.copy(appSettings.isEulaAccepted(), pullCompleted,
+                appSettings.getCredentials());
+
+        saveAppSettingsUseCase.execute(appSettings);
     }
 
     private static String getDialogMessage(String msg) {

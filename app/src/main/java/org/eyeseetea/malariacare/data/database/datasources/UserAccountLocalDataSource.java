@@ -42,6 +42,18 @@ public class UserAccountLocalDataSource implements IUserAccountDataSource {
     }
 
     @Override
+    public UserAccount getCurrentUserAccount() {
+        UserDB userDB = UserDB.getLoggedUser();
+
+        if (userDB != null){
+            return new UserAccount(userDB.getUsername(), userDB.getUid());
+        } else {
+            // TODO: on the future use Option/maybe
+            return null;
+        }
+    }
+
+    @Override
     public void logout(IDataSourceCallback<Void> callback) {
         clearPreferences();
 

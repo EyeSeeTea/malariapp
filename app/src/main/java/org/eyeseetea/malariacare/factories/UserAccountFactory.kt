@@ -9,12 +9,20 @@ import org.eyeseetea.malariacare.data.repositories.UserAccountRepository
 import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase
+import org.eyeseetea.malariacare.domain.usecase.useraccount.GetCurrentUserAccountUseCase
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor
 
-object AuthenticationFactory {
+object UserAccountFactory {
     private val mainExecutor = UIThreadExecutor()
     private val asyncExecutor = AsyncExecutor()
+
+    fun provideGetCurrentUserAccountUseCase(context: Context): GetCurrentUserAccountUseCase {
+        val userAccountRepository = provideUserAccountRepository(context)
+        val appSettingsRepository = AppSettingsFactory.provideAppSettingsRepository(context)
+
+        return GetCurrentUserAccountUseCase(userAccountRepository, appSettingsRepository)
+    }
 
     fun provideLoginUseCase(context: Context): LoginUseCase {
 

@@ -23,6 +23,7 @@ import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
 
 public interface IUserAccountDataSource {
+    UserAccount getCurrentUserAccount();
     void login(Credentials credentials, IDataSourceCallback<UserAccount> callback);
     void logout(IDataSourceCallback<Void> callback);
 }

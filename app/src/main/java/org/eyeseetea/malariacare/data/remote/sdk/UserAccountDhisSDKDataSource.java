@@ -49,6 +49,14 @@ public class UserAccountDhisSDKDataSource implements IUserAccountDataSource {
     }
 
     @Override
+    public UserAccount getCurrentUserAccount() {
+        org.hisp.dhis.client.sdk.models.user.UserAccount remoteUserAccount =
+                D2.me().account().get().toBlocking().single();
+        return new UserAccount(remoteUserAccount.getEmail(),
+                remoteUserAccount.getUId());
+    }
+
+    @Override
     public void logout(final IDataSourceCallback<Void> callback) {
         D2.me().signOut()
                 .subscribeOn(Schedulers.io())

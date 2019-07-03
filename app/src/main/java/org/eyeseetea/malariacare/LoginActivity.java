@@ -25,11 +25,9 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
@@ -55,7 +53,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.LanguageContextWrapper;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
@@ -68,9 +65,10 @@ import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.domain.usecase.appsettings.GetAppSettingsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.appsettings.SaveAppSettingsUseCase;
+import org.eyeseetea.malariacare.domain.usecase.useraccount.GetCurrentUserAccountUseCase;
 import org.eyeseetea.malariacare.factories.AppSettingsFactory;
-import org.eyeseetea.malariacare.factories.AuthenticationFactory;
 import org.eyeseetea.malariacare.factories.ServerFactory;
+import org.eyeseetea.malariacare.factories.UserAccountFactory;
 import org.eyeseetea.malariacare.layout.adapters.general.ServerArrayAdapter;
 import org.eyeseetea.malariacare.presentation.presenters.LoginPresenter;
 import org.eyeseetea.malariacare.strategies.LoginActivityStrategy;
@@ -84,7 +82,7 @@ import java.util.List;
 import fr.castorflex.android.circularprogressbar.CircularProgressBar;
 import fr.castorflex.android.circularprogressbar.CircularProgressDrawable;
 
-public class LoginActivity extends Activity implements LoginPresenter.View{
+public class LoginActivity extends Activity implements LoginPresenter.View {
     private static final String TAG = ".LoginActivity";
 
     public LoginActivityStrategy mLoginActivityStrategy = new LoginActivityStrategy(this);
@@ -122,17 +120,14 @@ public class LoginActivity extends Activity implements LoginPresenter.View{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         mLoginActivity = this;
-        requestPermissions();
-        PreferencesState.getInstance().initalizateActivityDependencies();
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        mLoginActivityStrategy.onCreate();
-        if (UserDB.getLoggedUser() != null && !ProgressActivity.PULL_CANCEL
-                && sharedPreferences.getBoolean(
-                getApplicationContext().getResources().getString(R.string.pull_metadata), false)) {
-            launchActivity(LoginActivity.this, DashboardActivity.class);
-        }
 
-        ProgressActivity.PULL_CANCEL = false;
+        // TODO: Refactor, Review permisions to MVP
+        requestPermissions();
+
+        // TODO: Refactor, Review if load current language it's necessary and review to MVP
+        PreferencesState.getInstance().initalizateActivityDependencies();
+
+        mLoginActivityStrategy.onCreate();
 
         initViews();
         initServerSpinner();
@@ -209,9 +204,11 @@ public class LoginActivity extends Activity implements LoginPresenter.View{
         serverSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Server server =(Server) parent.getItemAtPosition(position);
+                Server server = (Server) parent.getItemAtPosition(position);
 
-                presenter.selectServer (server);
+                mServerUrl.setText(server.getUrl());
+
+                presenter.selectServer(server);
             }
 
             @Override
@@ -224,8 +221,16 @@ public class LoginActivity extends Activity implements LoginPresenter.View{
     private void initializePresenter() {
 
         GetServersUseCase getServersUseCase = ServerFactory.INSTANCE.provideGetServersUseCase(this);
+        GetCurrentUserAccountUseCase getCurrentUserAccountUseCase =
+                UserAccountFactory.INSTANCE.provideGetCurrentUserAccountUseCase(this);
+        GetAppSettingsUseCase getAppSettingsUseCase =
+                AppSettingsFactory.INSTANCE.provideGetAppSettingsUseCase(this);
+        SaveAppSettingsUseCase saveAppSettingsUseCase =
+                AppSettingsFactory.INSTANCE.provideSaveAppSettingsUseCase(this);
 
-        presenter = new LoginPresenter(getString(R.string.other), getServersUseCase);
+        presenter = new LoginPresenter(getString(R.string.other), getServersUseCase,
+                getCurrentUserAccountUseCase,
+                getAppSettingsUseCase, saveAppSettingsUseCase);
 
         presenter.attachView(this);
     }
@@ -248,7 +253,7 @@ public class LoginActivity extends Activity implements LoginPresenter.View{
     AppSettings appSettings;
 
     private void onLoginButtonClicked(Editable server, Editable username, Editable password) {
-        GetAppSettingsUseCase getAppSettingsUseCase  =
+        GetAppSettingsUseCase getAppSettingsUseCase =
                 AppSettingsFactory.INSTANCE.provideGetAppSettingsUseCase(this);
 
         appSettings = getAppSettingsUseCase.execute();
@@ -278,7 +283,7 @@ public class LoginActivity extends Activity implements LoginPresenter.View{
                 .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        rememberEulaAccepted(context);
+                        rememberEulaAccepted();
                         login(mServerUrl.getText().toString(),
                                 mUsername.getText().toString(),
                                 mPassword.getText().toString());
@@ -290,13 +295,11 @@ public class LoginActivity extends Activity implements LoginPresenter.View{
                 LinkMovementMethod.getInstance());
     }
 
-    /**
-     * Save a preference to remember that EULA was already accepted
-     */
-    public void rememberEulaAccepted(Context context) {
-        SaveAppSettingsUseCase saveAppSettingsUseCase  =
+    public void rememberEulaAccepted() {
+        SaveAppSettingsUseCase saveAppSettingsUseCase =
                 AppSettingsFactory.INSTANCE.provideSaveAppSettingsUseCase(this);
-        appSettings = appSettings.copy(true);
+        appSettings = appSettings.copy(true, appSettings.isPullCompleted(),
+                appSettings.getCredentials());
         saveAppSettingsUseCase.execute(appSettings);
     }
 
@@ -319,7 +322,7 @@ public class LoginActivity extends Activity implements LoginPresenter.View{
 
         final Credentials credentials = new Credentials(serverUrl, username, password);
 
-        LoginUseCase mLoginUseCase = AuthenticationFactory.INSTANCE.provideLoginUseCase(this);
+        LoginUseCase mLoginUseCase = UserAccountFactory.INSTANCE.provideLoginUseCase(this);
 
         mLoginUseCase.execute(credentials,
                 new LoginUseCase.Callback() {
@@ -391,7 +394,7 @@ public class LoginActivity extends Activity implements LoginPresenter.View{
 
     //Todo: This code is repeated in DashboardActivity
     public void executeLogout() {
-        LogoutUseCase logoutUseCase = AuthenticationFactory.INSTANCE.provideLogoutUseCase(this);
+        LogoutUseCase logoutUseCase = UserAccountFactory.INSTANCE.provideLogoutUseCase(this);
 
         logoutUseCase.execute(new LogoutUseCase.Callback() {
             @Override
@@ -463,6 +466,12 @@ public class LoginActivity extends Activity implements LoginPresenter.View{
     @Override
     public void hideServerViews() {
         serverContainer.setVisibility(android.view.View.GONE);
+    }
+
+    @Override
+    public void navigateToDashboard() {
+        Intent intent = new Intent(this, DashboardActivity.class);
+        this.startActivity( intent);
     }
 
     public class AsyncPullAnnouncement extends AsyncTask<LoginActivity, Void, Void> {

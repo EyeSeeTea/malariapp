@@ -42,6 +42,11 @@ public class UserAccountRepository implements IUserAccountRepository {
     }
 
     @Override
+    public UserAccount getCurrentUserAccount() {
+        return userAccountLocalDataSource.getCurrentUserAccount();
+    }
+
+    @Override
     public void login(final Credentials credentials,
             final IRepositoryCallback<UserAccount> callback) {
         if (credentials.isDemoCredentials()) {

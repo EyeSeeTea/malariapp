@@ -26,17 +26,14 @@ import android.view.View;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.LoginActivity;
-import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.LocalPullController;
-import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
-import org.eyeseetea.malariacare.domain.usecase.LoadUserAndCredentialsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullFilters;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullUseCase;
-import org.eyeseetea.malariacare.factories.AuthenticationFactory;
+import org.eyeseetea.malariacare.factories.UserAccountFactory;
 import org.eyeseetea.malariacare.views.CustomButton;
 
 public class LoginActivityStrategy {
@@ -48,24 +45,11 @@ public class LoginActivityStrategy {
     }
 
     public void onCreate() {
-        if (existsLoggedUser()) {
-            LoadUserAndCredentialsUseCase loadUserAndCredentialsUseCase =
-                    new LoadUserAndCredentialsUseCase(loginActivity);
-
-            loadUserAndCredentialsUseCase.execute();
-
-            finishAndGo(DashboardActivity.class);
-        } else {
-            addDemoButton();
-        }
+        initializeDemoButton();
     }
 
 
-    private boolean existsLoggedUser() {
-        return UserDB.getLoggedUser() != null && !ProgressActivity.PULL_CANCEL;
-    }
-
-    private void addDemoButton() {
+    private void initializeDemoButton() {
         CustomButton demoButton = loginActivity.findViewById(R.id.demo_login_button);
 
         demoButton.setOnClickListener(new View.OnClickListener() {
@@ -75,7 +59,7 @@ public class LoginActivityStrategy {
                 Credentials demoCredentials = Credentials.createDemoCredentials();
 
                 LoginUseCase mLoginUseCase =
-                        AuthenticationFactory.INSTANCE.provideLoginUseCase(loginActivity);
+                        UserAccountFactory.INSTANCE.provideLoginUseCase(loginActivity);
 
                 mLoginUseCase.execute(demoCredentials,
                         new LoginUseCase.Callback() {

@@ -19,7 +19,7 @@ object AppSettingsFactory {
         return SaveAppSettingsUseCase(appSettingsRepository)
     }
 
-    private fun provideAppSettingsRepository(context: Context): IAppSettingsRepository {
+    fun provideAppSettingsRepository(context: Context): IAppSettingsRepository {
         return AppSettingsRepository(context)
     }
 }

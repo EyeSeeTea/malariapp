@@ -2,10 +2,16 @@ package org.eyeseetea.malariacare.presentation.presenters
 
 import org.eyeseetea.malariacare.domain.entity.Server
 import org.eyeseetea.malariacare.domain.usecase.GetServersUseCase
+import org.eyeseetea.malariacare.domain.usecase.appsettings.GetAppSettingsUseCase
+import org.eyeseetea.malariacare.domain.usecase.appsettings.SaveAppSettingsUseCase
+import org.eyeseetea.malariacare.domain.usecase.useraccount.GetCurrentUserAccountUseCase
 
 class LoginPresenter(
     private val otherText: String,
-    private val getServersUseCase: GetServersUseCase
+    private val getServersUseCase: GetServersUseCase,
+    private val getCurrentUserAccountUseCase: GetCurrentUserAccountUseCase,
+    private val getAppSettingsUseCase: GetAppSettingsUseCase,
+    private val saveAppSettingsUseCase: SaveAppSettingsUseCase
 ) {
     private var view: View? = null
 
@@ -15,7 +21,11 @@ class LoginPresenter(
 
         this.view = view
 
-        loadServers()
+        if (existsLoginAndPull()) {
+            view.navigateToDashboard()
+        } else {
+            loadServers()
+        }
     }
 
     fun detachView() {
@@ -32,6 +42,13 @@ class LoginPresenter(
                 hideServerViews()
             }
         }
+    }
+
+    private fun existsLoginAndPull(): Boolean {
+        val userAccount = getCurrentUserAccountUseCase.execute()
+        val appSettings = getAppSettingsUseCase.execute()
+
+        return userAccount != null && appSettings.isPullCompleted
     }
 
     private fun loadServers() {
@@ -57,5 +74,7 @@ class LoginPresenter(
         fun renderServers(servers: List<@JvmSuppressWildcards Server>)
         fun showServerViews()
         fun hideServerViews()
+
+        fun navigateToDashboard()
     }
 }
