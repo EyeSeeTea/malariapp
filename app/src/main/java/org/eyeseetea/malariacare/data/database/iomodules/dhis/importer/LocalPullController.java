@@ -14,15 +14,14 @@ import com.raizlabs.android.dbflow.config.FlowManager;
 import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.data.database.datasources.ConversionLocalDataSource;
 import org.eyeseetea.malariacare.data.database.utils.PopulateDB;
-import org.eyeseetea.malariacare.domain.boundary.IPullController;
-import org.eyeseetea.malariacare.domain.usecase.pull.PullFilters;
+import org.eyeseetea.malariacare.domain.boundary.IPullDemoController;
 import org.eyeseetea.sdk.common.DatabaseUtils;
 import org.eyeseetea.sdk.common.FileUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
 
-public class LocalPullController implements IPullController {
+public class LocalPullController implements IPullDemoController {
     final String TAG = "PullLocalDataSource";
 
     final String DATABASE_FOLDER = "database/";
@@ -34,7 +33,7 @@ public class LocalPullController implements IPullController {
     }
 
     @Override
-    public void pull(PullFilters filters, IPullControllerCallback callback) {
+    public void pull() throws IOException  {
         AssetManager assetManager = context.getAssets();
         InputStream inputStream = null;
         Log.d(TAG, "pull from local source");
@@ -44,16 +43,11 @@ public class LocalPullController implements IPullController {
             e.printStackTrace();
             Log.d(TAG, "Copy Database error");
         }
-        try {
-            if (inputStream != null) {
-                pullFromDB(context, inputStream);
-            } else {
-                pullFromCsv(context);
-            }
-            callback.onComplete();
-        } catch (IOException e) {
-            e.printStackTrace();
-            callback.onError(e);
+
+        if (inputStream != null) {
+            pullFromDB(context, inputStream);
+        } else {
+            pullFromCsv(context);
         }
     }
 
@@ -118,15 +112,5 @@ public class LocalPullController implements IPullController {
                 .addDatabaseHolder(DHIS2GeneratedDatabaseHolder.class)
                 .build();
         FlowManager.init(flowConfigDhis);
-    }
-
-    @Override
-    public void cancel() {
-
-    }
-
-    @Override
-    public boolean isPullActive() {
-        return false;
     }
 }

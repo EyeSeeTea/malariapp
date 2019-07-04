@@ -63,15 +63,18 @@ import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.domain.usecase.appsettings.GetAppSettingsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.appsettings.SaveAppSettingsUseCase;
+import org.eyeseetea.malariacare.domain.usecase.pull.PullDemoUseCase;
 import org.eyeseetea.malariacare.domain.usecase.useraccount.GetCurrentUserAccountUseCase;
+import org.eyeseetea.malariacare.domain.usecase.useraccount.LoginDemoUseCase;
 import org.eyeseetea.malariacare.factories.AppSettingsFactory;
 import org.eyeseetea.malariacare.factories.ServerFactory;
+import org.eyeseetea.malariacare.factories.SyncFactory;
 import org.eyeseetea.malariacare.factories.UserAccountFactory;
 import org.eyeseetea.malariacare.layout.adapters.general.ServerArrayAdapter;
 import org.eyeseetea.malariacare.presentation.presenters.LoginPresenter;
-import org.eyeseetea.malariacare.strategies.LoginActivityStrategy;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Permissions;
+import org.eyeseetea.malariacare.views.CustomButton;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.InputStream;
@@ -82,8 +85,6 @@ import fr.castorflex.android.circularprogressbar.CircularProgressDrawable;
 
 public class LoginActivity extends Activity implements LoginPresenter.View {
     private static final String TAG = ".LoginActivity";
-
-    public LoginActivityStrategy mLoginActivityStrategy = new LoginActivityStrategy(this);
 
     private CircularProgressBar progressBar;
     private ViewGroup loginViewsContainer;
@@ -123,8 +124,6 @@ public class LoginActivity extends Activity implements LoginPresenter.View {
 
         // TODO: Refactor, Review if load current language it's necessary and review to MVP
         PreferencesState.getInstance().initalizateActivityDependencies();
-
-        mLoginActivityStrategy.onCreate();
 
         initViews();
         initServerSpinner();
@@ -166,6 +165,10 @@ public class LoginActivity extends Activity implements LoginPresenter.View {
         mLoginButton.setOnClickListener(
                 v -> onLoginButtonClicked(mServerUrl.getText(), mUsername.getText(),
                         mPassword.getText()));
+
+        CustomButton demoButton = findViewById(R.id.demo_login_button);
+
+        demoButton.setOnClickListener(v -> presenter.loginDemo());
 
         onPostAnimationListener = new OnPostAnimationListener();
 
@@ -214,16 +217,29 @@ public class LoginActivity extends Activity implements LoginPresenter.View {
 
     private void initializePresenter() {
 
-        GetServersUseCase getServersUseCase = ServerFactory.INSTANCE.provideGetServersUseCase(this);
+        // TODO: Refactor. On the future use Dagger or similar
+        // and create instrumentation tests
+
+        GetServersUseCase getServersUseCase =
+                ServerFactory.INSTANCE.provideGetServersUseCase(this);
+
         GetCurrentUserAccountUseCase getCurrentUserAccountUseCase =
                 UserAccountFactory.INSTANCE.provideGetCurrentUserAccountUseCase(this);
+
         GetAppSettingsUseCase getAppSettingsUseCase =
                 AppSettingsFactory.INSTANCE.provideGetAppSettingsUseCase(this);
+
         SaveAppSettingsUseCase saveAppSettingsUseCase =
                 AppSettingsFactory.INSTANCE.provideSaveAppSettingsUseCase(this);
 
-        presenter = new LoginPresenter(getString(R.string.other), getServersUseCase,
-                getCurrentUserAccountUseCase,
+        LoginDemoUseCase loginDemoUseCase =
+                UserAccountFactory.INSTANCE.provideLoginDemoUseCase(this);
+
+        PullDemoUseCase pullDemoUseCase =
+                SyncFactory.INSTANCE.providePullDemoUseCase(this);
+
+        presenter = new LoginPresenter(getString(R.string.other), loginDemoUseCase, pullDemoUseCase,
+                getServersUseCase, getCurrentUserAccountUseCase,
                 getAppSettingsUseCase, saveAppSettingsUseCase);
 
         presenter.attachView(this);

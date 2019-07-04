@@ -17,16 +17,11 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.data;
+package org.eyeseetea.malariacare.domain.boundary
 
-import org.eyeseetea.malariacare.domain.entity.Credentials;
-import org.eyeseetea.malariacare.domain.entity.UserAccount;
+import java.io.IOException
 
-public interface IUserAccountDataSource {
-    UserAccount getCurrentUserAccount();
-    void login(Credentials credentials, IDataSourceCallback<UserAccount> callback);
-    void logout(IDataSourceCallback<Void> callback);
-
-    UserAccount login(Credentials credentials) throws Exception;
-    void logout();
+interface IPullDemoController {
+    @Throws(IOException::class)
+    fun pull()
 }

@@ -22,6 +22,7 @@ package org.eyeseetea.malariacare.data.remote.sdk;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 
 import org.eyeseetea.malariacare.data.IDataSourceCallback;
 import org.eyeseetea.malariacare.data.IUserAccountDataSource;
@@ -41,6 +42,12 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
+// TODO: Refactor. This class contains a parallel change. The async process
+// should realize in presenter and the rest of flow should be synchronous code
+// without callbacks for simplicity. For the moment there are functions with callbacks
+// and without callback because exists with callbacks callers.
+// We should remove with callback calls little a little and remove this functions
+// when all with callback calls has been removed
 public class UserAccountDhisSDKDataSource implements IUserAccountDataSource {
     private Context mContext;
 
@@ -111,11 +118,51 @@ public class UserAccountDhisSDKDataSource implements IUserAccountDataSource {
                     }, new Action1<Throwable>() {
                         @Override
                         public void call(Throwable throwable) {
-                            Throwable throwableResult = mapThrowable(throwable);
+                            Exception exceptionResult = mapException((Exception)throwable);
 
-                            callback.onError(throwableResult);
+                            callback.onError(exceptionResult);
                         }
                     });
+        }
+    }
+
+
+    @Override
+    public UserAccount login(Credentials credentials) throws Exception {
+
+        boolean isNetworkAvailable = isNetworkAvailable();
+
+        if (!isNetworkAvailable) {
+            throw new NetworkException();
+        } else {
+
+            try {
+                Configuration configuration = new Configuration(credentials.getServerURL());
+
+                D2.configure(configuration).toBlocking().single();
+
+                org.hisp.dhis.client.sdk.models.user.UserAccount dhisUserAccount =
+                        D2.me().signIn(credentials.getUsername(), credentials.getPassword())
+                                .toBlocking().single();
+
+                UserAccount userAccount = new UserAccount(credentials.getUsername(),
+                        dhisUserAccount.getUId());
+
+                return userAccount;
+            } catch (Exception e){
+                Exception exceptionResult = mapException(e);
+
+                throw exceptionResult;
+            }
+        }
+    }
+
+    @Override
+    public void logout() {
+        try{
+            D2.me().signOut().toBlocking().single();
+        } catch (Exception e){
+            Log.d(this.getClass().getSimpleName(), "Error executing remote logout");
         }
     }
 
@@ -126,21 +173,21 @@ public class UserAccountDhisSDKDataSource implements IUserAccountDataSource {
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
-    private Throwable mapThrowable(Throwable throwable) {
-        Throwable throwableResult = throwable;
+    private Exception mapException(Exception exception) {
+        Exception exceptionResult = exception;
 
-        if (throwable.getCause() != null) {
-            throwableResult = throwable.getCause();
-        } else if (throwable instanceof ApiException) {
-            ApiException apiException = (ApiException) throwable;
+        if (exception.getCause() != null) {
+            exceptionResult = (Exception) exception.getCause();
+        } else if (exception instanceof ApiException) {
+            ApiException apiException = (ApiException) exception;
 
             if (apiException.getResponse() != null
                     && apiException.getResponse().getStatus()
                     == HttpURLConnection.HTTP_UNAUTHORIZED) {
-                throwableResult = new InvalidCredentialsException();
+                exceptionResult = new InvalidCredentialsException();
             }
         }
 
-        return throwableResult;
+        return exceptionResult;
     }
 }

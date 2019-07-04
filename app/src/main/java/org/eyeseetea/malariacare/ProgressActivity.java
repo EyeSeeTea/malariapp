@@ -23,22 +23,17 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.LocalPullController;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullController;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
-import org.eyeseetea.malariacare.domain.boundary.IPullController;
 import org.eyeseetea.malariacare.domain.entity.AppSettings;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
@@ -48,6 +43,7 @@ import org.eyeseetea.malariacare.domain.usecase.pull.PullFilters;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullUseCase;
 import org.eyeseetea.malariacare.factories.AppSettingsFactory;
+import org.eyeseetea.malariacare.factories.SyncFactory;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 
 import java.util.Calendar;
@@ -102,10 +98,11 @@ public class ProgressActivity extends Activity {
     static boolean isOnPause = true;
     //Check intent params
     static Intent intent;
-    public PullUseCase mPullUseCase;
+
     private Handler handler;
     private ProgressActivity mProgressActivity;
 
+    public PullUseCase pullUseCase;
     private GetAppSettingsUseCase getAppSettingsUseCase;
 
     private SaveAppSettingsUseCase saveAppSettingsUseCase;
@@ -116,7 +113,7 @@ public class ProgressActivity extends Activity {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate");
         PreferencesState.getInstance().initalizateActivityDependencies();
-        initializeDependencies();
+
         setContentView(R.layout.activity_progress);
         PULL_CANCEL = false;
         isOnPause = false;
@@ -131,26 +128,17 @@ public class ProgressActivity extends Activity {
         handler = new Handler();
         mProgressActivity = this;
 
-
-        initializeSettingsUseCases();
+        initializeDependencies();
     }
 
-    private void initializeSettingsUseCases() {
+    private void initializeDependencies() {
         getAppSettingsUseCase =
                 AppSettingsFactory.INSTANCE.provideGetAppSettingsUseCase(this);
 
         saveAppSettingsUseCase =
                 AppSettingsFactory.INSTANCE.provideSaveAppSettingsUseCase(this);
-    }
 
-    private void initializeDependencies() {
-        IPullController pullController;
-        if (Session.getCredentials().isDemoCredentials()) {
-            pullController = new LocalPullController(this);
-        } else {
-            pullController = new PullController();
-        }
-        mPullUseCase = new PullUseCase(pullController);
+        pullUseCase = SyncFactory.INSTANCE.providePullUseCase();
     }
 
     /**
@@ -193,7 +181,7 @@ public class ProgressActivity extends Activity {
 
     private void cancelPull() {
         step(getBaseContext().getResources().getString(R.string.cancellingPull));
-        mPullUseCase.cancel();
+        pullUseCase.cancel();
     }
 
     @Override
@@ -283,7 +271,7 @@ public class ProgressActivity extends Activity {
         }
 
         //If is not active, we need restart the process
-        if (!mPullUseCase.isPullActive()) {
+        if (!pullUseCase.isPullActive()) {
             finishAndGo(LoginActivity.class);
             return;
         }
@@ -342,7 +330,7 @@ public class ProgressActivity extends Activity {
                 AppSettingsBuilder.isFullHierarchy(), AppSettingsBuilder.isDownloadOnlyLastEvents(),
                 PreferencesState.getInstance().getMaxEvents());
 
-        mPullUseCase.execute(pullFilters, new PullUseCase.Callback() {
+        pullUseCase.execute(pullFilters, new PullUseCase.Callback() {
             @Override
             public void onComplete() {
                 postFinish();

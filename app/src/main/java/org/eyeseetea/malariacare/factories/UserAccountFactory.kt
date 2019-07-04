@@ -10,6 +10,7 @@ import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountReposi
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase
 import org.eyeseetea.malariacare.domain.usecase.useraccount.GetCurrentUserAccountUseCase
+import org.eyeseetea.malariacare.domain.usecase.useraccount.LoginDemoUseCase
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor
 
@@ -44,6 +45,13 @@ object UserAccountFactory {
         var mUserAccountRepository: IUserAccountRepository = provideUserAccountRepository(context)
 
         return LogoutUseCase(mUserAccountRepository)
+    }
+
+    fun provideLoginDemoUseCase(context: Context): LoginDemoUseCase {
+
+        val userAccountRepository = provideUserAccountRepository(context)
+
+        return LoginDemoUseCase(userAccountRepository)
     }
 
     private fun provideUserAccountRepository(context: Context) =

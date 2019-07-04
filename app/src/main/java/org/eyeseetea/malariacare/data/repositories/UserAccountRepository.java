@@ -31,6 +31,13 @@ import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountReposi
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
 
+// TODO: Refactor. This class contains a parallel change. The async process
+// should realize in presenter and the rest of flow should be synchronous code
+// without callbacks for simplicity. For the moment there are functions with callbacks
+// and without callback because exists with callbacks callers.
+// We should remove with callback calls little a little and remove this functions
+// when all with callback calls has been removed
+
 public class UserAccountRepository implements IUserAccountRepository {
     IUserAccountDataSource userAccountLocalDataSource;
     IUserAccountDataSource userAccountRemoteDataSource;
@@ -59,14 +66,40 @@ public class UserAccountRepository implements IUserAccountRepository {
     @Override
     public void logout(final IRepositoryCallback<Void> callback) {
 
-        //TODO: jsanchez fix find out IsDemo from current UserAccount getting from DataSource
-        Credentials credentials = Session.getCredentials();
+        UserAccount userAccount = getCurrentUserAccount();
 
-        if (credentials.isDemoCredentials()) {
+        if (isDemoCredentials(userAccount)) {
             localLogout(callback);
         } else {
             remoteLogout(callback);
         }
+    }
+
+    @Override
+    public UserAccount login( Credentials credentials) throws Exception{
+        if (credentials.isDemoCredentials()) {
+            return localLogin(credentials);
+        } else {
+            return remoteLogin(credentials);
+        }
+    }
+
+    @Override
+    public void logout() throws Exception {
+
+        UserAccount userAccount = getCurrentUserAccount();
+
+        if (isDemoCredentials(userAccount)) {
+            localLogout();
+        } else {
+            remoteLogout();
+        }
+    }
+
+    private boolean isDemoCredentials(UserAccount userAccount) {
+        Credentials demoCredentials = Credentials.createDemoCredentials();
+
+        return demoCredentials.getUsername().equals(userAccount.getUserName());
     }
 
     private void remoteLogout(final IRepositoryCallback<Void> callback) {
@@ -127,4 +160,20 @@ public class UserAccountRepository implements IUserAccountRepository {
             }
         });
     }
+
+    private void remoteLogout() {
+
+    }
+
+    private UserAccount remoteLogin(final Credentials credentials) {
+        return null;
+    }
+
+    private void localLogout() {
+    }
+
+    private UserAccount localLogin(Credentials credentials) throws Exception {
+        return userAccountLocalDataSource.login(credentials);
+    }
+
 }

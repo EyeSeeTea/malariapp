@@ -34,7 +34,7 @@ import org.hisp.dhis.client.sdk.models.common.UnsupportedServerVersionException;
 import java.net.MalformedURLException;
 import java.net.UnknownHostException;
 
-public class LoginUseCase implements UseCase{
+public class LoginUseCase implements UseCase {
 
     public interface Callback {
         void onLoginSuccess();
@@ -56,9 +56,9 @@ public class LoginUseCase implements UseCase{
     private Callback callback;
 
     public LoginUseCase(IUserAccountRepository userAccountRepository,
-                        IServerInfoRepository serverRepository,
-                        IMainExecutor mainExecutor,
-                        IAsyncExecutor asyncExecutor) {
+            IServerInfoRepository serverRepository,
+            IMainExecutor mainExecutor,
+            IAsyncExecutor asyncExecutor) {
         mMainExecutor = mainExecutor;
         mAsyncExecutor = asyncExecutor;
         mUserAccountRepository = userAccountRepository;
@@ -89,7 +89,7 @@ public class LoginUseCase implements UseCase{
                     notifyOnInvalidCredentials();
                 } else if (throwable instanceof NetworkException) {
                     notifyOnNetworkError();
-                } else if (throwable instanceof UnsupportedServerVersionException){
+                } else if (throwable instanceof UnsupportedServerVersionException) {
                     notifyOnServerVersionError();
                 }
             }
@@ -97,17 +97,14 @@ public class LoginUseCase implements UseCase{
     }
 
     private void getServerVersionIfRequiredAndNotifyLoginSuccess() {
-        if (!credentials.isDemoCredentials()) {
-            try {
-                mServerRepository.getServerInfo(ReadPolicy.NETWORK_FIRST);
-                notifyOnLoginSuccess();
-            } catch (Exception e) {
-                e.printStackTrace();
-                notifyOnNetworkError();
-                return;
-            }
-        } else {
+
+        try {
+            mServerRepository.getServerInfo(ReadPolicy.NETWORK_FIRST);
             notifyOnLoginSuccess();
+        } catch (Exception e) {
+            e.printStackTrace();
+            notifyOnNetworkError();
+            return;
         }
     }
 
@@ -128,6 +125,7 @@ public class LoginUseCase implements UseCase{
             }
         });
     }
+
     private void notifyOnInvalidCredentials() {
         mMainExecutor.run(new Runnable() {
             @Override
@@ -136,6 +134,7 @@ public class LoginUseCase implements UseCase{
             }
         });
     }
+
     private void notifyOnNetworkError() {
         mMainExecutor.run(new Runnable() {
             @Override
@@ -144,6 +143,7 @@ public class LoginUseCase implements UseCase{
             }
         });
     }
+
     private void notifyOnServerVersionError() {
         mMainExecutor.run(new Runnable() {
             @Override

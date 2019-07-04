@@ -8,4 +8,7 @@ public interface IUserAccountRepository {
     UserAccount getCurrentUserAccount();
     void login(Credentials credentials, IRepositoryCallback<UserAccount> callback);
     void logout(IRepositoryCallback<Void> callback);
+
+    UserAccount login(Credentials credentials) throws Exception;
+    void logout() throws Exception;
 }

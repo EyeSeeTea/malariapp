@@ -1,13 +1,18 @@
 package org.eyeseetea.malariacare.presentation.presenters
 
+import org.eyeseetea.malariacare.domain.entity.Credentials
 import org.eyeseetea.malariacare.domain.entity.Server
 import org.eyeseetea.malariacare.domain.usecase.GetServersUseCase
 import org.eyeseetea.malariacare.domain.usecase.appsettings.GetAppSettingsUseCase
 import org.eyeseetea.malariacare.domain.usecase.appsettings.SaveAppSettingsUseCase
+import org.eyeseetea.malariacare.domain.usecase.pull.PullDemoUseCase
 import org.eyeseetea.malariacare.domain.usecase.useraccount.GetCurrentUserAccountUseCase
+import org.eyeseetea.malariacare.domain.usecase.useraccount.LoginDemoUseCase
 
 class LoginPresenter(
     private val otherText: String,
+    private val loginDemoUseCase: LoginDemoUseCase,
+    private val pullDemoUseCase: PullDemoUseCase,
     private val getServersUseCase: GetServersUseCase,
     private val getCurrentUserAccountUseCase: GetCurrentUserAccountUseCase,
     private val getAppSettingsUseCase: GetAppSettingsUseCase,
@@ -22,7 +27,7 @@ class LoginPresenter(
         this.view = view
 
         if (existsLoginAndPull()) {
-            view.navigateToDashboard()
+            navigateToDashboard()
         } else {
             loadServers()
         }
@@ -41,6 +46,24 @@ class LoginPresenter(
             } else {
                 hideServerViews()
             }
+        }
+    }
+
+    fun loginDemo() {
+        try {
+            loginDemoUseCase.execute(Credentials.createDemoCredentials())
+            pullDemo()
+        } catch (e: Exception) {
+            println(this.javaClass.simpleName + "An error has occurred realizing login demo")
+        }
+    }
+
+    private fun pullDemo() {
+        try {
+            pullDemoUseCase.execute()
+            navigateToDashboard()
+        } catch (e: Exception) {
+            println(this.javaClass.simpleName + "Pull error")
         }
     }
 
@@ -68,6 +91,10 @@ class LoginPresenter(
 
     private fun hideServerViews() {
         view?.hideServerViews()
+    }
+
+    private fun navigateToDashboard() {
+        view?.navigateToDashboard()
     }
 
     interface View {

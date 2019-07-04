@@ -33,6 +33,12 @@ import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
 
+// TODO: Refactor. This class contains a parallel change. The async process
+// should realize in presenter and the rest of flow should be synchronous code
+// without callbacks for simplicity. For the moment there are functions with callbacks
+// and without callback because exists with callbacks callers.
+// We should remove with callback calls little a little and remove this functions
+// when all with callback calls has been removed
 public class UserAccountLocalDataSource implements IUserAccountDataSource {
 
     Context mContext;
@@ -55,6 +61,35 @@ public class UserAccountLocalDataSource implements IUserAccountDataSource {
 
     @Override
     public void logout(IDataSourceCallback<Void> callback) {
+        logout();
+
+        callback.onSuccess(null);
+    }
+
+    @Override
+    public void login(Credentials credentials, IDataSourceCallback<UserAccount> callback) {
+        UserAccount userAccount = null;
+        try {
+            userAccount = login(credentials);
+        } catch (Exception e) {
+            callback.onError(e);
+        }
+
+        callback.onSuccess(userAccount);
+    }
+
+    @Override
+    public UserAccount login(Credentials credentials) throws Exception{
+
+        saveUser(credentials);
+
+        saveCredentials(credentials);
+
+        return getCurrentUserAccount();
+    }
+
+    @Override
+    public void logout() {
         clearPreferences();
 
         Session.logout();
@@ -62,18 +97,6 @@ public class UserAccountLocalDataSource implements IUserAccountDataSource {
         PreferencesState.getInstance().clearOrgUnitPreference();
 
         PopulateDB.wipeDatabase();
-
-        callback.onSuccess(null);
-    }
-
-    @Override
-    public void login(Credentials credentials, IDataSourceCallback<UserAccount> callback) {
-
-        saveUser(credentials);
-
-        saveCredentials(credentials);
-
-        callback.onSuccess(null);
     }
 
     private void saveUser(Credentials credentials) {
