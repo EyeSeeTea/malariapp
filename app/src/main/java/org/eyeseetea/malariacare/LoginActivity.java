@@ -90,7 +90,6 @@ public class LoginActivity extends Activity implements LoginPresenter.View {
     private ViewGroup loginViewsContainer;
     private Spinner serverSpinner;
     private LinearLayout serverContainer;
-    private static LoginActivity mLoginActivity;
 
     private EditText mServerUrl;
     private EditText mUsername;
@@ -117,7 +116,6 @@ public class LoginActivity extends Activity implements LoginPresenter.View {
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        mLoginActivity = this;
 
         // TODO: Refactor, Review permisions to MVP
         requestPermissions();
@@ -332,7 +330,7 @@ public class LoginActivity extends Activity implements LoginPresenter.View {
                         hideProgress();
                         AsyncPullAnnouncement
                                 asyncPullAnnouncement = new AsyncPullAnnouncement();
-                        asyncPullAnnouncement.execute(mLoginActivity);
+                        asyncPullAnnouncement.execute(LoginActivity.this);
                     }
 
                     @Override
@@ -374,7 +372,7 @@ public class LoginActivity extends Activity implements LoginPresenter.View {
         if (isClosed) {
             closeUser(R.string.admin_announcement,
                     PreferencesState.getInstance().getContext().getString(R.string.user_close),
-                    mLoginActivity);
+                    this);
         } else {
             launchActivity(LoginActivity.this, ProgressActivity.class);
         }
@@ -386,14 +384,13 @@ public class LoginActivity extends Activity implements LoginPresenter.View {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 PreferencesState.getInstance().setUserAccept(false);
-                LoginActivity.mLoginActivity.executeLogout();
+                executeLogout();
             }
         };
         AUtils.closeUser(titleId, message, context, listener);
     }
 
-    //Todo: This code is repeated in DashboardActivity
-    public void executeLogout() {
+    private void executeLogout() {
         LogoutUseCase logoutUseCase = UserAccountFactory.INSTANCE.provideLogoutUseCase(this);
 
         logoutUseCase.execute(new LogoutUseCase.Callback() {
