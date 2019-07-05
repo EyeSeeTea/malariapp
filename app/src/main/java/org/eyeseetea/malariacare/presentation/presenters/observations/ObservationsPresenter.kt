@@ -164,7 +164,6 @@ class ObservationsPresenter(
             val observation =
                 ObservationMapper.mapToObservation(observationViewModel, serverMetadata)
 
-
             saveObservationUseCase.execute(observation)
         } catch (e: Exception) {
             println(
