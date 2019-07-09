@@ -252,7 +252,7 @@ evaluation"</string>
 </string-array>
 <string name="supervision_on">Results supervision on:</string>
 <string name="critical_steps">CRITICAL STEPS MISSED:</string>
-<string name="url_not_available">"URL not yet available"</string>
+<string name="url_not_available">"The feedback URL is not available because the survey hasn't been sent to the server yet. Try sharing the feedback again later."</string>
 <string name="see_full_assessment">"See full survey at:"</string>
 
 <string name="install_file_manager">Please install a File Manager.</string>
@@ -292,4 +292,11 @@ evaluation"</string>
 <string name="improve_no_surveys">"No survey(s) completed for the selection you have made."</string>
 <string name="scheduled">Scheduled</string>
 <string name="survey_not_assigned_facility">"This survey is not assigned to this facility. Please, select another survey."</string>
+<string name="feedback_progress_bar_text">Loading Survey scores... Please wait</string>
+<string name="login_error_unsupported_server_version">The server version is not supported</string>
+
+<string name="other">Other</string>
+<string name="feedback_not_sent">"The feedback URL is not available because the survey hasn't been sent to the server yet. Try sharing the feedback again later."</string>
+<string name="server_version_error">The server version is not supported.</string>
+<string name="recommend_upgrade">Please upgrade the app from Google Play.</string>
 </resources>

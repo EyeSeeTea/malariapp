@@ -246,7 +246,7 @@ Mensuelle"</string>
 </string-array>
 <string name="supervision_on">"Surveillance des résultats sur:"</string>
 <string name="critical_steps">ÉTAPES CRITIQUES MANQUÉES:</string>
-<string name="url_not_available">"L'URL n'est pas encore disponible"</string>
+<string name="url_not_available">"L'URL de commentaires n'est pas disponible car l'enquête n'a pas encore été envoyée au serveur. Essayez de partager les commentaires plus tard."</string>
 <string name="see_full_assessment">"Voir l'enquête complète à:"</string>
 <string name="on">"DATE D'ÉVALUATION:"</string>
 
@@ -281,4 +281,10 @@ Mensuelle"</string>
 <string name="scheduled">Prévu</string>
 <string name="reschedule_title_multiple_survey">"%1$d nombre d'enquêtes en cours de re-planification pour OU %2$s"</string>
 <string name="survey_not_assigned_facility">"Cette enquête n'est pas affectée à cette installation. Veuillez sélectionner une autre enquête."</string>
+<string name="feedback_progress_bar_text">"Chargement des résultats de l'enquête ... veuillez patienter"</string>
+<string name="login_error_unsupported_server_version">"La version du serveur n'est pas prise en charge"</string>
+<string name="other">autre</string>
+<string name="feedback_not_sent">"L'URL de commentaires n'est pas disponible car l'enquête n'a pas encore été envoyée au serveur. Essayez de partager les commentaires plus tard."</string>
+<string name="server_version_error">"La version du serveur n'est pas supportée."</string>
+<string name="recommend_upgrade">"Veuillez mettre à jour l'application depuis Google Play."</string>
 </resources>

@@ -22,29 +22,62 @@ package org.eyeseetea.malariacare.domain.usecase;
 import static org.eyeseetea.malariacare.domain.usecase.CallbackInvoked.invokedInProgressCallback;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushController;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
+import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
+import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IServerInfoRepository;
+import org.eyeseetea.malariacare.domain.entity.Credentials;
+import org.eyeseetea.malariacare.domain.entity.ServerInfo;
+import org.eyeseetea.malariacare.domain.common.ReadPolicy;
+import org.junit.Rule;
 import org.junit.Test;
-
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 public class PushUseCaseTest {
 
-    IPushController mPushController = mock(IPushController.class);
+    @Rule
+    public MockitoRule rule = MockitoJUnit.rule();
 
-    private CountDownLatch lock = new CountDownLatch(1);
+    @Mock
+    IPushController mPushController;
 
     @Test
-    public void should_invoke_in_progress_error_callback_when_is_in_progress() throws Exception {
+    public void should_invoke_in_progress_error_callback_when_is_in_progress() {
         givenThereIsAInProgressPushController();
 
-        PushUseCase pushUseCase = new PushUseCase(mPushController);
+        IMainExecutor mainExecutor = new IMainExecutor() {
+            @Override
+            public void run(Runnable runnable) {
+                runnable.run();
+            }
+        };
+        IAsyncExecutor asyncExecutor = new IAsyncExecutor() {
+            @Override
+            public void run(Runnable runnable) {
+                runnable.run();
+            }
+        };
+        Credentials credentials = new Credentials("", "", "");
+        IServerInfoRepository serverInfoRepository = new IServerInfoRepository() {
+            @Override
+            public ServerInfo getServerInfo(ReadPolicy readPolicy) throws Exception {
+                return new ServerInfo(30);
+            }
 
-        pushUseCase.execute(new PushUseCase.Callback() {
+            @Override
+            public void save(ServerInfo serverInfo) {
+
+            }
+        };
+
+        PushUseCase pushUseCase = new PushUseCase(mPushController, mainExecutor, asyncExecutor, serverInfoRepository);
+
+        pushUseCase.execute(credentials, new PushUseCase.Callback() {
 
             @Override
             public void onComplete(PushController.Kind kind) {
@@ -80,14 +113,17 @@ public class PushUseCaseTest {
             public void onNetworkError() {
                 callbackInvoked(false);
             }
+
+            @Override
+            public void onServerVersionError() {
+                callbackInvoked(false);
+            }
         });
 
-        lock.await(100, TimeUnit.MILLISECONDS);
         assertThat(invokedInProgressCallback, is(true));
     }
 
     private void callbackInvoked(boolean inProgressCallback) {
-        lock.countDown();
         invokedInProgressCallback = inProgressCallback;
     }
 

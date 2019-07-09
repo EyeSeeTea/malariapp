@@ -263,7 +263,7 @@
 </string-array>
 <string name="supervision_on">ការត្រួតពិនិត្យលទ្ធផលលើ:</string>
 <string name="critical_steps">ជំហានរិះគន់ខកខាន:</string>
-<string name="url_not_available">URL មិនទាន់មានទេ</string>
+<string name="url_not_available">URL ឆ្លើយតបមិនមានទេពីព្រោះការស្ទង់មតិមិនត្រូវបានផ្ញើទៅម៉ាស៊ីនមេនៅឡើយទេ។ ព្យាយាមចែករំលែកមតិត្រឡប់ម្តងទៀតពេលក្រោយ។</string>
 <string name="see_full_assessment">មើលការស្ទង់មតិពេញលេញនៅ</string>
 <string name="pref_header_general">General</string>
 <string name="install_file_manager">សូមដំឡើងកម្មវិធីគ្រប់គ្រងឯកសារមួយ។</string>
@@ -301,4 +301,10 @@
 <string name="scheduled">កំណត់ពេល</string>
 <string name="reschedule_title_multiple_survey">"ការស្ទង់មតិចំនួន %1$d ដែលត្រូវបានកំណត់ឡើងវិញសម្រាប់ OU %2$s"</string>
 <string name="survey_not_assigned_facility">"ការស្ទង់មតិនេះមិនត្រូវបានកំណត់ទៅកន្លែងនេះទេ។ សូមជ្រើសរើសការស្ទង់មតិផ្សេងទៀត។"</string>
+<string name="feedback_progress_bar_text">កំពុងដំណើរការពិន្ទុស្ទង់មតិ ... សូមរង់ចាំ</string>
+<string name="other">ផ្សេងទៀត</string>
+<string name="server_version_error">"កំណែម៉ាស៊ីនមេមិនត្រូវបានគាំទ្រទេ"</string>
+<string name="login_error_unsupported_server_version">កំណែម៉ាស៊ីនមេមិនត្រូវបានគាំទ្រទេ</string>
+<string name="feedback_not_sent">"URL ឆ្លើយតបមិនមានទេដោយសារតែការស្ទង់មតិ។ ព្យាយាមចែករំលែកមតិត្រឡប់ម្តងទៀតនៅពេលក្រោយ។"</string>
+<string name="recommend_upgrade">"សូមដំឡើងកំណែកម្មវិធីពី Google Play ។"</string>
 </resources>

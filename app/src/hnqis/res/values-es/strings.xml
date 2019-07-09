@@ -256,7 +256,7 @@ clínica"</string>
 </string-array>
 <string name="supervision_on">Supervisión de resultados en:</string>
 <string name="critical_steps">PASOS CRÍTICOS PERDIDOS:</string>
-<string name="url_not_available">URL aún no disponible</string>
+<string name="url_not_available">La URL de comentarios no está disponible porque la encuesta aún no se ha enviado al servidor. Intenta compartir los comentarios de nuevo más tarde.</string>
 <string name="see_full_assessment">Ver evaluación completa en:</string>
 <string name="on">"FECHA DE EVALUACIÓN:"</string>
 
@@ -289,4 +289,11 @@ clínica"</string>
 <string name="scheduled">Programado</string>
 <string name="reschedule_title_multiple_survey">"%1$d número de encuestas que se reprogramarán para la OU %2$s"</string>
 <string name="survey_not_assigned_facility">"Esta encuesta no está asignada a esta instalación. Por favor, selecciona otra encuesta."</string>
+<string name="feedback_progress_bar_text">Cargando puntuaciones de encuestas ... por favor espere</string>
+<string name="login_error_unsupported_server_version">La versión del servidor no esta soportada</string>
+
+<string name="other">Otro</string>
+<string name="feedback_not_sent">"La URL de feedback no está disponible porque la encuesta aún no se ha enviado al servidor. Intenta compartir los comentarios de nuevo más tarde"</string>
+<string name="server_version_error">Versión del servidor no soportada.</string>
+<string name="recommend_upgrade">Por favor actualice la aplicación desde Google Play.</string>
 </resources>

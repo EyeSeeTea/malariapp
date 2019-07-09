@@ -69,7 +69,7 @@ public class PushServiceStrategy {
     private void executePush() {
         Log.d(TAG, "Starting push process...");
 
-        pushUseCase.execute(new PushUseCase.Callback() {
+        pushUseCase.execute(Session.getCredentials(), new PushUseCase.Callback() {
             @Override
             public void onComplete(PushController.Kind kind) {
                 AlarmPushReceiver.isDoneSuccess(kind);
@@ -112,9 +112,27 @@ public class PushServiceStrategy {
                 AlarmPushReceiver.isDoneFail();
                 Log.e(TAG, "Network not available");
             }
+
+            @Override
+            public void onServerVersionError() {
+                launchServerVersionErrorAction();
+                Log.e(TAG, "onServerVersionError");
+            }
         });
     }
-    public void showInDialog(String title, String message) {
-        DashboardActivity.dashboardActivity.showException(title, message);
+
+    public boolean showInDialog(String title, String message) {
+        if(DashboardActivity.dashboardActivity.isVisible()) {
+            DashboardActivity.dashboardActivity.showException(title, message);
+            return true;
+        }
+        return false;
+    }
+
+    public void launchServerVersionErrorAction() {
+       AlarmPushReceiver.cancelPushAlarm(DashboardActivity.dashboardActivity);
+        if(DashboardActivity.dashboardActivity.isVisible()){
+            DashboardActivity.dashboardActivity.showInvalidServerDialog();
+        }
     }
 }

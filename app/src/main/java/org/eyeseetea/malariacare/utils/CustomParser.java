@@ -29,9 +29,6 @@ import android.text.style.BulletSpan;
 import android.text.style.LeadingMarginSpan;
 import android.util.Log;
 import android.view.View;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
 
 import org.eyeseetea.malariacare.views.URLDrawable;
 import org.xml.sax.XMLReader;
@@ -39,6 +36,10 @@ import org.xml.sax.XMLReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Stack;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * Created by arrizabalaga on 25/09/15.

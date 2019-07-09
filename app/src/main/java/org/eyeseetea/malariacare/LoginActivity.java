@@ -40,20 +40,32 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.eyeseetea.malariacare.data.database.datasources.ServerInfoLocalDataSource;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.LanguageContextWrapper;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.remote.api.PullDhisApiDataSource;
+import org.eyeseetea.malariacare.data.remote.api.ServerInfoRemoteDataSource;
+import org.eyeseetea.malariacare.data.repositories.ServerInfoRepository;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
+import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
+import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
+import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
+import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.strategies.LoginActivityStrategy;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Permissions;
@@ -67,12 +79,16 @@ public class LoginActivity extends AbsLoginActivity {
     private static final String TAG = ".LoginActivity";
 
     public IUserAccountRepository mUserAccountRepository = new UserAccountRepository(this);
-    public LoginUseCase mLoginUseCase = new LoginUseCase(mUserAccountRepository);
+    IAsyncExecutor asyncExecutor = new AsyncExecutor();
+    IMainExecutor mainExecutor = new UIThreadExecutor();
     LogoutUseCase mLogoutUseCase = new LogoutUseCase(mUserAccountRepository);
     public LoginActivityStrategy mLoginActivityStrategy = new LoginActivityStrategy(this);
 
     private CircularProgressBar progressBar;
     private ViewGroup loginViewsContainer;
+    private Spinner serverSpinner;
+    private LinearLayout serverContainer;
+    private EditText serverEditText;
     private static LoginActivity mLoginActivity;
 
     @Override
@@ -98,6 +114,40 @@ public class LoginActivity extends AbsLoginActivity {
 
         loginViewsContainer = (CardView) findViewById(R.id.layout_login_views);
 
+        serverSpinner = (Spinner) findViewById(R.id.server_spinner);
+        serverContainer = (LinearLayout) findViewById(R.id.edittext_server_url_container);
+        serverEditText = (EditText) findViewById(R.id.edittext_server_url);
+
+        initServerAdapter();
+    }
+
+    private void initServerAdapter() {
+        String[] serverList = getResources().getStringArray(R.array.server_list);
+        if(serverList.length<1) {
+            return;
+        }
+        ArrayAdapter serversListAdapter = new ArrayAdapter<>(getBaseContext(),R.layout.simple_spinner_item, serverList);
+        serverSpinner.setAdapter(serversListAdapter);
+        serverSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String value = parent.getItemAtPosition(position).toString();
+                if(value.equals(parent.getContext().getResources().getString(R.string.other))){
+                    serverEditText.setText("");
+                    serverContainer.setVisibility(View.VISIBLE);
+                } else {
+                    if(serverContainer.getVisibility()==View.VISIBLE){
+                        serverContainer.setVisibility(View.GONE);
+                    }
+                    serverEditText.setText(parent.getItemAtPosition(position).toString());
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                parent.setSelection(0);
+            }
+        });
     }
 
     private void replaceDhisLogoToHNQISLogo() {
@@ -182,37 +232,51 @@ public class LoginActivity extends AbsLoginActivity {
         showProgress();
 
         final Credentials credentials = new Credentials(serverUrl, username, password);
-        mLoginUseCase.execute(credentials, new LoginUseCase.Callback() {
-            @Override
-            public void onLoginSuccess() {
-                PreferencesState.getInstance().setUserAccept(false);
-                hideProgress();
-                AsyncPullAnnouncement
-                        asyncPullAnnouncement = new AsyncPullAnnouncement();
-                asyncPullAnnouncement.execute(mLoginActivity);
-            }
 
-            @Override
-            public void onServerURLNotValid() {
-                showError(PreferencesState.getInstance().getContext().getText(
-                        org.hisp.dhis.client.sdk.ui.bindings.R.string
-                                .error_not_found).toString());
-            }
+        ServerInfoLocalDataSource mServerLocalDataSource = new ServerInfoLocalDataSource(getApplicationContext());
+        ServerInfoRemoteDataSource mServerRemoteDataSource = new ServerInfoRemoteDataSource(credentials);
+        ServerInfoRepository serverInfoRepository = new ServerInfoRepository(mServerLocalDataSource, mServerRemoteDataSource);
 
-            @Override
-            public void onInvalidCredentials() {
-                showError(PreferencesState.getInstance().getContext().getText(
-                        org.hisp.dhis.client.sdk.ui.bindings.R.string.error_unauthorized)
-                        .toString());
-            }
+        LoginUseCase mLoginUseCase = new LoginUseCase(mUserAccountRepository, serverInfoRepository, mainExecutor, asyncExecutor);
+        mLoginUseCase.execute(credentials,
+                new LoginUseCase.Callback() {
+                    @Override
+                    public void onLoginSuccess() {
+                        PreferencesState.getInstance().setUserAccept(false);
+                        hideProgress();
+                        AsyncPullAnnouncement
+                                asyncPullAnnouncement = new AsyncPullAnnouncement();
+                        asyncPullAnnouncement.execute(mLoginActivity);
+                    }
 
-            @Override
-            public void onNetworkError() {
-                showError(PreferencesState.getInstance().getContext().getString(
-                        org.hisp.dhis.client.sdk.ui.bindings.R.string
-                                .title_error_unexpected));
-            }
-        });
+                    @Override
+                    public void onServerURLNotValid() {
+                        showError(PreferencesState.getInstance().getContext().getText(
+                                org.hisp.dhis.client.sdk.ui.bindings.R.string
+                                        .error_not_found).toString());
+                    }
+
+                    @Override
+                    public void onInvalidCredentials() {
+                        showError(PreferencesState.getInstance().getContext().getText(
+                                org.hisp.dhis.client.sdk.ui.bindings.R.string.error_unauthorized)
+                                .toString());
+                    }
+
+                    @Override
+                    public void onNetworkError() {
+                        showError(PreferencesState.getInstance().getContext().getString(
+                                org.hisp.dhis.client.sdk.ui.bindings.R.string
+                                        .title_error_unexpected));
+                    }
+
+                    @Override
+                    public void onUnsupportedServerVersion() {
+                        showError(PreferencesState.getInstance().getContext().getString(
+                                R.string.login_error_unsupported_server_version));
+
+                    }
+                });
     }
 
     public void showError(String message) {

@@ -139,4 +139,18 @@
         <item>km</item>
         <item>lo</item>
     </string-array>
+    <string-array name="server_list">
+        <item>@string/login_info_dhis_default_server_url</item>
+        <item>https://sfhnigeria.psi-mis.org/</item>
+        <item>https://zw.hnqis.org/</item>>
+        <item>https://clone.psi-mis.org/</item>
+        <item>https://myanmar.psi-mis.org</item>>
+        <item>https://im-dev.psi-mis.org</item>>
+        <item>https://ao.hnqis.org</item>>
+        <item>https://sm.hnqis.org</item>>
+        <item>@string/other</item>
+    </string-array>
+    <string name="server_version_preference" translatable="false">server_version_preference</string>
+    <string name="is_server_version_supported" translatable="false">is_server_version_supported</string>
+    <string name="google_play_url" translatable="false">"https://play.google.com/store/apps/details?id=org.eyeseetea.malariacare.hnqis_ng"</string>
 </resources>

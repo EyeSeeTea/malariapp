@@ -21,24 +21,58 @@ package org.eyeseetea.malariacare.domain.usecase;
 
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushController;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
+import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
+import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IServerInfoRepository;
+import org.eyeseetea.malariacare.domain.entity.Credentials;
+import org.eyeseetea.malariacare.domain.entity.ServerInfo;
+import org.eyeseetea.malariacare.domain.common.ReadPolicy;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
 import org.eyeseetea.malariacare.domain.exception.SurveysToPushNotFoundException;
 import org.eyeseetea.malariacare.domain.exception.push.PushReportException;
 import org.eyeseetea.malariacare.data.remote.SurveyChecker;
 
-public class PushUseCase {
+public class PushUseCase implements UseCase {
 
     private IPushController mPushController;
+    private IServerInfoRepository mServerInfoRepository;
+    private Credentials credentials;
 
-    public PushUseCase(IPushController pushController) {
+    private IMainExecutor mMainExecutor;
+    private IAsyncExecutor mAsyncExecutor;
+    private Callback callback;
+
+    public PushUseCase(IPushController pushController,
+                       IMainExecutor mainExecutor,
+                       IAsyncExecutor asyncExecutor,
+                       IServerInfoRepository serverInfoRepository) {
+        mMainExecutor = mainExecutor;
+        mAsyncExecutor = asyncExecutor;
         mPushController = pushController;
+        mServerInfoRepository = serverInfoRepository;
     }
 
-    public void execute(final Callback callback) {
+    public void execute(Credentials credentials, final Callback callback) {
+        this.credentials = credentials;
+        this.callback = callback;
+        mAsyncExecutor.run(this);
+    }
+
+    @Override
+    public void run() {
         if (mPushController.isPushInProgress()) {
             callback.onPushInProgressError();
             return;
+        }
+        try {
+            if(!isValidServerVersion()){
+                notifyOnServerVersionError();
+                return;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            notifyOnNetworkError();
         }
         mPushController.changePushInProgress(true);
 
@@ -47,38 +81,120 @@ public class PushUseCase {
         mPushController.push(new IPushController.IPushControllerCallback() {
             @Override
             public void onComplete(PushController.Kind kind) {
-                System.out.println("PusUseCase Complete");
+                System.out.println("PushUseCase Complete");
 
                 mPushController.changePushInProgress(false);
 
-                callback.onComplete(kind);
+                notifyOnComplete(kind);
             }
 
             @Override
             public void onError(Throwable throwable) {
-                System.out.println("PusUseCase error");
+                System.out.println("PushUseCase error");
 
                 if (throwable instanceof NetworkException) {
                     mPushController.changePushInProgress(false);
-                    callback.onNetworkError();
+                    notifyOnNetworkError();
                 } else if (throwable instanceof ConversionException) {
                     mPushController.changePushInProgress(false);
-                    callback.onConversionError();
+                    notifyOnConversionError();
                 } else if (throwable instanceof SurveysToPushNotFoundException) {
                     mPushController.changePushInProgress(false);
-                    callback.onSurveysNotFoundError();
+                    notifyOnSurveysNotFoundError();
                 } else if (throwable instanceof PushReportException){
                     mPushController.changePushInProgress(false);
-                    callback.onPushError();
+                    notifyOnPushError();
                 } else {
                     mPushController.changePushInProgress(false);
-                    callback.onPushError();
+                    notifyOnPushError();
                 }
             }
 
             @Override
             public void onInformativeError(Throwable throwable) {
+                notifyOnInformativeError(throwable);
+            }
+        });
+
+    }
+
+    private boolean isValidServerVersion() throws Exception {
+        if(credentials.isDemoCredentials()) {
+            return true;
+        }
+        ServerInfo localServerInfo = mServerInfoRepository.getServerInfo(ReadPolicy.CACHE);
+
+        ServerInfo remoteServerInfo = mServerInfoRepository.getServerInfo(ReadPolicy.NETWORK_FIRST);
+
+        if (localServerInfo.getVersion() == -1 ||
+                localServerInfo.getVersion() == remoteServerInfo.getVersion()) {
+            return true;
+        } else {
+            remoteServerInfo.markAsUnsupported();
+            mServerInfoRepository.save(remoteServerInfo);
+            return false;
+        }
+    }
+
+    private void notifyOnComplete(final PushController.Kind kind) {
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                callback.onComplete(kind);
+            }
+        });
+    }
+
+    private void notifyOnPushError() {
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                callback.onPushError();
+            }
+        });
+    }
+
+    private void notifyOnSurveysNotFoundError() {
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                callback.onSurveysNotFoundError();
+            }
+        });
+    }
+
+    private void notifyOnConversionError() {
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                callback.onConversionError();
+            }
+        });
+    }
+
+    private void notifyOnNetworkError() {
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                callback.onNetworkError();
+            }
+        });
+    }
+
+    private void notifyOnInformativeError(final Throwable throwable) {
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
                 callback.onInformativeError(throwable.getMessage());
+            }
+        });
+    }
+
+    private void notifyOnServerVersionError() {
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                callback.onServerVersionError();
             }
         });
     }
@@ -97,5 +213,7 @@ public class PushUseCase {
         void onConversionError();
 
         void onNetworkError();
+
+        void onServerVersionError();
     }
 }

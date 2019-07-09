@@ -11,6 +11,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 
+import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
@@ -18,9 +19,11 @@ import org.eyeseetea.malariacare.data.database.utils.planning.PlannedSurveyByOrg
 import org.eyeseetea.malariacare.data.database.utils.planning.ScheduleListener;
 import org.eyeseetea.malariacare.fragments.PlannedPerOrgUnitFragment;
 import org.eyeseetea.malariacare.utils.AUtils;
+import org.eyeseetea.malariacare.utils.DateParser;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.List;
+import java.util.Locale;
 
 public class PlanningPerOrgUnitAdapter extends ABaseAdapter {
     PlannedPerOrgUnitFragment.Callback callback;
@@ -72,15 +75,16 @@ public class PlanningPerOrgUnitAdapter extends ABaseAdapter {
 
         //set schedule date
         CustomTextView schedule = (CustomTextView) rowView.findViewById(R.id.schedule);
+        DateParser dateParser = new DateParser();
         if (survey.getScheduledDate() != null) {
-            schedule.setText(AUtils.getEuropeanFormatedDate(survey.getScheduledDate()));
+            schedule.setText(dateParser.getEuropeanFormattedDate(survey.getScheduledDate()));
         } else {
             schedule.setText(R.string.assessment_no_schedule_date);
         }
         //set creation date
         if (survey.getCreationDate() != null) {
             CustomTextView dueDate = (CustomTextView) rowView.findViewById(R.id.dueDate);
-            dueDate.setText(AUtils.getEuropeanFormatedDate(survey.getCreationDate()));
+            dueDate.setText(dateParser.getEuropeanFormattedDate(survey.getCreationDate()));
         }
 
         //set row survey name

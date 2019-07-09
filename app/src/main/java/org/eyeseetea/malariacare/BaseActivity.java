@@ -31,14 +31,14 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
 
+import org.eyeseetea.malariacare.data.database.datasources.ServerInfoLocalDataSource;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.LocalPullController;
 import org.eyeseetea.malariacare.data.database.model.ObsActionPlanDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
@@ -46,12 +46,20 @@ import org.eyeseetea.malariacare.data.database.utils.ExportData;
 import org.eyeseetea.malariacare.data.database.utils.LanguageContextWrapper;
 import org.eyeseetea.malariacare.data.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.data.remote.api.ServerInfoRemoteDataSource;
+import org.eyeseetea.malariacare.data.repositories.ServerInfoRepository;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IServerInfoRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
+import org.eyeseetea.malariacare.domain.entity.ServerInfo;
+import org.eyeseetea.malariacare.domain.usecase.GetServerInfoUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.listeners.SurveyLocationListener;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
+import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -59,7 +67,7 @@ import org.eyeseetea.malariacare.utils.Constants;
 import java.io.IOException;
 import java.util.List;
 
-public abstract class BaseActivity extends ActionBarActivity {
+public abstract class BaseActivity extends AppCompatActivity {
     /**
      * Extra param to annotate the activity to return after settings
      */
@@ -84,9 +92,20 @@ public abstract class BaseActivity extends ActionBarActivity {
 
         mUserAccountRepository = new UserAccountRepository(this);
         mLogoutUseCase = new LogoutUseCase(mUserAccountRepository);
-        checkQuarantineSurveys();
-        alarmPush = new AlarmPushReceiver();
-        alarmPush.setPushAlarm(this);
+        IServerInfoRepository serverStatusRepository = new ServerInfoRepository(new ServerInfoLocalDataSource(getApplicationContext()),
+                new ServerInfoRemoteDataSource(Session.getCredentials()));
+        GetServerInfoUseCase serverStatusUseCase = new GetServerInfoUseCase(serverStatusRepository,
+                new UIThreadExecutor(), new AsyncExecutor());
+        serverStatusUseCase.execute(new GetServerInfoUseCase.Callback() {
+            @Override
+            public void onComplete(ServerInfo serverInfo) {
+                if(serverInfo.isServerSupported()){
+                    checkQuarantineSurveys();
+                    alarmPush = new AlarmPushReceiver();
+                    alarmPush.setPushAlarm(getApplicationContext());
+                }
+            }
+        });
     }
 
     private void checkQuarantineSurveys() {

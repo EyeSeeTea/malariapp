@@ -29,4 +29,7 @@
 
     <!-- pull control codes -->
     <string name="pull_program_code" translatable="false">HNQIS</string>
+
+    <string-array name="server_list">
+    </string-array>
 </resources>

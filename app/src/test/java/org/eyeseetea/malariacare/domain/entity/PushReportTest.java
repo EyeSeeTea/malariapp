@@ -68,7 +68,7 @@ public class PushReportTest {
         ImportSummary importSummary = getImportSummary(DATAVALUES_IMPORTED_SUMMARY_JSON);
         PushReport pushReport = PushReportMapper.mapFromImportSummaryToPushReport(importSummary,
                 API_MESSAGE_WITH_CONFLICTS_JSON_KEY);
-        assertThat(!pushReport.hasPushErrors(), is(false));
+        assertThat(pushReport.hasPushErrors(), is(false));
     }
 
     private ImportSummary getImportSummary(String json) {

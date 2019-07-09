@@ -5,37 +5,30 @@ import android.util.Log;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.squareup.okhttp.Authenticator;
-import com.squareup.okhttp.Credentials;
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
+import okhttp3.Response;
 
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.domain.exception.ClosedUserDateNotFoundException;
-import org.eyeseetea.malariacare.domain.exception.PullApiParsingException;
+import org.eyeseetea.malariacare.utils.DateParser;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.net.Proxy;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
+
+import static org.eyeseetea.malariacare.data.remote.api.OkHttpClientDataSource.executeCall;
+import static org.eyeseetea.malariacare.data.remote.api.OkHttpClientDataSource.parseResponse;
 
 public class PullDhisApiDataSource {
 
-    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-
-    private static final String DHIS_PULL_API="/api/";
+    private static final String DHIS_PULL_API="api/";
 
     private static final String DHIS_CHECK_EVENT_API =
-            "/api/events.json?program=%s&orgUnit=%s&startDate=%s&endDate=%s&skipPaging=true"
+            "api/events.json?program=%s&orgUnit=%s&startDate=%s&endDate=%s&skipPaging=true"
                     + "&fields=event,orgUnit,program,dataValues";
 
     private static String QUERY_USER_ATTRIBUTES =
@@ -60,7 +53,7 @@ public class PullDhisApiDataSource {
         String data = USER + String.format(QUERY_USER_ATTRIBUTES, appUser.getUid());
         Log.d(TAG, String.format("getUserAttributesApiCall(%s) -> %s", USER, data));
         try {
-            Response response = executeCall(DHIS_PULL_API+data, "GET");
+            Response response = executeCall(DHIS_PULL_API+data);
             JsonNode jsonNode = parseResponse(response.body().string());
             JsonNode jsonNodeArray = jsonNode.get(ATTRIBUTEVALUES);
             String newMessage = "";
@@ -93,7 +86,8 @@ public class PullDhisApiDataSource {
         if (closeDate == null || closeDate.equals("")) {
             appUser.setCloseDate(null);
         } else {
-            appUser.setCloseDate(EventExtended.parseNewLongDate(closeDate));
+            DateParser dateParser = new DateParser();
+            appUser.setCloseDate(dateParser.parseDate(closeDate, DateParser.LONG_DATE_FORMAT));
         }
     }
 
@@ -123,7 +117,7 @@ public class PullDhisApiDataSource {
 
         Date closedDate = null;
         try {
-            Response response = executeCall(DHIS_PULL_API+data, "GET");
+            Response response = executeCall(DHIS_PULL_API+data);
             JsonNode jsonNode = parseResponse(response.body().string());
             closedDate = getClosedDate(jsonNode.get(ATTRIBUTEVALUES));
         } catch (Exception ex) {
@@ -144,11 +138,12 @@ public class PullDhisApiDataSource {
         if (closeDateAsString == null || closeDateAsString.equals("")) {
             throw new ClosedUserDateNotFoundException();
         }
-        return EventExtended.parseNewLongDate(closeDateAsString);
+        DateParser dateParser = new DateParser();
+        return dateParser.parseDate(closeDateAsString, DateParser.LONG_DATE_FORMAT);
     }
 
     public static List<EventExtended> pullQuarantineEvents(String url) throws IOException, JSONException {
-        Response response = executeCall(url, "GET");
+        Response response = executeCall(url);
         JSONObject events = new JSONObject(response.body().string());
         ObjectMapper mapper = new ObjectMapper();
         JsonNode jsonNode = mapper.convertValue(mapper.readTree(events.toString()),
@@ -162,127 +157,15 @@ public class PullDhisApiDataSource {
      */
     public static List<EventExtended> getEvents(String program, String orgUnit, Date minDate,
             Date maxDate) throws IOException, JSONException {
-        String startDate = EventExtended.format(minDate, EventExtended.AMERICAN_DATE_FORMAT);
-        String endDate = EventExtended.format(
+        DateParser dateParser = new DateParser();
+        String startDate = dateParser.format(minDate, DateParser.AMERICAN_DATE_FORMAT);
+        String endDate = dateParser.format(
                 new Date(maxDate.getTime() + (8 * 24 * 60 * 60 * 1000)),
-                EventExtended.AMERICAN_DATE_FORMAT);
+                DateParser.AMERICAN_DATE_FORMAT);
         String url = String.format(DHIS_CHECK_EVENT_API, program, orgUnit, startDate,
                 endDate);
         Log.d(TAG, url);
         return PullDhisApiDataSource.pullQuarantineEvents(url);
-    }
-
-
-    /**
-     * Call to DHIS Server
-     * @param data
-     * @param method
-     * @param url
-     */
-    public static Response executeCall(JSONObject data, String url, String method) throws IOException {
-        final String DHIS_URL=PreferencesState.getInstance().getServerUrl() + url.replace(" ", "%20");
-
-        Log.d(TAG, "executeCall Url" + DHIS_URL + "");
-
-        OkHttpClient client= UnsafeOkHttpsClientFactory.getUnsafeOkHttpClient();
-
-        client.setConnectTimeout(30, TimeUnit.SECONDS); // connect timeout
-        client.setReadTimeout(30, TimeUnit.SECONDS);    // socket timeout
-        client.setWriteTimeout(30, TimeUnit.SECONDS);    // write timeout
-        client.setRetryOnConnectionFailure(false); // Cancel retry on failure
-
-        BasicAuthenticator basicAuthenticator=new BasicAuthenticator();
-        client.setAuthenticator(basicAuthenticator);
-
-        Request.Builder builder = new Request.Builder()
-                .header(basicAuthenticator.AUTHORIZATION_HEADER, basicAuthenticator.getCredentials())
-                .url(DHIS_URL);
-
-        switch (method){
-            case "POST":
-                RequestBody postBody = RequestBody.create(JSON, data.toString());
-                builder.post(postBody);
-                break;
-            case "PUT":
-                RequestBody putBody = RequestBody.create(JSON, data.toString());
-                builder.put(putBody);
-                break;
-            case "PATCH":
-                RequestBody patchBody = RequestBody.create(JSON, data.toString());
-                builder.patch(patchBody);
-                break;
-            case "GET":
-                builder.get();
-                break;
-        }
-
-        Request request = builder.build();
-        Response response = client.newCall(request).execute();;
-        if (!response.isSuccessful()) {
-            Log.e(TAG, "pushData (" + response.code() + "): " + response.body().string());
-            throw new IOException(response.message());
-        }
-        return response;
-    }
-
-    /**
-     * Call to DHIS Server
-     * @param url
-     * @param method
-     */
-    public static Response executeCall(String url, String method) throws IOException {
-        return executeCall(null, url, method);
-    }
-
-    private static JsonNode parseResponse(String responseData)throws Exception{
-        try{
-            JSONObject jsonResponse=new JSONObject(responseData);
-            Log.i("JsonCommonParser", "parseResponse: " + jsonResponse);
-            ObjectMapper objectMapper = new ObjectMapper();
-            String jsonString = jsonResponse.toString();
-            try {
-                return objectMapper.readValue(jsonString, JsonNode.class);
-            }catch(Exception ex){
-                throw new PullApiParsingException();
-            }
-        }catch(Exception ex){
-            throw new PullApiParsingException();
-        }
-    }
-
-    /**
-     * Basic
-     */
-    static class BasicAuthenticator implements Authenticator {
-
-        public final String AUTHORIZATION_HEADER="Authorization";
-        private String credentials;
-        private int mCounter = 0;
-
-        org.eyeseetea.malariacare.domain.entity.Credentials userCredentials =
-                PreferencesState.getInstance().getCreedentials();
-        BasicAuthenticator(){
-            credentials = Credentials.basic(userCredentials.getUsername(), userCredentials.getPassword());
-        }
-
-        @Override
-        public Request authenticate(Proxy proxy, Response response) throws IOException {
-
-            if (mCounter++ > 0) {
-                throw new IOException(response.message());
-            }
-            return response.request().newBuilder().header(AUTHORIZATION_HEADER, credentials).build();
-        }
-
-        @Override
-        public Request authenticateProxy(Proxy proxy, Response response) throws IOException {
-            return null;
-        }
-
-        public String getCredentials(){
-            return credentials;
-        }
-
     }
 
 }

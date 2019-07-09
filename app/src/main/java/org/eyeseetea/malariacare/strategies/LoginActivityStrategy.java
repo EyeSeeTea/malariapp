@@ -29,14 +29,23 @@ import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.data.database.datasources.ServerInfoLocalDataSource;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.LocalPullController;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
+import org.eyeseetea.malariacare.data.remote.api.ServerInfoRemoteDataSource;
+import org.eyeseetea.malariacare.data.repositories.ServerInfoRepository;
+import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
+import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
+import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.usecase.LoadUserAndCredentialsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullFilters;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullUseCase;
+import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
+import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.hisp.dhis.client.sdk.ui.views.FontButton;
 
 public class LoginActivityStrategy {
@@ -86,7 +95,16 @@ public class LoginActivityStrategy {
 
                 Credentials demoCrededentials = Credentials.createDemoCredentials();
 
-                loginActivity.mLoginUseCase.execute(demoCrededentials,
+                IUserAccountRepository mUserAccountRepository = new UserAccountRepository(loginActivity);
+                IAsyncExecutor asyncExecutor = new AsyncExecutor();
+                IMainExecutor mainExecutor = new UIThreadExecutor();
+                ServerInfoLocalDataSource mServerLocalDataSource = new ServerInfoLocalDataSource(loginActivity);
+                ServerInfoRemoteDataSource mServerRemoteDataSource = new ServerInfoRemoteDataSource(demoCrededentials);
+                ServerInfoRepository serverInfoRepository = new ServerInfoRepository(mServerLocalDataSource, mServerRemoteDataSource);
+
+                LoginUseCase mLoginUseCase = new LoginUseCase(mUserAccountRepository, serverInfoRepository, mainExecutor, asyncExecutor);
+
+                mLoginUseCase.execute(demoCrededentials,
                         new LoginUseCase.Callback() {
                             @Override
                             public void onLoginSuccess() {
@@ -106,6 +124,12 @@ public class LoginActivityStrategy {
                             @Override
                             public void onNetworkError() {
                                 Log.e(this.getClass().getSimpleName(), "Network Error");
+                            }
+
+                            @Override
+                            public void onUnsupportedServerVersion() {
+                                Log.e(this.getClass().getSimpleName(),
+                                        "Unsupported Server Version");
                             }
                         });
             }

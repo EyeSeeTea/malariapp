@@ -8,13 +8,14 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 import org.eyeseetea.malariacare.data.database.model.ObsActionPlanDB;
 import org.eyeseetea.malariacare.data.database.model.QuestionDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.observables.ObservablePush;
+import org.eyeseetea.malariacare.utils.DateParser;
+import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -56,17 +57,18 @@ public class ObsActionPlanPresenter {
         mSurvey = SurveyDB.getSurveyById(surveyId);
 
         if (mView != null) {
+            DateParser dateParser = new DateParser();
             String formattedCompletionDate = "NaN";
             if (mSurvey.getCompletionDate() != null) {
-                formattedCompletionDate = EventExtended.format(mSurvey.getCompletionDate(),
-                        EventExtended.EUROPEAN_DATE_FORMAT);
+                formattedCompletionDate = dateParser.format(mSurvey.getCompletionDate(),
+                        DateParser.EUROPEAN_DATE_FORMAT);
             }
 
             String formattedNextDate = "NaN";
             if (mSurvey != null) {
-                formattedNextDate = EventExtended.format(
+                formattedNextDate = dateParser.format(
                         SurveyPlanner.getInstance().findScheduledDateBySurvey(mSurvey),
-                        EventExtended.EUROPEAN_DATE_FORMAT);
+                        DateParser.EUROPEAN_DATE_FORMAT);
             }
 
             mView.renderHeaderInfo(mSurvey.getOrgUnit().getName(), mSurvey.getMainScore(),
@@ -225,9 +227,13 @@ public class ObsActionPlanPresenter {
                 mSurvey.getId_survey());
 
         List<CompositeScoreDB> compositeScoresTree = getValidTreeOfCompositeScores();
-
         if (mView != null) {
-            mView.shareByText(mObsActionPlan, mSurvey, criticalQuestions, compositeScoresTree);
+
+            if(mSurvey.getStatus() != Constants.SURVEY_SENT){
+                mView.shareNotSent(mContext.getString(R.string.feedback_not_sent));
+            }else {
+                mView.shareByText(mObsActionPlan, mSurvey, criticalQuestions, compositeScoresTree);
+            }
         }
     }
 
@@ -307,6 +313,8 @@ public class ObsActionPlanPresenter {
 
         void shareByText(ObsActionPlanDB obsActionPlan,SurveyDB survey, List<QuestionDB> criticalQuestions,
                 List<CompositeScoreDB> compositeScoresTree);
+
+        void shareNotSent(String surveyNoSentMessage);
 
         void enableShareButton();
 

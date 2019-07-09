@@ -20,17 +20,25 @@
 
 package org.eyeseetea.malariacare.services;
 
-import android.app.IntentService;
+import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
+import android.support.annotation.NonNull;
+import android.support.v4.app.JobIntentService;
 
+import org.eyeseetea.malariacare.data.database.datasources.ServerInfoLocalDataSource;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushController;
+import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.data.remote.api.ServerInfoRemoteDataSource;
+import org.eyeseetea.malariacare.data.repositories.ServerInfoRepository;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
+import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
+import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.usecase.PushUseCase;
-import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
+import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
+import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.strategies.PushServiceStrategy;
 
-public class PushService extends IntentService {
+public class PushService extends JobIntentService {
     /**
      * Constant added to the intent in order to reuse the service for different 'methods'
      */
@@ -47,26 +55,16 @@ public class PushService extends IntentService {
     IPushController pushController;
     PushUseCase pushUseCase;
 
+    public static final int JOB_ID = 1;
+
     PushServiceStrategy mPushServiceStrategy = new PushServiceStrategy(this);
 
-    /**
-     * Constructor required due to a error message in AndroidManifest.xml if it is not present
-     */
-    public PushService() {
-        super(PushService.class.getSimpleName());
-    }
-
-    /**
-     * Creates an IntentService. Invoked by your subclass's constructor.
-     *
-     * @param name Used to name the worker thread, important only for debugging.
-     */
-    public PushService(String name) {
-        super(name);
+    public static void enqueueWork(Context context, Intent work) {
+        enqueueWork(context, PushService.class, JOB_ID, work);
     }
 
     @Override
-    protected void onHandleIntent(Intent intent) {
+    protected void onHandleWork(@NonNull Intent intent) {
         //Ignore wrong actions
         if (!PENDING_SURVEYS_ACTION.equals(intent.getStringExtra(SERVICE_METHOD))) {
             return;
@@ -80,7 +78,12 @@ public class PushService extends IntentService {
         super.onCreate();
 
         pushController = new PushController(getApplicationContext());
-        pushUseCase = new PushUseCase(pushController);
+
+        IMainExecutor mainExecutor = new UIThreadExecutor();
+        IAsyncExecutor asyncExecutor = new AsyncExecutor();
+        ServerInfoRemoteDataSource serverInfoRemoteDataSource = new ServerInfoRemoteDataSource(Session.getCredentials());
+        ServerInfoLocalDataSource serverInfoLocalDataSource = new ServerInfoLocalDataSource(this);
+        pushUseCase = new PushUseCase(pushController, mainExecutor, asyncExecutor, new ServerInfoRepository(serverInfoLocalDataSource, serverInfoRemoteDataSource));
     }
 
     public void onPushFinished() {

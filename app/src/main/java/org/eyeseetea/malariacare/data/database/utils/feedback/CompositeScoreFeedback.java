@@ -34,10 +34,6 @@ public class CompositeScoreFeedback implements Feedback {
     private List<CompositeScoreFeedback> mCompositeScoreFeedbackList;
     private boolean isShown;
     private boolean isRoot;
-    /**
-     * Default value to decide if the composite score is shown or hidden.
-     */
-    private boolean defaultVisibility=true;
 
     public boolean isShown() {
         return this.isShown;
@@ -52,7 +48,7 @@ public class CompositeScoreFeedback implements Feedback {
         this.score=score;
         mCompositeScoreFeedbackList = new ArrayList<>();
         mFeedbackList = new ArrayList<>();
-        this.isShown = defaultVisibility;
+        this.isShown = isRoot;
         this.isRoot = isRoot;
     }
 
