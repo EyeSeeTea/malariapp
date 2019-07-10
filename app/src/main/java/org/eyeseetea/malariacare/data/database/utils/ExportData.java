@@ -1,8 +1,17 @@
 package org.eyeseetea.malariacare.data.database.utils;
 
+import android.Manifest;
 import android.app.Activity;
+import android.app.DownloadManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.LocationManager;
+import android.net.Uri;
+import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ShareCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
 
@@ -36,7 +45,7 @@ public class ExportData {
     /**
      * Temporal file to be attached
      */
-    private final static String EXPORT_DATA_FILE = "compressedData.zip";
+    public final static String EXPORT_DATA_FILE = "compressedData.zip";
     /**
      * Temporal file that contains phonemetadata and app version info
      */
@@ -49,10 +58,18 @@ public class ExportData {
      * Shared preferences folder
      */
     private final static String SHAREDPREFERENCES_FOLDER = "shared_prefs/";
+
     /**
      * This method create the dump and returns the intent
      */
     public static Intent dumpAndSendToAIntent(Activity activity) {
+        File compressedFile = dumpAndCompress(activity);
+        if (compressedFile == null) return null;
+
+        return createEmailIntent(activity, compressedFile);
+    }
+
+    private static File dumpAndCompress(Activity activity) {
         ExportData.removeDumpIfExist(activity);
         File tempFolder = new File(getCacheDir() + "/" + EXPORT_DATA_FOLDER);
         tempFolder.mkdir();
@@ -71,7 +88,36 @@ public class ExportData {
         if (compressedFile == null) {
             return null;
         }
-        return createEmailIntent(activity, compressedFile);
+        return compressedFile;
+    }
+
+    public static boolean dumpAndExportToLocalStorage(Activity activity) {
+        boolean result = false;
+        File compressedFile = dumpAndCompress(activity);
+
+        if (compressedFile != null) {
+            result = exportToDownloadsFolder(compressedFile);
+        }
+
+        return result;
+    }
+
+    private static boolean exportToDownloadsFolder(File compressedFile) {
+        boolean result = false;
+
+        File download_folder = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DOWNLOADS);
+
+        File exportDataFile = new File(download_folder, EXPORT_DATA_FILE);
+
+        try {
+            FileUtils.copyFile(compressedFile, exportDataFile);
+            result = true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return result;
     }
 
     /**
@@ -198,7 +244,9 @@ public class ExportData {
      * This method returns the sharedPreferences app folder
      */
     private static File getSharedPreferencesFolder() {
-        String sharedPreferencesPath = DatabaseUtils.getAppPath(PreferencesState.getInstance().getContext().getPackageName()) + SHAREDPREFERENCES_FOLDER;
+        String sharedPreferencesPath = DatabaseUtils.getAppPath(
+                PreferencesState.getInstance().getContext().getPackageName())
+                + SHAREDPREFERENCES_FOLDER;
         File file = new File(sharedPreferencesPath);
         return file;
     }
@@ -268,4 +316,6 @@ public class ExportData {
                 .setText(data)
                 .startChooser();
     }
+
+
 }

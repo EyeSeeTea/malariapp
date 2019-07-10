@@ -200,6 +200,7 @@ clínica"</string>
 <string name="developer_option_summary">Esta opción activa las opciones de desarrollador</string>
 <string name="developer_option_title">Mostrar opciones de desarrollador</string>
 <string name="export_data_option_title">Exportar base de datos</string>
+<string name="export_data_to_local_option_title">Exportar la base de datos al almacenamiento local</string>
 <string name="import_data_option_title">Importar base de datos</string>
 <string name="google_play_required">Esta aplicación requiere los servicios de Play. Por favor, instale servicios de Google Play en el dispositivo reinicie esta aplicación.</string>
 <string name="account_permission_denied">Permiso de contactos denegado. Archivos multimedia no serán sincronizados</string>
@@ -296,4 +297,8 @@ clínica"</string>
 <string name="feedback_not_sent">"La URL de feedback no está disponible porque la encuesta aún no se ha enviado al servidor. Intenta compartir los comentarios de nuevo más tarde"</string>
 <string name="server_version_error">Versión del servidor no soportada.</string>
 <string name="recommend_upgrade">Por favor actualice la aplicación desde Google Play.</string>
+
+
+<string name="export_db_to_local_success_message">exportado exitosamente a la carpeta de descargas</string>
+<string name="export_db_to_local_error_message">Se ha producido un error al exportar la base de datos</string>
 </resources>
