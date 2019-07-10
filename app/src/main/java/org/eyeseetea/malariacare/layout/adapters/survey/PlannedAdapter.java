@@ -327,6 +327,7 @@ public class PlannedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         PreferencesState.getInstance().getContext().getResources().getColor(
                                 R.color.white));
             } else {
+                img.setImageResource(R.drawable.ic_media_arrow);
                 if (plannedHeader.getTitleHeader() == R.string.dashboard_title_planned_type_never) {
                     color = PreferencesState.getInstance().getContext().getResources().getColor(
                             R.color.white);
