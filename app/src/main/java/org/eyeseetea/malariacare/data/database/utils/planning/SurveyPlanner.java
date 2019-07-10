@@ -110,6 +110,7 @@ public class SurveyPlanner {
         plannedSurvey.setUser(Session.getUser());
         plannedSurvey.setProgram(survey.getProgram());
         plannedSurvey.setMainScore(survey.getMainScore());
+        plannedSurvey.setCompetencyScoreClassification(survey.getCompetencyScoreClassification());
         plannedSurvey.setScheduledDate(findScheduledDateBySurvey(survey));
         plannedSurvey.save();
 
