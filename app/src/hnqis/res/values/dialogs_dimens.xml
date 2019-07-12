@@ -5,4 +5,5 @@
     <dimen name="buttons_height">36dp</dimen>
     <dimen name="body_text_size">16sp</dimen>
     <dimen name="dialog_layout_margins_left_right">35dp</dimen>
+    <dimen name="dialog_layout_margins">16dp</dimen>
 </resources>

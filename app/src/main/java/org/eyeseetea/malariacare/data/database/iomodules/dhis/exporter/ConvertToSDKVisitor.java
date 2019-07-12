@@ -41,6 +41,7 @@ import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.data.sync.IData;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
+import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
 import org.eyeseetea.malariacare.domain.entity.ScoreType;
 import org.eyeseetea.malariacare.domain.entity.pushsummary.PushConflict;
 import org.eyeseetea.malariacare.domain.entity.pushsummary.PushReport;
@@ -49,6 +50,7 @@ import org.eyeseetea.malariacare.domain.exception.push.NullEventDateException;
 import org.eyeseetea.malariacare.domain.exception.push.PushValueException;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.AUtils;
+import org.eyeseetea.malariacare.utils.CompetencyUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.DateParser;
 import org.joda.time.DateTime;
@@ -93,6 +95,11 @@ public class ConvertToSDKVisitor implements
     String planActionCode;
     String action1Code;
     String action2Code;
+
+    String overallCompetencyCode;
+    String overallCompetencyCompetentCode;
+    String overallCompetencyNotCompetentCode;
+    String overallCompetencyCompetentImprvCode;
 
     /**
      * List of surveys that are going to be pushed
@@ -169,6 +176,16 @@ public class ConvertToSDKVisitor implements
                 context.getString(R.string.action1_code));
         action2Code = ServerMetadataDB.findControlDataElementUid(
                 context.getString(R.string.action2_code));
+
+
+        overallCompetencyCode = ServerMetadataDB.findControlDataElementUid(
+                context.getString(R.string.overall_competency_code));
+        overallCompetencyCompetentCode = ServerMetadataDB.findControlDataElementUid(
+                context.getString(R.string.overall_competency_competent_code));
+        overallCompetencyNotCompetentCode = ServerMetadataDB.findControlDataElementUid(
+                context.getString(R.string.overall_competency_not_competent_code));
+        overallCompetencyCompetentImprvCode = ServerMetadataDB.findControlDataElementUid(
+                context.getString(R.string.overall_competency_competent_improvement_code));
 
         surveys = new ArrayList<>();
         observationSurveys = new ArrayList<>();
@@ -258,9 +275,11 @@ public class ConvertToSDKVisitor implements
             //Calculates scores and update survey
             Log.d(TAG, "Registering scores...");
             errorMessage = "Calculating compositeScores";
-            List<CompositeScoreDB> compositeScores = ScoreRegister.loadCompositeScores(currentSurvey,
+            List<CompositeScoreDB> compositeScores = ScoreRegister.loadCompositeScores(
+                    currentSurvey,
                     Constants.PUSH_MODULE_KEY);
-            updateSurvey(currentSurvey, compositeScores, currentSurvey.getId_survey(), Constants.PUSH_MODULE_KEY);
+            updateSurvey(currentSurvey, compositeScores, currentSurvey.getId_survey(),
+                    Constants.PUSH_MODULE_KEY);
 
             //Turn score values into dataValues
             Log.d(TAG, "Creating datavalues from scores...");
@@ -272,7 +291,8 @@ public class ConvertToSDKVisitor implements
 
             errorMessage = "datavalue visitors ";
             //Turn question values into dataValues
-            Log.d(TAG, "Creating datavalues from questions... Values" + currentSurvey.getValues().size());
+            Log.d(TAG, "Creating datavalues from questions... Values"
+                    + currentSurvey.getValues().size());
             for (ValueDB value : currentSurvey.getValues()) {
                 //value -> datavalue
                 value.accept(this);
@@ -288,11 +308,11 @@ public class ConvertToSDKVisitor implements
             Log.d(TAG, "Creating datavalues from other stuff...");
             errorMessage = "building dataElements";
             buildControlDataElements(currentSurvey);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             throw new ConversionException(errorMessage);
         }
-       return currentEvent;
+        return currentEvent;
     }
 
     private String showErrorConversionMessage(String errorMessage) {
@@ -355,8 +375,7 @@ public class ConvertToSDKVisitor implements
     @Override
     public void visit(ValueDB value) {
         DataValueExtended dataValue = new DataValueExtended();
-        if(value.getQuestion()==null)
-        {
+        if (value.getQuestion() == null) {
             //ignore ServerMetadata values
             return;
         }
@@ -383,6 +402,7 @@ public class ConvertToSDKVisitor implements
         Log.d(TAG, "Saving event " + currentEvent.getUid());
         return currentEvent;
     }
+
     /**
      * Builds an event from a survey
      */
@@ -513,6 +533,37 @@ public class ConvertToSDKVisitor implements
                     SurveyPlanner.getInstance().findScheduledDateBySurvey(survey),
                     DateParser.AMERICAN_DATE_FORMAT));
         }
+
+        CompetencyScoreClassification competency = CompetencyScoreClassification.get(
+                survey.getCompetencyScoreClassification());
+
+        //Competency
+        if (controlDataElementExistsInServer(overallCompetencyCode) && survey.hasMainScore()) {
+            addOrUpdateDataValue(overallCompetencyCode,
+                    CompetencyUtils.getTextByCompetencyName(competency, context));
+        }
+
+        //Competency competent
+        if (controlDataElementExistsInServer(overallCompetencyCompetentCode) &&
+                competency != CompetencyScoreClassification.NOT_AVAILABLE) {
+            addOrUpdateDataValue(overallCompetencyCompetentCode,
+                    competency == CompetencyScoreClassification.COMPETENT ? "true" : "false");
+        }
+
+        //Competency not competent
+        if (controlDataElementExistsInServer(overallCompetencyNotCompetentCode) &&
+                competency != CompetencyScoreClassification.NOT_AVAILABLE) {
+            addOrUpdateDataValue(overallCompetencyNotCompetentCode,
+                    competency == CompetencyScoreClassification.NOT_COMPETENT ? "true" : "false");
+        }
+
+        //Competency competent improvement
+        if (controlDataElementExistsInServer(overallCompetencyCompetentImprvCode) &&
+                competency != CompetencyScoreClassification.NOT_AVAILABLE) {
+            addOrUpdateDataValue(overallCompetencyCompetentImprvCode,
+                    competency == CompetencyScoreClassification.COMPETENT_NEEDS_IMPROVEMENT ? "true"
+                            : "false");
+        }
     }
 
     private boolean controlDataElementExistsInServer(String controlDataElementUID) {
@@ -554,7 +605,6 @@ public class ConvertToSDKVisitor implements
 
     /**
      * Annotates the survey and event that has been processed
-     * @param kind
      */
     private void annotateSurveyAndEvent(PushDataController.Kind kind) {
         Map<Long, EventExtended> events = getEventsByKind(kind);

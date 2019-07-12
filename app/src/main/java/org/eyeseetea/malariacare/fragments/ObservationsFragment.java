@@ -484,7 +484,7 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
                 CompetencyScoreClassification.get(
                         survey.getCompetencyScoreClassification());
 
-        String competencyText = CompetencyUtils.getTextByCompetency(classification, getActivity());
+        String competencyText = CompetencyUtils.getTextByCompetencyName(classification, getActivity());
         data += getString(R.string.competency_title).toUpperCase() + ": "
                 + competencyText + "\n";
 

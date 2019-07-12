@@ -47,7 +47,7 @@ import java.util.Map;
 
 public class PreferencesState {
 
-    public static final String DEFAULT_SCHEDULE_MONTHS_VALUE ="https://data.psi-mis.org/";
+    public static final String DEFAULT_SCHEDULE_MONTHS_VALUE = "https://data.psi-mis.org/";
     public static final HashMap<String, int[]> nextScheduleMonths = new HashMap<>();
 
     static {
@@ -146,6 +146,22 @@ public class PreferencesState {
                 "reloadPreferences: scale: %s | locationRequired: %b | "
                         + "maxEvents: %d | largeTextOption: %b  | target: %d",
                 scale, locationRequired, maxEvents, showLargeText, monitoringTarget));
+
+        creedentials = initCredentials();
+    }
+
+    private Credentials initCredentials() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
+                context);
+        String url = sharedPreferences.getString(
+                context.getResources().getString(R.string.dhis_url), "");
+        String name =
+                sharedPreferences.getString(context.getString(R.string.dhis_user), "");
+        String password =
+                sharedPreferences.getString(context.getString(R.string.dhis_password), "");
+        creedentials = new Credentials(url, name, password);
+
+        return creedentials;
     }
 
     /**
@@ -157,9 +173,9 @@ public class PreferencesState {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
                 instance.getContext());
 
-        String languageCode = sharedPreferences.getString(languagePreferenceKey,"");
+        String languageCode = sharedPreferences.getString(languagePreferenceKey, "");
 
-        if(languageCode.isEmpty()) {
+        if (languageCode.isEmpty()) {
             languageCode = SYSTEM_DEFINED_LANGUAGE;
 
             putStringOnPreferences(sharedPreferences, languagePreferenceKey, languageCode);
@@ -353,17 +369,18 @@ public class PreferencesState {
      * Tells if the application is Vertical or horizontall
      */
     public Boolean isVerticalDashboard() {
-        return  DashboardOrientation.VERTICAL.equals(AppSettingsBuilder.getDashboardOrientation());
+        return DashboardOrientation.VERTICAL.equals(AppSettingsBuilder.getDashboardOrientation());
     }
 
     /**
      * Tells if the application is filter for last org unit
      */
     public Boolean isLastForOrgUnit() {
-        return (!forceAllSentSurveys && DashboardListFilter.LAST_FOR_ORG.equals(AppSettingsBuilder.getDashboardListFilter()));
+        return (!forceAllSentSurveys && DashboardListFilter.LAST_FOR_ORG.equals(
+                AppSettingsBuilder.getDashboardListFilter()));
     }
 
-    public void setForceAllSentSurveys(boolean value){
+    public void setForceAllSentSurveys(boolean value) {
         forceAllSentSurveys = value;
     }
 
@@ -420,7 +437,7 @@ public class PreferencesState {
     }
 
     public void setPushInProgress(boolean inProgress) {
-        Log.d(TAG, "change set push in progress to "+ inProgress);
+        Log.d(TAG, "change set push in progress to " + inProgress);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
                 context);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -481,8 +498,8 @@ public class PreferencesState {
         }
     }
 
-    public Server getServer(){
-        if(server==null) {
+    public Server getServer() {
+        if (server == null) {
             server = loadServer();
         }
         return server;
@@ -490,7 +507,7 @@ public class PreferencesState {
     }
 
     private Server loadServer() {
-        String serverUrl=getServerUrl();
+        String serverUrl = getServerUrl();
         server = new Server(getServerUrl(), new NextScheduleMonths(getMonthArray(serverUrl)));
         return server;
     }
@@ -498,8 +515,7 @@ public class PreferencesState {
     private int[] getMonthArray(String serverUrl) {
         serverUrl = formatUrl(serverUrl);
 
-        if(nextScheduleMonths.containsKey(serverUrl))
-        {
+        if (nextScheduleMonths.containsKey(serverUrl)) {
             return nextScheduleMonths.get(serverUrl);
         } else {
             return nextScheduleMonths.get(DEFAULT_SCHEDULE_MONTHS_VALUE);
@@ -507,11 +523,11 @@ public class PreferencesState {
     }
 
     private String formatUrl(String serverUrl) {
-        if(serverUrl == null || serverUrl.isEmpty()) {
+        if (serverUrl == null || serverUrl.isEmpty()) {
             return "";
         }
-        if(!(serverUrl.substring(serverUrl.length()-1)).equals("/")){
-            serverUrl = serverUrl+"/";
+        if (!(serverUrl.substring(serverUrl.length() - 1)).equals("/")) {
+            serverUrl = serverUrl + "/";
         }
         return serverUrl;
     }
@@ -542,17 +558,6 @@ public class PreferencesState {
     }
 
     public Credentials getCreedentials() {
-        if(creedentials == null) {
-                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
-                    context);
-            String url= sharedPreferences.getString(
-                    context.getResources().getString(R.string.dhis_url), "");
-            String name =
-                    sharedPreferences.getString(context.getString(R.string.dhis_user), "");
-            String password =
-                    sharedPreferences.getString(context.getString(R.string.dhis_password), "");
-            creedentials = new Credentials(url, name, password);
-        }
         return creedentials;
     }
 
@@ -566,11 +571,12 @@ public class PreferencesState {
     }
 
     public void setProgramUidFilter(String programUid) {
-        Log.d(TAG, "change user_preference_program_filter to "+ programUid);
+        Log.d(TAG, "change user_preference_program_filter to " + programUid);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
                 context);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(context.getResources().getString(R.string.user_preference_program_filter), programUid);
+        editor.putString(context.getResources().getString(R.string.user_preference_program_filter),
+                programUid);
         editor.commit();
     }
 
@@ -583,19 +589,21 @@ public class PreferencesState {
     }
 
     public void setOrgUnitUidFilter(String orgUnitUid) {
-        Log.d(TAG, "change user_preference_org_unit_filter to "+ orgUnitUid);
+        Log.d(TAG, "change user_preference_org_unit_filter to " + orgUnitUid);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
                 context);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(context.getResources().getString(R.string.user_preference_org_unit_filter), orgUnitUid);
+        editor.putString(context.getResources().getString(R.string.user_preference_org_unit_filter),
+                orgUnitUid);
         editor.commit();
     }
 
-    private void putStringOnPreferences(SharedPreferences sharedPreferences, String languagePreferenceKey,
+    private void putStringOnPreferences(SharedPreferences sharedPreferences,
+            String languagePreferenceKey,
             String languageCode) {
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(languagePreferenceKey,languageCode);
+        editor.putString(languagePreferenceKey, languageCode);
         editor.apply();
     }
 }

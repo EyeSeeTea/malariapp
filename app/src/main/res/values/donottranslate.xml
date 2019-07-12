@@ -62,12 +62,18 @@
     <string name="developer_option" translatable="false">show_dev_options</string>
     <string name="export_data_option" translatable="false">export_data_option</string>
     <string name="import_data_option" translatable="false">import_data_option</string>
+
     <string name="overall_score_code" translatable="false">_Overall Score</string>
     <string name="main_score_class_code" translatable="false">_Overall Class</string>
-    <string name="providerCode" translatable="false">_ProviderName</string>
     <string name="main_score_a_code" translatable="false">_Overall Class A</string>
     <string name="main_score_b_code" translatable="false">_Overall Class B</string>
     <string name="main_score_c_code" translatable="false">_Overall Class C</string>
+
+    <string name="overall_competency_code" translatable="false">_Overall Competency</string>
+    <string name="overall_competency_competent_code" translatable="false">_Overall Competency C</string>
+    <string name="overall_competency_not_competent_code" translatable="false">_Overall Competency NC</string>
+    <string name="overall_competency_competent_improvement_code" translatable="false">_Overall Competency CNI</string>
+
     <string name="forward_order_code" translatable="false">_FWR-sort</string>
     <string name="forward_order_value" translatable="false">9999</string>
     <string name="push_device_code" translatable="false">_PushDevice</string>
@@ -77,6 +83,7 @@
     <string name="completed_on_code" translatable="false">_CompletedOn</string>
     <string name="upload_date_code" translatable="false">_UploadedOn</string>
     <string name="uploaded_by_code" translatable="false">_UploadedBy</string>
+    <string name="providerCode" translatable="false">_ProviderName</string>
     <string name="gaps_code" translatable="false">_Gaps</string>
     <string name="action_plan_code" translatable="false">_ActionPlan</string>
     <string name="action1_code" translatable="false">_Action1</string>
@@ -142,13 +149,18 @@
     <string-array name="server_list">
         <item>@string/login_info_dhis_default_server_url</item>
         <item>https://sfhnigeria.psi-mis.org/</item>
-        <item>https://singapore-dev.psi-mis.org/</item>
-        <item>https://zw.hnqis.org/</item>
-        <item>https://clone-zw.hnqis.org/</item>
+        <item>https://zw.hnqis.org/</item>>
         <item>https://clone.psi-mis.org/</item>
+        <item>https://myanmar.psi-mis.org</item>>
+        <item>https://im-dev.psi-mis.org</item>>
+        <item>https://ao.hnqis.org</item>>
+        <item>https://sm.hnqis.org</item>>
         <item>@string/other</item>
     </string-array>
     <string name="server_version_preference" translatable="false">server_version_preference</string>
     <string name="is_server_version_supported" translatable="false">is_server_version_supported</string>
     <string name="google_play_url" translatable="false">"https://play.google.com/store/apps/details?id=org.eyeseetea.malariacare.hnqis_ng"</string>
+    <string name="learning_center_url">https://psiorg.sharepoint.com/sites/us_gbs_comms/SitePages/HNQIS-Learning-Center.aspx</string>
+    <string name="submit_ticket_url">https://helppsi.freshdesk.com/en/support/tickets/new</string>
+
 </resources>
