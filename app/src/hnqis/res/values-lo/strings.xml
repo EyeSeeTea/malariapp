@@ -277,6 +277,7 @@
 <string name="schedule_title">"ການສໍາຫຼວດຕາຕະລາງ"</string>
 <string name="save">"ຊ່ວຍປະຢັດ"</string>
 <string name="monitor_no_surveys_to_show">"ບໍ່ມີການສໍາຫຼວດທີ່ຈະສະແດງ"</string>
+<string name="plan_action_critical_steps_missed_title">"ຂັ້ນຕອນທີ່ສໍາຄັນທີ່ພາດ້:"</string>
 <string name="plan_action_provider_title" >"ຊື່ຜູ້ໃຫ້ບໍລິການ:"</string>
 <string name="health_facility">ສູນການແພດ</string>
 <string name="mandatory">"ບັງຄັບ"</string>

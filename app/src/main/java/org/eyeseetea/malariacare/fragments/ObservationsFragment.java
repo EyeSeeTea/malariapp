@@ -27,6 +27,8 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -40,8 +42,6 @@ import android.widget.RelativeLayout;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.datasources.ObservationLocalDataSource;
-import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
-import org.eyeseetea.malariacare.data.database.model.QuestionDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
@@ -57,18 +57,19 @@ import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
 import org.eyeseetea.malariacare.domain.usecase.GetObservationBySurveyUidUseCase;
 import org.eyeseetea.malariacare.domain.usecase.GetServerMetadataUseCase;
 import org.eyeseetea.malariacare.domain.usecase.SaveObservationUseCase;
+import org.eyeseetea.malariacare.layout.adapters.MissedCriticalStepsAdapter;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.presentation.presenters.ObservationsPresenter;
-import org.eyeseetea.malariacare.presentation.viewmodels.ObservationViewModel;
+import org.eyeseetea.malariacare.presentation.viewmodels.Observations.MissedCriticalStepViewModel;
+import org.eyeseetea.malariacare.presentation.viewmodels.Observations.ObservationViewModel;
 import org.eyeseetea.malariacare.utils.CompetencyUtils;
 import org.eyeseetea.malariacare.utils.DateParser;
 import org.eyeseetea.malariacare.views.CustomEditText;
 import org.eyeseetea.malariacare.views.CustomSpinner;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
-import java.util.Iterator;
 import java.util.List;
 
 public class ObservationsFragment extends Fragment implements IModuleFragment,
@@ -96,6 +97,8 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
     private FloatingActionButton fabShare;
     private RelativeLayout mRootView;
     private ObservationsPresenter presenter;
+    private RecyclerView missedCriticalStepsView;
+    private MissedCriticalStepsAdapter missedCriticalStepsAdapter;
 
     public static ObservationsFragment newInstance(String surveyUid) {
         ObservationsFragment myFragment = new ObservationsFragment();
@@ -127,9 +130,22 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
         initEditTexts();
         initFAB();
         initBackButton();
+        initRecyclerView();
         initPresenter(surveyUid);
 
         return mRootView;
+    }
+
+    private void initRecyclerView() {
+        missedCriticalStepsView = mRootView.findViewById(R.id.missed_critical_steps_view);
+        DividerItemDecoration dividerItemDecoration =
+                new DividerItemDecoration(missedCriticalStepsView.getContext(),
+                        DividerItemDecoration.VERTICAL);
+        missedCriticalStepsView.addItemDecoration(dividerItemDecoration);
+
+        missedCriticalStepsAdapter = new MissedCriticalStepsAdapter();
+
+        missedCriticalStepsView.setAdapter(missedCriticalStepsAdapter);
     }
 
     @Override
@@ -313,6 +329,12 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
     }
 
     @Override
+    public void renderMissedCriticalSteps(
+            List<MissedCriticalStepViewModel> missedCriticalSteps) {
+        missedCriticalStepsAdapter.setMissedCriticalSteps(missedCriticalSteps);
+    }
+
+    @Override
     public void showSubActionOptionsView() {
         secondaryActionSpinner.setVisibility(View.VISIBLE);
         secondaryView.setVisibility(View.VISIBLE);
@@ -393,9 +415,8 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
 
     @Override
     public void shareByText(ObservationViewModel observationViewModel, SurveyDB survey,
-            List<QuestionDB> criticalQuestions, List<CompositeScoreDB> compositeScoresTree) {
-        String data = extractTextData(observationViewModel, survey, criticalQuestions,
-                compositeScoresTree);
+            List<MissedCriticalStepViewModel> missedCriticalStepViewModels) {
+        String data = extractTextData(observationViewModel, survey, missedCriticalStepViewModels);
 
         shareData(data);
     }
@@ -423,7 +444,7 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
     }
 
     private String extractTextData(ObservationViewModel observationViewModel, SurveyDB survey,
-            List<QuestionDB> criticalQuestions, List<CompositeScoreDB> compositeScoresTree) {
+            List<MissedCriticalStepViewModel> missedCriticalStepViewModels) {
         String data =
                 PreferencesState.getInstance().getContext().getString(
                         R.string.app_name) + "- \n";
@@ -474,20 +495,17 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
             data += "\n" + observationViewModel.getAction2();
         }
 
-        if (criticalQuestions != null && criticalQuestions.size() > 0) {
+        if (missedCriticalStepViewModels != null && missedCriticalStepViewModels.size() > 0) {
             data += "\n\n" + getString(R.string.critical_steps) + "\n";
 
             //For each score add proper items
-            for (Iterator<CompositeScoreDB> iterator = compositeScoresTree.iterator();
-                    iterator.hasNext(); ) {
-                CompositeScoreDB compositeScore = iterator.next();
-                data += compositeScore.getHierarchical_code() + " " + compositeScore.getLabel()
-                        + "\n";
-                for (QuestionDB question : criticalQuestions) {
-                    if (question.getCompositeScoreFk()
-                            == (compositeScore.getId_composite_score())) {
-                        data += "-" + question.getForm_name() + "\n";
-                    }
+            for (MissedCriticalStepViewModel missedCriticalStepViewModel :
+                    missedCriticalStepViewModels) {
+
+                if (missedCriticalStepViewModel.isCompositeScore()) {
+                    data += missedCriticalStepViewModel.getLabel() + "\n";
+                } else {
+                    data += "-" + missedCriticalStepViewModel.getLabel()  + "\n";
                 }
             }
         }
