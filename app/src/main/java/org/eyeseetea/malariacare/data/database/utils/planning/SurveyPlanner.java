@@ -86,10 +86,10 @@ public class SurveyPlanner {
                 newSurvey.getProgram().getId_program());
         if (lastSurveyScore != null) {
             if (lastSurveyScore.hasMainScore()) {
-                newSurvey.setMainScore(lastSurveyScore.getMainScore());
+                newSurvey.setMainScore(lastSurveyScore.getId_survey(), lastSurveyScore.getScoreDB().getUid(), lastSurveyScore.getMainScoreValue());
                 newSurvey.saveMainScore();
             } else {
-                newSurvey.setMainScore(0f);
+                newSurvey.resetMainScore();
             }
         }
         newSurvey.save();
@@ -107,13 +107,16 @@ public class SurveyPlanner {
         plannedSurvey.setOrgUnit(survey.getOrgUnit());
         plannedSurvey.setUser(Session.getUser());
         plannedSurvey.setProgram(survey.getProgram());
-        plannedSurvey.setMainScore(survey.getMainScore());
+
+        if (survey.hasMainScore()){
+            plannedSurvey.setMainScore(survey.getId_survey(), survey.getMainScore().getUid(), survey.getMainScore().getScore());
+            //Save last main score
+            plannedSurvey.saveMainScore();
+        }
+
         plannedSurvey.setCompetencyScoreClassification(survey.getCompetencyScoreClassification());
         plannedSurvey.setScheduledDate(findScheduledDateBySurvey(survey));
         plannedSurvey.save();
-
-        //Save last main score
-        plannedSurvey.saveMainScore();
 
         return plannedSurvey;
     }
@@ -144,8 +147,7 @@ public class SurveyPlanner {
         survey.save();
 
         //Reset mainscore for this 'real' survey
-        survey.setMainScore(0f);
-        survey.saveMainScore();
+        survey.resetMainScore();
         return survey;
     }
 

@@ -258,4 +258,6 @@ Mensuelle"</string>
 <string name="other">autre</string>
 <string name="feedback_not_sent">"L'URL de commentaires n'est pas disponible car l'enquête n'a pas encore été envoyée au serveur. Essayez de partager les commentaires plus tard."</string>
 <string name="observations_invalid_error_message">"Il est obligatoire de remplir au moins un plan d'action et chaque plan d'action rempli doit comporter une description, la date d'échéance et le responsable."</string>
+<string name="survey_imcomplete_text">Incomplète</string>
+<string name="survey_complete_text">Achevée</string>
 </resources>

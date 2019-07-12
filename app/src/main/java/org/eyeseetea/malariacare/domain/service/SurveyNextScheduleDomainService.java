@@ -1,13 +1,15 @@
 package org.eyeseetea.malariacare.domain.service;
 
+import org.eyeseetea.malariacare.domain.common.RequiredChecker;
 import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
 import org.eyeseetea.malariacare.domain.entity.NextScheduleDateConfiguration;
-import org.eyeseetea.malariacare.domain.utils.RequiredChecker;
 
 import java.util.Calendar;
 import java.util.Date;
 
 public class SurveyNextScheduleDomainService {
+    private RequiredChecker RequiredChecker;
+
     public Date calculate(
             NextScheduleDateConfiguration nextScheduleDateConfiguration,
             Date previousSurveyDate,

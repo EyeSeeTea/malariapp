@@ -206,7 +206,7 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
                 new ServerMetadataRepository(getActivity());
 
         GetServerMetadataUseCase getServerMetadataUseCase =
-                new GetServerMetadataUseCase(asyncExecutor, mainExecutor, serverMetadataRepository);
+                new GetServerMetadataUseCase(serverMetadataRepository);
 
         SaveObservationUseCase saveObservationUseCase =
                 new SaveObservationUseCase(asyncExecutor, mainExecutor, observationRepository);
@@ -420,7 +420,7 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
         data += getString(R.string.competency_title).toUpperCase() + ": "
                 + competencyText + "\n";
 
-        int roundedScore = Math.round(survey.getMainScore());
+        int roundedScore = Math.round(survey.getMainScoreValue());
         data += getString(R.string.quality_of_care) + " " + roundedScore + "% \n";
 
         data += String.format(getString(R.string.plan_action_next_date),formattedNextScheduleDate);

@@ -59,7 +59,9 @@ public class FeedbackBuilder {
 
 
         //Calculate main score
-        survey.setMainScore(ScoreRegister.calculateMainScore(compositeScoreList,survey.getId_survey(), module));
+        survey.setMainScore(survey.getId_survey(),
+                ScoreRegister.getCompositeScoreRoot(compositeScoreList).getUid(),
+                ScoreRegister.calculateMainScore(compositeScoreList, survey.getId_survey(), module));
 
         if (!parents) {
             //Remove parents from list (to avoid showing the parent composite that is there just to push the overall score)

@@ -13,6 +13,8 @@ buildscript {
     }
 }
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
 apply plugin: 'io.fabric'
 
 def cfg = rootProject.ext.configuration
@@ -20,6 +22,7 @@ def libs = rootProject.ext.libraries
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
+    mavenCentral()
 }
 
 android {
@@ -235,7 +238,9 @@ dependencies {
     compile(project(path: ':bugshaker')) {
         exclude group: "com.google.android.gms"
     }
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 
+check.dependsOn ktlint
 
 

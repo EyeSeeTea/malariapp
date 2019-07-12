@@ -489,6 +489,22 @@ public class DashboardController {
         improveModuleController.setActionBarDashboardWithProgram();
     }
 
+    public void openMonitoringByCalendar(){
+        MonitorModuleController monitorModuleController = (MonitorModuleController) getModuleByName(
+                MonitorModuleController.class.getSimpleName());
+
+        currentTab = getModuleByName(MonitorModuleController.class.getSimpleName()).getName();
+        tabHost.setCurrentTabByTag(MonitorModuleController.class.getSimpleName());
+
+        monitorModuleController.openMonitoringByCalendar();
+    }
+
+    public void openMonitorByActions(){
+        MonitorModuleController monitorModuleController = (MonitorModuleController) getModuleByName(
+                MonitorModuleController.class.getSimpleName());
+
+        monitorModuleController.openMonitorByActions();
+    }
 
     public void onPlannedSurvey(SurveyDB survey, View.OnClickListener scheduleClickListener) {
         plannedModelDialog(survey, scheduleClickListener);

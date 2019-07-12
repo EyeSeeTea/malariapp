@@ -63,6 +63,11 @@
         android:id="@+id/action_pull"
         android:orderInCategory="109"
         android:title="@string/settings_menu_pull" />
+
+    <item
+        android:id="@+id/action_monitoring_by_calendar"
+        android:orderInCategory="109"
+        android:title="@string/menu_monitoring_by_calendar_title" />
     <item
         android:id="@+id/learning_center"
         android:orderInCategory="110"

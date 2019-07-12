@@ -24,7 +24,6 @@ import org.eyeseetea.malariacare.presentation.mapper.observations.ObservationMap
 import org.eyeseetea.malariacare.presentation.viewmodels.observations.ActionViewModel;
 import org.eyeseetea.malariacare.presentation.viewmodels.observations.MissedStepViewModel;
 import org.eyeseetea.malariacare.presentation.viewmodels.observations.ObservationViewModel;
-import org.eyeseetea.malariacare.utils.DateParser;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.DateParser;
 
@@ -86,19 +85,14 @@ public class ObservationsPresenter {
     }
 
     private void LoadData() {
-        mGetServerMetadataUseCase.execute(new GetServerMetadataUseCase.Callback() {
-            @Override
-            public void onSuccess(ServerMetadata serverMetadata) {
-                ObservationsPresenter.this.mServerMetadata = serverMetadata;
-                loadObservation();
-            }
-
-            @Override
-            public void onError(Exception e) {
-                System.out.println(
-                        "An error has occur retrieving server metadata: " + e.getMessage());
-            }
-        });
+        try{
+            ServerMetadata serverMetadata = mGetServerMetadataUseCase.execute();
+            ObservationsPresenter.this.mServerMetadata = serverMetadata;
+            loadObservation();
+        } catch (Exception e){
+            System.out.println(
+                    "An error has occur retrieving server metadata: " + e.getMessage());
+        }
     }
 
     private void loadObservation() {
@@ -175,7 +169,7 @@ public class ObservationsPresenter {
                     CompetencyScoreClassification.get(
                             mSurvey.getCompetencyScoreClassification());
 
-            mView.renderHeaderInfo(mSurvey.getOrgUnit().getName(), mSurvey.getMainScore(),
+            mView.renderHeaderInfo(mSurvey.getOrgUnit().getName(), mSurvey.getMainScoreValue(),
                     formattedCompletionDate, formattedNextScheduleDate, classification);
         }
     }

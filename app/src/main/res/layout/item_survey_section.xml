@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2015.
+  ~
+  ~ This file is part of QA App.
+  ~
+  ~  Health Network QIS App is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as published by
+  ~  the Free Software Foundation, either version 3 of the License, or
+  ~  (at your option) any later version.
+  ~
+  ~  Health Network QIS App is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/survey_section_container"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="72dp"
+    android:layout_gravity="center_vertical"
+    android:weightSum="1"
+    android:background="@color/darkGrey">
+    <org.eyeseetea.malariacare.views.CustomTextView
+        android:id="@+id/survey_section_name"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_width="0dp"
+        android:layout_weight=".9"
+        android:layout_gravity="center_vertical"
+        android:layout_height="wrap_content"
+        android:typeface="sans"
+        android:paddingLeft="@dimen/dashboard_planning_padding"
+        android:textColor="@color/planning_header_text"
+        android:textSize="18dp"
+        app:tDimension="@string/font_size_level1"
+        app:tFontName="@string/medium_font_name"
+        />
+
+    <ImageView
+        android:id="@+id/expand_collapse_view"
+        android:layout_width="0dp"
+        android:layout_weight=".1"
+        android:layout_height="42dp"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_media_arrow"/>
+
+</LinearLayout>

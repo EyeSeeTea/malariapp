@@ -1,4 +1,4 @@
-package org.eyeseetea.malariacare.domain.utils;
+package org.eyeseetea.malariacare.domain.common;
 
 public class RequiredChecker {
 
@@ -10,6 +10,8 @@ public class RequiredChecker {
     to reduce amount of boilerplate code */
     public static <T> T required(T obj, String message) {
         if (obj == null) {
+            throw new IllegalArgumentException(message);
+        } else if (obj instanceof String && ((String) obj).isEmpty()) {
             throw new IllegalArgumentException(message);
         }
 

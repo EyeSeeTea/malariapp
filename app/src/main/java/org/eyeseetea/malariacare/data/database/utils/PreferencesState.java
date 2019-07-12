@@ -149,7 +149,10 @@ public class PreferencesState {
                 sharedPreferences.getString(context.getString(R.string.dhis_user), "");
         String password =
                 sharedPreferences.getString(context.getString(R.string.dhis_password), "");
-        creedentials = new Credentials(url, name, password);
+        
+        if (!url.isEmpty() && !name.isEmpty() && !password.isEmpty()) {
+            creedentials = new Credentials(url, name, password);
+        }
 
         return creedentials;
     }
@@ -497,8 +500,14 @@ public class PreferencesState {
     }
 
     private Server loadServer() {
+        server = null;
+
         String serverUrl=getServerUrl();
-        server = new Server(serverUrl);
+
+        if (serverUrl != null && !serverUrl.isEmpty() ){
+            server = new Server(serverUrl);
+        }
+
         return server;
     }
 

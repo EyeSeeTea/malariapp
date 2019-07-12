@@ -220,10 +220,12 @@ public abstract class BaseActivity extends AppCompatActivity {
                 debugMessage("Import db");
                 showFileChooser();
                 break;
+            case R.id.action_monitoring_by_calendar:
+                DashboardActivity.dashboardActivity.openMonitoringByCalendar();
+                break;
             case R.id.learning_center:
                 debugMessage("learning center");
                 navigateToUrl(getString(R.string.learning_center_url));
-
                 break;
             case R.id.submit_ticket:
                 debugMessage("submit ticket");

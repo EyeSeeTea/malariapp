@@ -1,6 +1,6 @@
 package org.eyeseetea.malariacare.domain.entity;
 
-import org.eyeseetea.malariacare.domain.utils.RequiredChecker;
+import org.eyeseetea.malariacare.domain.common.RequiredChecker;
 
 import java.util.ArrayList;
 import java.util.List;
