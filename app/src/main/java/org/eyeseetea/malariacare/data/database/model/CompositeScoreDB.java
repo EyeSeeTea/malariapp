@@ -109,6 +109,10 @@ public class CompositeScoreDB extends BaseModel implements VisitableToSDK {
         this.id_composite_score = id_composite_score;
     }
 
+    public Long getId_composite_score_parent() {
+        return id_composite_score_parent;
+    }
+
     public String getHierarchical_code() { return hierarchical_code; }
 
     public void setHierarchical_code(String hierarchical_code) { this.hierarchical_code = hierarchical_code; }

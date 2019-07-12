@@ -74,11 +74,6 @@ public class EventExtended implements VisitableFromSDK {
         this.event = event.getEvent();
     }
 
-    public EventExtended() {
-        event = new EventFlow();
-        event.generateUId();
-    }
-
     @Override
     public void accept(IConvertFromSDKVisitor visitor) {
         visitor.visit(this);

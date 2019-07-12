@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.location.Location;
 import android.util.Log;
@@ -27,7 +28,8 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.DataValueExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
-import org.eyeseetea.malariacare.data.database.model.ObsActionPlanDB;
+import org.eyeseetea.malariacare.data.database.model.ObservationDB;
+import org.eyeseetea.malariacare.data.database.model.ObservationValueDB;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitProgramRelationDB;
 import org.eyeseetea.malariacare.data.database.model.ServerMetadataDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
@@ -37,6 +39,7 @@ import org.eyeseetea.malariacare.data.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
+import org.eyeseetea.malariacare.data.sync.IData;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
 import org.eyeseetea.malariacare.domain.entity.ScoreType;
@@ -105,12 +108,12 @@ public class ConvertToSDKVisitor implements
     /**
      * List of surveys with obsActionPlans that are going to be pushed
      */
-    List<SurveyDB> obsActionPlanSurveys;
+    List<SurveyDB> observationSurveys;
 
     /**
      * Map app surveys with sdk events (N to 1)
      */
-    Map<Long, EventExtended> obsActionPlanEvents;
+    Map<Long, EventExtended> observationEvents;
     /**
      * Map app surveys with sdk events (N to 1)
      */
@@ -185,90 +188,80 @@ public class ConvertToSDKVisitor implements
                 context.getString(R.string.overall_competency_competent_improvement_code));
 
         surveys = new ArrayList<>();
-        obsActionPlanSurveys = new ArrayList<>();
+        observationSurveys = new ArrayList<>();
         events = new HashMap<>();
-        obsActionPlanEvents = new HashMap<>();
+        observationEvents = new HashMap<>();
     }
 
     @Override
-    public void visit(ObsActionPlanDB obsActionPlan) throws ConversionException {
-        SurveyDB survey = SurveyDB.findById(obsActionPlan.getId_survey_obs_action_fk());
+    public void visit(ObservationDB observationDB) throws ConversionException {
+        SurveyDB survey = SurveyDB.findById(observationDB.getId_survey_observation_fk());
+        currentSurvey = survey;
+        uploadedDate = currentSurvey.getUploadDate();
         String errorMessage =
                 "Exception creating a new event from obsActionPlan. Removing survey from DB";
+
         try {
             this.currentEvent = buildSentEvent(survey, errorMessage);
-            if (obsActionPlan.getProvider() != null) {
-                if (controlDataElementExistsInServer(providerCode)) {
-                    addOrUpdateDataValue(providerCode, obsActionPlan.getProvider());
-                }
+
+            for (ObservationValueDB observationValueDB : observationDB.getValuesDB()) {
+                //ObservationValueDB -> datavalue
+                observationValueDB.accept(this);
             }
-            if (obsActionPlan.getGaps() != null) {
-                if (controlDataElementExistsInServer(gapsCode)) {
-                    addOrUpdateDataValue(gapsCode, obsActionPlan.getGaps());
-                }
-            }
-            if (obsActionPlan.getAction_plan() != null) {
-                if (controlDataElementExistsInServer(planActionCode)) {
-                    addOrUpdateDataValue(planActionCode, obsActionPlan.getAction_plan());
-                }
-            }
-            if (obsActionPlan.getAction1() != null) {
-                if (controlDataElementExistsInServer(action1Code)) {
-                    addOrUpdateDataValue(action1Code, obsActionPlan.getAction1());
-                }
-            }
-            if (obsActionPlan.getAction2() != null) {
-                if (controlDataElementExistsInServer(action2Code)) {
-                    addOrUpdateDataValue(action2Code, obsActionPlan.getAction2());
-                }
-            }
-            annotateSurveyAndEvent(PushController.Kind.PLANS);
+
+            Log.d(TAG, String.format("%d plan surveys converted so far", surveys.size()));
+            annotateSurveyAndEvent(IPushController.Kind.OBSERVATIONS);
         } catch (Exception e) {
             e.printStackTrace();
             errorMessage = showErrorConversionMessage(errorMessage);
-            removeSurveyAndEvent(survey, PushController.Kind.PLANS);
+            removeSurveyAndEvent(IPushController.Kind.OBSERVATIONS);
             throw new ConversionException(errorMessage);
         }
+
+    }
+
+    @Override
+    public void visit(ObservationValueDB observationValueDB) {
+        DataValueExtended dataValue = new DataValueExtended();
+        dataValue.setDataElement(observationValueDB.getUid_observation_value());
+        dataValue.setEvent(currentEvent.getEvent());
+        dataValue.setStoredBy(getSafeUsername());
+        dataValue.setValue (observationValueDB.getValue());
+        dataValue.save();
     }
 
     @Override
     public void visit(SurveyDB survey) throws ConversionException {
         String errorMessage = "Exception creating a new event from survey. Removing survey from DB";
         try {
-            this.currentEvent = buildEventFromSurvey(survey, errorMessage,
-                    PushController.Kind.EVENTS);
-            if (currentEvent == null) {
-                Log.d(TAG, "invalid survey");
+            this.currentEvent = buildEventFromSurvey(survey, errorMessage);
+            if(currentEvent==null){
+                Log.d(TAG,"invalid survey");
                 return;
             }
             //Annotate both objects to update its state once the process is over
             errorMessage = "annotating surveys and events";
-            annotateSurveyAndEvent(PushController.Kind.EVENTS);
+
+            annotateSurveyAndEvent(PushDataController.Kind.EVENTS);
+            Log.d(TAG, String.format("%d surveys converted so far", surveys.size()));
         } catch (Exception e) {
             e.printStackTrace();
             errorMessage = showErrorConversionMessage(errorMessage);
-            removeSurveyAndEvent(survey, PushController.Kind.EVENTS);
+            removeSurveyAndEvent(PushDataController.Kind.EVENTS);
             throw new ConversionException(errorMessage);
         }
     }
 
-    private EventExtended buildEventFromSurvey(SurveyDB survey, String errorMessage,
-            PushController.Kind type) throws ConversionException {
+    private EventExtended buildEventFromSurvey(SurveyDB survey, String errorMessage) throws ConversionException{
         currentSurvey = survey;
         uploadedDate = new Date();
         try {
-            Log.d(TAG, String.format("Creating event for survey (%d) ...",
-                    currentSurvey.getId_survey()));
-            Log.d(TAG,
-                    String.format("Creating event for survey (%s) ...", currentSurvey.toString()));
+            Log.d(TAG, String.format("Creating event for survey (%d) ...", currentSurvey.getId_survey()));
+            Log.d(TAG, String.format("Creating event for survey (%s) ...", currentSurvey.toString()));
             try {
-                if (type.equals(PushController.Kind.PLANS)) {
-                    currentEvent = new EventExtended(survey.getEventUid());
-                    currentEvent = buildEvent();
-                } else {
-                    currentEvent = new EventExtended();
-                    currentEvent = buildEvent();
-                }
+                currentEvent = new EventExtended(survey.getEventUid());
+                currentEvent = buildEvent();
+
             } catch (Exception e) {
                 showErrorConversionMessage(errorMessage);
                 currentSurvey.delete();//invalid survey
@@ -342,29 +335,23 @@ public class ConvertToSDKVisitor implements
                 + orgUnitName + "Survey: " + currentSurvey.toString();
     }
 
-    private void removeSurveyAndEvent(SurveyDB survey, PushController.Kind kind) {
-        //remove event from annotated event list and from db
-        if (kind.equals(PushController.Kind.PLANS)) {
-            if (obsActionPlanEvents.containsKey(currentSurvey.getId_survey())) {
-                obsActionPlanEvents.remove(currentSurvey.getId_survey());
-            }
-            currentEvent.getEvent().delete();
-            //remove survey from list and from db
-            if (obsActionPlanSurveys.contains(survey)) {
-                obsActionPlanSurveys.remove(survey);
-            }
+    private void removeSurveyAndEvent(PushDataController.Kind kind) {
+        Map<Long, EventExtended> events = getEventsByKind(kind);
+        List<SurveyDB> surveys = getSurveysByKind(kind);
 
-        } else if (kind.equals(PushController.Kind.EVENTS)) {
-            if (events.containsKey(currentSurvey.getId_survey())) {
-                events.remove(currentSurvey.getId_survey());
-            }
-            currentEvent.getEvent().delete();
-            //remove survey from list and from db
-            if (surveys.contains(survey)) {
-                surveys.remove(survey);
-            }
+        //remove event from annotated event list and from db
+        if (events.containsKey(currentSurvey.getId_survey())) {
+            events.remove(currentSurvey.getId_survey());
         }
-        survey.delete();
+
+        currentEvent.getEvent().delete();
+
+        //remove survey from list and from db
+        if (surveys.contains(currentSurvey)) {
+            surveys.remove(currentSurvey);
+        }
+
+        currentSurvey.delete();
     }
 
     @Override
@@ -420,7 +407,7 @@ public class ConvertToSDKVisitor implements
      * Builds an event from a survey
      */
     private EventExtended buildSentEvent(SurveyDB survey, String errorMessage) throws Exception {
-        currentEvent = buildEventFromSurvey(survey, errorMessage, PushController.Kind.PLANS);
+        currentEvent = buildEventFromSurvey(survey, errorMessage);
         currentEvent.setStatus(EventExtended.STATUS_COMPLETED);
         currentEvent.setOrganisationUnitId(currentSurvey.getOrgUnit().getUid());
         currentEvent.setProgramId(currentSurvey.getProgram().getUid());
@@ -619,91 +606,69 @@ public class ConvertToSDKVisitor implements
     /**
      * Annotates the survey and event that has been processed
      */
-    private void annotateSurveyAndEvent(PushController.Kind kind) {
-        if (kind.equals(PushController.Kind.PLANS)) {
-            obsActionPlanSurveys.add(currentSurvey);
-            uploadedDate = currentSurvey.getUploadDate();
-            currentEvent.setLastUpdated(new DateTime(uploadedDate.getTime()));
-            obsActionPlanEvents.put(currentSurvey.getId_survey(), currentEvent);
-            Log.d(TAG, String.format("%d plan surveys converted so far", surveys.size()));
-        } else if (kind.equals(PushController.Kind.EVENTS)) {
-            surveys.add(currentSurvey);
-            currentEvent.setLastUpdated(new DateTime(uploadedDate.getTime()));
-            events.put(currentSurvey.getId_survey(), currentEvent);
-            Log.d(TAG, String.format("%d surveys converted so far", surveys.size()));
-        }
+    private void annotateSurveyAndEvent(PushDataController.Kind kind) {
+        Map<Long, EventExtended> events = getEventsByKind(kind);
+        List<SurveyDB> surveys = getSurveysByKind(kind);
+
+        surveys.add(currentSurvey);
+
+        currentEvent.setLastUpdated(new DateTime(uploadedDate.getTime()));
+
+        events.put(currentSurvey.getId_survey(), currentEvent);
     }
 
-    /**
-     * Saves changes in the survey (supposedly after a successfull push)
-     */
+    @SuppressLint("StringFormatInvalid")
     public void saveSurveyStatus(Map<String, PushReport> pushReportMap, final
-    IPushController.IPushControllerCallback callback, PushController.Kind kind) {
-        List<SurveyDB> surveys = new ArrayList<>();
-        Map<Long, EventExtended> events = new HashMap<>();
-        if (kind.equals(PushController.Kind.EVENTS)) {
-            surveys = this.surveys;
-            events = this.events;
-        } else if (kind.equals(PushController.Kind.PLANS)) {
-            surveys = this.obsActionPlanSurveys;
-            events = this.obsActionPlanEvents;
-        }
+    IPushController.IPushControllerCallback callback, PushDataController.Kind kind) {
+
+        Map<Long, EventExtended> events = getEventsByKind(kind);
+        List<SurveyDB> surveys = getSurveysByKind(kind);
+
         Log.d(TAG, String.format("pushReportMap %d surveys savedSurveyStatus", surveys.size()));
         for (int i = 0; i < surveys.size(); i++) {
-            SurveyDB iSurvey = surveys.get(i);
-            ObsActionPlanDB obsActionPlan = ObsActionPlanDB.findObsActionPlanBySurvey(
-                    iSurvey.getId_survey());
+            IData data = getDataByKind(surveys.get(i), kind);
 
             //Sets the survey status as quarantine to prevent wrong reports on unexpected exception.
-            //F.E. if the app crash unexpected this survey will be checked again in the future
-            // push to prevent the duplicates
+            //F.E. if the app crash unexpected this survey will be checked again in the future push to prevent the duplicates
             // in the server.
 
-            if (kind.equals(PushController.Kind.EVENTS)) {
-                iSurvey.setStatus(Constants.SURVEY_QUARANTINE);
-                iSurvey.save();
-            }
+            data.changeStatusToQuarantine();
 
-            Log.d(TAG, "saveSurveyStatus: Starting saving survey Set Survey status as QUARANTINE"
-                    + iSurvey.getId_survey() + " eventuid: " + iSurvey.getEventUid());
-            EventExtended iEvent = new EventExtended(events.get(iSurvey.getId_survey()));
-            PushReport pushReport;
-            pushReport = pushReportMap.get(
-                    iEvent.getEvent().getUId());
+
+            EventExtended event = new EventExtended(events.get(data.getSurveyId()));
+            PushReport pushReport= pushReportMap.get(event.getEvent().getUId());
+
             if (pushReport == null) {
                 //the survey was saved as quarantine.
                 Log.d(TAG, "Error saving survey: report is null in this survey: "
-                        + iSurvey.getId_survey());
+                        + data.getSurveyId());
                 //The loop should continue without throw the Exception.
                 continue;
             }
+
             List<PushConflict> pushConflicts = pushReport.getPushConflicts();
 
             //If the pushResult has some conflict the survey was saved in the server but
             // never resend, the survey is saved as survey in conflict.
             if (pushConflicts != null && pushConflicts.size() > 0) {
                 Log.d(TAG, "saveSurveyStatus: conflicts");
-                if (kind.equals(PushController.Kind.PLANS)) {
-                    obsActionPlan.setStatus(Constants.SURVEY_CONFLICT);
-                    obsActionPlan.save();
-                } else if (kind.equals(PushController.Kind.EVENTS)) {
-                    iSurvey.setStatus(Constants.SURVEY_CONFLICT);
-                    iSurvey.save();
-                }
+                data.changeStatusToConflict();
+
                 for (PushConflict pushConflict : pushConflicts) {
-                    Log.d(TAG, "saveSurveyStatus: Faileditem not null " + iSurvey.getId_survey());
+                    Log.d(TAG, "saveSurveyStatus: Faileditem not null " + data.getSurveyId());
+
                     if (pushConflict.getUid() != null) {
                         Log.d(TAG, "saveSurveyStatus: PUSH process...PushConflict in "
                                 + pushConflict.getUid() +
                                 " with error " + pushConflict.getValue()
                                 + " dataelement pushing survey: "
-                                + iSurvey.getId_survey());
-                        iSurvey.saveConflict(pushConflict.getUid());
-                        iSurvey.save();
+                                +  data.getSurveyId());
+
+                        data.saveConflict(pushConflict.getUid());
+
                         callback.onInformativeError(new PushValueException(
-                                String.format(
-                                        context.getString(R.string.error_conflict_message) + "",
-                                        iEvent.getEvent().getUId(), pushConflict.getUid(),
+                                String.format(context.getString(R.string.error_conflict_message)+"",
+                                        event.getEvent().getUId(), pushConflict.getUid(),
                                         pushConflict.getValue()) + ""));
                     }
                 }
@@ -711,38 +676,21 @@ public class ConvertToSDKVisitor implements
             }
 
             //No errors -> Save and next
-            Boolean emptyImportAllowed = false;
-            if (kind.equals(PushController.Kind.PLANS)) {
-                emptyImportAllowed = true;
-            }
-            if (pushReport != null && !pushReport.hasPushErrors(emptyImportAllowed)) {
+            if (pushReport!=null && !pushReport.hasPushErrors(data instanceof ObservationDB)) {
                 Log.d(TAG, "saveSurveyStatus: report without errors and status ok "
-                        + iSurvey.getId_survey());
-                if (iEvent.getEventDate() == null || iEvent.getEventDate().equals("")) {
-                    //If eventdate is null the event is invalid. The event is sent but we need
-                    // inform to the user.
+                        + data.getSurveyId());
+
+                if (event.getEventDate() == null || event.getEventDate().equals("")) {
+                    //If eventdate is null the event is invalid. The event is sent but we need inform to the user.
                     callback.onInformativeError(new NullEventDateException(
-                            String.format(context.getString(R.string.error_message_push) + "",
-                                    iEvent.getEvent())));
+                            String.format(context.getString(R.string.error_message_push)+"",
+                                    event.getEvent())));
                 }
-                if (kind.equals(PushController.Kind.PLANS)) {
-                    obsActionPlan.setStatus(Constants.SURVEY_SENT);
-                    obsActionPlan.save();
-                } else if (kind.equals(PushController.Kind.EVENTS)) {
-                    saveSurveyFromImportSummary(iSurvey);
-                }
+                data.changeStatusToSent();
             }
         }
     }
 
-    private void saveSurveyFromImportSummary(SurveyDB iSurvey) {
-        iSurvey.setStatus(Constants.SURVEY_SENT);
-        iSurvey.setUploadDate(uploadedDate);
-        iSurvey.saveMainScore();
-        iSurvey.save();
-
-        Log.d(TAG, "PUSH process...OK. Survey saved");
-    }
 
     /**
      * Returns the name of the username avoiding NPE
@@ -755,28 +703,38 @@ public class ConvertToSDKVisitor implements
         return "";
     }
 
-    public void setSurveysAsQuarantine(PushController.Kind kind) {
-        List<SurveyDB> surveys = new ArrayList<>();
-        if (kind.equals(PushController.Kind.EVENTS)) {
-            surveys = this.surveys;
-        } else if (kind.equals(PushController.Kind.PLANS)) {
-            surveys = this.obsActionPlanSurveys;
-        }
+    public void setSurveysAsQuarantine(PushDataController.Kind kind) {
+        List<SurveyDB> surveys = getSurveysByKind(kind);
+
         for (SurveyDB survey : surveys) {
-            if (kind.equals(PushController.Kind.PLANS)) {
-                Log.d(TAG, "Set plan status as QUARANTINE" + survey.getId_survey());
-                Log.d(TAG, "Set plan status as QUARANTINE" + survey.toString());
-                ObsActionPlanDB obsActionPlan = ObsActionPlanDB.findObsActionPlanBySurvey(
-                        survey.getId_survey());
-                //The obs action plan doesn't need the quarantine status.
-                obsActionPlan.setStatus(Constants.SURVEY_COMPLETED);
-                obsActionPlan.save();
-            } else if (kind.equals(PushController.Kind.EVENTS)) {
-                Log.d(TAG, "Set Survey status as QUARANTINE" + survey.getId_survey());
-                Log.d(TAG, "Set Survey status as QUARANTINE" + survey.toString());
-                survey.setStatus(Constants.SURVEY_QUARANTINE);
-                survey.save();
-            }
+            IData data = getDataByKind(survey, kind);
+
+            Log.d(TAG, "Set plan status as QUARANTINE" + data.toString());
+
+            data.changeStatusToQuarantine();
+        }
+    }
+
+    private IData getDataByKind(SurveyDB survey, IPushController.Kind kind) {
+        if (kind.equals(IPushController.Kind.EVENTS))
+            return survey;
+        else
+            return ObservationDB.getBySurveyId(survey.getId_survey());
+    }
+
+    private List<SurveyDB> getSurveysByKind(IPushController.Kind kind) {
+        if (kind.equals(IPushController.Kind.EVENTS)) {
+            return this.surveys;
+        } else {
+            return this.observationSurveys;
+        }
+    }
+
+    private Map<Long, EventExtended> getEventsByKind(IPushController.Kind kind) {
+        if (kind.equals(IPushController.Kind.EVENTS)) {
+            return this.events;
+        } else {
+            return this.observationEvents;
         }
     }
 }

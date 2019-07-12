@@ -15,6 +15,8 @@
 <string name="settings_menu_about">"About"</string>
 <string name="settings_menu_configuration">"Settings"</string>
 <string name="settings_menu_licence">"License"</string>
+<string name="settings_menu_learning_center">"HNQIS learning center"</string>
+<string name="settings_menu_submit_ticket">"Submit a ticket"</string>
 <string name="settings_menu_logout">"Logout"</string>
 
 <string name="dialog_title_delete_survey">"Delete Survey"</string>
@@ -116,7 +118,8 @@ evaluation"</string>
 <string name="dashboard_title_planned_type_overdue">"Overdue"</string>
 <string name="dashboard_title_planned_type_next_30">"Next 30 days"</string>
 <string name="dashboard_title_planned_type_future">"Future"</string>
-<string name="dashboard_title_planned_productivity">"Prd"</string>
+<string name="dashboard_title_planned_productivity_abreviation">"Prd"</string>
+<string name="dashboard_title_planned_productivity">"Productivity"</string>
 <string name="competency_title">"Competency"</string>
 <string name="dashboard_title_planned_next_qa">"Next QA"</string>
 <string name="assessment_sent_competency">"Competency"</string>
@@ -234,7 +237,6 @@ evaluation"</string>
 <string name="plan_action_today_date">Completed: %s</string>
 <string name="plan_action_next_date">Next: %s</string>
 <string name="plan_action_description">Describe what was observed during the visit a specific action plan for addressing gaps. Also note an improvement over a gap identified during the last visit</string>
-<string name="plan_action_gasp_title">GAPS:</string>
 <string name="plan_action_action_plan_title">ACTION PLAN:</string>
 <string name="plan_action_action_title">ACTION:</string>
 <string-array name="plan_action_dropdown_options">
@@ -274,6 +276,8 @@ evaluation"</string>
 <string name="html_text">Formatted text </string>
 <string name="schedule_title">Schedule survey</string>
 <string name="save">"Save"</string>
+<string name="plan_action_critical_steps_missed_title" >"CRITICAL STEPS MISSED:"</string>
+<string name="plan_action_non_critical_steps_missed_title" >"NON-CRITICAL STEPS MISSED:"</string>
 <string name="plan_action_provider_title" >"PROVIDER NAME:"</string>
 <string name="monitor_no_surveys_to_show">"No surveys to show"</string>
 <string name="health_facility">Health Facility</string>
@@ -314,4 +318,7 @@ evaluation"</string>
 <string name="competency_classification_competent_abbreviation">C</string>
 <string name="competency_classification_competent_improvement_abbreviation">CNI</string>
 <string name="competency_classification_not_competent_abbreviation">NC</string>
+
+<string name="productivity_low_name">Low</string>
+<string name="productivity_high_name">High</string>
 </resources>

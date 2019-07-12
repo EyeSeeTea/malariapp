@@ -90,13 +90,13 @@ public class FacilityTableBuilderBase {
         webView.loadUrl(injectColor);
 
         String injectClassification = String.format(JAVASCRIPT_SET_CLASSIFICATION,
-                "{competentText:'" + CompetencyUtils.getTextByCompetencyName(
+                "{competentText:'" + CompetencyUtils.getTextByCompetencyAbbreviation(
                         CompetencyScoreClassification.COMPETENT, context) + "'," +
-                        "competentImprovementText:'" + CompetencyUtils.getTextByCompetencyName(
+                        "competentImprovementText:'" + CompetencyUtils.getTextByCompetencyAbbreviation(
                         CompetencyScoreClassification.COMPETENT_NEEDS_IMPROVEMENT, context) + "'," +
-                        "notCompetentText:'" + CompetencyUtils.getTextByCompetencyName(
+                        "notCompetentText:'" + CompetencyUtils.getTextByCompetencyAbbreviation(
                         CompetencyScoreClassification.NOT_COMPETENT, context)+ "'," +
-                        "notAvailableText:'" + CompetencyUtils.getTextByCompetencyName(
+                        "notAvailableText:'" + CompetencyUtils.getTextByCompetencyAbbreviation(
                         CompetencyScoreClassification.NOT_AVAILABLE, context)+ "'," +
                         "competentAbbreviationText:'" + CompetencyUtils.getTextByCompetencyAbbreviation(
                 CompetencyScoreClassification.COMPETENT, context) + "'," +
