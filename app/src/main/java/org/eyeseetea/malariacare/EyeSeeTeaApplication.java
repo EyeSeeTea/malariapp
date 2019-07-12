@@ -23,6 +23,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.multidex.MultiDex;
 import android.support.v7.app.AppCompatDelegate;
@@ -34,7 +35,9 @@ import com.github.stkent.bugshaker.github.GitHubConfiguration;
 import com.raizlabs.android.dbflow.config.EyeSeeTeaGeneratedDatabaseHolder;
 import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
+import com.raizlabs.android.dbflow.structure.database.AndroidDatabase;
 
+import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
@@ -70,6 +73,15 @@ public class EyeSeeTeaApplication extends Application {
                 .addDatabaseHolder(EyeSeeTeaGeneratedDatabaseHolder.class)
                 .build();
         FlowManager.init(flowConfig);
+
+
+        //This solves bug import db from Android 9 (API 28). Demo mode is failing for this bug.
+        //https://stackoverflow.com/questions/52232143/database-importing-problem-in-android-pie
+        //https://stackoverflow.com/questions/54051322/database-import-and-export-not-working-in-android-pie
+        //https://stackoverflow.com/questions/53659206/disabling-sqlite-write-ahead-logging-in-android-pie
+        //This requires change min SDK version from 15 to 16
+        ((AndroidDatabase)FlowManager.getWritableDatabase(AppDatabase.NAME))
+                .getDatabase().disableWriteAheadLogging();
 
         // Create indexes to accelerate the DB selects and avoid SQlite errors
         createDBIndexes();
