@@ -30,6 +30,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -67,6 +68,7 @@ import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.utils.Permissions;
 
 import java.io.IOException;
 import java.util.List;
@@ -214,6 +216,9 @@ public abstract class BaseActivity extends AppCompatActivity {
                     startActivityForResult(emailIntent, DUMP_REQUEST_CODE);
                 }
                 break;
+            case R.id.export_db_local_storage:
+                exportDBToLocalStorage();
+                break;
             case R.id.import_db:
                 debugMessage("Import db");
                 showFileChooser();
@@ -236,6 +241,51 @@ public abstract class BaseActivity extends AppCompatActivity {
     private void navigateToUrl(String url) {
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         startActivity(browserIntent);
+    }
+
+    private static final int MY_WRITE_EXTERNAL_STORAGE = 1;
+
+    private void exportDBToLocalStorage() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    MY_WRITE_EXTERNAL_STORAGE);
+        } else {
+            exportDBToLocalAndShowResult();
+        }
+    }
+
+    private void exportDBToLocalAndShowResult() {
+        debugMessage("Export db to local storage");
+        boolean resultOK = ExportData.dumpAndExportToLocalStorage(this);
+
+        if (resultOK){
+            Toast.makeText(this, ExportData.EXPORT_DATA_FILE + " " +
+                    getString(R.string.export_db_to_local_success_message), Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, getString(R.string.export_db_to_local_error_message),
+                    Toast.LENGTH_LONG).show();
+        }
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+            String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_WRITE_EXTERNAL_STORAGE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    exportDBToLocalAndShowResult();
+                }
+                return;
+            }
+        }
+
     }
 
     private static final int FILE_SELECT_CODE = 0;
@@ -292,6 +342,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (!PreferencesState.getInstance().isDevelopOptionActive()
                 || !AppSettingsBuilder.isDeveloperOptionsActive()) {
             MenuItem item = menu.findItem(R.id.export_db);
+            item.setVisible(false);
+            item = menu.findItem(R.id.export_db_local_storage);
             item.setVisible(false);
             item = menu.findItem(R.id.import_db);
             item.setVisible(false);

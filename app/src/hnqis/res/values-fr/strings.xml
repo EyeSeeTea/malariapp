@@ -197,6 +197,7 @@ Mensuelle"</string>
 <string name="developer_option_title">"Afficher les options développeur"</string>
 <string name="import_data_option_title">"Base de données d'importation"</string>
 <string name="export_data_option_title">"Exporter Base de données"</string>
+<string name="export_data_to_local_option_title">Exporter la base de données vers un stockage local</string>
 <string name="google_play_required">"Cette application nécessite des services Google Play. S\'il vous plaît installer les services Google Play sur votre appareil et de lancer cette application."</string>
 <string name="account_permission_denied">" Contacts permission refusée. Médias ne sera pas synchronisé"</string>
 <string name="feedback_media">"Voir la vidéo commentaires"</string>
@@ -289,4 +290,7 @@ Mensuelle"</string>
 <string name="feedback_not_sent">"L'URL de commentaires n'est pas disponible car l'enquête n'a pas encore été envoyée au serveur. Essayez de partager les commentaires plus tard."</string>
 <string name="server_version_error">"La version du serveur n'est pas supportée."</string>
 <string name="recommend_upgrade">"Veuillez mettre à jour l'application depuis Google Play."</string>
+
+<string name="export_db_to_local_success_message">exporté avec succès dans le dossier de téléchargement</string>
+<string name="export_db_to_local_error_message">"Une erreur s'est produite lors de l'exportation de la base de données"</string>
 </resources>

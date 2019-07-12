@@ -197,6 +197,7 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="developer_option_summary">Esta opção permite que as opções de desenvolvedor</string>
 <string name="developer_option_title">Mostrar opções de desenvolvedor</string>
 <string name="export_data_option_title">Banco de dados de exportação</string>
+<string name="export_data_to_local_option_title">Exportar DB para armazenamento local</string>
 <string name="import_data_option_title">"Importar banco de dados"</string>
 <string name="google_play_required">Este aplicativo requer serviços do Google Play. Por favor, instale Serviços do Google Play no seu dispositivo e iniciar este aplicativo.</string>
 <string name="account_permission_denied">Contatos permissão negada. A mídia não serão sincronizados</string>
@@ -291,4 +292,7 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="login_error_unsupported_server_version">A versão do servidor não é suportada</string>
 <string name="feedback_not_sent">"O URL de comentários não está disponível devido à pesquisa. Tente compartilhar o feedback novamente mais tarde."</string>
 <string name="recommend_upgrade">"Atualize o aplicativo do Google Play."</string>
+
+<string name="export_db_to_local_success_message">exportado com sucesso para a pasta de downloads</string>
+<string name="export_db_to_local_error_message">Ocorreu um erro ao exportar o banco de dados</string>
 </resources>
