@@ -21,7 +21,6 @@ package org.eyeseetea.malariacare.data.database.utils.planning;
 
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
-import org.eyeseetea.malariacare.utils.AUtils;
 
 import java.util.Date;
 
@@ -78,17 +77,6 @@ public class PlannedSurvey implements PlannedItem {
             return "";
         }
         return survey.isLowProductivity()?LOW_PRODUCTIVITY:HIGH_PRODUCTIVITY;
-    }
-
-    /**
-     * Returns the mainscore as a String
-     * @return
-     */
-    public String getQualityOfCare(){
-        if(survey==null || !survey.hasMainScore()){
-            return NO_QUALITY_OF_CARE;
-        }
-        return AUtils.round(survey.getMainScore());
     }
 
     public Date getNextAssesment(){

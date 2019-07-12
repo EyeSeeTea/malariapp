@@ -40,7 +40,7 @@ import org.eyeseetea.malariacare.data.database.utils.planning.PlannedHeader;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedItem;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedSurvey;
 import org.eyeseetea.malariacare.data.database.utils.planning.ScheduleListener;
-import org.eyeseetea.malariacare.utils.AUtils;
+import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
 import org.eyeseetea.malariacare.utils.DateParser;
 
 import java.util.ArrayList;
@@ -225,7 +225,7 @@ public class PlannedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         private TextView orgUnitTextView;
         private TextView programTextView;
         private TextView productivityTextView;
-        private TextView qualityOfCareTextView;
+        private TextView competencyTextView;
         private TextView scheduledDateTextView;
 
         public PlanItemViewHolder(View itemView) {
@@ -234,7 +234,7 @@ public class PlannedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             orgUnitTextView = itemView.findViewById(R.id.planning_org_unit);
             programTextView = itemView.findViewById(R.id.planning_program);
             productivityTextView = itemView.findViewById(R.id.planning_survey_prod);
-            qualityOfCareTextView = itemView.findViewById(R.id.planning_survey_qoc);
+            competencyTextView = itemView.findViewById(R.id.planning_survey_competency);
             scheduledDateTextView = itemView.findViewById(R.id.planning_survey_schedule_date);
         }
 
@@ -245,7 +245,24 @@ public class PlannedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             orgUnitTextView.setText(plannedSurvey.getOrgUnit());
             programTextView.setText(String.format("%s", plannedSurvey.getProgram()));
             productivityTextView.setText(plannedSurvey.getProductivity());
-            qualityOfCareTextView.setText(plannedSurvey.getQualityOfCare());
+
+            if (plannedSurvey.getSurvey().getCompetencyScoreClassification() ==
+                    CompetencyScoreClassification.NOT_AVAILABLE.getCode()) {
+                competencyTextView.setText(
+                        context.getString(R.string.competency_classification_not_available));
+            } else if (plannedSurvey.getSurvey().getCompetencyScoreClassification() ==
+                    CompetencyScoreClassification.COMPETENT.getCode()) {
+                competencyTextView.setText(
+                        context.getString(R.string.competency_classification_competent));
+            } else if (plannedSurvey.getSurvey().getCompetencyScoreClassification() ==
+                    CompetencyScoreClassification.COMPETENT_NEEDS_IMPROVEMENT.getCode()) {
+                competencyTextView.setText(
+                        context.getString(R.string.competency_classification_competent_improvement));
+            } else if (plannedSurvey.getSurvey().getCompetencyScoreClassification() ==
+                    CompetencyScoreClassification.NOT_COMPETENT.getCode()) {
+                competencyTextView.setText(
+                        context.getString(R.string.competency_classification_not_competent));
+            }
 
             DateParser dateParser = new DateParser();
             scheduledDateTextView.setText(

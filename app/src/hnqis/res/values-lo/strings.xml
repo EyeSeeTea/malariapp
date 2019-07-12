@@ -130,7 +130,7 @@
 <string name="dashboard_title_planned_type_next_30">"ໃນ 30 ວັນຕໍ່ໜ້າ"</string>
 <string name="dashboard_title_planned_type_future">"ຄັ້ງຕໍ່ໄປ"</string>
 <string name="dashboard_title_planned_productivity">"ຈຳນວນ"</string>
-<string name="dashboard_title_planned_quality_of_care">"ຄະແນນ"</string>
+<string name="dashboard_title_planned_competency">"ຄວາມສາມາດ"</string>
 <string name="dashboard_title_planned_next_qa">"ການປະເມີນຄຸນນະພາບຄັ້ງຕໍ່ໄປ"</string>
 <string name="assessment_sent_score">"ຄະແນນ"</string>
 <string name="feedback_show_only_failed">"ສະແດງສະເພາະຄຳຖາມທີ່ຕອບຜິດ"</string>
@@ -302,4 +302,9 @@
 <string name="login_error_unsupported_server_version">ເວີຊັນຂອງເຄື່ອງແມ່ຂ່າຍບໍ່ສະຫນັບສະຫນູນ</string>
 <string name="feedback_not_sent">"URL ຄວາມຄິດເຫັນບໍ່ສາມາດໃຊ້ໄດ້ເນື່ອງຈາກການສໍາຫຼວດ. ລອງແບ່ງປັນຄວາມຄິດເຫັນຕໍ່ອີກເທື່ອຫນຶ່ງ."</string>
 <string name="recommend_upgrade">"ກະລຸນາອັບເກດແອັບຯຈາກ Google Play."</string>
+
+<string name="competency_classification_not_available">ບໍ່​ສາ​ມາດ​ໃຊ້​ໄດ້</string>
+<string name="competency_classification_competent">ມີຄວາມສາມາດ</string>
+<string name="competency_classification_competent_improvement">ການປັບປຸງທີ່ມີຄວາມສາມາດ</string>
+<string name="competency_classification_not_competent">ບໍ່ມີຄວາມສາມາດ</string>
 </resources>

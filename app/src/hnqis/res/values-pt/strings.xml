@@ -117,7 +117,7 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="dashboard_title_planned_type_next_30">"Próximos 30 dias"</string>
 <string name="dashboard_title_planned_type_future">"Futuro"</string>
 <string name="dashboard_title_planned_productivity">"Prd"</string>
-<string name="dashboard_title_planned_quality_of_care">"QoC"</string>
+<string name="dashboard_title_planned_competency">"Competência"</string>
 <string name="dashboard_title_planned_next_qa">"Próx. aval."</string>
 <string name="assessment_sent_score">"Ponto"</string>
 <string name="feedback_show_only_failed">"Mostrar só falhou perguntas"</string>
@@ -289,4 +289,9 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="login_error_unsupported_server_version">A versão do servidor não é suportada</string>
 <string name="feedback_not_sent">"O URL de comentários não está disponível devido à pesquisa. Tente compartilhar o feedback novamente mais tarde."</string>
 <string name="recommend_upgrade">"Atualize o aplicativo do Google Play."</string>
+
+<string name="competency_classification_not_available">Não disponível</string>
+<string name="competency_classification_competent">Competente</string>
+<string name="competency_classification_competent_improvement">Comp. Melhoria</string>
+<string name="competency_classification_not_competent">Não é competente</string>
 </resources>
