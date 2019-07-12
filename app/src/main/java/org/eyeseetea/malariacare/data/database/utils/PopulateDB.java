@@ -28,6 +28,7 @@ import org.eyeseetea.malariacare.data.database.model.QuestionDB;
 import org.eyeseetea.malariacare.data.database.model.QuestionOptionDB;
 import org.eyeseetea.malariacare.data.database.model.QuestionRelationDB;
 import org.eyeseetea.malariacare.data.database.model.ScoreDB;
+import org.eyeseetea.malariacare.data.database.model.ServerDB;
 import org.eyeseetea.malariacare.data.database.model.ServerMetadataDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyScheduleDB;
@@ -388,7 +389,8 @@ public class PopulateDB {
                 ServerMetadataDB.class,
                 MediaDB.class,
                 ObservationDB.class,
-                ObservationValueDB.class
+                ObservationValueDB.class,
+                ServerDB.class
         );
     }
 
