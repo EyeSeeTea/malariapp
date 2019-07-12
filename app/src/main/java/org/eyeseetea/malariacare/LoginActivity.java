@@ -126,7 +126,7 @@ public class LoginActivity extends AbsLoginActivity {
         if(serverList.length<1) {
             return;
         }
-        ArrayAdapter serversListAdapter = new ArrayAdapter<>(getBaseContext(),android.R.layout.simple_spinner_item, serverList);
+        ArrayAdapter serversListAdapter = new ArrayAdapter<>(getBaseContext(),R.layout.simple_spinner_item, serverList);
         serverSpinner.setAdapter(serversListAdapter);
         serverSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
