@@ -10,10 +10,10 @@ import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 
-@Migration(version = 17, database = AppDatabase.class)
-public class Migration17AddNextScheduleDeltaMatrixProgramColumn extends BaseMigration {
+@Migration(version = 18, database = AppDatabase.class)
+public class Migration18AddNextScheduleDeltaMatrixProgramColumn extends BaseMigration {
 
-    public Migration17AddNextScheduleDeltaMatrixProgramColumn() {
+    public Migration18AddNextScheduleDeltaMatrixProgramColumn() {
         super();
     }
 
