@@ -57,14 +57,26 @@
         android:id="@+id/export_db"
         android:orderInCategory="108"
         android:title="@string/export_data_option_title" />
-    <item android:id="@+id/import_db" android:title="@string/import_data_option_title"
-        android:orderInCategory="110"/>
+    <item
+        android:id="@+id/export_db_local_storage"
+        android:orderInCategory="109"
+        android:title="@string/export_data_to_local_option_title" />
     <item
         android:id="@+id/action_pull"
-        android:orderInCategory="109"
+        android:orderInCategory="110"
         android:title="@string/settings_menu_pull" />
+    <item android:id="@+id/import_db" android:title="@string/import_data_option_title"
+        android:orderInCategory="111"/>
+    <item
+        android:id="@+id/learning_center"
+        android:orderInCategory="110"
+        android:title="@string/settings_menu_learning_center" />
+    <item
+        android:id="@+id/submit_ticket"
+        android:orderInCategory="111"
+        android:title="@string/settings_menu_submit_ticket" />
     <item
         android:id="@+id/action_logout"
-        android:orderInCategory="110"
+        android:orderInCategory="112"
         android:title="@string/settings_menu_logout" />
 </menu>
