@@ -206,10 +206,6 @@ public class MonitorBySurveyActionsPresenter {
         }
     }
 
-    private ServerMetadata getServerMetadata() {
-        return getServerMetadataUseCase.execute();
-    }
-
     private void loadSentObservations() throws Exception {
         observationsMap = new HashMap<>();
         List<Observation> observations =

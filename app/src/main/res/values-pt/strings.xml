@@ -259,7 +259,9 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="other">outros</string>
 <string name="feedback_not_sent">"O URL de comentários não está disponível devido à pesquisa. Tente compartilhar o feedback novamente mais tarde."</string>
 <string name="observations_invalid_error_message">"É obrigatório preencher pelo menos um plano de ação e cada plano de ação preenchido deve ter uma descrição, data de vencimento e responsabilidade"</string>
-
+<string name="observations_invalid_server_metadata_error_message">Ocorreu um erro, não há metadados necessários para criar um plano de ação</string>
+<string name="observations_no_critical_steps_missed_text">Nenhuma etapa crítica perdida</string>
+<string name="observations_no_non_critical_steps_missed_text">Nenhuma etapa não crítica perdida</string>
 <string name="survey_imcomplete_text">Incompleta</string>
 <string name="survey_complete_text">Completa</string>
 </resources>

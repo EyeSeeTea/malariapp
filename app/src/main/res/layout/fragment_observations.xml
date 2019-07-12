@@ -230,9 +230,15 @@
                 android:id="@+id/missed_critical_steps_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layoutManager="android.support.v7.widget.LinearLayoutManager">
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
 
-            </android.support.v7.widget.RecyclerView>
+
+            <org.eyeseetea.malariacare.views.CustomTextView
+                android:id="@+id/no_critical_steps_missed_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/observations_no_critical_steps_missed_text"
+                android:padding="16dp"/>
 
             <org.eyeseetea.malariacare.views.CustomTextView
                 style="@style/EyeSeeTheme.observation.valueTitle"
@@ -252,9 +258,14 @@
                 android:id="@+id/missed_non_critical_steps_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layoutManager="android.support.v7.widget.LinearLayoutManager">
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
 
-            </android.support.v7.widget.RecyclerView>
+            <org.eyeseetea.malariacare.views.CustomTextView
+                android:id="@+id/no_non_critical_steps_missed_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/observations_no_non_critical_steps_missed_text"
+                android:padding="16dp"/>
 
             <org.eyeseetea.malariacare.views.CustomTextView
                 style="@style/EyeSeeTheme.observation.valueTitle"
