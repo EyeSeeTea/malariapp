@@ -13,6 +13,7 @@ import org.eyeseetea.malariacare.data.database.model.ObsActionPlanDB;
 import org.eyeseetea.malariacare.data.database.model.QuestionDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
+import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
 import org.eyeseetea.malariacare.observables.ObservablePush;
 import org.eyeseetea.malariacare.utils.DateParser;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -71,8 +72,12 @@ public class ObsActionPlanPresenter {
                         DateParser.EUROPEAN_DATE_FORMAT);
             }
 
+            CompetencyScoreClassification classification =
+                    CompetencyScoreClassification.get(
+                            mSurvey.getCompetencyScoreClassification());
+
             mView.renderHeaderInfo(mSurvey.getOrgUnit().getName(), mSurvey.getMainScore(),
-                    formattedCompletionDate, formattedNextDate);
+                    formattedCompletionDate, formattedNextDate, classification);
         }
     }
 
@@ -293,7 +298,7 @@ public class ObsActionPlanPresenter {
         void renderBasicPlanInfo(String provider, String gasp, String actionPlan);
 
         void renderHeaderInfo(String orgUnitName, Float mainScore, String completionDate,
-                String nextDate);
+                String nextDate, CompetencyScoreClassification classification);
 
         void renderOtherSubAction(String action2);
 

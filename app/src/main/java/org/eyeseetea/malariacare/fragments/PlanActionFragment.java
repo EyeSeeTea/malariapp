@@ -20,7 +20,6 @@
 package org.eyeseetea.malariacare.fragments;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -40,7 +39,6 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 import org.eyeseetea.malariacare.data.database.model.ObsActionPlanDB;
 import org.eyeseetea.malariacare.data.database.model.QuestionDB;
@@ -48,8 +46,10 @@ import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
+import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.presentation.presenters.ObsActionPlanPresenter;
+import org.eyeseetea.malariacare.utils.CompetencyUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.DateParser;
 import org.eyeseetea.malariacare.views.CustomEditText;
@@ -68,6 +68,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
     private ArrayAdapter<CharSequence> mSubActionsAdapter;
 
     private CustomTextView mTotalScoreTextView;
+    private CustomTextView mCompetencyTextView;
     private CustomTextView mOrgUnitTextView;
     private CustomTextView mNextDateTextView;
     private CustomTextView mCompletionDateTextView;
@@ -134,78 +135,38 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
     }
 
     private void initEditTexts() {
-        mCustomProviderText = (CustomEditText) mRootView.findViewById(
+        mCustomProviderText = mRootView.findViewById(
                 R.id.plan_action_provider_text);
 
-        mCustomProviderText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
+        mCustomProviderText.addTextChangedListener(new CustomTextWatcher() {
             @Override
             public void afterTextChanged(Editable editable) {
                 presenter.providerChanged(editable.toString());
             }
         });
 
-        mCustomGapsEditText = (CustomEditText) mRootView.findViewById(
+        mCustomGapsEditText = mRootView.findViewById(
                 R.id.plan_action_gasp_edit_text);
-        mCustomGapsEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
+        mCustomGapsEditText.addTextChangedListener(new CustomTextWatcher() {
             @Override
             public void afterTextChanged(Editable editable) {
                 presenter.gaspChanged(editable.toString());
             }
         });
 
-        mCustomActionPlanEditText = (CustomEditText) mRootView.findViewById(
+        mCustomActionPlanEditText = mRootView.findViewById(
                 R.id.plan_action_action_plan_edit_text);
 
-        mCustomActionPlanEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
+        mCustomActionPlanEditText.addTextChangedListener(new CustomTextWatcher() {
             @Override
             public void afterTextChanged(Editable editable) {
                 presenter.actionPlanChanged(editable.toString());
             }
         });
-        mCustomActionOtherEditText = (CustomEditText) mRootView.findViewById(
+        mCustomActionOtherEditText = mRootView.findViewById(
                 R.id.plan_action_others_edit_text);
 
-        mCustomActionOtherEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
+        mCustomActionOtherEditText.addTextChangedListener(new CustomTextWatcher() {
             @Override
             public void afterTextChanged(Editable editable) {
                 presenter.subActionOtherChanged(editable.toString());
@@ -217,51 +178,32 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
         mGoBack = (ImageButton) mRootView.findViewById(
                 R.id.backToSentSurveys);
 
-        mGoBack.setOnClickListener(new View.OnClickListener() {
-                                       @Override
-                                       public void onClick(View v) {
-                                           getActivity().onBackPressed();
-                                       }
-                                   }
+        mGoBack.setOnClickListener(v -> getActivity().onBackPressed()
         );
     }
 
     private void initFAB() {
         initFabComplete(mRootView);
 
-        fabShare = (FloatingActionButton) mRootView.findViewById(R.id.fab_share);
+        fabShare = mRootView.findViewById(R.id.fab_share);
 
-        fabShare.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                presenter.shareObsActionPlan();
-            }
-        });
+        fabShare.setOnClickListener(view -> presenter.shareObsActionPlan());
     }
 
     private void initFabComplete(RelativeLayout llLayout) {
-        mFabComplete = (FloatingActionButton) llLayout.findViewById(R.id.fab_save);
+        mFabComplete = llLayout.findViewById(R.id.fab_save);
 
-        mFabComplete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new AlertDialog.Builder(getActivity())
-                        .setTitle(null)
-                        .setMessage(getActivity().getString(
-                                R.string.dialog_info_ask_for_completion_plan))
-                        .setPositiveButton(android.R.string.yes,
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface arg0, int arg1) {
-                                        presenter.completePlan();
-                                    }
-                                })
-                        .setNegativeButton(android.R.string.no, null).create().show();
-            }
-        });
+        mFabComplete.setOnClickListener(view -> new AlertDialog.Builder(getActivity())
+                .setTitle(null)
+                .setMessage(getActivity().getString(
+                        R.string.dialog_info_ask_for_completion_plan))
+                .setPositiveButton(android.R.string.yes,
+                        (arg0, arg1) -> presenter.completePlan())
+                .setNegativeButton(android.R.string.no, null).create().show());
     }
 
     private void initActions() {
-        actionSpinner = (CustomSpinner) mRootView.findViewById(R.id.plan_action_spinner);
+        actionSpinner = mRootView.findViewById(R.id.plan_action_spinner);
 
         mActionsAdapter =
                 new ArrayAdapter(mRootView.getContext(), android.R.layout.simple_spinner_item);
@@ -281,7 +223,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
     }
 
     private void initSubActions() {
-        secondaryActionSpinner = (CustomSpinner) mRootView.findViewById(
+        secondaryActionSpinner = mRootView.findViewById(
                 R.id.plan_action_secondary_spinner);
         secondaryView = mRootView.findViewById(R.id.secondaryView);
         otherView = mRootView.findViewById(R.id.otherView);
@@ -307,12 +249,13 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
     }
 
     private void initLayoutHeaders() {
-        mTotalScoreTextView = (CustomTextView) mRootView.findViewById(R.id.feedback_total_score);
-        mOrgUnitTextView = (CustomTextView) mRootView.findViewById(
+        mCompetencyTextView = mRootView.findViewById(R.id.feedback_competency);
+        mTotalScoreTextView = mRootView.findViewById(R.id.feedback_total_score);
+        mOrgUnitTextView = mRootView.findViewById(
                 R.id.org_unit);
-        mCompletionDateTextView = (CustomTextView) mRootView.findViewById(
+        mCompletionDateTextView = mRootView.findViewById(
                 R.id.completion_date);
-        mNextDateTextView = (CustomTextView) mRootView.findViewById(R.id.next_date);
+        mNextDateTextView = mRootView.findViewById(R.id.next_date);
     }
 
     @Override
@@ -379,16 +322,21 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
             mFabComplete.setImageResource(R.drawable.ic_action_uncheck);
         } else if (status == Constants.SURVEY_SENT) {
             mFabComplete.setImageResource(R.drawable.ic_double_check);
-        }else {
+        } else {
             mFabComplete.setImageResource(R.drawable.ic_action_check);
         }
     }
 
     @Override
     public void renderHeaderInfo(String orgUnitName, Float mainScore, String completionDate,
-            String nextDate) {
+            String nextDate,
+            CompetencyScoreClassification classification) {
 
         mOrgUnitTextView.setText(orgUnitName);
+
+        CompetencyUtils.setBackgroundByCompetency(mCompetencyTextView, classification);
+        CompetencyUtils.setTextColorByCompetency(mCompetencyTextView, classification);
+        CompetencyUtils.setTextByCompetency(mCompetencyTextView, classification);
 
         if (mainScore > 0f) {
             mTotalScoreTextView.setText(String.format("%.1f%%", mainScore));
@@ -441,7 +389,8 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
     public void enableShareButton() {
         fabShare.setEnabled(true);
         fabShare.getBackground().clearColorFilter();
-        int shareColor = ContextCompat.getColor(fabShare.getContext(), R.color.share_fab_background);
+        int shareColor = ContextCompat.getColor(fabShare.getContext(),
+                R.color.share_fab_background);
 
         fabShare.getBackground().setColorFilter(shareColor, PorterDuff.Mode.SRC_IN);
 
@@ -465,6 +414,16 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
         data += getString(R.string.on) + " " + dateParser.format
                 (survey.getCompletionDate(), DateParser.EUROPEAN_DATE_FORMAT)
                 + "\n";
+
+
+        CompetencyScoreClassification classification =
+                CompetencyScoreClassification.get(
+                        survey.getCompetencyScoreClassification());
+
+        String competencyText = CompetencyUtils.getTextByCompetency(classification, getActivity());
+        data += getString(R.string.dashboard_title_planned_competency).toUpperCase() + ": "
+                + competencyText + "\n";
+
         int roundedScore = Math.round(survey.getMainScore());
         data += getString(R.string.quality_of_care) + " " + roundedScore + "% \n";
 
@@ -472,8 +431,9 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
                 dateParser.format(SurveyPlanner.getInstance().findScheduledDateBySurvey(survey),
                         DateParser.EUROPEAN_DATE_FORMAT));
 
-        if(obsActionPlan.getProvider()!=null && !obsActionPlan.getProvider().isEmpty()) {
-            data += "\n\n" + getString(R.string.plan_action_provider_title) + " " + obsActionPlan.getProvider();
+        if (obsActionPlan.getProvider() != null && !obsActionPlan.getProvider().isEmpty()) {
+            data += "\n\n" + getString(R.string.plan_action_provider_title) + " "
+                    + obsActionPlan.getProvider();
         }
 
         data += "\n\n" + getString(R.string.plan_action_gasp_title) + " ";
@@ -536,4 +496,22 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
 
         System.out.println("data:" + data);
     }
+
+    class CustomTextWatcher implements TextWatcher {
+        @Override
+        public void beforeTextChanged (CharSequence charSequence,int i, int i1, int i2){
+
+        }
+
+        @Override
+        public void onTextChanged (CharSequence charSequence,int i, int i1, int i2){
+
+        }
+
+        @Override
+        public void afterTextChanged (Editable editable){
+        }
+    }
 }
+
+

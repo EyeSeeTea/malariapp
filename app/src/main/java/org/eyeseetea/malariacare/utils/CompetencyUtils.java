@@ -10,9 +10,9 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
 
 public class CompetencyUtils {
-    public static void setTextByCompetency(
-            TextView textView, CompetencyScoreClassification classification) {
-        Context context = textView.getContext();
+    public static String getTextByCompetency(
+            CompetencyScoreClassification classification, Context context) {
+
         String competencyText = "";
 
         if (classification == CompetencyScoreClassification.NOT_AVAILABLE) {
@@ -27,6 +27,14 @@ public class CompetencyUtils {
             competencyText = context.getString(
                     R.string.competency_classification_not_competent);
         }
+
+        return competencyText;
+    }
+
+    public static void setTextByCompetency(
+            TextView textView, CompetencyScoreClassification classification) {
+
+        String competencyText = getTextByCompetency(classification, textView.getContext());
 
         textView.setText(competencyText);
     }
