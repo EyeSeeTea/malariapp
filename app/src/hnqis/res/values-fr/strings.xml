@@ -115,7 +115,8 @@ Mensuelle"</string>
 <string name="dashboard_title_planned_type_overdue">"En retard"</string>
 <string name="dashboard_title_planned_type_next_30">"30 prochains jours"</string>
 <string name="dashboard_title_planned_type_future">"Futurs"</string>
-<string name="dashboard_title_planned_productivity">"Prd"</string>
+<string name="dashboard_title_planned_productivity_abreviation">"Prd"</string>
+<string name="dashboard_title_planned_productivity">"Productivité"</string>
 <string name="competency_title">"Compétence"</string>
 <string name="dashboard_title_planned_next_qa">"Proch. éval."</string>
 <string name="assessment_sent_competency">"Compétence"</string>
@@ -291,8 +292,21 @@ Mensuelle"</string>
 <string name="recommend_upgrade">"Veuillez mettre à jour l'application depuis Google Play."</string>
 
 
-<string name="competency_classification_not_available">Indisponible</string>
-<string name="competency_classification_competent">Competent</string>
-<string name="competency_classification_competent_improvement">Compétent</string>
-<string name="competency_classification_not_competent">Non compétent</string>
+<string name="competency_classification_not_available_name">"Indisponible"</string>
+<string name="competency_classification_competent_name">"Compétent"</string>
+<string name="competency_classification_competent_improvement_name">"Compétent, mais a besoin d'amélioration"</string>
+<string name="competency_classification_not_competent_name">"Non compétent"</string>
+
+<string name="competency_classification_not_available_description">"ND = Non disponible. L'enquête créée sur la dernière version de l'application et la compétence n'est pas disponible"</string>
+<string name="competency_classification_competent_description">"C = Compétent. Le fournisseur a respecté toutes les étapes critiques et ≥ 90% des étapes non critiques"</string>
+<string name="competency_classification_competent_improvement_description">"CDA = Compétent, mais doit être amélioré. Le fournisseur a correctement satisfait toutes les étapes critiques, mais entre 80% et 90% des étapes non critiques"</string>
+<string name="competency_classification_not_competent_description">"NC = non compétent. Le fournisseur a manqué au moins une étape critique ou, s'il n'y en a pas, moins de 80% des étapes non critiques"</string>
+
+<string name="competency_classification_not_available_abbreviation">"ND"</string>
+<string name="competency_classification_competent_abbreviation">"C</string>
+<string name="competency_classification_competent_improvement_abbreviation">"CDA"</string>
+<string name="competency_classification_not_competent_abbreviation">"NC"</string>
+
+<string name="productivity_low_name">Faible</string>
+<string name="productivity_high_name">Grande</string>
 </resources>

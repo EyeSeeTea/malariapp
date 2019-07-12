@@ -118,7 +118,8 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="dashboard_title_planned_type_overdue">"Vencido"</string>
 <string name="dashboard_title_planned_type_next_30">"Próximos 30 dias"</string>
 <string name="dashboard_title_planned_type_future">"Futuro"</string>
-<string name="dashboard_title_planned_productivity">"Prd"</string>
+<string name="dashboard_title_planned_productivity_abreviation">"Prd"</string>
+<string name="dashboard_title_planned_productivity">"Produtividade"</string>
 <string name="competency_title">"Competência"</string>
 <string name="dashboard_title_planned_next_qa">"Próx. aval."</string>
 <string name="assessment_sent_competency">"Competência"</string>
@@ -292,8 +293,21 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="feedback_not_sent">"O URL de comentários não está disponível devido à pesquisa. Tente compartilhar o feedback novamente mais tarde."</string>
 <string name="recommend_upgrade">"Atualize o aplicativo do Google Play."</string>
 
-<string name="competency_classification_not_available">Não disponível</string>
-<string name="competency_classification_competent">Competente</string>
-<string name="competency_classification_competent_improvement">Comp. Melhoria</string>
-<string name="competency_classification_not_competent">Não é competente</string>
+<string name="competency_classification_not_available_name">Não disponível</string>
+<string name="competency_classification_competent_name">Competente</string>
+<string name="competency_classification_competent_improvement_name">Competente, mas precisa de melhoriast</string>
+<string name="competency_classification_not_competent_name">Não é competente</string>
+
+<string name="competency_classification_not_available_description">NA = não disponível. Inquérito criado na última versão da aplicação e competência não está disponível</string>
+<string name="competency_classification_competent_description">C = Competente. O provedor cumpriu todas as etapas críticas e ≥ 90% das etapas não críticas</string>
+<string name="competency_classification_competent_improvement_description">CPM = Competente, mas precisa de melhorias. O provedor cumpriu todas as etapas críticas corretas, mas entre 80% e 90% das etapas não críticas</string>
+<string name="competency_classification_not_competent_description">NC = não competente. O provedor perdeu pelo menos uma etapa crítica ou, caso não haja etapas críticas, menos de 80% das etapas não críticas</string>
+
+<string name="competency_classification_not_available_abbreviation">ND</string>
+<string name="competency_classification_competent_abbreviation">C</string>
+<string name="competency_classification_competent_improvement_abbreviation">CPM</string>
+<string name="competency_classification_not_competent_abbreviation">NC</string>
+
+<string name="productivity_low_name">Baixa</string>
+<string name="productivity_high_name">Alta</string>
 </resources>

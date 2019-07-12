@@ -251,7 +251,7 @@ public class PlannedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 CompetencyScoreClassification.get(
                         plannedSurvey.getSurvey().getCompetencyScoreClassification());
 
-        CompetencyUtils.setTextByCompetency(competencyTextView , classification);
+        CompetencyUtils.setTextByCompetencyAbbreviation(competencyTextView , classification);
 
             DateParser dateParser = new DateParser();
             scheduledDateTextView.setText(

@@ -133,7 +133,8 @@
 <string name="dashboard_title_planned_type_overdue">"ហួសកំណត់"</string>
 <string name="dashboard_title_planned_type_next_30">"30 ថ្ងៃបន្ទាប់"</string>
 <string name="dashboard_title_planned_type_future">"អនាគត"</string>
-<string name="dashboard_title_planned_productivity">"Prd"</string>
+<string name="dashboard_title_planned_productivity_abreviation">"Prd"</string>
+<string name="dashboard_title_planned_productivity">"ផលិតភាព"</string>
 <string name="competency_title">"សមត្ថកិច្ច"</string>
 <string name="dashboard_title_planned_next_qa">"QA បន្ទាប់"</string>
 <string name="assessment_sent_competency">"សមត្ថកិច្ច"</string>
@@ -312,8 +313,21 @@
 <string name="recommend_upgrade">"សូមដំឡើងកំណែកម្មវិធីពី Google Play ។"</string>
 
 
-<string name="competency_classification_not_available">មិនអាច</string>
-<string name="competency_classification_competent">មានសមត្ថភាព</string>
-<string name="competency_classification_competent_improvement">ការកែលំអសមត្ថកិច្ច</string>
-<string name="competency_classification_not_competent">មិនមានសមត្ថភាព</string>
+<string name="competency_classification_not_available_name">មិនអាច</string>
+<string name="competency_classification_competent_name">មានសមត្ថភាព</string>
+<string name="competency_classification_competent_improvement_name">មានសមត្ថភាពប៉ុន្តែត្រូវការភាពប្រសើរឡើង</string>
+<string name="competency_classification_not_competent_name">មិនមានសមត្ថភាព</string>
+
+<string name="competency_classification_not_available_description">NA = មិនអាចប្រើបាន។ ការស្ទង់មតិដែលបានបង្កើតនៅលើកំណែកម្មវិធីចុងក្រោយនិងសមត្ថភាពមិនមាន</string>
+<string name="competency_classification_competent_description">C = មានសមត្ថកិច្ច។ អ្នកផ្តល់សេវានេះបានបំពេញតាមជំហានសំខាន់ៗទាំងអស់និង≥ 90% នៃជំហានមិនសំខាន់</string>
+<string name="competency_classification_competent_improvement_description">CNI = មានសមត្ថកិច្ចប៉ុន្តែត្រូវការភាពប្រសើរឡើង។ អ្នកផ្តល់សេវាបានបំពេញតាមជំហានសំខាន់ៗទាំងអស់ប៉ុន្តែវាមានចន្លោះពី 80% និង 90% នៃជំហានមិនសំខាន់</string>
+<string name="competency_classification_not_competent_description">NC = មិនមានសមត្ថភាព។ អ្នកផ្តល់សេវាបានខកខានយ៉ាងហោចណាស់ជំហានសំខាន់មួយឬក្នុងករណីដែលមិនមានជំហានសំខាន់ៗតិចជាងជំហានមិនសំខាន់ចំនួនតិចជាង 80%</string>
+
+<string name="competency_classification_not_available_abbreviation">NA</string>
+<string name="competency_classification_competent_abbreviation">C</string>
+<string name="competency_classification_competent_improvement_abbreviation">CNI</string>
+<string name="competency_classification_not_competent_abbreviation">NC</string>
+
+<string name="productivity_low_name">ទាប</string>
+<string name="productivity_high_name">ខ្ពស់</string>
 </resources>
