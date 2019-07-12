@@ -9,10 +9,10 @@ import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
 import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 
-@Migration(version = 16, database = AppDatabase.class)
-public class Migration16AddCompetencyScoreClassificationSurveyColumn extends BaseMigration {
+@Migration(version = 19, database = AppDatabase.class)
+public class Migration19AddCompetencyScoreClassificationSurveyColumn extends BaseMigration {
 
-    public Migration16AddCompetencyScoreClassificationSurveyColumn() {
+    public Migration19AddCompetencyScoreClassificationSurveyColumn() {
         super();
     }
 
