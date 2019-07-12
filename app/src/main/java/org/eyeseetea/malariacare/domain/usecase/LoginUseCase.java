@@ -77,28 +77,12 @@ public class LoginUseCase implements UseCase{
 
     @Override
     public void run() {
-        if(!credentials.isDemoCredentials()) {
-            try {
-                mServerInfoRepository.getServerInfo(ReadPolicy.NETWORK_FIRST);
-            } catch (Exception e) {
-                e.printStackTrace();
-                notifyOnNetworkError();
-                return;
-            }
-        }
-
+        getServerVersion();
         mUserAccountRepository.login(credentials, new IRepositoryCallback<UserAccount>() {
             @Override
             public void onSuccess(UserAccount userAccount) {
                 notifyOnLoginSuccess();
-
-                if(!credentials.isDemoCredentials()) {
-                    try {
-                        mServerRepository.getLoggedServer();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
+                getLoggedServer();
             }
 
             @Override
@@ -115,6 +99,28 @@ public class LoginUseCase implements UseCase{
                 }
             }
         });
+    }
+
+    private void getServerVersion() {
+        if(!credentials.isDemoCredentials()) {
+            try {
+                mServerInfoRepository.getServerInfo(ReadPolicy.NETWORK_FIRST);
+            } catch (Exception e) {
+                e.printStackTrace();
+                notifyOnNetworkError();
+                return;
+            }
+        }
+    }
+
+    private void getLoggedServer() {
+        if(!credentials.isDemoCredentials()) {
+            try {
+                mServerRepository.getLoggedServer();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void notifyOnLoginSuccess() {
