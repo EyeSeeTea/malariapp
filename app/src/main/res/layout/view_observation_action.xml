@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/new_blue">
+        <org.eyeseetea.malariacare.views.CustomTextView
+            style="@style/EyeSeeTheme.observation.valueActionTitle"
+            android:id="@+id/action_title_view"
+            android:layout_weight="0.89"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/plan_action_action_plan_title"
+            app:tDimension="@string/font_size_level2"
+            app:tFontName="@string/font_name_medium"/>
+
+        <ImageView
+            android:id="@+id/expand_collapse_view"
+            android:layout_weight="0.1"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_gravity="center"
+
+            android:src="@drawable/ic_media_arrow"/>
+    </LinearLayout>
+
+    <org.eyeseetea.malariacare.views.CustomEditText
+        android:id="@+id/description_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_feedback_top_bottom_radiobutton"
+        android:layout_marginLeft="@dimen/margin_lateral_feedback_radiobutton"
+        android:layout_marginRight="@dimen/margin_lateral_feedback_radiobutton"
+        android:layout_marginTop="@dimen/margin_feedback_top_bottom_radiobutton"
+        android:background="@android:color/transparent"
+        android:gravity="top"
+        android:inputType="textMultiLine"
+        android:minLines="5"
+        android:scrollbars="none" />
+
+    <LinearLayout
+        android:id="@+id/responsible_container_view"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/action_field_container_background"
+        android:layout_marginBottom="4dp">
+        <org.eyeseetea.malariacare.views.CustomTextView
+            android:layout_weight="0.5"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="@color/feedbackLightBlue"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:gravity="center_vertical"
+            android:paddingLeft="16dp"
+            android:text="@string/observation_action_responsible" />
+        <org.eyeseetea.malariacare.views.CustomEditText
+            android:id="@+id/responsible_view"
+            android:layout_weight="0.5"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:inputType="text"
+            android:background="@color/transparent"
+            android:gravity="center_vertical"
+            android:paddingLeft="16dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/due_date_container_view"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/action_field_container_background">
+        <org.eyeseetea.malariacare.views.CustomTextView
+            android:layout_weight="0.5"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="@color/feedbackLightBlue"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:gravity="center_vertical"
+            android:paddingLeft="16dp"
+            android:text="@string/observation_action_due_date"/>
+        <org.eyeseetea.malariacare.views.CustomEditText
+            android:id="@+id/due_date_view"
+            android:layout_weight="0.5"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:paddingLeft="16dp"
+            android:background="@color/transparent"
+            android:inputType="date"
+            android:focusable="false"
+            android:clickable="true"
+            android:maxLines="1"/>
+    </LinearLayout>
+</LinearLayout>

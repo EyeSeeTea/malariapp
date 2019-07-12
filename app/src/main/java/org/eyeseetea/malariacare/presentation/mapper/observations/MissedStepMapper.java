@@ -1,10 +1,10 @@
-package org.eyeseetea.malariacare.presentation.mapper;
+package org.eyeseetea.malariacare.presentation.mapper.observations;
 
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 import org.eyeseetea.malariacare.data.database.model.QuestionDB;
-import org.eyeseetea.malariacare.presentation.viewmodels.Observations.CompositeScoreViewModel;
-import org.eyeseetea.malariacare.presentation.viewmodels.Observations.MissedStepViewModel;
-import org.eyeseetea.malariacare.presentation.viewmodels.Observations.QuestionViewModel;
+import org.eyeseetea.malariacare.presentation.viewmodels.observations.CompositeScoreViewModel;
+import org.eyeseetea.malariacare.presentation.viewmodels.observations.MissedStepViewModel;
+import org.eyeseetea.malariacare.presentation.viewmodels.observations.QuestionViewModel;
 
 import java.util.ArrayList;
 import java.util.Iterator;

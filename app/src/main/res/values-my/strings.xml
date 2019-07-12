@@ -232,4 +232,6 @@
 <string name="plan_action_provider_title" ></string>
 <string name="scheduled"></string>
 <string name="feedback_progress_bar_text">Loading Survey scores... Please wait</string>
+<string name="observations_invalid_error_message"></string>
+
 </resources>

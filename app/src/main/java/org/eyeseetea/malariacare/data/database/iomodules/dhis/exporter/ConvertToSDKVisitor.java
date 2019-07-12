@@ -38,7 +38,6 @@ import org.eyeseetea.malariacare.data.database.model.ValueDB;
 import org.eyeseetea.malariacare.data.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
-import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.data.sync.IData;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
@@ -540,9 +539,9 @@ public class ConvertToSDKVisitor implements
                 survey.getCompetencyScoreClassification());
 
         //Competency
-        if (controlDataElementExistsInServer(overallCompetencyCode) &&
-                competency != CompetencyScoreClassification.NOT_AVAILABLE) {
-            addOrUpdateDataValue(overallCompetencyCode,competency.getCode());
+        if (controlDataElementExistsInServer(overallCompetencyCode) && survey.hasMainScore()) {
+            addOrUpdateDataValue(overallCompetencyCode,
+                    CompetencyUtils.getTextByCompetencyAbbreviation(competency, context));
         }
 
         //Competency competent

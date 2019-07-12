@@ -243,21 +243,10 @@
 <string name="plan_action_today_date">ແລ້ວສິ້ນ: %s</string>
 <string name="plan_action_next_date">ຕໍ່ໄປ: %s</string>
 <string name="plan_action_description">ອະທິບາຍສິ່ງທີ່ໄດ້ສັງເກດເຫັນໃນໄລຍະການຢ້ຽມຢາມເປັນແຜນການດໍາເນີນການສະເພາະໃດຫນຶ່ງສໍາລັບການແກ້ໄຂຊ່ອງຫວ່າງ. ຍັງໄດ້ສັງເກດການການປັບປຸງໃນໄລຍະຊ່ອງຫວ່າງລະບຸໃນໄລຍະຢ້ຽມຢາມທີ່ຜ່ານມາ</string>
-<string name="plan_action_action_plan_title">ແຜນປະຕິບັດງານ:</string>
-<string name="plan_action_action_title">ການປະຕິບັດ:</string>
-<string-array name="plan_action_dropdown_options">
-<item>"..."</item>
-<item>ການຝຶກອົບຮົມທົບທວນໄລຍະ SSV</item>
-<item>ການຝຶກອົບຮົມທົບທວນ Group ໃນວັນຕໍ່ມາ</item>
-<item>ແຜນກິດຈະກໍາ CME</item>
-<item>ສະແດງໃຫ້ເຫັນເຕັກນິກກັບລູກຄ້າ</item>
-<item>ອື່ນໆ</item>
-</string-array>
-<string-array name="plan_action_dropdown_suboptions">
-<item>...</item>
-<item>ເບິ່ງວິດີໂອ</item>
-<item>ຕິບັດເຕັກນິກການແຊກທີ່ເຫມາະສົມໃນເວລາຂອງການຢ້ຽມຢາມ</item>
-</string-array>
+<string name="plan_action_action_plan_title">ແຜນປະຕິບັດງານ</string>
+<string name="observation_action_due_date">ວັນ​ຄົບ​ກໍາ​ນົດ:</string>
+<string name="observation_action_responsible">ទទួលខុសត្រូវ:</string>
+
 <string name="supervision_on">ຜົນການຊີ້ນໍາກ່ຽວກັບ:</string>
 <string name="critical_steps">ຂັ້ນຕອນສໍາຄັນທີ່ພາດໂອກາດນີ້:</string>
 <string name="url_not_available">URL ຄວາມຄິດເຫັນບໍ່ສາມາດໃຊ້ໄດ້ເພາະວ່າການສໍາຫຼວດບໍ່ໄດ້ຖືກສົ່ງໄປຍັງເຄື່ອງແມ່ຂ່າຍ. ລອງແບ່ງປັນຄວາມຄິດເຫັນຕໍ່ອີກເທື່ອຫນຶ່ງ.</string>
@@ -281,4 +270,6 @@
 <string name="reschedule_title_multiple_survey">"ຈໍານວນການສໍາຫຼວດຈໍານວນ %1$d ຖືກກໍານົດໄວ້ສໍາລັບ OU %2$s"</string>
 <string name="other">ອື່ນໆ</string>
 <string name="feedback_not_sent">"URL ຄວາມຄິດເຫັນບໍ່ສາມາດໃຊ້ໄດ້ເນື່ອງຈາກການສໍາຫຼວດ. ລອງແບ່ງປັນຄວາມຄິດເຫັນຕໍ່ອີກເທື່ອຫນຶ່ງ."</string>
+<string name="observations_invalid_error_message">"ມັນຕ້ອງບັງຄັບໃຫ້ປະຕິບັດແຜນການປະຕິບັດຢ່າງຫນ້ອຍຫນຶ່ງແລະແຜນປະຕິບັດທີ່ເຕັມໄປແຕ່ລະຄົນຕ້ອງມີລາຍລະອຽດ, ວັນຄົບກໍານົດແລະຄວາມຮັບຜິດຊອບ"</string>
+
 </resources>

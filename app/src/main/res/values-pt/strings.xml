@@ -232,21 +232,9 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="plan_action_today_date">Concluído: %s</string>
 <string name="plan_action_next_date">Próxima: %s</string>
 <string name="plan_action_description">Descreva o que foi observado durante a visita um plano de ação específico para abordar lacunas. Observe também uma melhoria em relação a uma lacuna identificada durante a última visita</string>
-<string name="plan_action_action_plan_title">Plano de ação:</string>
-<string name="plan_action_action_title">Açao:</string>
-<string-array name="plan_action_dropdown_options">
-<item>"..."</item>
-<item>Treinamento de atualização durante SSV</item>
-<item>Treinamento de atualização de grupo em uma data posterior</item>
-<item>Planejar a atividade do CME</item>
-<item>Demonstrar técnica com o cliente</item>
-<item>Outros</item>
-</string-array>
-<string-array name="plan_action_dropdown_suboptions">
-<item>...</item>
-<item>Assista vídeo</item>
-<item>Pratique a técnica de inserção adequada no momento da visita</item>
-</string-array>
+<string name="plan_action_action_plan_title">Plano de ação</string>
+<string name="observation_action_due_date">Data de Vencimento:</string>
+<string name="observation_action_responsible">Responsável:</string>
 <string name="supervision_on">Supervisão de resultados em:</string>
 <string name="critical_steps">Passos críticos perdidos:</string>
     <string name="url_not_available">O URL de comentários não está disponível porque a pesquisa ainda não foi enviada para o servidor. Tente compartilhar o feedback novamente mais tarde.</string>
@@ -270,4 +258,5 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="reschedule_title_multiple_survey">"%1$d número de pesquisas sendo reprogramadas para OU %2$s"</string>
 <string name="other">outros</string>
 <string name="feedback_not_sent">"O URL de comentários não está disponível devido à pesquisa. Tente compartilhar o feedback novamente mais tarde."</string>
+<string name="observations_invalid_error_message">"É obrigatório preencher pelo menos um plano de ação e cada plano de ação preenchido deve ter uma descrição, data de vencimento e responsabilidade"</string>
 </resources>

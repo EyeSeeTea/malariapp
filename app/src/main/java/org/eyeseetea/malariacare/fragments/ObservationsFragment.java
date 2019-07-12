@@ -30,15 +30,13 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.datasources.ObservationLocalDataSource;
@@ -61,13 +59,15 @@ import org.eyeseetea.malariacare.layout.adapters.MissedStepsAdapter;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
-import org.eyeseetea.malariacare.presentation.presenters.ObservationsPresenter;
-import org.eyeseetea.malariacare.presentation.viewmodels.Observations.MissedStepViewModel;
-import org.eyeseetea.malariacare.presentation.viewmodels.Observations.ObservationViewModel;
+import org.eyeseetea.malariacare.presentation.presenters.observations.ObservationsPresenter;
+import org.eyeseetea.malariacare.presentation.viewmodels.observations.MissedStepViewModel;
+import org.eyeseetea.malariacare.presentation.viewmodels.observations.ObservationViewModel;
+import org.eyeseetea.malariacare.presentation.viewmodels.observations.ActionViewModel;
+import org.eyeseetea.malariacare.presentation.views.CustomTextWatcher;
+import org.eyeseetea.malariacare.presentation.views.observations.ActionView;
 import org.eyeseetea.malariacare.utils.CompetencyUtils;
 import org.eyeseetea.malariacare.utils.DateParser;
 import org.eyeseetea.malariacare.views.CustomEditText;
-import org.eyeseetea.malariacare.views.CustomSpinner;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.List;
@@ -77,22 +77,16 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
 
     public static final String TAG = ".ObservationsFragment";
     private static final String SURVEY_UID = "surveyUid";
-    private ArrayAdapter<CharSequence> mActionsAdapter;
-    private ArrayAdapter<CharSequence> mSubActionsAdapter;
+
 
     private CustomTextView mTotalScoreTextView;
     private CustomTextView mCompetencyTextView;
     private CustomTextView mOrgUnitTextView;
     private CustomTextView mNextDateTextView;
     private CustomTextView mCompletionDateTextView;
-    private View otherView;
-    private View secondaryView;
     private ImageButton mGoBack;
     private CustomEditText mCustomProviderText;
-    private CustomEditText mCustomActionPlanEditText;
-    private CustomEditText mCustomActionOtherEditText;
-    private CustomSpinner actionSpinner;
-    private CustomSpinner secondaryActionSpinner;
+
     private FloatingActionButton mFabComplete;
     private FloatingActionButton fabShare;
     private RelativeLayout mRootView;
@@ -101,6 +95,10 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
     private MissedStepsAdapter missedCriticalStepsAdapter;
     private RecyclerView missedNonCriticalStepsView;
     private MissedStepsAdapter missedNonCriticalStepsAdapter;
+
+    private ActionView action1View;
+    private ActionView action2View;
+    private ActionView action3View;
 
     public static ObservationsFragment newInstance(String surveyUid) {
         ObservationsFragment myFragment = new ObservationsFragment();
@@ -126,17 +124,40 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
 
         String surveyUid = getArguments().getString(SURVEY_UID);
 
-        initActions();
-        initSubActions();
         initLayoutHeaders();
-        initEditTexts();
+        initProviderTexts();
         initFAB();
+        initActions();
         initBackButton();
         initMissedCriticalStepsRecyclerView();
         initMissedNonCriticalStepsRecyclerView();
         initPresenter(surveyUid);
 
         return mRootView;
+    }
+
+    private void initActions() {
+        action1View = mRootView.findViewById(R.id.action1_view);
+        action1View.setTitle(
+                getActivity().getString(R.string.plan_action_action_plan_title) + " 1: ");
+
+        action1View.setOnActionChangedListener(
+                actionViewModel -> presenter.onAction1Changed(actionViewModel));
+
+        action2View = mRootView.findViewById(R.id.action2_view);
+        action2View.setTitle(
+                getActivity().getString(R.string.plan_action_action_plan_title) + " 2:");
+
+        action2View.setOnActionChangedListener(
+                actionViewModel -> presenter.onAction2Changed(actionViewModel));
+
+        action3View = mRootView.findViewById(R.id.action3_view);
+        action3View.setTitle(
+                getActivity().getString(R.string.plan_action_action_plan_title) + " 3:");
+
+        action3View.setOnActionChangedListener(
+                actionViewModel -> presenter.onAction3Changed(actionViewModel));
+
     }
 
     private void initMissedCriticalStepsRecyclerView() {
@@ -198,7 +219,7 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
 
     }
 
-    private void initEditTexts() {
+    private void initProviderTexts() {
         mCustomProviderText = mRootView.findViewById(
                 R.id.plan_action_provider_text);
 
@@ -206,25 +227,6 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
             @Override
             public void afterTextChanged(Editable editable) {
                 presenter.providerChanged(editable.toString());
-            }
-        });
-
-        mCustomActionPlanEditText = mRootView.findViewById(
-                R.id.plan_action_action_plan_edit_text);
-
-        mCustomActionPlanEditText.addTextChangedListener(new CustomTextWatcher() {
-            @Override
-            public void afterTextChanged(Editable editable) {
-                presenter.actionPlanChanged(editable.toString());
-            }
-        });
-        mCustomActionOtherEditText = mRootView.findViewById(
-                R.id.plan_action_others_edit_text);
-
-        mCustomActionOtherEditText.addTextChangedListener(new CustomTextWatcher() {
-            @Override
-            public void afterTextChanged(Editable editable) {
-                presenter.subActionOtherChanged(editable.toString());
             }
         });
     }
@@ -257,52 +259,6 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
                 .setNegativeButton(android.R.string.no, null).create().show());
     }
 
-    private void initActions() {
-        actionSpinner = mRootView.findViewById(R.id.plan_action_spinner);
-
-        mActionsAdapter =
-                new ArrayAdapter(mRootView.getContext(), android.R.layout.simple_spinner_item);
-
-        actionSpinner.setAdapter(mActionsAdapter);
-        actionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position,
-                    long l) {
-                presenter.onActionSelected(adapterView.getItemAtPosition(position).toString());
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
-        });
-    }
-
-    private void initSubActions() {
-        secondaryActionSpinner = mRootView.findViewById(
-                R.id.plan_action_secondary_spinner);
-        secondaryView = mRootView.findViewById(R.id.secondaryView);
-        otherView = mRootView.findViewById(R.id.otherView);
-
-        mSubActionsAdapter = new ArrayAdapter(
-                mRootView.getContext(), android.R.layout.simple_spinner_item);
-
-
-        secondaryActionSpinner.setAdapter(mSubActionsAdapter);
-
-
-        secondaryActionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position,
-                    long l) {
-                presenter.onSubActionSelected(adapterView.getItemAtPosition(position).toString());
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
-        });
-    }
-
     private void initLayoutHeaders() {
         mCompetencyTextView = mRootView.findViewById(R.id.feedback_competency);
         mTotalScoreTextView = mRootView.findViewById(R.id.feedback_total_score);
@@ -318,29 +274,18 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
     }
 
     @Override
-    public void loadActions(String[] actions) {
-        mActionsAdapter.addAll(actions);
-    }
-
-    @Override
-    public void loadSubActions(String[] subActions) {
-        mSubActionsAdapter.addAll(subActions);
-    }
-
-    @Override
     public void changeToReadOnlyMode() {
         mCustomProviderText.setEnabled(false);
-        mCustomActionPlanEditText.setEnabled(false);
-        mCustomActionOtherEditText.setEnabled(false);
-        actionSpinner.setEnabled(false);
-        secondaryActionSpinner.setEnabled(false);
+        action1View.setEnabled(false);
         mFabComplete.setEnabled(false);
+        action1View.setEnabled(false);
+        action2View.setEnabled(false);
+        action3View.setEnabled(false);
     }
 
     @Override
-    public void renderBasicObservations(String provider, String actionPlan) {
+    public void renderProvider(String provider) {
         mCustomProviderText.setText(provider);
-        mCustomActionPlanEditText.setText(actionPlan);
     }
 
     @Override
@@ -352,30 +297,6 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
     @Override
     public void renderMissedNonCriticalSteps(List<MissedStepViewModel> missedNonCriticalSteps) {
         missedNonCriticalStepsAdapter.setMissedSteps(missedNonCriticalSteps);
-    }
-
-    @Override
-    public void showSubActionOptionsView() {
-        secondaryActionSpinner.setVisibility(View.VISIBLE);
-        secondaryView.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void hideSubActionOptionsView() {
-        secondaryActionSpinner.setVisibility(View.GONE);
-        secondaryView.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void showSubActionOtherView() {
-        mCustomActionOtherEditText.setVisibility(View.VISIBLE);
-        otherView.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void hideSubActionOtherView() {
-        mCustomActionOtherEditText.setVisibility(View.GONE);
-        otherView.setVisibility(View.GONE);
     }
 
     @Override
@@ -418,20 +339,6 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
 
     }
 
-    @Override
-    public void selectAction(int index) {
-        actionSpinner.setSelection(index);
-    }
-
-    @Override
-    public void selectSubAction(int index) {
-        secondaryActionSpinner.setSelection(index);
-    }
-
-    @Override
-    public void renderOtherSubAction(String subAction) {
-        mCustomActionOtherEditText.setText(subAction);
-    }
 
     @Override
     public void shareByText(ObservationViewModel observationViewModel, SurveyDB survey,
@@ -466,6 +373,28 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
         fabShare.setEnabled(false);
     }
 
+    @Override
+    public void renderAction1(ActionViewModel action1) {
+        action1View.setAction(action1);
+    }
+
+    @Override
+    public void renderAction2(ActionViewModel action1) {
+        action2View.setAction(action1);
+    }
+
+    @Override
+    public void renderAction3(ActionViewModel action1) {
+        action3View.setAction(action1);
+    }
+
+    @Override
+    public void showInvalidObservationErrorMessage() {
+        Toast.makeText(getActivity(), R.string.observations_invalid_error_message,
+                Toast.LENGTH_LONG)
+                .show();
+    }
+
     private String extractTextData(ObservationViewModel observationViewModel, SurveyDB survey,
             String formattedNextScheduleDate,
             List<MissedStepViewModel> missedCriticalStepViewModels,
@@ -486,7 +415,8 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
                 CompetencyScoreClassification.get(
                         survey.getCompetencyScoreClassification());
 
-        String competencyText = CompetencyUtils.getTextByCompetencyName(classification, getActivity());
+        String competencyText = CompetencyUtils.getTextByCompetencyName(classification,
+                getActivity());
         data += getString(R.string.competency_title).toUpperCase() + ": "
                 + competencyText + "\n";
 
@@ -495,27 +425,46 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
 
         data += String.format(getString(R.string.plan_action_next_date),formattedNextScheduleDate);
 
-        if (observationViewModel.getProvider() != null && !observationViewModel.getProvider().isEmpty()) {
+        if (observationViewModel.getProvider() != null
+                && !observationViewModel.getProvider().isEmpty()) {
             data += "\n\n" + getString(R.string.plan_action_provider_title) + " "
                     + observationViewModel.getProvider();
         }
 
+        if (observationViewModel.getAction1() != null
+                && observationViewModel.getAction1().isValid()) {
+            data += "\n\n" + getString(R.string.plan_action_action_plan_title) + " 1: ";
 
-        data += "\n" + getString(R.string.plan_action_action_plan_title) + " ";
-
-        if (observationViewModel.getActionPlan() != null && !observationViewModel.getActionPlan().isEmpty()) {
-            data += observationViewModel.getActionPlan();
+            data += "\n   " + observationViewModel.getAction1().getDescription();
+            data += "\n   " + getString(R.string.observation_action_responsible) + " "
+                    + observationViewModel.getAction1().getResponsible();
+            data += "\n   " + getString(R.string.observation_action_due_date) + " "
+                    + new DateParser().format(observationViewModel.getAction1().getDueDate(),
+                    DateParser.AMERICAN_DATE_FORMAT);
         }
 
-        data += "\n" + getString(R.string.plan_action_action_title) + " ";
+        if (observationViewModel.getAction2() != null
+                && observationViewModel.getAction2().isValid()) {
+            data += "\n\n" + getString(R.string.plan_action_action_plan_title) + " 2: ";
 
-        if (observationViewModel.getAction1() != null && !observationViewModel.getAction1().isEmpty()) {
-            data += observationViewModel.getAction1();
+            data += "\n   " + observationViewModel.getAction2().getDescription();
+            data += "\n   " + getString(R.string.observation_action_responsible) + " "
+                    + observationViewModel.getAction2().getResponsible();
+            data += "\n   " + getString(R.string.observation_action_due_date) + " "
+                    + new DateParser().format(observationViewModel.getAction2().getDueDate(),
+                    DateParser.AMERICAN_DATE_FORMAT);
         }
 
+        if (observationViewModel.getAction3() != null
+                && observationViewModel.getAction3().isValid()) {
+            data += "\n\n" + getString(R.string.plan_action_action_plan_title) + " 3: ";
 
-        if (observationViewModel.getAction2() != null && !observationViewModel.getAction2().isEmpty()) {
-            data += "\n" + observationViewModel.getAction2();
+            data += "\n   " + observationViewModel.getAction3().getDescription();
+            data += "\n   " + getString(R.string.observation_action_responsible) + " "
+                    + observationViewModel.getAction3().getResponsible();
+            data += "\n   " + getString(R.string.observation_action_due_date) + " "
+                    + new DateParser().format(observationViewModel.getAction3().getDueDate(),
+                    DateParser.AMERICAN_DATE_FORMAT);
         }
 
         if (missedCriticalStepViewModels != null && missedCriticalStepViewModels.size() > 0) {
@@ -527,7 +476,7 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
                 if (missedStepViewModel.isCompositeScore()) {
                     data += missedStepViewModel.getLabel() + "\n";
                 } else {
-                    data += "-" + missedStepViewModel.getLabel()  + "\n";
+                    data += "-" + missedStepViewModel.getLabel() + "\n";
                 }
             }
         }
@@ -541,7 +490,7 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
                 if (missedStepViewModel.isCompositeScore()) {
                     data += missedStepViewModel.getLabel() + "\n";
                 } else {
-                    data += "-" + missedStepViewModel.getLabel()  + "\n";
+                    data += "-" + missedStepViewModel.getLabel() + "\n";
                 }
             }
         }
@@ -565,22 +514,6 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
         getActivity().startActivity(sendIntent);
 
         System.out.println("data:" + data);
-    }
-
-    class CustomTextWatcher implements TextWatcher {
-        @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-        }
-
-        @Override
-        public void afterTextChanged(Editable editable) {
-        }
     }
 }
 
