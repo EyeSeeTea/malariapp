@@ -62,6 +62,7 @@ import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.Progra
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramSurveyDict;
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramTabDict;
 import org.eyeseetea.malariacare.data.remote.sdk.SdkQueries;
+import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
 import org.eyeseetea.malariacare.domain.entity.NextScheduleDateConfiguration;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.DateParser;
@@ -507,6 +508,18 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             // ,dataValue.getValue()));
             //return;
         }
+
+        //-> competency
+        if (dataValue.getDataElement().equals(ServerMetadataDB.findControlDataElementUid(
+                PreferencesState.getInstance().getContext().getString(R.string.overall_competency_code)))) {
+            CompetencyScoreClassification competencyScoreClassification =
+                    CompetencyScoreClassification.getByCode(dataValue.getValue());
+
+            survey.setCompetencyScoreClassification(competencyScoreClassification.getId());
+            survey.save();
+            return;
+        }
+
 
         ValueDB value = new ValueDB();
         //Datavalue is a value from a question

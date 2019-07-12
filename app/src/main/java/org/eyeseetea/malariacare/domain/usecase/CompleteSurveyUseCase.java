@@ -63,7 +63,7 @@ public class CompleteSurveyUseCase implements UseCase {
                     competencyScoreCalculationDomainService.calculateClassification(
                             criticalFailedQuestions.size() > 0, nonCriticalStepsScore);
 
-            surveyDB.setCompetencyScoreClassification(competencyScoreClassification.getCode());
+            surveyDB.setCompetencyScoreClassification(competencyScoreClassification.getId());
 
             surveyDB.saveScore(getClass().getSimpleName());
             surveyDB.save();
