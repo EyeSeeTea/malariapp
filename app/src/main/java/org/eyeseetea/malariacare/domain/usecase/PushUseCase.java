@@ -19,7 +19,7 @@
 
 package org.eyeseetea.malariacare.domain.usecase;
 
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushController;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushDataController;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
@@ -29,7 +29,7 @@ import org.eyeseetea.malariacare.domain.entity.ServerInfo;
 import org.eyeseetea.malariacare.domain.common.ReadPolicy;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
-import org.eyeseetea.malariacare.domain.exception.SurveysToPushNotFoundException;
+import org.eyeseetea.malariacare.domain.exception.DataToPushNotFoundException;
 import org.eyeseetea.malariacare.domain.exception.push.PushReportException;
 import org.eyeseetea.malariacare.data.remote.SurveyChecker;
 
@@ -80,7 +80,7 @@ public class PushUseCase implements UseCase {
 
         mPushController.push(new IPushController.IPushControllerCallback() {
             @Override
-            public void onComplete(PushController.Kind kind) {
+            public void onComplete(PushDataController.Kind kind) {
                 System.out.println("PushUseCase Complete");
 
                 mPushController.changePushInProgress(false);
@@ -98,7 +98,7 @@ public class PushUseCase implements UseCase {
                 } else if (throwable instanceof ConversionException) {
                     mPushController.changePushInProgress(false);
                     notifyOnConversionError();
-                } else if (throwable instanceof SurveysToPushNotFoundException) {
+                } else if (throwable instanceof DataToPushNotFoundException) {
                     mPushController.changePushInProgress(false);
                     notifyOnSurveysNotFoundError();
                 } else if (throwable instanceof PushReportException){
@@ -136,7 +136,7 @@ public class PushUseCase implements UseCase {
         }
     }
 
-    private void notifyOnComplete(final PushController.Kind kind) {
+    private void notifyOnComplete(final PushDataController.Kind kind) {
         mMainExecutor.run(new Runnable() {
             @Override
             public void run() {
@@ -200,7 +200,7 @@ public class PushUseCase implements UseCase {
     }
 
     public interface Callback {
-        void onComplete(PushController.Kind kind);
+        void onComplete(PushDataController.Kind kind);
 
         void onPushError();
 

@@ -38,8 +38,10 @@ import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyScheduleDB;
 import org.eyeseetea.malariacare.data.database.utils.planning.ScheduleListener;
+import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardSettings;
+import org.eyeseetea.malariacare.utils.CompetencyUtils;
 import org.eyeseetea.malariacare.utils.DateParser;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
@@ -74,12 +76,12 @@ public class DashboardController {
     /**
      * Name of the current tab (identifier)
      */
-    String currentTab="";
+    String currentTab = "";
 
     /**
      * Title of the current tab
      */
-    String currentTabTitle ="";
+    String currentTabTitle = "";
 
     /**
      * Flag that tells if moving forwards or backwards
@@ -87,13 +89,13 @@ public class DashboardController {
     boolean navigatingBackwards;
 
 
-    public DashboardController(DashboardSettings dashboardSettings){
+    public DashboardController(DashboardSettings dashboardSettings) {
         this.dashboardSettings = dashboardSettings;
         this.modules = new ArrayList<>();
-        this.navigatingBackwards =false;
+        this.navigatingBackwards = false;
     }
 
-    public DashboardOrientation getOrientation(){
+    public DashboardOrientation getOrientation() {
         return dashboardSettings.getOrientation();
     }
 
@@ -101,28 +103,27 @@ public class DashboardController {
         return dashboardSettings.getResLayout();
     }
 
-    public  void addModule(ModuleController module){
+    public void addModule(ModuleController module) {
         module.setDashboardController(this);
         modules.add(module);
     }
 
-    public boolean isNavigatingBackwards(){
+    public boolean isNavigatingBackwards() {
         return this.navigatingBackwards;
     }
 
-    public void setNavigatingBackwards(boolean backwards){
-        this.navigatingBackwards=backwards;
+    public void setNavigatingBackwards(boolean backwards) {
+        this.navigatingBackwards = backwards;
     }
 
     /**
      * Finds a module by its name
-     * @param name
-     * @return
      */
-    public ModuleController getModuleByName(String name){
-        for(ModuleController module:modules){
-            if(module.getName().equals(name))
+    public ModuleController getModuleByName(String name) {
+        for (ModuleController module : modules) {
+            if (module.getName().equals(name)) {
                 return module;
+            }
         }
         return null;
     }
@@ -133,45 +134,45 @@ public class DashboardController {
 
     /**
      * Returns the moduleController for the first tab
-     * @return
      */
-    private ModuleController getFirstVisibleModule(){
-        for(ModuleController module:modules){
-            if(module.isVisible())
+    private ModuleController getFirstVisibleModule() {
+        for (ModuleController module : modules) {
+            if (module.isVisible()) {
                 return module;
+            }
         }
         return null;
     }
 
     /**
      * Returns the module in charge of the currently selected tab
-     * @return
      */
-    private ModuleController getCurrentModule(){
-        if(currentTab==null){
+    private ModuleController getCurrentModule() {
+        if (currentTab == null) {
             return null;
         }
-        for(ModuleController module:modules){
-            if(module.getName().equals(currentTab))
+        for (ModuleController module : modules) {
+            if (module.getName().equals(currentTab)) {
                 return module;
+            }
         }
         return null;
     }
 
-    public void onCreate(DashboardActivity dashboardActivity, Bundle savedInstanceState){
+    public void onCreate(DashboardActivity dashboardActivity, Bundle savedInstanceState) {
         this.dashboardActivity = dashboardActivity;
 
-        if(DashboardOrientation.VERTICAL.equals(getOrientation())) {
+        if (DashboardOrientation.VERTICAL.equals(getOrientation())) {
             onCreateVertical();
-        }else {
+        } else {
             onCreateHorizontal(savedInstanceState);
         }
         //First module sets the dashboard actionBar
         getFirstVisibleModule().setActionBarDashboard();
     }
 
-    public void onCreateVertical(){
-        for(ModuleController module: this.getModules()){
+    public void onCreateVertical() {
+        for (ModuleController module : this.getModules()) {
             module.onCreate(dashboardActivity);
             //XXX Really needed?
             module.reloadData();
@@ -179,8 +180,8 @@ public class DashboardController {
         currentTab = getFirstVisibleModule().getName();
     }
 
-    private void onCreateHorizontal(Bundle savedInstanceState){
-        for(ModuleController module: this.getModules()){
+    private void onCreateHorizontal(Bundle savedInstanceState) {
+        for (ModuleController module : this.getModules()) {
             module.onCreate(dashboardActivity);
         }
         onCreateTabHost(savedInstanceState);
@@ -190,19 +191,20 @@ public class DashboardController {
      * Init the container for all the tabs
      */
     private void onCreateTabHost(Bundle savedInstanceState) {
-        tabHost = (TabHost)dashboardActivity.findViewById(R.id.tabHost);
+        tabHost = (TabHost) dashboardActivity.findViewById(R.id.tabHost);
         tabHost.setup();
 
         //Add visible modules to tabhost
-        for(ModuleController moduleController: this.getModules()){
-            if(!moduleController.isVisible()) {
+        for (ModuleController moduleController : this.getModules()) {
+            if (!moduleController.isVisible()) {
                 continue;
             }
             addTab(moduleController);
         }
 
-        ModuleController firstModuleController=getFirstVisibleModule();
-        tabHost.getTabWidget().getChildAt(0).setBackgroundColor(firstModuleController.getBackgroundColor());
+        ModuleController firstModuleController = getFirstVisibleModule();
+        tabHost.getTabWidget().getChildAt(0).setBackgroundColor(
+                firstModuleController.getBackgroundColor());
         currentTab = firstModuleController.getName();
         currentTabTitle = firstModuleController.getTitle();
 
@@ -216,7 +218,8 @@ public class DashboardController {
 
                 //Reset tab colors
                 resetTabBackground();
-                tabHost.getCurrentTabView().setBackgroundColor(nextModuleController.getBackgroundColor());
+                tabHost.getCurrentTabView().setBackgroundColor(
+                        nextModuleController.getBackgroundColor());
 
                 //Update next Tab and title
                 currentTab = tabId;
@@ -236,56 +239,59 @@ public class DashboardController {
      * Just to avoid trying to navigate back from the dashboard. There's no parent activity here
      */
     public void onBackPressed() {
-        navigatingBackwards =true;
+        navigatingBackwards = true;
         ModuleController moduleController = getCurrentModule();
         moduleController.onBackPressed();
-        navigatingBackwards =false;
+        navigatingBackwards = false;
     }
 
     /**
      * Starts or edits the given survey from the planning tab
-     * @param survey
      */
-    public void onSurveySelected(SurveyDB survey){
+    public void onSurveySelected(SurveyDB survey) {
 
-        if(DashboardOrientation.VERTICAL.equals(getOrientation())){
+        if (DashboardOrientation.VERTICAL.equals(getOrientation())) {
             //Mark currentTab (only necessary for vertical orientation)
             currentTab = getModuleByName(AssessModuleController.getSimpleName()).getName();
             hideAssessVerticalTitle();
             hideImproveVerticalTitle();
             hideImprove();
-        }else{
+        } else {
             //Move into the assess tab
             tabHost.setCurrentTabByTag(AssessModuleController.getSimpleName());
         }
 
         //This action belongs to the assess module
-        AssessModuleController assessModuleController = (AssessModuleController)getModuleByName(AssessModuleController.getSimpleName());
+        AssessModuleController assessModuleController = (AssessModuleController) getModuleByName(
+                AssessModuleController.getSimpleName());
         assessModuleController.onSurveySelected(survey);
     }
+
     /**
      * Starts the org unit planning tab
-     * @param orgUnit
      */
     public void onOrgUnitSelected(OrgUnitDB orgUnit) {
-        PlanModuleController planModuleController = (PlanModuleController)getModuleByName(PlanModuleController.getSimpleName());
+        PlanModuleController planModuleController = (PlanModuleController) getModuleByName(
+                PlanModuleController.getSimpleName());
         planModuleController.onOrgUnitSelected(orgUnit);
     }
+
     /**
      * Starts the program planning tab
-     * @param program
      */
     public void onProgramSelected(ProgramDB program) {
-        PlanModuleController planModuleController = (PlanModuleController)getModuleByName(PlanModuleController.getSimpleName());
+        PlanModuleController planModuleController = (PlanModuleController) getModuleByName(
+                PlanModuleController.getSimpleName());
         planModuleController.onProgramSelected(program);
     }
+
     /**
      * Marks the given survey as selected
-     * @param survey
      */
-    public void onMarkAsCompleted(SurveyDB survey){
+    public void onMarkAsCompleted(SurveyDB survey) {
         //This action belongs to the assess module
-        AssessModuleController assessModuleController = (AssessModuleController)getModuleByName(AssessModuleController.getSimpleName());
+        AssessModuleController assessModuleController = (AssessModuleController) getModuleByName(
+                AssessModuleController.getSimpleName());
         assessModuleController.onMarkAsCompleted(survey);
     }
 
@@ -295,7 +301,7 @@ public class DashboardController {
     public void onNewSurvey() {
 
         //Vertical -> Hide improve module
-        if(DashboardOrientation.VERTICAL.equals(getOrientation())){
+        if (DashboardOrientation.VERTICAL.equals(getOrientation())) {
             //Mark currentTab (only necessary for vertical orientation)
             currentTab = getModuleByName(AssessModuleController.getSimpleName()).getName();
             hideAssessVerticalTitle();
@@ -304,22 +310,22 @@ public class DashboardController {
         }
 
         //Replace new survey
-        AssessModuleController assessModuleController = (AssessModuleController)getModuleByName(AssessModuleController.getSimpleName());
+        AssessModuleController assessModuleController = (AssessModuleController) getModuleByName(
+                AssessModuleController.getSimpleName());
         assessModuleController.onNewSurvey();
     }
 
     /**
      * Called when click on assess survey
-     * @param survey
      */
     public void onAssessSelected(SurveyDB survey) {
-        AssessModuleController assessModuleController = (AssessModuleController)getModuleByName(AssessModuleController.getSimpleName());
+        AssessModuleController assessModuleController = (AssessModuleController) getModuleByName(
+                AssessModuleController.getSimpleName());
         assessModuleController.assessModelDialog(survey);
     }
 
     /**
      * Called when entering feedback for the given survey
-     * @param survey
      */
     public void onFeedbackSelected(SurveyDB survey) {
         feedbackModelDialog(survey);
@@ -339,7 +345,7 @@ public class DashboardController {
         Button actionPlan = (Button) v.findViewById(R.id.action_plan);
         Button cancel = (Button) v.findViewById(R.id.cancel);
 
-        final AlertDialog alertDialog =builder.create();
+        final AlertDialog alertDialog = builder.create();
         viewFeedback.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -381,45 +387,45 @@ public class DashboardController {
     }
 
     public void scheduleHistoricLogDialog(final SurveyDB survey) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(dashboardActivity);
+        AlertDialog.Builder builder = new AlertDialog.Builder(dashboardActivity);
 
-            LayoutInflater inflater = dashboardActivity.getLayoutInflater();
+        LayoutInflater inflater = dashboardActivity.getLayoutInflater();
 
-            View v = inflater.inflate(R.layout.modal_schedule_plan_menu, null);
+        View v = inflater.inflate(R.layout.modal_schedule_plan_menu, null);
 
-            builder.setView(v);
+        builder.setView(v);
 
-            builder.setCancelable(false);
-            Button showHistory = (Button) v.findViewById(R.id.show_history);
-            Button cancel = (Button) v.findViewById(R.id.cancel);
+        builder.setCancelable(false);
+        Button showHistory = (Button) v.findViewById(R.id.show_history);
+        Button cancel = (Button) v.findViewById(R.id.cancel);
 
 
-            CustomTextView orgUnitTextView = (CustomTextView) v.findViewById(R.id.planned_org_unit);
-            orgUnitTextView.setText(survey.getOrgUnit().getName());
+        CustomTextView orgUnitTextView = (CustomTextView) v.findViewById(R.id.planned_org_unit);
+        orgUnitTextView.setText(survey.getOrgUnit().getName());
 
-            CustomTextView programTextView = (CustomTextView) v.findViewById(R.id.planned_program);
-            programTextView.setText(survey.getProgram().getName());
+        CustomTextView programTextView = (CustomTextView) v.findViewById(R.id.planned_program);
+        programTextView.setText(survey.getProgram().getName());
 
-            final AlertDialog alertDialog =builder.create();
-            showHistory.setOnClickListener(
-                    new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            showHistory(survey);
-                            alertDialog.dismiss();
-                        }
+        final AlertDialog alertDialog = builder.create();
+        showHistory.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showHistory(survey);
+                        alertDialog.dismiss();
                     }
-            );
-            cancel.setOnClickListener(
-                    new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            alertDialog.dismiss();
-                        }
+                }
+        );
+        cancel.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.dismiss();
                     }
+                }
 
-            );
-            alertDialog.show();
+        );
+        alertDialog.show();
         alertDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
     }
 
@@ -437,14 +443,14 @@ public class DashboardController {
         LinearLayout linearLayout = (LinearLayout) v.findViewById(R.id.log_content);
         View row = inflater.inflate(R.layout.item_list_dialog_header, null);
         linearLayout.addView(row);
-        for(SurveyScheduleDB surveyScheduleDB: survey.getSurveySchedules()){
+        for (SurveyScheduleDB surveyScheduleDB : survey.getSurveySchedules()) {
             row = inflater.inflate(R.layout.item_list_row_row, null);
             TextView comment = (TextView) row.findViewById(R.id.first_column);
             TextView date = (TextView) row.findViewById(R.id.second_column);
             comment.setText(surveyScheduleDB.getComment());
             DateParser dateParser = new DateParser();
             date.setText(dateParser.getEuropeanFormattedDate(surveyScheduleDB.getPrevious_date()));
-            linearLayout.addView(row );
+            linearLayout.addView(row);
         }
         final AlertDialog alertDialog = builder.create();
         cancel.setOnClickListener(
@@ -462,22 +468,23 @@ public class DashboardController {
 
     public void openFeedback(SurveyDB survey, boolean modifyFilter) {
         //Vertical -> Hide improve module
-        if(DashboardOrientation.VERTICAL.equals(getOrientation())){
+        if (DashboardOrientation.VERTICAL.equals(getOrientation())) {
             //Mark currentTab (only necessary for vertical orientation)
             currentTab = getModuleByName(ImproveModuleController.getSimpleName()).getName();
             hideAssessVerticalTitle();
             hideImproveVerticalTitle();
             hideAssess();
         }
-        if(DashboardOrientation.HORIZONTAL.equals(getOrientation())) {
+        if (DashboardOrientation.HORIZONTAL.equals(getOrientation())) {
             currentTab = getModuleByName(ImproveModuleController.getSimpleName()).getName();
-            if(!currentTab.equals(getModuleByName(ImproveModuleController.getSimpleName()))){
+            if (!currentTab.equals(getModuleByName(ImproveModuleController.getSimpleName()))) {
                 tabHost.setCurrentTabByTag(ImproveModuleController.getSimpleName());
             }
 
         }
 
-        ImproveModuleController improveModuleController = (ImproveModuleController)getModuleByName(ImproveModuleController.getSimpleName());
+        ImproveModuleController improveModuleController = (ImproveModuleController) getModuleByName(
+                ImproveModuleController.getSimpleName());
         improveModuleController.onFeedbackSelected(survey, modifyFilter);
         improveModuleController.setActionBarDashboardWithProgram();
     }
@@ -510,13 +517,42 @@ public class DashboardController {
         CustomTextView programTextView = (CustomTextView) v.findViewById(R.id.planned_program);
         programTextView.setText(survey.getProgram().getName());
 
+
+        String productivityText;
+
+        if (survey.isLowProductivity()){
+            productivityText = dashboardActivity.getString(R.string.productivity_low_name);
+        } else {
+            productivityText = dashboardActivity.getString(R.string.productivity_high_name);
+        }
+
+        CustomTextView productivityTextView = (CustomTextView) v.findViewById(
+                R.id.planned_productivity);
+        productivityTextView.setText(
+                dashboardActivity.getString(R.string.dashboard_title_planned_productivity) + ": " +
+                        productivityText);
+
+        CustomTextView nextDateTextView = (CustomTextView) v.findViewById(R.id.planned_next_date);
+        DateParser dateParser = new DateParser();
+        nextDateTextView.setText(
+                dashboardActivity.getString(R.string.dashboard_title_planned_next_qa) + ": " +
+                        dateParser.getEuropeanFormattedDate(survey.getScheduledDate()));
+
+        CustomTextView competencyTextView = v.findViewById(R.id.planned_competency);
+
+        CompetencyScoreClassification classification =
+                CompetencyScoreClassification.get(survey.getCompetencyScoreClassification());
+
+        competencyTextView.setText(dashboardActivity.getString(R.string.competency_title) + ": " +
+                CompetencyUtils.getTextByCompetencyDescription(classification, dashboardActivity));
+
         if (survey.isInProgress()) {
             add.setText(R.string.option_edit);
         } else {
             add.setText(R.string.add);
         }
 
-        final AlertDialog alertDialog =builder.create();
+        final AlertDialog alertDialog = builder.create();
         add.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -552,14 +588,14 @@ public class DashboardController {
         return alertDialog;
     }
 
-    public void reloadVertical(){
-        for(ModuleController module: getModules()){
-            if(!module.isVisible()){
+    public void reloadVertical() {
+        for (ModuleController module : getModules()) {
+            if (!module.isVisible()) {
                 continue;
             }
             module.init(dashboardActivity);
             module.showVerticalTitle();
-            module.replaceFragment(module.getLayout(),module.getFragment());
+            module.replaceFragment(module.getLayout(), module.getFragment());
             module.reloadData();
 
         }
@@ -568,10 +604,9 @@ public class DashboardController {
 
     /**
      * Adds the given module to the tabHost
-     * @param moduleController
      */
-    private void addTab(ModuleController moduleController){
-        String tabName=moduleController.getName();
+    private void addTab(ModuleController moduleController) {
+        String tabName = moduleController.getName();
         //Add tab to tabhost
         TabHost.TabSpec tab = tabHost.newTabSpec(tabName);
         tab.setContent(moduleController.getTabLayout());
@@ -583,24 +618,24 @@ public class DashboardController {
 
     /**
      * Last current tab is tagged with the given tabName
-     * @param tabName
      */
-    private void addTagToLastTab(String tabName){
-        TabWidget tabWidget=tabHost.getTabWidget();
-        int numTabs=tabWidget.getTabCount();
-        LinearLayout tabIndicator=(LinearLayout)tabWidget.getChildTabViewAt(numTabs - 1);
+    private void addTagToLastTab(String tabName) {
+        TabWidget tabWidget = tabHost.getTabWidget();
+        int numTabs = tabWidget.getTabCount();
+        LinearLayout tabIndicator = (LinearLayout) tabWidget.getChildTabViewAt(numTabs - 1);
 
-        ImageView imageView = (ImageView)tabIndicator.getChildAt(0);
+        ImageView imageView = (ImageView) tabIndicator.getChildAt(0);
         imageView.setTag(tabName);
     }
 
     /**
      * Vertical orientation requires to hide assess title when entering create, survey
      */
-    private void hideAssessVerticalTitle(){
-        AssessModuleController assessModuleController = (AssessModuleController)getModuleByName(AssessModuleController.getSimpleName());
+    private void hideAssessVerticalTitle() {
+        AssessModuleController assessModuleController = (AssessModuleController) getModuleByName(
+                AssessModuleController.getSimpleName());
         //No module -> nothing to hide
-        if(assessModuleController!=null){
+        if (assessModuleController != null) {
             assessModuleController.hideVerticalTitle();
         }
     }
@@ -608,10 +643,11 @@ public class DashboardController {
     /**
      * Vertical orientation requires hidden improve fragment while creating a survey
      */
-    private void hideAssess(){
-        AssessModuleController assessModuleController = (AssessModuleController)getModuleByName(AssessModuleController.getSimpleName());
+    private void hideAssess() {
+        AssessModuleController assessModuleController = (AssessModuleController) getModuleByName(
+                AssessModuleController.getSimpleName());
         //No module -> nothing to hide
-        if(assessModuleController!=null){
+        if (assessModuleController != null) {
             assessModuleController.hide();
         }
     }
@@ -619,10 +655,11 @@ public class DashboardController {
     /**
      * Vertical orientation requires hidden improve fragment while creating a survey
      */
-    private void hideImprove(){
-        ImproveModuleController improveModuleController = (ImproveModuleController)getModuleByName(ImproveModuleController.getSimpleName());
+    private void hideImprove() {
+        ImproveModuleController improveModuleController = (ImproveModuleController) getModuleByName(
+                ImproveModuleController.getSimpleName());
         //No module -> nothing to hide
-        if(improveModuleController!=null){
+        if (improveModuleController != null) {
             improveModuleController.hide();
         }
     }
@@ -630,10 +667,11 @@ public class DashboardController {
     /**
      * Vertical orientation requires to hide assess title when entering create, survey
      */
-    private void hideImproveVerticalTitle(){
-        ImproveModuleController improveModuleController = (ImproveModuleController)getModuleByName(ImproveModuleController.getSimpleName());
+    private void hideImproveVerticalTitle() {
+        ImproveModuleController improveModuleController = (ImproveModuleController) getModuleByName(
+                ImproveModuleController.getSimpleName());
         //No module -> nothing to hide
-        if(improveModuleController!=null){
+        if (improveModuleController != null) {
             improveModuleController.hideVerticalTitle();
         }
     }
@@ -641,15 +679,16 @@ public class DashboardController {
     /**
      * Reset tabs background color to transparent
      */
-    private void resetTabBackground(){
+    private void resetTabBackground() {
         Resources resources = dashboardActivity.getResources();
         for (int i = 0; i < tabHost.getTabWidget().getChildCount(); i++) {
-            tabHost.getTabWidget().getChildAt(i).setBackgroundColor(resources.getColor(R.color.transparent));
+            tabHost.getTabWidget().getChildAt(i).setBackgroundColor(
+                    resources.getColor(R.color.transparent));
         }
     }
 
     public void reloadActiveModule() {
-            ModuleController currentModuleController = getCurrentModule();
-            currentModuleController.onTabChanged();
+        ModuleController currentModuleController = getCurrentModule();
+        currentModuleController.onTabChanged();
     }
 }

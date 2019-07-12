@@ -17,6 +17,8 @@
 <string name="settings_menu_about">"អំពី"</string>
 <string name="settings_menu_configuration">"ការ​កំណត់ "</string>
 <string name="settings_menu_licence">"អាជ្ញាប័ណ្ណ"</string>
+<string name="settings_menu_learning_center">"មជ្ឈមណ្ឌលសិក្សារបស់ HNQIS"</string>
+<string name="settings_menu_submit_ticket">"ដាក់សំបុត្រ"</string>
 <string name="settings_menu_logout">"ចាកចេញ"</string>
 
 <!-- # dialogs -->
@@ -131,7 +133,8 @@
 <string name="dashboard_title_planned_type_overdue">"ហួសកំណត់"</string>
 <string name="dashboard_title_planned_type_next_30">"30 ថ្ងៃបន្ទាប់"</string>
 <string name="dashboard_title_planned_type_future">"អនាគត"</string>
-<string name="dashboard_title_planned_productivity">"Prd"</string>
+<string name="dashboard_title_planned_productivity_abreviation">"Prd"</string>
+<string name="dashboard_title_planned_productivity">"ផលិតភាព"</string>
 <string name="competency_title">"សមត្ថកិច្ច"</string>
 <string name="dashboard_title_planned_next_qa">"QA បន្ទាប់"</string>
 <string name="assessment_sent_competency">"សមត្ថកិច្ច"</string>
@@ -246,7 +249,6 @@
 <string name="plan_action_today_date">បានបញ្ចប់: %s</string>
 <string name="plan_action_next_date">ការវាយតម្លៃក្រោយ: %s</string>
 <string name="plan_action_description">រៀបរាប់ពីអ្វីដែលបានគេសង្កេតឃើញក្នុងអំឡុងពេលដំណើរទស្សនកិច្ចផែនការសកម្មភាពជាក់លាក់មួយសម្រាប់ការដោះស្រាយគម្លាតនេះ។ ចំណាំផងដែរប្រសើរជាងគម្លាតកំណត់អត្តសញ្ញាណក្នុងអំឡុងដំណើរទស្សនកិច្ចចុងក្រោយនេះជាមួយ</string>
-<string name="plan_action_gasp_title">គម្លាត:</string>
 <string name="plan_action_action_plan_title">ផែនការសកម្មភាព:</string>
 <string name="plan_action_action_title">សកម្មភាព:</string>
 <string-array name="plan_action_dropdown_options">
@@ -282,6 +284,8 @@
 <string name="html_text">"អត្ថបទដែលបានធ្វើទ្រង់ទ្រាយ "</string>
 <string name="schedule_title">"កំណត់កាលវិភាគស្ទង់មតិ"</string>
 <string name="monitor_no_surveys_to_show">"គ្មានការស្ទង់មតិដើម្បីបង្ហាញ"</string>
+<string name="plan_action_critical_steps_missed_title">"ជំហានសំខាន់ៗត្រូវបានគេរំលង:"</string>
+<string name="plan_action_non_critical_steps_missed_title" >"ជំហានមិនសំខាន់:"</string>
 <string name="plan_action_provider_title" >"ឈ្មោះក្រុមហ៊ុនផ្ដល់:"</string>
 <string name="health_facility">មជ្ឈមណ្ឌលវេជ្ជសាស្ត្រ</string>
 <string name="mandatory">"ចាំបាច់"</string>
@@ -324,4 +328,7 @@
 <string name="competency_classification_competent_abbreviation">C</string>
 <string name="competency_classification_competent_improvement_abbreviation">CNI</string>
 <string name="competency_classification_not_competent_abbreviation">NC</string>
+
+<string name="productivity_low_name">ទាប</string>
+<string name="productivity_high_name">ខ្ពស់</string>
 </resources>

@@ -28,7 +28,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.DashboardActivity;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushController;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushDataController;
 import org.eyeseetea.malariacare.observables.ObservablePush;
 import org.eyeseetea.malariacare.services.PushService;
 import org.eyeseetea.malariacare.services.SurveyService;
@@ -51,10 +51,10 @@ public class AlarmPushReceiver extends BroadcastReceiver {
     }
 
 
-    public static void isDoneSuccess(PushController.Kind kind) {
+    public static void isDoneSuccess(PushDataController.Kind kind) {
         Log.i(TAG, "isDoneSuccess");
         setFail(false);
-        if(kind.equals(PushController.Kind.EVENTS)) {
+        if(kind.equals(PushDataController.Kind.EVENTS)) {
             DashboardActivity.dashboardActivity.reloadActiveTab();
         }else {
             ObservablePush.getInstance().pushFinish();
@@ -80,7 +80,8 @@ public class AlarmPushReceiver extends BroadcastReceiver {
         Log.d(TAG, "onReceive asking for push");
         Intent pushIntent = new Intent(context, PushService.class);
         pushIntent.putExtra(SurveyService.SERVICE_METHOD, PushService.PENDING_SURVEYS_ACTION);
-        context.startService(pushIntent);
+
+        PushService.enqueueWork(context, pushIntent);
     }
 
     public void setPushAlarm(Context context) {

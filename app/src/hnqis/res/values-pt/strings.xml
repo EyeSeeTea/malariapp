@@ -15,6 +15,8 @@
 <string name="settings_menu_about">"Acerca de"</string>
 <string name="settings_menu_configuration">"Definições"</string>
 <string name="settings_menu_licence">"Licença"</string>
+<string name="settings_menu_learning_center">"Centro de aprendizado HNQIS"</string>
+<string name="settings_menu_submit_ticket">"Envie um ticket"</string>
 <string name="settings_menu_logout">"Logout"</string>
 
 <string name="dialog_title_delete_survey">"Apagar inquérito"</string>
@@ -116,7 +118,8 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="dashboard_title_planned_type_overdue">"Vencido"</string>
 <string name="dashboard_title_planned_type_next_30">"Próximos 30 dias"</string>
 <string name="dashboard_title_planned_type_future">"Futuro"</string>
-<string name="dashboard_title_planned_productivity">"Prd"</string>
+<string name="dashboard_title_planned_productivity_abreviation">"Prd"</string>
+<string name="dashboard_title_planned_productivity">"Produtividade"</string>
 <string name="competency_title">"Competência"</string>
 <string name="dashboard_title_planned_next_qa">"Próx. aval."</string>
 <string name="assessment_sent_competency">"Competência"</string>
@@ -234,7 +237,6 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="plan_action_today_date">Concluído: %s</string>
 <string name="plan_action_next_date">Próxima: %s</string>
 <string name="plan_action_description">Descreva o que foi observado durante a visita um plano de ação específico para abordar lacunas. Observe também uma melhoria em relação a uma lacuna identificada durante a última visita</string>
-<string name="plan_action_gasp_title">LACUNAS:</string>
 <string name="plan_action_action_plan_title">PLANO DE AÇÃO:</string>
 <string name="plan_action_action_title">AÇAO:</string>
 <string-array name="plan_action_dropdown_options">
@@ -267,6 +269,8 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="schedule_title">"Agendar pesquisa"</string>
 <string name="save">"Salvar"</string>
 <string name="monitor_no_surveys_to_show">"Nenhuma pesquisa para mostrar"</string>
+<string name="plan_action_critical_steps_missed_title">"PASSOS CRÍTICOS PERDIDOS:"</string>
+<string name="plan_action_non_critical_steps_missed_title" >"PASSOS NÃO CRÍTICOS PERDIDOS:"</string>
 <string name="plan_action_provider_title" >"NOME DO PROVEEDOR:"</string>
 <string name="health_facility">Centro médico</string>
 <string name="mandatory">"Obrigatório"</string>
@@ -304,4 +308,7 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="competency_classification_competent_abbreviation">C</string>
 <string name="competency_classification_competent_improvement_abbreviation">CPM</string>
 <string name="competency_classification_not_competent_abbreviation">NC</string>
+
+<string name="productivity_low_name">Baixa</string>
+<string name="productivity_high_name">Alta</string>
 </resources>
