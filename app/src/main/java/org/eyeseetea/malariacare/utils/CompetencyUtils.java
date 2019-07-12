@@ -31,6 +31,50 @@ public class CompetencyUtils {
         return competencyText;
     }
 
+    public static String getAbbreviationTextByCompetency(
+            CompetencyScoreClassification classification, Context context) {
+
+        String competencyText = "";
+
+        if (classification == CompetencyScoreClassification.NOT_AVAILABLE) {
+            competencyText = context.getString(
+                    R.string.competency_classification_not_available_abbreviation);
+        } else if (classification == CompetencyScoreClassification.COMPETENT) {
+            competencyText = context.getString(
+                    R.string.competency_classification_competent_abbreviation);
+        } else if (classification == CompetencyScoreClassification.COMPETENT_NEEDS_IMPROVEMENT) {
+            competencyText = context.getString(
+                    R.string.competency_classification_competent_improvement_abbreviation);
+        } else if (classification == CompetencyScoreClassification.NOT_COMPETENT) {
+            competencyText = context.getString(
+                    R.string.competency_classification_not_competent_abbreviation);
+        }
+
+        return competencyText;
+    }
+
+
+    public static int getColorByCompetency(
+            CompetencyScoreClassification classification, Context context) {
+
+        int color;
+
+        if (classification == CompetencyScoreClassification.COMPETENT) {
+            color = ContextCompat.getColor(context, R.color.competency_competent_background_color);
+        } else if (classification == CompetencyScoreClassification.COMPETENT_NEEDS_IMPROVEMENT) {
+            color = ContextCompat.getColor(context,
+                    R.color.competency_competent_improvement_background_color);
+        } else if (classification == CompetencyScoreClassification.NOT_COMPETENT) {
+            color = ContextCompat.getColor(context,
+                    R.color.competency_not_competent_background_color);
+        } else {
+            color = ContextCompat.getColor(context,
+                    R.color.competency_not_available_background_color);
+        }
+
+        return color;
+    }
+
     public static void setTextByCompetency(
             TextView textView, CompetencyScoreClassification classification) {
 
@@ -44,23 +88,7 @@ public class CompetencyUtils {
 
         Context context = textView.getContext();
 
-        if (classification == CompetencyScoreClassification.COMPETENT) {
-            textView.setBackgroundColor(
-                    ContextCompat.getColor(context, R.color.competency_competent_background_color));
-        } else if (classification == CompetencyScoreClassification.COMPETENT_NEEDS_IMPROVEMENT) {
-            textView.setBackgroundColor(ContextCompat.getColor(context,
-                    R.color.competency_competent_improvement_background_color));
-        } else if (classification == CompetencyScoreClassification.NOT_COMPETENT) {
-            textView.setBackgroundColor(ContextCompat.getColor(context,
-                    R.color.competency_not_competent_background_color));
-        } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                textView.setBackground(context.getDrawable(R.drawable.background_black_border));
-            } else {
-                textView.setBackgroundDrawable(
-                        ContextCompat.getDrawable(context, R.drawable.background_black_border));
-            }
-        }
+        textView.setBackgroundColor(getColorByCompetency(classification, context));
     }
 
     public static void setTextColorByCompetency(TextView textView,

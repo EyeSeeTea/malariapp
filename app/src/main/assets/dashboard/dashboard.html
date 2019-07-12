@@ -18,8 +18,8 @@
   -->
 <html xmlns="http://www.w3.org/1999/html">
 <head>
-    <meta name = "viewport" content = "width=device-width, initial-scale=1.0, user-scalable=no">
-    <script type = "text/javascript" src="Chart.min.js"> </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <script type="text/javascript" src="Chart.min.js"></script>
     <style>
         select{
             -webkit-appearance: none;
@@ -126,22 +126,23 @@
         td.red{
             background-color: #fa8900;
         }
-        td.greencircle>div{
-            margin: auto;
-            border-radius: 50%;
-            height: 100%;
-            color: white;
-            font-weight: bold;
-            margin-top: 5px;
-            padding: 3px;
-            margin-bottom: 5px;
-        }
         .centerspan{
             margin: auto;
             text-align: center;
             align-content: center;
         }
-        td.ambercircle>div{
+        td.competent-circle>div{
+            margin: auto;
+            border-radius: 50%;
+            height: 100%;
+            color: black;
+            font-weight: bold;
+            margin-top: 5px;
+            padding: 3px;
+            margin-bottom: 5px;
+            border: 1px solid white;
+        }
+        td.competent_improvement-circle>div{
             margin: auto;
             border-radius: 50%;
             height: 100%;
@@ -150,8 +151,9 @@
             margin-top: 5px;
             padding: 3px;
             margin-bottom: 5px;
+            border: 1px solid white;
         }
-        td.redcircle>div{
+        td.not-competent-circle>div{
             margin: auto;
             border-radius: 50%;
             height: 100%;
@@ -160,7 +162,20 @@
             margin-top: 5px;
             padding: 3px;
             margin-bottom: 5px;
+            border: 1px solid white;
         }
+        td.not_available-circle>div{
+            margin: auto;
+            border-radius: 50%;
+            height: 100%;
+            color: white;
+            font-weight: bold;
+            margin-top: 5px;
+            padding: 3px;
+            margin-bottom: 5px;
+            border: 1px solid white;
+        }
+
         .hide {
             display:none;
         }
@@ -176,6 +191,7 @@
             width: 98.5%!important;
             font-size: 40px!important;
         }
+
     </style>
 </head>
 <body>
@@ -194,24 +210,26 @@
 
 <!--Table 12 months-->
 
-<script type = "text/javascript" src="translated.messages.js"> </script>
+<script type="text/javascript" src="translated.messages.js"></script>
 
-<script type = "text/javascript" src="html.nodes.modifications.js"> </script>
+<script type="text/javascript" src="html.nodes.modifications.js"></script>
 
-<script type = "text/javascript" src="controller.js"> </script>
+<script type="text/javascript" src="controller.js"></script>
 
-<script type = "text/javascript" src="sent.month.js"> </script>
+<script type="text/javascript" src="sent.month.js"></script>
 
-<script type = "text/javascript" src="pie.tabgroup.js"> </script>
+<script type="text/javascript" src="pie.tabgroup.js"></script>
 
-<script type = "text/javascript" src="table.facilities.js"> </script>
+<script type="text/javascript" src="table.facilities.js"></script>
 
 <!-- pie template with table-->
-<script type = "text/html" id="pieTemplate">
+<script type="text/html" id="pieTemplate">
     <div id="graphicCanvas">
         <div style="display:inline;">
-            <canvas id="tabgroupCanvas###" style="width: 60%; height: auto; left:0px; display:block;"></canvas>
-            <div id="tabgroupLegend###" class="chart-legend" style="display:block;right: 0px;position: absolute;top: 10%; padding-right:20%;">
+            <canvas id="tabgroupCanvas###"
+                    style="width: 60%; height: auto; left:0px; display:block;"></canvas>
+            <div id="tabgroupLegend###" class="chart-legend"
+                 style="display:block;right: 0px;position: absolute;top: 10%; padding-right:20%;">
                 <span id="tabgroupTip###" class="tip" style="display:none;"></span>
             </div>
         </div>
@@ -232,9 +250,8 @@
         </div>
     </div>
 </script>
-<div  id="multipleEventLegend" style="display:none"><span class="line-title"></span></div>
+<div id="multipleEventLegend" style="display:none"><span class="line-title"></span></div>
 
 <span class="line-no-surveys" id="noSurveysText"></span>
-<script type = "text/javascript" src="mockData.js"> </script>
 </body>
 </html>

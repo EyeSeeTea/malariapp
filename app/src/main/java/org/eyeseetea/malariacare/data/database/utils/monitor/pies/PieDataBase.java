@@ -19,51 +19,37 @@
 
 package org.eyeseetea.malariacare.data.database.utils.monitor.pies;
 
+import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
 import org.eyeseetea.malariacare.domain.entity.ScoreType;
 import org.eyeseetea.malariacare.utils.Constants;
 
-/**
- * VO thats hold the info of a single pie chart
- * Created by arrizabalaga on 9/10/15.
- */
 public class PieDataBase {
 
-    static final String JSONFORMAT="{title:'%s',tip:'%s',idTabGroup: %d,valueA:%d,valueB:%d,valueC:%d,uidprogram:'%s',uidorgunit:'%s'}";
+    static final String JSONFORMAT =
+            "{title:'%s',tip:'%s',idTabGroup: %d,valueA:%d,valueB:%d,valueC:%d,valueNA:%d,uidprogram:'%s',"
+                    + "uidorgunit:'%s'}";
 
-    /**
-     * Number of surveys with A score
-     */
     int numA;
-    /**
-     * Number of surveys with B score
-     */
+
     int numB;
-    /**
-     * Number of surveys with C score
-     */
+
     int numC;
 
+    int numNA;
 
-    /**
-     * Increments the right counter according to the score
-     * @param score
-     */
-    public void incCounter(float score){
-        ScoreType scoreType = new ScoreType(score);
-        if(scoreType.getClassification() == ScoreType.Classification.LOW){
-            numC++;
-            return;
-        }
 
-        else if(scoreType.getClassification() == ScoreType.Classification.MEDIUM){
+    public void incCounter(int competencyScoreClassification) {
+        CompetencyScoreClassification classification =
+                CompetencyScoreClassification.get(competencyScoreClassification);
+
+        if (classification == CompetencyScoreClassification.COMPETENT) {
+            numA++;
+        } else if (classification == CompetencyScoreClassification.COMPETENT_NEEDS_IMPROVEMENT) {
             numB++;
-            return;
+        } else if (classification == CompetencyScoreClassification.NOT_COMPETENT) {
+            numC++;
+        } else {
+            numNA++;
         }
-
-        numA++;
-        return;
     }
-
-
-
 }

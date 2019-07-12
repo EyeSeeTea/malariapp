@@ -17,41 +17,43 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         valueC:0
     })
 */
-var green;
-var yellow;
-var red;
-var high;
-var medium;
-var low;
-var mediumPieFormatted;
+var competentColor;
+var competentImprovementColor;
+var notCompetentColor;
+var notAvailableColor;
+var competentText;
+var competentImprovementText;
+var notCompetentText;
+var notAvailableText;
+var competentAbbreviationText;
+var competentImprovementAbbreviationText;
+var notCompetentAbbreviationText;
+var notAvailableAbbreviationText;
 
 function setClassification(classification){
-    high=classification["high"];
-    medium=classification["medium"];
-    low=classification["low"];
-    mediumPieFormatted=classification["mediumFormatted"];
+    competentText=classification["competentText"];
+    competentImprovementText=classification["competentImprovementText"];
+    notCompetentText=classification["notCompetentText"];
+    notAvailableText=classification["notAvailableText"];
+    competentAbbreviationText=classification["competentAbbreviationText"];
+    competentImprovementAbbreviationText=classification["competentImprovementAbbreviationText"];
+    notCompetentAbbreviationText=classification["notCompetentAbbreviationText"];
+    notAvailableAbbreviationText=classification["notAvailableAbbreviationText"];
 }
-function setGreen(color){
-    green=color["color"];
-    //console.log(green);
-}
-function setGreen(color){
-    green=color["color"];
-    //console.log(green);
-}
-function setGreen(color){
-    green=color["color"];
-    //console.log(green);
+function setCompetentColor(color){
+    competentColor=color["color"];
 }
 
-function setYellow(color){
-    yellow=color["color"];
-    //console.log(yellow);
+function setCompetentImprovementColor(color){
+    competentImprovementColor=color["color"];
 }
 
-function setRed(color){
-    red=color["color"];
-    //console.log(red);
+function setNotCompetentColor(color){
+    notCompetentColor=color["color"];
+}
+
+function setNotAvailableColor(color){
+    notAvailableColor=color["color"];
 }
 
 function pieXTabGroupChart(data){
@@ -60,25 +62,26 @@ function pieXTabGroupChart(data){
     var legendDOMId="tabgroupLegend"+data.idTabGroup;
     var titleDOMId="tabgroupTitle"+data.idTabGroup;
     var titleTableDOMId="tabgroupTip"+data.idTabGroup;
-    //console.log(green);
-    //console.log(yellow);
-    //console.log(red);
 
     //Chart
     var ctx = document.getElementById(canvasDOMId).getContext("2d");
     var  myChart  = new Chart(ctx).Pie(
                                [{
                                    value: data.valueA,
-                                   color: green,
-                                   label: "A (>"+high+")"
+                                   color: competentColor,
+                                   label: "A ("+competentText+")"
                                }, {
                                    value: data.valueB,
-                                   color: yellow,
-                                   label: "B ("+mediumPieFormatted+")"
+                                   color: competentImprovementColor,
+                                   label: "B ("+competentImprovementText +")"
                                }, {
                                    value: data.valueC,
-                                   color: red,
-                                   label: "C (<"+low+")"
+                                   color: notCompetentColor,
+                                   label: "C ("+notCompetentText+")"
+                               }, {
+                                   value: data.valueNA,
+                                   color: notAvailableColor,
+                                   label: ""+notAvailableText+""
                                }],
                                {
                                    tooltipTemplate: "<%= value %>",

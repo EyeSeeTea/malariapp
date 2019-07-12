@@ -107,7 +107,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="left|center_vertical"
                         android:gravity="left"
-                        android:text="@string/dashboard_title_planned_competency"
+                        android:text="@string/competency_title"
                         android:textAppearance="?android:attr/textAppearanceLarge"
                         android:textColor="@color/black"
                         android:textSize="@dimen/xsmall_text_size"

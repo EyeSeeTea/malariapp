@@ -116,7 +116,7 @@ clínica"</string>
 <string name="dashboard_title_planned_type_next_30">"Próximos 30 días"</string>
 <string name="dashboard_title_planned_type_future">"Futuro"</string>
 <string name="dashboard_title_planned_productivity">"Prd"</string>
-<string name="dashboard_title_planned_competency">"Competencia"</string>
+<string name="competency_title">"Competencia"</string>
 <string name="dashboard_title_planned_next_qa">"Próx. eval."</string>
 <string name="assessment_sent_competency">"Competencia"</string>
 <string name="feedback_show_only_failed">"Mostrar solo preguntas falladas"</string>

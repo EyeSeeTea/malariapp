@@ -100,7 +100,7 @@
                 android:layout_gravity="center_vertical"
                 android:ellipsize="end"
                 android:lines="1"
-                android:text="@string/dashboard_title_planned_competency"
+                android:text="@string/competency_title"
                 android:textSize="@dimen/planing_text_size"
                 app:tDimension="@string/font_size_level1"
                 app:tFontName="@string/medium_font_name"/>

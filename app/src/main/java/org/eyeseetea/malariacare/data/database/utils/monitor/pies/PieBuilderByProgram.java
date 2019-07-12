@@ -76,7 +76,7 @@ public class PieBuilderByProgram extends PieBuilderBase {
             pieTabGroupDataMap.put(program, pieTabGroupData);
         }
         //Increment surveys for that month
-        pieTabGroupData.incCounter(survey.getMainScore());
+        pieTabGroupData.incCounter(survey.getCompetencyScoreClassification());
     }
     private List<PieDataByProgram> build(List<SurveyDB> surveys) {
         for(SurveyDB survey:surveys){

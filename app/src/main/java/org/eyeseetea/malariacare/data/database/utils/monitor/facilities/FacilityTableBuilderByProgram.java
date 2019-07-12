@@ -80,7 +80,7 @@ public class FacilityTableBuilderByProgram extends  FacilityTableBuilderBase {
         for(Map.Entry<String,FacilityTableDataByProgram> tableEntry:facilityTableDataMap.entrySet()){
             String cadena=tableEntry.getKey();
             FacilityTableDataByProgram facilityTableData=tableEntry.getValue();
-            inyectDataInChart(webView, cadena, facilityTableData.getAsJSON());
+            injectDataInChart(webView, cadena, facilityTableData.getAsJSON());
         }
 
     }
@@ -90,7 +90,7 @@ public class FacilityTableBuilderByProgram extends  FacilityTableBuilderBase {
         webView.loadUrl(String.format(JAVASCRIPT_SHOW));
     }
 
-    void inyectDataInChart(WebView webView, String id, String json) {
+    void injectDataInChart(WebView webView, String id, String json) {
         //Inyect in browser
         String updateChartJS=String.format(JAVASCRIPT_UPDATE_TABLE,id,json);
         Log.d(TAG, updateChartJS);

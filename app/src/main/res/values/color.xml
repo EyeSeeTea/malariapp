@@ -81,10 +81,10 @@
     <color name="competency_competent_background_color">#FFFFFF</color>
     <color name="competency_competent_improvement_background_color">#78909c</color>
     <color name="competency_not_competent_background_color">#283747</color>
-    <color name="competency_not_available_background_color">@android:color/transparent</color>
+    <color name="competency_not_available_background_color">#A0A0A0</color>
 
     <color name="competency_competent_text_color">@color/black</color>
     <color name="competency_competent_improvement_text_color">@color/white</color>
     <color name="competency_not_competent_text_color">@color/white</color>
-    <color name="competency_not_available_text_color">@color/black</color>
+    <color name="competency_not_available_text_color">@color/white</color>
 </resources>

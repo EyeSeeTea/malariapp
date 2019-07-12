@@ -117,7 +117,7 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="dashboard_title_planned_type_next_30">"Próximos 30 dias"</string>
 <string name="dashboard_title_planned_type_future">"Futuro"</string>
 <string name="dashboard_title_planned_productivity">"Prd"</string>
-<string name="dashboard_title_planned_competency">"Competência"</string>
+<string name="competency_title">"Competência"</string>
 <string name="dashboard_title_planned_next_qa">"Próx. aval."</string>
 <string name="assessment_sent_competency">"Competência"</string>
 <string name="feedback_show_only_failed">"Mostrar só falhou perguntas"</string>

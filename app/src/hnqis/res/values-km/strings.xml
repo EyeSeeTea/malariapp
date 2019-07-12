@@ -132,7 +132,7 @@
 <string name="dashboard_title_planned_type_next_30">"30 ថ្ងៃបន្ទាប់"</string>
 <string name="dashboard_title_planned_type_future">"អនាគត"</string>
 <string name="dashboard_title_planned_productivity">"Prd"</string>
-<string name="dashboard_title_planned_competency">"សមត្ថកិច្ច"</string>
+<string name="competency_title">"សមត្ថកិច្ច"</string>
 <string name="dashboard_title_planned_next_qa">"QA បន្ទាប់"</string>
 <string name="assessment_sent_competency">"សមត្ថកិច្ច"</string>
 <string name="feedback_show_only_failed">"បង្ហាញតែសំណួរដែលបរាជ័យ"</string>

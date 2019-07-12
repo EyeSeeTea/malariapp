@@ -52,7 +52,7 @@ public class FacilityColumnData {
         }
         String jsonObject="[";
         for(SurveyDB survey:surveys){
-            jsonObject+="{\"id\":"+survey.getId_survey() + ",\"score\":" +  survey.getMainScore()+"},";
+            jsonObject+="{\"id\":"+survey.getId_survey() + ",\"competency\":" +  survey.getCompetencyScoreClassification()+"},";
         }
         jsonObject=jsonObject.substring(0,jsonObject.lastIndexOf(","));
         jsonObject= jsonObject +"]";
