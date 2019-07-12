@@ -26,7 +26,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.JobIntentService;
 
 import org.eyeseetea.malariacare.data.database.datasources.ServerInfoLocalDataSource;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushController;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushDataController;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.remote.api.ServerInfoRemoteDataSource;
 import org.eyeseetea.malariacare.data.repositories.ServerInfoRepository;
@@ -77,7 +77,7 @@ public class PushService extends JobIntentService {
     public void onCreate() {
         super.onCreate();
 
-        pushController = new PushController(getApplicationContext());
+        pushController = new PushDataController(getApplicationContext());
 
         IMainExecutor mainExecutor = new UIThreadExecutor();
         IAsyncExecutor asyncExecutor = new AsyncExecutor();

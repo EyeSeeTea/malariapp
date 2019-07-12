@@ -39,18 +39,30 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.data.database.datasources.ObservationLocalDataSource;
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
-import org.eyeseetea.malariacare.data.database.model.ObsActionPlanDB;
 import org.eyeseetea.malariacare.data.database.model.QuestionDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
+import org.eyeseetea.malariacare.data.repositories.ObservationRepository;
+import org.eyeseetea.malariacare.data.repositories.ServerMetadataRepository;
+import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
+import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IObservationRepository;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IServerMetadataRepository;
 import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
+import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
+import org.eyeseetea.malariacare.domain.usecase.GetObservationBySurveyUidUseCase;
+import org.eyeseetea.malariacare.domain.usecase.GetServerMetadataUseCase;
+import org.eyeseetea.malariacare.domain.usecase.SaveObservationUseCase;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
-import org.eyeseetea.malariacare.presentation.presenters.ObsActionPlanPresenter;
+import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
+import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
+import org.eyeseetea.malariacare.presentation.presenters.ObservationsPresenter;
+import org.eyeseetea.malariacare.presentation.viewmodels.ObservationViewModel;
 import org.eyeseetea.malariacare.utils.CompetencyUtils;
-import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.DateParser;
 import org.eyeseetea.malariacare.views.CustomEditText;
 import org.eyeseetea.malariacare.views.CustomSpinner;
@@ -59,11 +71,11 @@ import org.eyeseetea.malariacare.views.CustomTextView;
 import java.util.Iterator;
 import java.util.List;
 
-public class PlanActionFragment extends Fragment implements IModuleFragment,
-        ObsActionPlanPresenter.View {
+public class ObservationsFragment extends Fragment implements IModuleFragment,
+        ObservationsPresenter.View {
 
-    public static final String TAG = ".PlanActionFragment";
-    private static final String SURVEY_ID = "surveyId";
+    public static final String TAG = ".ObservationsFragment";
+    private static final String SURVEY_UID = "surveyUid";
     private ArrayAdapter<CharSequence> mActionsAdapter;
     private ArrayAdapter<CharSequence> mSubActionsAdapter;
 
@@ -84,13 +96,13 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
     private FloatingActionButton mFabComplete;
     private FloatingActionButton fabShare;
     private RelativeLayout mRootView;
-    private ObsActionPlanPresenter presenter;
+    private ObservationsPresenter presenter;
 
-    public static PlanActionFragment newInstance(long surveyId) {
-        PlanActionFragment myFragment = new PlanActionFragment();
+    public static ObservationsFragment newInstance(String surveyUid) {
+        ObservationsFragment myFragment = new ObservationsFragment();
 
         Bundle args = new Bundle();
-        args.putLong(SURVEY_ID, surveyId);
+        args.putString(SURVEY_UID, surveyUid);
         myFragment.setArguments(args);
 
         return myFragment;
@@ -110,15 +122,15 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
         mRootView = (RelativeLayout) inflater.inflate(R.layout.plan_action_fragment, container,
                 false);
 
-        long surveyId = getArguments().getLong(SURVEY_ID);
+        String surveyUid = getArguments().getString(SURVEY_UID);
 
-        initLayoutHeaders();
-        initEditTexts();
         initActions();
         initSubActions();
+        initLayoutHeaders();
+        initEditTexts();
         initFAB();
         initBackButton();
-        initPresenter(surveyId);
+        initPresenter(surveyUid);
 
         return mRootView;
     }
@@ -129,9 +141,33 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
         super.onDestroy();
     }
 
-    private void initPresenter(long surveyId) {
-        presenter = new ObsActionPlanPresenter(getActivity());
-        presenter.attachView(this, surveyId);
+    private void initPresenter(String surveyUid) {
+        IAsyncExecutor asyncExecutor = new AsyncExecutor();
+        IMainExecutor mainExecutor = new UIThreadExecutor();
+        ObservationLocalDataSource observationLocalDataSource = new ObservationLocalDataSource();
+
+        IObservationRepository observationRepository =
+                new ObservationRepository(observationLocalDataSource);
+
+        GetObservationBySurveyUidUseCase getObservationBySurveyUidUseCase =
+                new GetObservationBySurveyUidUseCase(asyncExecutor, mainExecutor,
+                        observationRepository);
+
+        IServerMetadataRepository serverMetadataRepository =
+                new ServerMetadataRepository(getActivity());
+
+        GetServerMetadataUseCase getServerMetadataUseCase =
+                new GetServerMetadataUseCase(asyncExecutor, mainExecutor, serverMetadataRepository);
+
+        SaveObservationUseCase saveObservationUseCase =
+                new SaveObservationUseCase(asyncExecutor, mainExecutor, observationRepository);
+
+        presenter = new ObservationsPresenter(getActivity(),
+                getObservationBySurveyUidUseCase, getServerMetadataUseCase, saveObservationUseCase);
+
+
+        presenter.attachView(this, surveyUid);
+
     }
 
     private void initEditTexts() {
@@ -198,7 +234,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
                 .setMessage(getActivity().getString(
                         R.string.dialog_info_ask_for_completion_plan))
                 .setPositiveButton(android.R.string.yes,
-                        (arg0, arg1) -> presenter.completePlan())
+                        (arg0, arg1) -> presenter.completeObservation())
                 .setNegativeButton(android.R.string.no, null).create().show());
     }
 
@@ -284,7 +320,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
     }
 
     @Override
-    public void renderBasicPlanInfo(String provider, String gasp, String actionPlan) {
+    public void renderBasicObservations(String provider, String gasp, String actionPlan) {
         mCustomProviderText.setText(provider);
         mCustomGapsEditText.setText(gasp);
         mCustomActionPlanEditText.setText(actionPlan);
@@ -299,7 +335,6 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
     @Override
     public void hideSubActionOptionsView() {
         secondaryActionSpinner.setVisibility(View.GONE);
-        secondaryActionSpinner.setSelection(0);
         secondaryView.setVisibility(View.GONE);
     }
 
@@ -312,15 +347,14 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
     @Override
     public void hideSubActionOtherView() {
         mCustomActionOtherEditText.setVisibility(View.GONE);
-        mCustomActionOtherEditText.setText("");
         otherView.setVisibility(View.GONE);
     }
 
     @Override
-    public void updateStatusView(Integer status) {
-        if (status.equals(Constants.SURVEY_IN_PROGRESS)) {
+    public void updateStatusView(ObservationStatus status) {
+        if (status.equals(ObservationStatus.IN_PROGRESS)) {
             mFabComplete.setImageResource(R.drawable.ic_action_uncheck);
-        } else if (status == Constants.SURVEY_SENT) {
+        } else if (status.equals(ObservationStatus.SENT)) {
             mFabComplete.setImageResource(R.drawable.ic_double_check);
         } else {
             mFabComplete.setImageResource(R.drawable.ic_action_check);
@@ -372,9 +406,9 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
     }
 
     @Override
-    public void shareByText(ObsActionPlanDB obsActionPlan, SurveyDB survey,
+    public void shareByText(ObservationViewModel observationViewModel, SurveyDB survey,
             List<QuestionDB> criticalQuestions, List<CompositeScoreDB> compositeScoresTree) {
-        String data = extractTextData(obsActionPlan, survey, criticalQuestions,
+        String data = extractTextData(observationViewModel, survey, criticalQuestions,
                 compositeScoresTree);
 
         shareData(data);
@@ -402,7 +436,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
         fabShare.setEnabled(false);
     }
 
-    private String extractTextData(ObsActionPlanDB obsActionPlan, SurveyDB survey,
+    private String extractTextData(ObservationViewModel observationViewModel, SurveyDB survey,
             List<QuestionDB> criticalQuestions, List<CompositeScoreDB> compositeScoresTree) {
         String data =
                 PreferencesState.getInstance().getContext().getString(
@@ -431,32 +465,32 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
                 dateParser.format(SurveyPlanner.getInstance().findScheduledDateBySurvey(survey),
                         DateParser.EUROPEAN_DATE_FORMAT));
 
-        if (obsActionPlan.getProvider() != null && !obsActionPlan.getProvider().isEmpty()) {
+        if (observationViewModel.getProvider() != null && !observationViewModel.getProvider().isEmpty()) {
             data += "\n\n" + getString(R.string.plan_action_provider_title) + " "
-                    + obsActionPlan.getProvider();
+                    + observationViewModel.getProvider();
         }
 
         data += "\n\n" + getString(R.string.plan_action_gasp_title) + " ";
 
-        if (obsActionPlan.getGaps() != null && !obsActionPlan.getGaps().isEmpty()) {
-            data += obsActionPlan.getGaps();
+        if (observationViewModel.getGaps() != null && !observationViewModel.getGaps().isEmpty()) {
+            data += observationViewModel.getGaps();
         }
 
         data += "\n" + getString(R.string.plan_action_action_plan_title) + " ";
 
-        if (obsActionPlan.getAction_plan() != null && !obsActionPlan.getAction_plan().isEmpty()) {
-            data += obsActionPlan.getAction_plan();
+        if (observationViewModel.getActionPlan() != null && !observationViewModel.getActionPlan().isEmpty()) {
+            data += observationViewModel.getActionPlan();
         }
 
         data += "\n" + getString(R.string.plan_action_action_title) + " ";
 
-        if (obsActionPlan.getAction1() != null && !obsActionPlan.getAction1().isEmpty()) {
-            data += obsActionPlan.getAction1();
+        if (observationViewModel.getAction1() != null && !observationViewModel.getAction1().isEmpty()) {
+            data += observationViewModel.getAction1();
         }
 
 
-        if (obsActionPlan.getAction2() != null && !obsActionPlan.getAction2().isEmpty()) {
-            data += "\n" + obsActionPlan.getAction2();
+        if (observationViewModel.getAction2() != null && !observationViewModel.getAction2().isEmpty()) {
+            data += "\n" + observationViewModel.getAction2();
         }
 
         if (criticalQuestions != null && criticalQuestions.size() > 0) {
@@ -499,17 +533,17 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
 
     class CustomTextWatcher implements TextWatcher {
         @Override
-        public void beforeTextChanged (CharSequence charSequence,int i, int i1, int i2){
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
         }
 
         @Override
-        public void onTextChanged (CharSequence charSequence,int i, int i1, int i2){
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
         }
 
         @Override
-        public void afterTextChanged (Editable editable){
+        public void afterTextChanged(Editable editable) {
         }
     }
 }

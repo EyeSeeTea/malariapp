@@ -40,7 +40,7 @@ import android.widget.Toast;
 
 import org.eyeseetea.malariacare.data.database.datasources.ServerInfoLocalDataSource;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.LocalPullController;
-import org.eyeseetea.malariacare.data.database.model.ObsActionPlanDB;
+import org.eyeseetea.malariacare.data.database.model.ObservationDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.ExportData;
 import org.eyeseetea.malariacare.data.database.utils.LanguageContextWrapper;
@@ -50,8 +50,10 @@ import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.remote.api.ServerInfoRemoteDataSource;
 import org.eyeseetea.malariacare.data.repositories.ServerInfoRepository;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
+import org.eyeseetea.malariacare.data.sync.IData;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerInfoRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
+import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
 import org.eyeseetea.malariacare.domain.entity.ServerInfo;
 import org.eyeseetea.malariacare.domain.usecase.GetServerInfoUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
@@ -65,6 +67,7 @@ import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BaseActivity extends AppCompatActivity {
@@ -100,7 +103,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             @Override
             public void onComplete(ServerInfo serverInfo) {
                 if(serverInfo.isServerSupported()){
-                    checkQuarantineSurveys();
+                    checkQuarantineData();
                     alarmPush = new AlarmPushReceiver();
                     alarmPush.setPushAlarm(getApplicationContext());
                 }
@@ -108,20 +111,19 @@ public abstract class BaseActivity extends AppCompatActivity {
         });
     }
 
-    private void checkQuarantineSurveys() {
+    private void checkQuarantineData() {
         PreferencesState.getInstance().setPushInProgress(false);
-        List<SurveyDB> surveys = SurveyDB.getAllSendingSurveys();
-        Log.d(TAG + "B&D", "Pending surveys sending: "
-                + surveys.size());
-        for (SurveyDB survey : surveys) {
-            survey.setStatus(Constants.SURVEY_QUARANTINE);
-            survey.save();
-        }
-        List<ObsActionPlanDB> obsActionPlens = ObsActionPlanDB.getAllSendingObsActionPlans();
-        for (ObsActionPlanDB obsActionPlan : obsActionPlens) {
-            //Obs action plan doesn't need quarantine status. This type of element only overwritte the server survey.
-            obsActionPlan.setStatus(Constants.SURVEY_COMPLETED);
-            obsActionPlan.save();
+
+        List<IData> surveys = new ArrayList<IData>(SurveyDB.getAllSendingSurveys());
+        ChangeSatusToQuarantine(surveys);
+
+        List<IData> observations = new ArrayList<IData>(ObservationDB.getAllSendingObservations());
+        ChangeSatusToQuarantine(observations);
+    }
+
+    private void ChangeSatusToQuarantine(List<IData> dataList) {
+        for (IData data : dataList) {
+            data.changeStatusToQuarantine();
         }
     }
 
