@@ -325,9 +325,10 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
 
     @Override
     public void shareByText(ObservationViewModel observationViewModel, SurveyDB survey,
+            String formattedNextScheduleDate,
             List<MissedStepViewModel> missedCriticalStepViewModels,
             List<MissedStepViewModel> missedNonCriticalStepViewModels) {
-        String data = extractTextData(observationViewModel, survey, missedCriticalStepViewModels,
+        String data = extractTextData(observationViewModel, survey, formattedNextScheduleDate, missedCriticalStepViewModels,
                 missedNonCriticalStepViewModels);
 
         shareData(data);
@@ -385,6 +386,7 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
     }
 
     private String extractTextData(ObservationViewModel observationViewModel, SurveyDB survey,
+            String formattedNextScheduleDate,
             List<MissedStepViewModel> missedCriticalStepViewModels,
             List<MissedStepViewModel> missedNonCriticalStepViewModels) {
         String data =
@@ -411,9 +413,7 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
         int roundedScore = Math.round(survey.getMainScoreValue());
         data += getString(R.string.quality_of_care) + " " + roundedScore + "% \n";
 
-        data += String.format(getString(R.string.plan_action_next_date),
-                dateParser.format(SurveyPlanner.getInstance().findScheduledDateBySurvey(survey),
-                        DateParser.EUROPEAN_DATE_FORMAT));
+        data += String.format(getString(R.string.plan_action_next_date),formattedNextScheduleDate);
 
         if (observationViewModel.getProvider() != null
                 && !observationViewModel.getProvider().isEmpty()) {
