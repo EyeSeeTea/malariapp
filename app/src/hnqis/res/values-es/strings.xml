@@ -15,6 +15,8 @@
 <string name="settings_menu_about">"Acerca de"</string>
 <string name="settings_menu_configuration">"Configuración"</string>
 <string name="settings_menu_licence">"Licencia"</string>
+<string name="settings_menu_learning_center">"Centro de aprendizaje HNQIS"</string>
+<string name="settings_menu_submit_ticket">"Presentar un ticket"</string>
 <string name="settings_menu_logout">"Desconectar"</string>
 
 <string name="dialog_title_delete_survey">"Borrar evaluación"</string>
@@ -239,7 +241,6 @@ clínica"</string>
 <string name="plan_action_today_date">Terminado: %s</string>
 <string name="plan_action_next_date">Próxima: %s</string>
 <string name="plan_action_description">Describa lo que se observó durante la visita de un plan de acción específico para abordar las lagunas. Obsérvese también una mejora respecto a la brecha identificada durante la última visita</string>
-<string name="plan_action_gasp_title">BRECHAS:</string>
 <string name="plan_action_action_plan_title">PLAN DE ACCIÓN:</string>
 <string name="plan_action_action_title">ACCIÓN:</string>
 <string-array name="plan_action_dropdown_options">
@@ -272,6 +273,7 @@ clínica"</string>
 <string name="schedule_title">Programación de encuesta</string>
 <string name="save">"Salvar"</string>
 <string name="monitor_no_surveys_to_show">"No hay encuesta que mostrar"</string>
+<string name="plan_action_critical_steps_missed_title">"PASOS CRÍTICOS PERDIDOS:"</string>
 <string name="plan_action_provider_title" >"NOMBRE DEL PROVEEDOR:"</string>
 <string name="health_facility">Centro Médico</string>
 <string name="mandatory">"Obligatorio"</string>

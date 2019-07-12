@@ -24,7 +24,7 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushController;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushDataController;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
@@ -80,7 +80,7 @@ public class PushUseCaseTest {
         pushUseCase.execute(credentials, new PushUseCase.Callback() {
 
             @Override
-            public void onComplete(PushController.Kind kind) {
+            public void onComplete(PushDataController.Kind kind) {
                 callbackInvoked(false);
             }
 

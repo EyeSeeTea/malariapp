@@ -40,7 +40,7 @@ import android.widget.Toast;
 
 import org.eyeseetea.malariacare.data.database.datasources.ServerInfoLocalDataSource;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.LocalPullController;
-import org.eyeseetea.malariacare.data.database.model.ObsActionPlanDB;
+import org.eyeseetea.malariacare.data.database.model.ObservationDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.ExportData;
 import org.eyeseetea.malariacare.data.database.utils.LanguageContextWrapper;
@@ -50,11 +50,17 @@ import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.remote.api.ServerInfoRemoteDataSource;
 import org.eyeseetea.malariacare.data.repositories.ServerInfoRepository;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
+import org.eyeseetea.malariacare.data.sync.IData;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerInfoRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
+import org.eyeseetea.malariacare.domain.entity.Server;
+import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
 import org.eyeseetea.malariacare.domain.entity.ServerInfo;
 import org.eyeseetea.malariacare.domain.usecase.GetServerInfoUseCase;
+import org.eyeseetea.malariacare.domain.usecase.GetServerUseCase;
+import org.eyeseetea.malariacare.domain.usecase.GetServersUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
+import org.eyeseetea.malariacare.factories.ServerFactory;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.listeners.SurveyLocationListener;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
@@ -65,6 +71,7 @@ import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BaseActivity extends AppCompatActivity {
@@ -100,7 +107,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             @Override
             public void onComplete(ServerInfo serverInfo) {
                 if(serverInfo.isServerSupported()){
-                    checkQuarantineSurveys();
+                    checkQuarantineData();
                     alarmPush = new AlarmPushReceiver();
                     alarmPush.setPushAlarm(getApplicationContext());
                 }
@@ -108,20 +115,19 @@ public abstract class BaseActivity extends AppCompatActivity {
         });
     }
 
-    private void checkQuarantineSurveys() {
+    private void checkQuarantineData() {
         PreferencesState.getInstance().setPushInProgress(false);
-        List<SurveyDB> surveys = SurveyDB.getAllSendingSurveys();
-        Log.d(TAG + "B&D", "Pending surveys sending: "
-                + surveys.size());
-        for (SurveyDB survey : surveys) {
-            survey.setStatus(Constants.SURVEY_QUARANTINE);
-            survey.save();
-        }
-        List<ObsActionPlanDB> obsActionPlens = ObsActionPlanDB.getAllSendingObsActionPlans();
-        for (ObsActionPlanDB obsActionPlan : obsActionPlens) {
-            //Obs action plan doesn't need quarantine status. This type of element only overwritte the server survey.
-            obsActionPlan.setStatus(Constants.SURVEY_COMPLETED);
-            obsActionPlan.save();
+
+        List<IData> surveys = new ArrayList<IData>(SurveyDB.getAllSendingSurveys());
+        ChangeSatusToQuarantine(surveys);
+
+        List<IData> observations = new ArrayList<IData>(ObservationDB.getAllSendingObservations());
+        ChangeSatusToQuarantine(observations);
+    }
+
+    private void ChangeSatusToQuarantine(List<IData> dataList) {
+        for (IData data : dataList) {
+            data.changeStatusToQuarantine();
         }
     }
 
@@ -129,13 +135,23 @@ public abstract class BaseActivity extends AppCompatActivity {
      * Common styling
      */
     private void initView(Bundle savedInstanceState) {
-        setTheme(R.style.EyeSeeTheme);
-        android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
-        LayoutUtils.setActionBarLogo(actionBar);
+        ServerFactory serverFactory = new ServerFactory();
+        GetServerUseCase getServerUseCase = serverFactory.getServerUseCase(this);
 
-        if (savedInstanceState == null) {
-            initTransition();
-        }
+        getServerUseCase.execute(server -> {
+            setTheme(R.style.EyeSeeTheme);
+            android.support.v7.app.ActionBar actionBar = BaseActivity.this.getSupportActionBar();
+
+            if (server.getLogo() != null){
+                LayoutUtils.setActionBarLogo(this, actionBar, server.getLogo());
+            } else{
+                LayoutUtils.setActionBarLogo(actionBar);
+            }
+
+            if (savedInstanceState == null) {
+                initTransition();
+            }
+        });
     }
 
     /**
@@ -204,10 +220,24 @@ public abstract class BaseActivity extends AppCompatActivity {
                 debugMessage("Import db");
                 showFileChooser();
                 break;
+            case R.id.learning_center:
+                debugMessage("learning center");
+                navigateToUrl(getString(R.string.learning_center_url));
+
+                break;
+            case R.id.submit_ticket:
+                debugMessage("submit ticket");
+                navigateToUrl(getString(R.string.submit_ticket_url));
+                break;
             default:
                 return super.onOptionsItemSelected(item);
         }
         return true;
+    }
+
+    private void navigateToUrl(String url) {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(browserIntent);
     }
 
     private static final int FILE_SELECT_CODE = 0;

@@ -7,7 +7,6 @@ import com.raizlabs.android.dbflow.sql.migration.BaseMigration;
 import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
 
 import org.eyeseetea.malariacare.data.database.AppDatabase;
-import org.eyeseetea.malariacare.data.database.model.ObsActionPlanDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 
 @Migration(version = 16, database = AppDatabase.class)

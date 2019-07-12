@@ -17,6 +17,8 @@
 <string name="settings_menu_about">"ກ່ຽວກັບ"</string>
 <string name="settings_menu_configuration">"ການຕັ້ງຄ່າ"</string>
 <string name="settings_menu_licence">"ການໄດ້ຮັບອະນຸຍາດ"</string>
+<string name="settings_menu_learning_center">"ສູນການຮຽນ HNQIS"</string>
+<string name="settings_menu_submit_ticket">"ສົ່ງຕົ໋ວເປັນ"</string>
 <string name="settings_menu_logout">"ອອກຈາກລະບົບ"</string>
 
 <!-- # dialogs -->
@@ -246,7 +248,6 @@
 <string name="plan_action_today_date">"ສຳເລັດແລ້ວ: %s"</string>
 <string name="plan_action_next_date">ການປະເມີນຕໍ່ໄປນີ້: %s</string>
 <string name="plan_action_description">"ບັນຍາຍສິ່ງທີ່ໄດ້ສັງເກດເຫັນໃນລະຫວ່າງການລົງຍຽມຍາມລະບຸແຜນການແກ້ໄຂຊ່ອງວ່າງຕ່າງໆ. ພ້ອມທັງບັນທຶກການປັບປຸງຂໍ້ບົກຜ່ອງທີ່ພົບເຫັນໃນການລົງຍຽມຍາມຄັ້ງທີ່ຜ່ານມາ."</string>
-<string name="plan_action_gasp_title">"ຊ່ອງວ່າງ"</string>
 <string name="plan_action_action_plan_title">"ແຜນການປະຕິບັດງານ"</string>
 <string name="plan_action_action_title">"ການປະຕິບັດງານ"</string>
 <string-array name="plan_action_dropdown_options">
@@ -279,6 +280,7 @@
 <string name="schedule_title">"ການສໍາຫຼວດຕາຕະລາງ"</string>
 <string name="save">"ຊ່ວຍປະຢັດ"</string>
 <string name="monitor_no_surveys_to_show">"ບໍ່ມີການສໍາຫຼວດທີ່ຈະສະແດງ"</string>
+<string name="plan_action_critical_steps_missed_title">"ຂັ້ນຕອນທີ່ສໍາຄັນທີ່ພາດ້:"</string>
 <string name="plan_action_provider_title" >"ຊື່ຜູ້ໃຫ້ບໍລິການ:"</string>
 <string name="health_facility">ສູນການແພດ</string>
 <string name="mandatory">"ບັງຄັບ"</string>
