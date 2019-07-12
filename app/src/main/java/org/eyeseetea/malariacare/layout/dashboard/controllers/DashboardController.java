@@ -20,6 +20,7 @@
 package org.eyeseetea.malariacare.layout.dashboard.controllers;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -326,54 +327,58 @@ public class DashboardController {
         feedbackModelDialog(survey);
     }
 
-    public AlertDialog feedbackModelDialog(final SurveyDB survey) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(dashboardActivity);
+    private AlertDialog sentItemDialog = null;
 
-        LayoutInflater inflater = dashboardActivity.getLayoutInflater();
+    public void feedbackModelDialog(final SurveyDB survey) {
 
-        View v = inflater.inflate(R.layout.modal_feedback_menu, null);
+        if (sentItemDialog == null || !sentItemDialog.isShowing()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(dashboardActivity);
 
-        builder.setView(v);
+            LayoutInflater inflater = dashboardActivity.getLayoutInflater();
 
-        builder.setCancelable(false);
-        Button viewFeedback = (Button) v.findViewById(R.id.view);
-        Button actionPlan = (Button) v.findViewById(R.id.action_plan);
-        Button cancel = (Button) v.findViewById(R.id.cancel);
+            View v = inflater.inflate(R.layout.modal_feedback_menu, null);
 
-        final AlertDialog alertDialog =builder.create();
-        viewFeedback.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        openFeedback(survey, true);
+            builder.setView(v);
 
-                        alertDialog.dismiss();
+            builder.setCancelable(false);
+            Button viewFeedback = (Button) v.findViewById(R.id.view);
+            Button actionPlan = (Button) v.findViewById(R.id.action_plan);
+            Button cancel = (Button) v.findViewById(R.id.cancel);
+
+            sentItemDialog = builder.create();
+            viewFeedback.setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            openFeedback(survey, true);
+
+                            sentItemDialog.dismiss();
+                        }
                     }
-                }
-        );
+            );
 
-        actionPlan.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        DashboardActivity.dashboardActivity.openActionPlan(survey);
-                        alertDialog.dismiss();
+            actionPlan.setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            DashboardActivity.dashboardActivity.openActionPlan(survey);
+                            sentItemDialog.dismiss();
+                        }
                     }
-                }
 
-        );
-        cancel.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        alertDialog.dismiss();
+            );
+            cancel.setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            sentItemDialog.dismiss();
+                        }
                     }
-                }
 
-        );
-        alertDialog.show();
-        alertDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        return alertDialog;
+            );
+            sentItemDialog.show();
+            sentItemDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        }
     }
 
 

@@ -19,22 +19,17 @@
 
 package org.eyeseetea.malariacare.layout.adapters.dashboard;
 
-import static android.view.View.GONE;
-
 import static org.eyeseetea.malariacare.DashboardActivity.dashboardActivity;
 
 import android.content.Context;
-import android.graphics.Color;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-
-import com.github.mikephil.charting.animation.Easing;
-import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.data.PieEntry;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
@@ -53,189 +48,145 @@ import org.eyeseetea.malariacare.views.DoublePieChart;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AssessmentUnsentAdapter extends ADashboardAdapter {
+public class AssessmentUnsentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    public AssessmentUnsentAdapter(List<SurveyDB> items, Context context) {
-        super(context);
-        this.items = items;
-        this.recordLayout = R.layout.assessment_unsent_record;
+    List<SurveyDB> surveys = new ArrayList<>();
 
+    public void setSurveys(List<SurveyDB> surveys){
+        this.surveys = surveys;
+        this.notifyDataSetChanged();
     }
+
+    @NonNull
     @Override
-    protected void initMenu(final SurveyDB survey) {
-        menuDots.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dashboardActivity.onAssessSelected(survey);
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(
+                R.layout.assessment_unsent_record, viewGroup, false);
+        return new ViewHolder(itemView);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
+        ((ViewHolder) viewHolder).bindView(position);
+    }
+
+    @Override
+    public int getItemCount() {
+        return surveys.size();
+    }
+
+
+    class ViewHolder extends RecyclerView.ViewHolder {
+        public static final String COMPLETED_SURVEY_MARK = "* ";
+
+        private SurveyDB survey;
+        private ImageView menuDots;
+        private CustomTextView facilityName;
+        private CustomTextView surveyType;
+        final CustomTextView overall;
+        final CustomTextView mandatory;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+
+            menuDots = itemView.findViewById(R.id.menu_dots);
+            facilityName = itemView.findViewById(R.id.facility);
+            surveyType = itemView.findViewById(R.id.survey_type);
+            menuDots.setOnClickListener(view -> dashboardActivity.onAssessSelected(survey));
+
+            overall = itemView.findViewById(R.id.label_overall);
+
+            mandatory = itemView.findViewById(R.id.label_mandatory_completed);
+        }
+
+        void bindView(int position) {
+            survey = surveys.get(position);
+
+            adjustRowPadding();
+
+            renderAnsweredRatio(survey);
+            renderFacility(facilityName, surveyType, survey);
+            renderSurveyType(surveyType, survey);
+
+            decorateBackground(position);
+        }
+
+        private void renderAnsweredRatio(final SurveyDB survey) {
+            ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
+                    new SurveyAnsweredRatioRepository();
+            IAsyncExecutor asyncExecutor = new AsyncExecutor();
+            IMainExecutor mainExecutor = new UIThreadExecutor();
+            GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase =
+                    new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository, mainExecutor,
+                            asyncExecutor);
+
+            getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
+                    new ISurveyAnsweredRatioCallback() {
+                        @Override
+                        public void nextProgressMessage() {
+                            Log.d(getClass().getName(), "nextProgressMessage");
+                        }
+
+                        @Override
+                        public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
+                            Log.d(getClass().getName(), "onComplete");
+
+                            if (surveyAnsweredRatio != null) {
+                                int mandatoryStatus = surveyAnsweredRatio.getMandatoryStatus();
+                                int totalStatus = surveyAnsweredRatio.getTotalStatus();
+
+                                setPercentage(mandatory, mandatoryStatus,
+                                        DoublePieChart.getMandatoryColorByPercentage(mandatoryStatus,
+                                                mandatory.getContext()));
+                                setPercentage(overall, totalStatus,
+                                        DoublePieChart.getOverAllColorByPercentage(totalStatus,
+                                                overall.getContext()));
+                            }
+                        }
+                    });
+        }
+
+        private void renderFacility(CustomTextView facilityName, CustomTextView surveyType,
+                SurveyDB survey) {
+            facilityName.setText(survey.getOrgUnit().getName());
+            facilityName.setLayoutParams(
+                    new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0.5f));
+            surveyType.setLayoutParams(
+                    new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0.5f));
+        }
+
+        private CustomTextView renderSurveyType(CustomTextView surveyType, SurveyDB survey) {
+            String surveyDescription;
+            if (survey.isCompleted()) {
+                surveyDescription = COMPLETED_SURVEY_MARK + survey.getProgram().getName();
+            } else {
+                surveyDescription = survey.getProgram().getName();
             }
-        });
-    }
+            surveyType.setText(surveyDescription);
+            return surveyType;
+        }
 
-    @Override
-    protected void decorateCustomColumns(final SurveyDB survey, final View rowView) {
-        final CustomTextView overall =
-                (CustomTextView) rowView.findViewById(R.id.label_overall);
-
-        final CustomTextView  mandatory = (CustomTextView) rowView.findViewById(R.id.label_mandatory_completed);
-
-        ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
-                new SurveyAnsweredRatioRepository();
-        IAsyncExecutor asyncExecutor = new AsyncExecutor();
-        IMainExecutor mainExecutor = new UIThreadExecutor();
-        GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase =
-                new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository, mainExecutor, asyncExecutor);
-
-        getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
-                new ISurveyAnsweredRatioCallback() {
-            @Override
-            public void nextProgressMessage() {
-                Log.d(getClass().getName(), "nextProgressMessage");
+        private void decorateBackground(int position) {
+            if (position == 0 || position % 2 == 0) {
+                itemView.setBackgroundColor(
+                        itemView.getContext().getResources().getColor(R.color.white));
+            } else {
+                itemView.setBackgroundColor(
+                        itemView.getContext().getResources().getColor(R.color.white_grey));
             }
-
-            @Override
-            public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
-                Log.d(getClass().getName(), "onComplete");
-
-                if (surveyAnsweredRatio != null) {
-                    int mandatoryStatus = surveyAnsweredRatio.getMandatoryStatus();
-                    int totalStatus = surveyAnsweredRatio.getTotalStatus();
-
-                    setPercentage(mandatory,mandatoryStatus,DoublePieChart.getMandatoryColorByPercentage(mandatoryStatus, mandatory.getContext()));
-                    setPercentage(overall,totalStatus,DoublePieChart.getOverAllColorByPercentage(totalStatus, overall.getContext()));
-                }
-            }
-        });
-    }
-
-    private void setPercentage(CustomTextView textView, int percentage, int color){
-        Context context = textView.getContext();
-        textView.setText(context.getString(R.string.template_percentage_number,percentage));
-        textView.setTextColor(color);
-    }
-
-    protected void createPie(PieChart mChart, int percentage,
-            int highColor, int middleColor, int lowColor) {
-        Log.d("percentage", "percentage: " + percentage);
-        mChart.setUsePercentValues(true);
-        mChart.getDescription().setEnabled(false);
-
-        mChart.setDragDecelerationFrictionCoef(0.95f);
-
-        mChart.setDrawHoleEnabled(true);
-
-
-        mChart.setTransparentCircleColor(Color.RED);
-        mChart.setTransparentCircleAlpha(255);
-
-        mChart.setHoleRadius(0f);
-        mChart.setTransparentCircleRadius(0f);
-
-        mChart.setDrawCenterText(false);
-
-        // enable rotation of the chart by touch
-        mChart.setRotationEnabled(true);
-        mChart.setHighlightPerTapEnabled(true);
-
-        setData(mChart, percentage, highColor, middleColor, lowColor);
-
-        mChart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
-        // mChart.spin(2000, 0, 360);
-    }
-
-    private void setData(PieChart mChart, int percentage,
-            int highColor, int middleColor, int lowColor) {
-
-        ArrayList<PieEntry> entries = new ArrayList<>();
-
-        // NOTE: The order of the entries when being added to the entries array determines their
-        // position around the center of
-        // the chart.
-        if (percentage == 0) {
-            percentage++;
-        }
-        entries.add(new PieEntry((float) percentage));
-        entries.add(new PieEntry((float) (100 - percentage)));
-
-        PieDataSet dataSet = new PieDataSet(entries, "");
-
-        dataSet.setDrawIcons(false);
-
-        // add a lot of colors
-
-        ArrayList<Integer> colors = new ArrayList<Integer>();
-
-        if (percentage > 90) {
-            colors.add(highColor);
-        } else if (percentage > 50) {
-            colors.add(middleColor);
-        } else {
-            colors.add(lowColor);
         }
 
-
-        colors.add(Color.TRANSPARENT);
-        dataSet.setColors(colors);
-
-        PieData data = new PieData(dataSet);
-        data.setValueTextColor(Color.TRANSPARENT);
-
-        //hide legend
-        Legend l = mChart.getLegend();
-        l.setEnabled(false);
-
-        mChart.setData(data);
-
-        // undo all highlights
-        mChart.highlightValues(null);
-
-        mChart.invalidate();
-    }
-
-    @Override
-    protected boolean hasToShowFacility(int position, SurveyDB survey) {
-        if (position == 0) {
-            return true;
+        private void setPercentage(CustomTextView textView, int percentage, int color) {
+            Context context = textView.getContext();
+            textView.setText(context.getString(R.string.template_percentage_number, percentage));
+            textView.setTextColor(color);
         }
 
-        SurveyDB previousSurvey = this.items.get(position - 1);
-        return survey.getOrgUnit().getId_org_unit() != previousSurvey.getOrgUnit().getId_org_unit();
-    }
+       protected void adjustRowPadding() {
+            float density = itemView.getContext().getResources().getDisplayMetrics().density;
+            int paddingDp = (int) (5 * density);
 
-    @Override
-    protected void hideFacility(CustomTextView facilityName, CustomTextView surveyType) {
-        facilityName.setVisibility(GONE);
-        facilityName.setLayoutParams(
-                new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0f));
-        LinearLayout.LayoutParams linearLayout = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT, 0, 1f);
-        surveyType.setLayoutParams(linearLayout);
-    }
-
-    @Override
-    protected void showFacility(CustomTextView facilityName, CustomTextView surveyType,
-            SurveyDB survey) {
-        facilityName.setText(survey.getOrgUnit().getName());
-        facilityName.setLayoutParams(
-                new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0.5f));
-        surveyType.setLayoutParams(
-                new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0.5f));
-    }
-
-    /**
-     * Calculate proper background according to the following rule:
-     * -Same orgunit same background
-     */
-    @Override
-    protected View decorateBackground(int position, View rowView) {
-        if(position==0 || position%2==0){
-            rowView.setBackgroundColor(context.getResources().getColor(R.color.white));
-        }else{
-            rowView.setBackgroundColor(context.getResources().getColor(R.color.white_grey));
+            itemView.setPadding(paddingDp, paddingDp, paddingDp, paddingDp);
         }
-        return rowView;
-    }
-
-    public List<SurveyDB> getItemList(){
-        return items;
     }
 }
