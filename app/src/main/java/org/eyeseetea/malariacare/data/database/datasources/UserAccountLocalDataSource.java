@@ -26,6 +26,7 @@ import android.preference.PreferenceManager;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.IDataSourceCallback;
 import org.eyeseetea.malariacare.data.IUserAccountDataSource;
+import org.eyeseetea.malariacare.data.database.model.ServerDB;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
@@ -80,8 +81,17 @@ public class UserAccountLocalDataSource implements IUserAccountDataSource {
         editor.putString(mContext.getString(R.string.dhis_password), credentials.getPassword());
         editor.commit();
 
-        PreferencesState.getInstance().reloadServerUrl();
+        saveServer(credentials.getServerURL());
+
+        PreferencesState.getInstance().reloadPreferences();
         Session.setCredentials(credentials);
+    }
+
+    private void saveServer(String serverUrl) {
+        ServerDB serverDB = new ServerDB();
+        serverDB.setUrl(serverUrl);
+
+        serverDB.save();
     }
 
     private void clearPreferences() {
