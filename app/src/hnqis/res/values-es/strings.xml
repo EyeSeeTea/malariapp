@@ -274,6 +274,7 @@ clínica"</string>
 <string name="save">"Salvar"</string>
 <string name="monitor_no_surveys_to_show">"No hay encuesta que mostrar"</string>
 <string name="plan_action_critical_steps_missed_title">"PASOS CRÍTICOS PERDIDOS:"</string>
+<string name="plan_action_non_critical_steps_missed_title" >"PASOS NO CRÍTICOS PERDIDOS:"</string>
 <string name="plan_action_provider_title" >"NOMBRE DEL PROVEEDOR:"</string>
 <string name="health_facility">Centro Médico</string>
 <string name="mandatory">"Obligatorio"</string>
