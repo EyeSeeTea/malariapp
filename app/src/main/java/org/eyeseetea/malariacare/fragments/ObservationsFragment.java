@@ -378,6 +378,13 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
                 .show();
     }
 
+    @Override
+    public void showInvalidServerMetadataErrorMessage() {
+        Toast.makeText(getActivity(), R.string.observations_invalid_server_metadata_error_message,
+                Toast.LENGTH_LONG)
+                .show();
+    }
+
     private String extractTextData(ObservationViewModel observationViewModel, SurveyDB survey,
             String formattedNextScheduleDate,
             List<MissedStepViewModel> missedCriticalStepViewModels,
