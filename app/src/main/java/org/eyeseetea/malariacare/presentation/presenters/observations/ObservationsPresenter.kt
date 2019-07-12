@@ -3,7 +3,6 @@ package org.eyeseetea.malariacare.presentation.presenters.observations
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB
 import org.eyeseetea.malariacare.data.database.model.QuestionDB
 import org.eyeseetea.malariacare.data.database.model.SurveyDB
-import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner
 import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification
 import org.eyeseetea.malariacare.domain.entity.NextScheduleDateConfiguration
 import org.eyeseetea.malariacare.domain.entity.Observation
