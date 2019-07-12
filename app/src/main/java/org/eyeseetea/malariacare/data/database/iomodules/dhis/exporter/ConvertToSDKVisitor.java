@@ -540,8 +540,7 @@ public class ConvertToSDKVisitor implements
 
         //Competency
         if (controlDataElementExistsInServer(overallCompetencyCode) && survey.hasMainScore()) {
-            addOrUpdateDataValue(overallCompetencyCode,
-                    CompetencyUtils.getTextByCompetencyAbbreviation(competency, context));
+            addOrUpdateDataValue(overallCompetencyCode, competency.getCode());
         }
 
         //Competency competent
