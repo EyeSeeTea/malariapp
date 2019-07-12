@@ -91,7 +91,7 @@ public class UserAccountDhisSDKDataSource implements IUserAccountDataSource {
                                 }
                             })
                     .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
+                    .observeOn(Schedulers.io())
                     .subscribe(new Action1<org.hisp.dhis.client.sdk.models.user.UserAccount>() {
                         @Override
                         public void call(

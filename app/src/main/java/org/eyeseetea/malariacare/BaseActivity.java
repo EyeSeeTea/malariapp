@@ -52,9 +52,13 @@ import org.eyeseetea.malariacare.data.repositories.ServerInfoRepository;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerInfoRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
+import org.eyeseetea.malariacare.domain.entity.Server;
 import org.eyeseetea.malariacare.domain.entity.ServerInfo;
 import org.eyeseetea.malariacare.domain.usecase.GetServerInfoUseCase;
+import org.eyeseetea.malariacare.domain.usecase.GetServerUseCase;
+import org.eyeseetea.malariacare.domain.usecase.GetServersUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
+import org.eyeseetea.malariacare.factories.ServerFactory;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.listeners.SurveyLocationListener;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
@@ -129,13 +133,23 @@ public abstract class BaseActivity extends AppCompatActivity {
      * Common styling
      */
     private void initView(Bundle savedInstanceState) {
-        setTheme(R.style.EyeSeeTheme);
-        android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
-        LayoutUtils.setActionBarLogo(actionBar);
+        ServerFactory serverFactory = new ServerFactory();
+        GetServerUseCase getServerUseCase = serverFactory.getServerUseCase(this);
 
-        if (savedInstanceState == null) {
-            initTransition();
-        }
+        getServerUseCase.execute(server -> {
+            setTheme(R.style.EyeSeeTheme);
+            android.support.v7.app.ActionBar actionBar = BaseActivity.this.getSupportActionBar();
+
+            if (server.getLogo() != null){
+                LayoutUtils.setActionBarLogo(this, actionBar, server.getLogo());
+            } else{
+                LayoutUtils.setActionBarLogo(actionBar);
+            }
+
+            if (savedInstanceState == null) {
+                initTransition();
+            }
+        });
     }
 
     /**
