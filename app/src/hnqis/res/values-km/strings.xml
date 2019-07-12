@@ -17,6 +17,8 @@
 <string name="settings_menu_about">"អំពី"</string>
 <string name="settings_menu_configuration">"ការ​កំណត់ "</string>
 <string name="settings_menu_licence">"អាជ្ញាប័ណ្ណ"</string>
+<string name="settings_menu_learning_center">"មជ្ឈមណ្ឌលសិក្សារបស់ HNQIS"</string>
+<string name="settings_menu_submit_ticket">"ដាក់សំបុត្រ"</string>
 <string name="settings_menu_logout">"ចាកចេញ"</string>
 
 <!-- # dialogs -->

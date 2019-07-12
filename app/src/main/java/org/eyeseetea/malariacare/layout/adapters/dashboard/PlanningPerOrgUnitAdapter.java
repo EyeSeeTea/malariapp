@@ -4,130 +4,148 @@ package org.eyeseetea.malariacare.layout.adapters.dashboard;
 import static org.eyeseetea.malariacare.DashboardActivity.dashboardActivity;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 
-import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedSurveyByOrgUnit;
 import org.eyeseetea.malariacare.data.database.utils.planning.ScheduleListener;
 import org.eyeseetea.malariacare.fragments.PlannedPerOrgUnitFragment;
-import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.DateParser;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
-public class PlanningPerOrgUnitAdapter extends ABaseAdapter {
-    PlannedPerOrgUnitFragment.Callback callback;
-    public static boolean  greyBackground=false;
-    public PlanningPerOrgUnitAdapter(List<PlannedSurveyByOrgUnit> newItems, Context context, PlannedPerOrgUnitFragment.Callback callback) {
-        super(context);
-        items = newItems;
+public class PlanningPerOrgUnitAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+    private PlannedPerOrgUnitFragment.Callback callback;
+
+    private Context context;
+
+    List<PlannedSurveyByOrgUnit> items =  new ArrayList<>();
+
+    public PlanningPerOrgUnitAdapter(Context context, PlannedPerOrgUnitFragment.Callback callback) {
         this.context = context;
-        this.lInflater = LayoutInflater.from(context);
-        this.recordLayout = R.layout.assessment_planning_record;
         this.callback = callback;
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        final PlannedSurveyByOrgUnit plannedSurvey = (PlannedSurveyByOrgUnit) getItem(position);
-        SurveyDB survey = plannedSurvey.getSurvey();
-        float density = getContext().getResources().getDisplayMetrics().density;
-        int paddingDp = (int) (5 * density);
-
-        // Get the row layout
-        View rowView = this.lInflater.inflate(getRecordLayout(), parent, false);
-        rowView.setPadding(paddingDp, paddingDp, paddingDp, paddingDp);
-
-        //config row checkbox
-        final CheckBox surveyCheckBox = (CheckBox) rowView.findViewById(R.id.survey_type);
-        surveyCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                                                      @Override
-                                                      public void onCheckedChanged(CompoundButton
-                                                              buttonView, boolean isChecked) {
-                                                          boolean isChanged = false;
-                                                          if(plannedSurvey.getChecked()!=isChecked) {
-                                                              isChanged = true;
-                                                          }
-                                                          plannedSurvey.setChecked(isChecked);
-                                                          if(isChanged) {
-                                                              callback.onItemCheckboxChanged();
-                                                          }
-                                                          PlannedPerOrgUnitFragment
-                                                                  .reloadButtonState(isChecked);
-                                                      }
-                                                  }
-        );
-
-        //set checkbox as checked if the planned is checked
-        if (plannedSurvey.getChecked()) {
-            surveyCheckBox.setChecked(true);
-        }
-
-        //set schedule date
-        CustomTextView schedule = (CustomTextView) rowView.findViewById(R.id.schedule);
-        DateParser dateParser = new DateParser();
-        if (survey.getScheduledDate() != null) {
-            schedule.setText(dateParser.getEuropeanFormattedDate(survey.getScheduledDate()));
-        } else {
-            schedule.setText(R.string.assessment_no_schedule_date);
-        }
-        //set creation date
-        if (survey.getCreationDate() != null) {
-            CustomTextView dueDate = (CustomTextView) rowView.findViewById(R.id.dueDate);
-            dueDate.setText(dateParser.getEuropeanFormattedDate(survey.getCreationDate()));
-        }
-
-        //set row survey name
-        String surveyDescription = survey.getProgram().getName();
-        CustomTextView program = (CustomTextView) rowView.findViewById(R.id.program);
-        program.setText(survey.getProgram().getName());
-        CustomTextView orgUnit = (CustomTextView) rowView.findViewById(R.id.org_unit);
-        orgUnit.setText(survey.getOrgUnit().getName());
-
-        //set background color from header(type of planning survey)
-        if(position==0 || position%2==0) {
-            rowView.setBackgroundColor(
-                    PreferencesState.getInstance().getContext().getResources().getColor(
-                            R.color.white_grey));
-        }else{
-            rowView.setBackgroundColor(
-                    PreferencesState.getInstance().getContext().getResources().getColor(
-                            R.color.white));
-        }
-        greyBackground=!greyBackground;
-        ImageView menuDots = (ImageView) rowView.findViewById(R.id.menu_dots);
-        if(plannedSurvey.isHideMenu()){
-            menuDots.setVisibility(View.INVISIBLE);
-        }else {
-            menuDots.setVisibility(View.VISIBLE);
-            menuDots.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    // TODO : review after merge questmark cosmetics and remove or create a strategy if is necessary
-
-                    // dashboardActivity.onPlanPerOrgUnitMenuClicked(plannedSurvey.getSurvey());
-                    dashboardActivity.onPlannedSurvey(plannedSurvey.getSurvey(),
-                            new ScheduleListener(plannedSurvey.getSurvey(), context));
-                }
-            });
-        }
-
-        return rowView;
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.assessment_planning_record, parent, false);
+        return new ViewHolder(itemView);
     }
 
     @Override
-    public void notifyDataSetChanged() {
-        super.notifyDataSetChanged();
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
+        ((ViewHolder) viewHolder).bindView(position);
+    }
+
+    @Override
+    public int getItemCount() {
+        return items.size();
+    }
+
+    public void setItems (List<PlannedSurveyByOrgUnit> items){
+        this.items = items;
+        notifyDataSetChanged();
+    }
+
+    public PlannedSurveyByOrgUnit getItem(int position) {
+        return items.get(position);
+    }
+
+    class ViewHolder extends RecyclerView.ViewHolder {
+        private CheckBox surveyCheckBox;
+        private CustomTextView scheduleTextView;
+        private CustomTextView dueDateTextView;
+        private CustomTextView programTextView;
+        private CustomTextView orgUnitTextView;
+        private ImageView menuDots;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+
+            surveyCheckBox = itemView.findViewById(R.id.survey_type);
+            scheduleTextView = itemView.findViewById(R.id.schedule);
+            dueDateTextView = itemView.findViewById(R.id.dueDate);
+            programTextView = itemView.findViewById(R.id.program);
+            orgUnitTextView = itemView.findViewById(R.id.org_unit);
+            menuDots = itemView.findViewById(R.id.menu_dots);
+        }
+
+        void bindView(int position) {
+            final PlannedSurveyByOrgUnit plannedSurvey = getItem(position);
+            SurveyDB survey = plannedSurvey.getSurvey();
+            float density = itemView.getContext().getResources().getDisplayMetrics().density;
+            int paddingDp = (int) (5 * density);
+
+            itemView.setPadding(paddingDp, paddingDp, paddingDp, paddingDp);
+
+
+            surveyCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                boolean isChanged = false;
+                if(plannedSurvey.getChecked()!=isChecked) {
+                    isChanged = true;
+                }
+                plannedSurvey.setChecked(isChecked);
+                if(isChanged) {
+                    callback.onItemCheckboxChanged();
+                }
+            }
+            );
+
+            if (plannedSurvey.getChecked()) {
+                surveyCheckBox.setChecked(true);
+            }
+
+            DateParser dateParser = new DateParser();
+
+            if (survey.getScheduledDate() != null) {
+                scheduleTextView.setText(dateParser.getEuropeanFormattedDate(survey.getScheduledDate()));
+            } else {
+                scheduleTextView.setText(R.string.assessment_no_schedule_date);
+            }
+
+            dueDateTextView.setText(dateParser.getEuropeanFormattedDate(survey.getCreationDate()));
+            programTextView.setText(survey.getProgram().getName());
+            orgUnitTextView.setText(survey.getOrgUnit().getName());
+
+            assignBackgroundColor(position);
+
+            if(plannedSurvey.isHideMenu()){
+                menuDots.setVisibility(View.INVISIBLE);
+            }else {
+                menuDots.setVisibility(View.VISIBLE);
+                menuDots.setOnClickListener(view -> {
+                    // TODO : review after merge questmark cosmetics and remove or create a strategy if is necessary
+                    dashboardActivity.onPlannedSurvey(plannedSurvey.getSurvey(),
+                            new ScheduleListener(plannedSurvey.getSurvey(), context));
+                });
+            }
+
+        }
+
+        private void assignBackgroundColor(int position) {
+            if(position==0 || position%2==0) {
+                itemView.setBackgroundColor(
+                        PreferencesState.getInstance().getContext().getResources().getColor(
+                                R.color.white_grey));
+            }else{
+                itemView.setBackgroundColor(
+                        PreferencesState.getInstance().getContext().getResources().getColor(
+                                R.color.white));
+            }
+        }
     }
 
 }

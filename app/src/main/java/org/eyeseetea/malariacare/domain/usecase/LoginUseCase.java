@@ -23,6 +23,7 @@ import org.eyeseetea.malariacare.domain.boundary.IRepositoryCallback;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerInfoRepository;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IServerRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
@@ -51,18 +52,21 @@ public class LoginUseCase implements UseCase{
     private IMainExecutor mMainExecutor;
     private IAsyncExecutor mAsyncExecutor;
     private IUserAccountRepository mUserAccountRepository;
-    private IServerInfoRepository mServerRepository;
+    private IServerRepository mServerRepository;
+    private IServerInfoRepository mServerInfoRepository;
     private Credentials credentials;
     private Callback callback;
 
     public LoginUseCase(IUserAccountRepository userAccountRepository,
-                        IServerInfoRepository serverRepository,
+                        IServerRepository serverRepository,
+                        IServerInfoRepository serverInfoRepository,
                         IMainExecutor mainExecutor,
                         IAsyncExecutor asyncExecutor) {
         mMainExecutor = mainExecutor;
         mAsyncExecutor = asyncExecutor;
-        mUserAccountRepository = userAccountRepository;
         mServerRepository = serverRepository;
+        mUserAccountRepository = userAccountRepository;
+        mServerInfoRepository = serverInfoRepository;
     }
 
     public void execute(Credentials credentials, final Callback callback) {
@@ -73,20 +77,12 @@ public class LoginUseCase implements UseCase{
 
     @Override
     public void run() {
-        if(!credentials.isDemoCredentials()) {
-            try {
-                mServerRepository.getServerInfo(ReadPolicy.NETWORK_FIRST);
-            } catch (Exception e) {
-                e.printStackTrace();
-                notifyOnNetworkError();
-                return;
-            }
-        }
-
+        getServerVersion();
         mUserAccountRepository.login(credentials, new IRepositoryCallback<UserAccount>() {
             @Override
             public void onSuccess(UserAccount userAccount) {
                 notifyOnLoginSuccess();
+                getLoggedServer();
             }
 
             @Override
@@ -103,6 +99,28 @@ public class LoginUseCase implements UseCase{
                 }
             }
         });
+    }
+
+    private void getServerVersion() {
+        if(!credentials.isDemoCredentials()) {
+            try {
+                mServerInfoRepository.getServerInfo(ReadPolicy.NETWORK_FIRST);
+            } catch (Exception e) {
+                e.printStackTrace();
+                notifyOnNetworkError();
+                return;
+            }
+        }
+    }
+
+    private void getLoggedServer() {
+        if(!credentials.isDemoCredentials()) {
+            try {
+                mServerRepository.getLoggedServer();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void notifyOnLoginSuccess() {
