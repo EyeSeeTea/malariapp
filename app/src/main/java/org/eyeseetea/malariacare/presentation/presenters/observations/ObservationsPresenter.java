@@ -15,6 +15,7 @@ import org.eyeseetea.malariacare.domain.entity.Observation;
 import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
 import org.eyeseetea.malariacare.domain.entity.ServerMetadata;
 import org.eyeseetea.malariacare.domain.service.SurveyNextScheduleDomainService;
+import org.eyeseetea.malariacare.domain.exception.ObservationNotFoundException;
 import org.eyeseetea.malariacare.domain.usecase.GetObservationBySurveyUidUseCase;
 import org.eyeseetea.malariacare.domain.usecase.GetServerMetadataUseCase;
 import org.eyeseetea.malariacare.domain.usecase.SaveObservationUseCase;
@@ -96,39 +97,30 @@ public class ObservationsPresenter {
     }
 
     private void loadObservation() {
-        mGetObservationBySurveyUidUseCase.execute(mSurveyUid,
-                new GetObservationBySurveyUidUseCase.Callback() {
-                    @Override
-                    public void onSuccess(Observation observation) {
-                        mObservationViewModel =
-                                ObservationMapper.mapToViewModel(observation, mServerMetadata);
+        try{
+            Observation observation = mGetObservationBySurveyUidUseCase.execute(mSurveyUid);
+
+            mObservationViewModel =
+                    ObservationMapper.mapToViewModel(observation, mServerMetadata);
 
 
-                        loadSurvey();
-                        loadMissedSteps();
-                        updateStatus();
-                        showObservation();
-                    }
+            loadSurvey();
+            loadMissedSteps();
+            updateStatus();
+            showObservation();
+        } catch (ObservationNotFoundException exception){
+            mObservationViewModel = new ObservationViewModel(mSurveyUid);
+            saveObservation();
 
-                    @Override
-                    public void onObservationNotFound() {
-                        mObservationViewModel = new ObservationViewModel(mSurveyUid);
-                        saveObservation();
-
-                        loadSurvey();
-                        loadMissedSteps();
-                        updateStatus();
-                        showObservation();
-                    }
-
-                    @Override
-                    public void onError(Exception e) {
-                        System.out.println(
-                                "An error has occur retrieving observation: " + e.getMessage());
-                    }
-                });
+            loadSurvey();
+            loadMissedSteps();
+            updateStatus();
+            showObservation();
+        } catch (Exception e) {
+            System.out.println(
+                    "An error has occur retrieving observation: " + e.getMessage());
+        }
     }
-
 
     private void loadSurvey() {
         mSurvey = SurveyDB.getSurveyByUId(mSurveyUid);
@@ -218,18 +210,12 @@ public class ObservationsPresenter {
         Observation observation =
                 ObservationMapper.mapToObservation(mObservationViewModel, mServerMetadata);
 
-        mSaveObservationUseCase.execute(observation, new SaveObservationUseCase.Callback() {
-            @Override
-            public void onSuccess() {
-                System.out.println("Observation saved successfully");
-            }
-
-            @Override
-            public void onError(Exception e) {
-                System.out.println(
-                        "An error has occur saving Observation: " + e.getMessage());
-            }
-        });
+        try{
+            mSaveObservationUseCase.execute(observation);
+        } catch (Exception e){
+            System.out.println(
+                    "An error has occur saving Observation: " + e.getMessage());
+        }
     }
 
     public void completeObservation() {
@@ -330,31 +316,19 @@ public class ObservationsPresenter {
     }
 
     private void refreshObservation() {
-        mGetObservationBySurveyUidUseCase.execute(mSurveyUid,
-                new GetObservationBySurveyUidUseCase.Callback() {
-                    @Override
-                    public void onSuccess(Observation observation) {
-                        mObservationViewModel =
-                                ObservationMapper.mapToViewModel(observation, mServerMetadata);
+        Observation observation = null;
+        try {
+            observation = mGetObservationBySurveyUidUseCase.execute(mSurveyUid);
 
-                        updateStatus();
-                    }
+            mObservationViewModel =
+                    ObservationMapper.mapToViewModel(observation, mServerMetadata);
 
-                    @Override
-                    public void onObservationNotFound() {
-                        System.out.println(
-                                "Observation not found by surveyUid: " + mSurveyUid);
-                    }
-
-                    @Override
-                    public void onError(Exception e) {
-                        System.out.println(
-                                "An error has occur retrieving observation: " + e.getMessage());
-                    }
-                });
+            updateStatus();
+        } catch (Exception e) {
+            System.out.println(
+                    "An error has occur refreshing observation: " + e.getMessage());
+        }
     }
-
-
 
     public interface View {
         void changeToReadOnlyMode();

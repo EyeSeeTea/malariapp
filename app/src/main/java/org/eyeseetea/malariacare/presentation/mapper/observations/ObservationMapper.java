@@ -21,14 +21,17 @@ public class ObservationMapper {
         String action1 = "";
         Date dueDateAction1 = null;
         String responsibleAction1 = "";
+        Date completionDateAction1 = null;
 
         String action2 = "";
         Date dueDateAction2 = null;
         String responsibleAction2 = "";
+        Date completionDateAction2 = null;
 
         String action3 = "";
         Date dueDateAction3 = null;
         String responsibleAction3 = "";
+        Date completionDateAction3 = null;
 
         String surveyUid = observation.getSurveyUid();
         ObservationStatus status = observation.getStatus();
@@ -46,33 +49,42 @@ public class ObservationMapper {
                 dueDateAction1 = parseValueToDate(value.getValue());
             } else if (isValueUidEqualsTo(value, serverMetadata.getResponsibleAction1())) {
                 responsibleAction1 = value.getValue();
+            } else if (isValueUidEqualsTo(value, serverMetadata.getCompletionDateAction1())) {
+                completionDateAction1 = parseValueToDate(value.getValue());
             } else if (isValueUidEqualsTo(value, serverMetadata.getAction2())) {
                 action2 = value.getValue();
             } else if (isValueUidEqualsTo(value, serverMetadata.getDueDateAction2())) {
                 dueDateAction2 = parseValueToDate(value.getValue());
             } else if (isValueUidEqualsTo(value, serverMetadata.getResponsibleAction2())) {
                 responsibleAction2 = value.getValue();
+            } else if (isValueUidEqualsTo(value, serverMetadata.getCompletionDateAction2())) {
+                completionDateAction2 = parseValueToDate(value.getValue());
             } else if (isValueUidEqualsTo(value, serverMetadata.getAction3())) {
                 action3 = value.getValue();
             } else if (isValueUidEqualsTo(value, serverMetadata.getDueDateAction3())) {
                 dueDateAction3 = parseValueToDate(value.getValue());
             } else if (isValueUidEqualsTo(value, serverMetadata.getResponsibleAction3())) {
                 responsibleAction3 = value.getValue();
+            } else if (isValueUidEqualsTo(value, serverMetadata.getCompletionDateAction3())) {
+                completionDateAction3 = parseValueToDate(value.getValue());
             }
         }
 
         ObservationViewModel viewModel =
                 new ObservationViewModel(surveyUid, provider,
-                        new ActionViewModel(action1, dueDateAction1, responsibleAction1),
-                        new ActionViewModel(action2, dueDateAction2, responsibleAction2),
-                        new ActionViewModel(action3, dueDateAction3, responsibleAction3),
+                        new ActionViewModel(
+                                action1, dueDateAction1, responsibleAction1, completionDateAction1),
+                        new ActionViewModel(
+                                action2, dueDateAction2, responsibleAction2, completionDateAction2),
+                        new ActionViewModel(
+                                action3, dueDateAction3, responsibleAction3, completionDateAction3),
                         status);
 
         return viewModel;
     }
 
     private static Date parseValueToDate(String value) {
-       return new DateParser().parseDate(value, DateParser.AMERICAN_DATE_FORMAT);
+        return new DateParser().parseDate(value, DateParser.AMERICAN_DATE_FORMAT);
     }
 
     private static boolean isValueUidEqualsTo(
@@ -108,13 +120,20 @@ public class ObservationMapper {
         }
 
         if (action.getDueDate() != null) {
-            String value =new DateParser().format(action.getDueDate(), DateParser.AMERICAN_DATE_FORMAT);
+            String value = new DateParser().format(action.getDueDate(),
+                    DateParser.AMERICAN_DATE_FORMAT);
             values.add(new ObservationValue(value, serverMetadata.getDueDateAction1().getUId()));
         }
 
         if (!action.getResponsible().isEmpty()) {
             values.add(new ObservationValue(action.getResponsible(),
                     serverMetadata.getResponsibleAction1().getUId()));
+        }
+
+        if (action.getCompletionDate() != null) {
+            String value = new DateParser().format(action.getCompletionDate(),
+                    DateParser.AMERICAN_DATE_FORMAT);
+            values.add(new ObservationValue(value, serverMetadata.getCompletionDateAction1().getUId()));
         }
     }
 
@@ -126,13 +145,20 @@ public class ObservationMapper {
         }
 
         if (action.getDueDate() != null) {
-            String value =new DateParser().format(action.getDueDate(), DateParser.AMERICAN_DATE_FORMAT);
+            String value = new DateParser().format(action.getDueDate(),
+                    DateParser.AMERICAN_DATE_FORMAT);
             values.add(new ObservationValue(value, serverMetadata.getDueDateAction2().getUId()));
         }
 
         if (!action.getResponsible().isEmpty()) {
             values.add(new ObservationValue(action.getResponsible(),
                     serverMetadata.getResponsibleAction2().getUId()));
+        }
+
+        if (action.getCompletionDate() != null) {
+            String value = new DateParser().format(action.getCompletionDate(),
+                    DateParser.AMERICAN_DATE_FORMAT);
+            values.add(new ObservationValue(value, serverMetadata.getCompletionDateAction2().getUId()));
         }
     }
 
@@ -144,13 +170,20 @@ public class ObservationMapper {
         }
 
         if (action.getDueDate() != null) {
-            String value =new DateParser().format(action.getDueDate(), DateParser.AMERICAN_DATE_FORMAT);
+            String value = new DateParser().format(action.getDueDate(),
+                    DateParser.AMERICAN_DATE_FORMAT);
             values.add(new ObservationValue(value, serverMetadata.getDueDateAction3().getUId()));
         }
 
         if (!action.getResponsible().isEmpty()) {
             values.add(new ObservationValue(action.getResponsible(),
                     serverMetadata.getResponsibleAction3().getUId()));
+        }
+
+        if (action.getCompletionDate() != null) {
+            String value = new DateParser().format(action.getCompletionDate(),
+                    DateParser.AMERICAN_DATE_FORMAT);
+            values.add(new ObservationValue(value, serverMetadata.getCompletionDateAction3().getUId()));
         }
     }
 }

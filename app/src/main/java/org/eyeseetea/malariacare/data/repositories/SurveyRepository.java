@@ -3,6 +3,7 @@ package org.eyeseetea.malariacare.data.repositories;
 import org.eyeseetea.malariacare.data.boundaries.ISurveyDataSource;
 import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyRepository;
 import org.eyeseetea.malariacare.domain.entity.Survey;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -16,12 +17,22 @@ public class SurveyRepository implements ISurveyRepository{
     }
 
     @Override
-    public List<Survey> getSurveysByUids(List<String> uids) throws Exception {
+    public List<Survey> getSurveysByUIds(List<String> uids) throws Exception {
         return localDataSource.getSurveysByUids(uids);
     }
 
     @Override
-    public void save(List<Survey> surveys) throws Exception {
+    public void save(@NotNull List<Survey> surveys) throws Exception {
         localDataSource.save(surveys);
     }
+
+    @NotNull
+    @Override
+    public Survey getSurveyByUid(@NotNull String uid) throws Exception {
+        return localDataSource.getSurveyByUid(uid);
+    }
+
+
+
+
 }

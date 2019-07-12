@@ -95,9 +95,10 @@ public class MonitorBySurveyActionsPresenter {
 
     private void loadMetadata() {
         try {
+
             loadPrograms();
             loadOrgUnits();
-            serverMetadata = getServerMetadata();
+            serverMetadata = getServerMetadataUseCase.execute();
         } catch (Exception e) {
             showLoadingErrorMessage(e.getMessage());
         }
@@ -143,7 +144,7 @@ public class MonitorBySurveyActionsPresenter {
             orgUnitName = orgUnit.getName();
         }
 
-        return new SurveyViewModel(programName, orgUnitName,
+        return new SurveyViewModel(survey.getSurveyUid(), programName, orgUnitName,
                 survey.getCompletionDate(), survey.getCompetency());
     }
 

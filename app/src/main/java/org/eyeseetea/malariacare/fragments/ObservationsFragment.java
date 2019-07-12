@@ -55,6 +55,8 @@ import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
 import org.eyeseetea.malariacare.domain.usecase.GetObservationBySurveyUidUseCase;
 import org.eyeseetea.malariacare.domain.usecase.GetServerMetadataUseCase;
 import org.eyeseetea.malariacare.domain.usecase.SaveObservationUseCase;
+import org.eyeseetea.malariacare.factories.DataFactory;
+import org.eyeseetea.malariacare.factories.MetadataFactory;
 import org.eyeseetea.malariacare.layout.adapters.MissedStepsAdapter;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
@@ -191,32 +193,13 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
     }
 
     private void initPresenter(String surveyUid) {
-        IAsyncExecutor asyncExecutor = new AsyncExecutor();
-        IMainExecutor mainExecutor = new UIThreadExecutor();
-        ObservationLocalDataSource observationLocalDataSource = new ObservationLocalDataSource();
-
-        IObservationRepository observationRepository =
-                new ObservationRepository(observationLocalDataSource);
-
-        GetObservationBySurveyUidUseCase getObservationBySurveyUidUseCase =
-                new GetObservationBySurveyUidUseCase(asyncExecutor, mainExecutor,
-                        observationRepository);
-
-        IServerMetadataRepository serverMetadataRepository =
-                new ServerMetadataRepository(getActivity());
-
-        GetServerMetadataUseCase getServerMetadataUseCase =
-                new GetServerMetadataUseCase(serverMetadataRepository);
-
-        SaveObservationUseCase saveObservationUseCase =
-                new SaveObservationUseCase(asyncExecutor, mainExecutor, observationRepository);
-
         presenter = new ObservationsPresenter(getActivity(),
-                getObservationBySurveyUidUseCase, getServerMetadataUseCase, saveObservationUseCase);
+                DataFactory.INSTANCE.provideGetObservationBySurveyUidUseCase(),
+                MetadataFactory.INSTANCE.provideServerMetadataUseCase(getActivity()),
+                DataFactory.INSTANCE.provideSaveObservationUseCase());
 
 
         presenter.attachView(this, surveyUid);
-
     }
 
     private void initProviderTexts() {

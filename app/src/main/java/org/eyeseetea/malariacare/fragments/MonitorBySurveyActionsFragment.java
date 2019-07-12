@@ -1,6 +1,7 @@
 package org.eyeseetea.malariacare.fragments;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
@@ -24,8 +24,11 @@ import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.presentation.presenters.monitoring.MonitorBySurveyActionsPresenter;
 import org.eyeseetea.malariacare.presentation.viewmodels.SurveyViewModel;
+import org.eyeseetea.malariacare.presentation.views.MonitorActionsDialogFragment;
 
 import java.util.List;
+
+import kotlin.Unit;
 
 public class MonitorBySurveyActionsFragment extends FiltersFragment implements
         MonitorBySurveyActionsPresenter.View {
@@ -39,7 +42,7 @@ public class MonitorBySurveyActionsFragment extends FiltersFragment implements
 
     private ImageView backButton;
 
-    public static MonitorBySurveyActionsFragment newInstance(){
+    public static MonitorBySurveyActionsFragment newInstance() {
         return new MonitorBySurveyActionsFragment();
     }
 
@@ -57,7 +60,7 @@ public class MonitorBySurveyActionsFragment extends FiltersFragment implements
     }
 
     private void hideBackButton() {
-        if (backButton == null){
+        if (backButton == null) {
             backButton = getActivity().findViewById(R.id.back_to_monitoring_by_actions_view);
         }
 
@@ -72,7 +75,7 @@ public class MonitorBySurveyActionsFragment extends FiltersFragment implements
 
     @Override
     protected void onFiltersChanged() {
-        presenter.refresh (selectedProgramUidFilter, selectedOrgUnitUidFilter);
+        presenter.refresh(selectedProgramUidFilter, selectedOrgUnitUidFilter);
     }
 
 
@@ -80,7 +83,7 @@ public class MonitorBySurveyActionsFragment extends FiltersFragment implements
     public void reloadData() {
         super.reloadData();
         hideBackButton();
-        presenter.refresh (selectedProgramUidFilter, selectedOrgUnitUidFilter);
+        presenter.refresh(selectedProgramUidFilter, selectedOrgUnitUidFilter);
     }
 
 
@@ -109,7 +112,24 @@ public class MonitorBySurveyActionsFragment extends FiltersFragment implements
 
         adapter = new MonitorBySurveyActionsAdapter(getActivity());
 
+        adapter.setOnItemMenuClickListener(
+                surveyViewModel -> openSurveyActionsDialog(surveyViewModel));
+
         surveysByActionsView.setAdapter(adapter);
+    }
+
+    private void openSurveyActionsDialog(SurveyViewModel surveyViewModel) {
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+
+        MonitorActionsDialogFragment monitorActionsDialogFragment =
+                MonitorActionsDialogFragment.newInstance(surveyViewModel.getSurveyUid());
+
+        monitorActionsDialogFragment.setOnActionsSaved(() -> {
+            presenter.refresh(selectedProgramUidFilter, selectedOrgUnitUidFilter);
+            return Unit.INSTANCE;
+        });
+
+        monitorActionsDialogFragment.show(fm, MonitorActionsDialogFragment.class.getSimpleName());
     }
 
     private void initializePresenter() {

@@ -61,7 +61,7 @@ public class SurveyMapper {
         return surveys;
     }
 
-    private Survey map(SurveyDB surveyDB) {
+    public Survey map(SurveyDB surveyDB) {
 
         String eventUid = surveyDB.getEventUid();
         String orgUnitUid = orgUnitsDBMap.get(surveyDB.getId_org_unit_fk()).getUid();

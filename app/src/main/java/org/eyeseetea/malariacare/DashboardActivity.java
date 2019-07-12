@@ -423,6 +423,10 @@ public class DashboardActivity extends BaseActivity {
         dashboardController.onAssessSelected(survey);
     }
 
+    public void openFeedback(String surveyUid, boolean modifyFilter) {
+        dashboardController.openFeedback(surveyUid, modifyFilter);
+    }
+
     public void openFeedback(SurveyDB survey, boolean modifyFilter) {
         dashboardController.openFeedback(survey, modifyFilter);
     }

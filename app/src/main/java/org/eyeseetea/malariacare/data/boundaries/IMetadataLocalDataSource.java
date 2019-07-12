@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface IMetadataLocalDataSource<T extends IMetadata> {
     List<T> getAll();
+
+    T getByUid(String uid);
 }

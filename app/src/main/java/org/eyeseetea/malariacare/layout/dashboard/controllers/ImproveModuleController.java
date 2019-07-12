@@ -100,6 +100,12 @@ public class ImproveModuleController extends ModuleController {
         closeFeedbackFragment();
     }
 
+    public void onFeedbackSelected(String surveyUid, boolean modifyFilter){
+        SurveyDB surveyDB =  SurveyDB.getSurveyByUId(surveyUid);
+
+        onFeedbackSelected(surveyDB,modifyFilter);
+    }
+
     public void onFeedbackSelected(SurveyDB survey, boolean modifyFilter){
         Session.setSurveyByModule(survey, getSimpleName());
         try {
