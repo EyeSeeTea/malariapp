@@ -197,8 +197,19 @@ public class ObservationsPresenter {
 
     private void showObservation() {
         if (mView != null) {
-            mView.renderMissedCriticalSteps(missedCriticalSteps);
-            mView.renderMissedNonCriticalSteps(missedNonCriticalSteps);
+
+            if (missedCriticalSteps.size() > 0){
+                mView.renderMissedCriticalSteps(missedCriticalSteps);
+            } else {
+                mView.showNoCriticalStepsMissedText();
+            }
+
+            if (missedNonCriticalSteps.size() > 0){
+                mView.renderMissedNonCriticalSteps(missedNonCriticalSteps);
+            } else {
+                mView.showNoNonCriticalStepsMissedText();
+            }
+
             mView.renderProvider(mObservationViewModel.getProvider());
 
             mView.renderAction1(mObservationViewModel.getAction1());
@@ -369,5 +380,9 @@ public class ObservationsPresenter {
 
         void showInvalidObservationErrorMessage();
         void showInvalidServerMetadataErrorMessage();
+
+        void showNoCriticalStepsMissedText();
+
+        void showNoNonCriticalStepsMissedText();
     }
 }
