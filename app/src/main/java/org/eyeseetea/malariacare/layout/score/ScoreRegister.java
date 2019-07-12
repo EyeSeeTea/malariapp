@@ -167,7 +167,7 @@ public class ScoreRegister {
      */
     public static void registerCompositeScores(List<CompositeScoreDB> compositeScores,
             float idSurvey, String tag) {
-        clearCompositeScoreBytagAndSurvey(idSurvey, tag);
+        clearCompositeScoreByTagAndSurvey(idSurvey, tag);
         for (CompositeScoreDB compositeScore : compositeScores) {
             Log.i(TAG, "Register composite score: " + compositeScore.getHierarchical_code());
             if (!compositeScoreMapBySurvey.containsKey(tag)) {
@@ -187,7 +187,7 @@ public class ScoreRegister {
     /**
      * Remove the CompositeScores by survey and tag
      */
-    public static void clearCompositeScoreBytagAndSurvey(float idSurvey, String tag) {
+    public static void clearCompositeScoreByTagAndSurvey(float idSurvey, String tag) {
         if (compositeScoreMapBySurvey.containsKey(tag)) {
             if (compositeScoreMapBySurvey.get(tag).containsKey(idSurvey)) {
                 compositeScoreMapBySurvey.get(tag).remove(idSurvey);
@@ -198,7 +198,7 @@ public class ScoreRegister {
     /**
      * Remove the CompositeScores by survey and tag
      */
-    public static void clearTabMapsBytagAndSurvey(float idSurvey, String tag) {
+    public static void clearTabMapsByTagAndSurvey(float idSurvey, String tag) {
         if (tabScoreMap.containsKey(tag)) {
             if (tabScoreMap.get(tag).containsKey(idSurvey)) {
                 tabScoreMap.get(tag).remove(idSurvey);
@@ -210,7 +210,7 @@ public class ScoreRegister {
      * Resets generalScores and initializes a new set ot them
      */
     public static void registerTabScores(List<TabDB> tabs, float idSurvey, String tag) {
-        clearTabMapsBytagAndSurvey(idSurvey, tag);
+        clearTabMapsByTagAndSurvey(idSurvey, tag);
         for (TabDB tab : tabs) {
             Log.i(TAG, "Register tab score: " + tab.getName());
             if (!tabScoreMap.containsKey(tag)) {
@@ -227,8 +227,8 @@ public class ScoreRegister {
      * Clears every score in session
      */
     public static void clear(float idSurvey, String tag) {
-        clearCompositeScoreBytagAndSurvey(idSurvey, tag);
-        clearTabMapsBytagAndSurvey(idSurvey, tag);
+        clearCompositeScoreByTagAndSurvey(idSurvey, tag);
+        clearTabMapsByTagAndSurvey(idSurvey, tag);
     }
 
     /**
