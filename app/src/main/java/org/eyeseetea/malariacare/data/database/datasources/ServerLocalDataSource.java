@@ -1,6 +1,8 @@
 package org.eyeseetea.malariacare.data.database.datasources;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import com.raizlabs.android.dbflow.data.Blob;
 import com.raizlabs.android.dbflow.sql.language.Select;
@@ -9,6 +11,7 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.IAllServersDataSource;
 import org.eyeseetea.malariacare.data.IServerDataSource;
 import org.eyeseetea.malariacare.data.database.model.ServerDB;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.domain.entity.Server;
 
 import java.util.ArrayList;
@@ -24,16 +27,19 @@ public class ServerLocalDataSource implements IServerDataSource, IAllServersData
 
     @Override
     public Server get() {
+        Server server = null;
+
         ServerDB serverDB = getServerFromDB();
 
         byte[] logo = null;
 
-        if (serverDB.getLogo() != null){
-            logo = serverDB.getLogo().getBlob();
-        }
+        if (serverDB != null) {
+            if (serverDB.getLogo() != null) {
+                logo = serverDB.getLogo().getBlob();
+            }
 
-        Server server =
-                new Server(serverDB.getUrl(), serverDB.getName(),logo);
+            server = new Server(serverDB.getUrl(), serverDB.getName(),logo);
+        }
 
         return server;
     }
