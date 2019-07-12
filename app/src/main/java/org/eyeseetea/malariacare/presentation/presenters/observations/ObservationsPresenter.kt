@@ -5,11 +5,13 @@ import org.eyeseetea.malariacare.data.database.model.QuestionDB
 import org.eyeseetea.malariacare.data.database.model.SurveyDB
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner
 import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification
+import org.eyeseetea.malariacare.domain.entity.NextScheduleDateConfiguration
 import org.eyeseetea.malariacare.domain.entity.Observation
 import org.eyeseetea.malariacare.domain.entity.ObservationStatus
 import org.eyeseetea.malariacare.domain.entity.ServerMetadata
 import org.eyeseetea.malariacare.domain.exception.InvalidServerMetadataException
 import org.eyeseetea.malariacare.domain.exception.ObservationNotFoundException
+import org.eyeseetea.malariacare.domain.service.SurveyNextScheduleDomainService
 import org.eyeseetea.malariacare.domain.usecase.GetObservationBySurveyUidUseCase
 import org.eyeseetea.malariacare.domain.usecase.GetServerMetadataUseCase
 import org.eyeseetea.malariacare.domain.usecase.SaveObservationUseCase
@@ -37,6 +39,7 @@ class ObservationsPresenter(
     private lateinit var serverMetadata: ServerMetadata
     private lateinit var surveyUid: String
     private lateinit var observationViewModel: ObservationViewModel
+    private var formattedNextScheduleDate: String = "NaN"
 
     private var missedCriticalSteps: List<MissedStepViewModel> = mutableListOf()
     private var missedNonCriticalSteps: List<MissedStepViewModel> = mutableListOf()
@@ -114,18 +117,35 @@ class ObservationsPresenter(
             )
         }
 
-        var formattedNextDate = "NaN"
+        if (survey != null) {
+            val eventDate = survey.getCompletionDate()
 
-        formattedNextDate = dateParser.format(
-            SurveyPlanner.getInstance().findScheduledDateBySurvey(survey),
-            DateParser.EUROPEAN_DATE_FORMAT
-        )
+            val competencyScoreClassification =
+                CompetencyScoreClassification.get(survey.competencyScoreClassification!!)
+
+            val nextScheduleDateConfiguration =
+                NextScheduleDateConfiguration(survey.program!!.nextScheduleDeltaMatrix)
+
+            val surveyNextScheduleDomainService = SurveyNextScheduleDomainService()
+
+            val nextScheduleDate = surveyNextScheduleDomainService.calculate(
+                nextScheduleDateConfiguration,
+                eventDate,
+                competencyScoreClassification,
+                survey.isLowProductivity
+            )
+
+            formattedNextScheduleDate = dateParser.format(
+                nextScheduleDate,
+                DateParser.EUROPEAN_DATE_FORMAT
+            )
+        }
 
         val classification = CompetencyScoreClassification.get(
             survey.competencyScoreClassification
         )
 
-        showHeaderInfo(formattedCompletionDate, formattedNextDate, classification)
+        showHeaderInfo(formattedCompletionDate, formattedNextScheduleDate, classification)
     }
 
     private fun loadMissedSteps() {
@@ -272,6 +292,7 @@ class ObservationsPresenter(
                 view.shareByText(
                     observationViewModel,
                     survey,
+                    formattedNextScheduleDate,
                     missedCriticalSteps,
                     missedNonCriticalSteps
                 )
@@ -343,6 +364,7 @@ class ObservationsPresenter(
         fun shareByText(
             observationViewModel: ObservationViewModel?,
             survey: SurveyDB,
+            formattedNextScheduleDate: String,
             missedCriticalStepViewModels: List<@JvmSuppressWildcards MissedStepViewModel>?,
             missedNonCriticalStepViewModels: List<@JvmSuppressWildcards MissedStepViewModel>?
         )
