@@ -219,6 +219,7 @@
 <string name="developer_option_summary">"ជម្រើសនេះអនុញ្ញាតជម្រើសអភិវឌ្ឍន៍"</string>
 <string name="developer_option_title">"អភិវឌ្ឍន៍បង្ហាញជម្រើស"</string>
 <string name="export_data_option_title">"មូលដ្ឋានទិន្នន័យដែលបាននាំចេញ"</string>
+<string name="export_data_to_local_option_title">នាំចេញមូលដ្ឋានទិន្នន័យទៅឧបករណ៍ផ្ទុកក្នុងមូលដ្ឋាន</string>
 <string name="progress_pull_validating_composite_scores">"សុពលភាពពិន្ទុសមាសធាតុ ..."</string>
 <string name="admin_announcement">"សេចក្តីប្រកាស admin"</string>
 <string name="user_close">"អ្នកប្រើប្រាស់នេះត្រូវបានបិទដោយអ្នកគ្រប់គ្រង។"</string>
@@ -309,4 +310,7 @@
 <string name="login_error_unsupported_server_version">កំណែម៉ាស៊ីនមេមិនត្រូវបានគាំទ្រទេ</string>
 <string name="feedback_not_sent">"URL ឆ្លើយតបមិនមានទេដោយសារតែការស្ទង់មតិ។ ព្យាយាមចែករំលែកមតិត្រឡប់ម្តងទៀតនៅពេលក្រោយ។"</string>
 <string name="recommend_upgrade">"សូមដំឡើងកំណែកម្មវិធីពី Google Play ។"</string>
+
+<string name="export_db_to_local_success_message">បាននាំចេញដោយជោគជ័យដើម្បីទាញយកថត</string>
+<string name="export_db_to_local_error_message">មានកំហុសកើតឡើងនៅពេលនាំចេញមូលដ្ឋានទិន្នន័យ</string>
 </resources>
