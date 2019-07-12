@@ -77,4 +77,14 @@
     <color name="medium_score_color">@color/assess_yellow</color>
     <color name="low_score_color">@color/darkRed</color>
     <color name="no_score_color">#BEBEBE</color>
+
+    <color name="competency_competent_background_color">#FFFFFF</color>
+    <color name="competency_competent_improvement_background_color">#78909c</color>
+    <color name="competency_not_competent_background_color">#283747</color>
+    <color name="competency_not_available_background_color">@android:color/transparent</color>
+
+    <color name="competency_competent_text_color">@color/black</color>
+    <color name="competency_competent_improvement_text_color">@color/white</color>
+    <color name="competency_not_competent_text_color">@color/white</color>
+    <color name="competency_not_available_text_color">@color/black</color>
 </resources>

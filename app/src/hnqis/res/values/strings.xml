@@ -119,7 +119,7 @@ evaluation"</string>
 <string name="dashboard_title_planned_productivity">"Prd"</string>
 <string name="dashboard_title_planned_competency">"Competency"</string>
 <string name="dashboard_title_planned_next_qa">"Next QA"</string>
-<string name="assessment_sent_score">"Score"</string>
+<string name="assessment_sent_competency">"Competency"</string>
 <string name="feedback_show_only_failed">"Show only failed questions"</string>
 <string name="feedback_show_only_media">"Show only questions containing video/image"</string>
 <string name="feedback_show_only_one_or_show_all">"Show only last feedback"</string>

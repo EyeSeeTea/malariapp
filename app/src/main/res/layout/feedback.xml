@@ -76,6 +76,7 @@
         android:orientation="horizontal">
 
         <org.eyeseetea.malariacare.views.CustomTextView
+            android:id="@+id/feedback_competency"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="right|center_vertical"
@@ -83,12 +84,15 @@
             android:layout_weight="0.45"
             android:gravity="left"
             android:lines="1"
-            android:text="@string/quality_of_care"
+            android:text="Competent"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/new_grey_text_color"
+            android:background="#283747"
+            android:textColor="@color/white"
             android:ellipsize="end"
             android:textSize="@dimen/planing_text_size"
             android:textStyle="bold"
+            android:textAlignment="center"
+            android:padding="6dp"
             app:tDimension="@string/font_size_level1"
             app:tFontName="@string/light_font" />
 
@@ -102,6 +106,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/black"
             android:textStyle="bold"
+            android:padding="6dp"
             app:tDimension="@string/font_size_level2"
             app:tFontName="@string/medium_font_name" />
 

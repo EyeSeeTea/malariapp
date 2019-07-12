@@ -132,7 +132,7 @@
 <string name="dashboard_title_planned_productivity">"ຈຳນວນ"</string>
 <string name="dashboard_title_planned_competency">"ຄວາມສາມາດ"</string>
 <string name="dashboard_title_planned_next_qa">"ການປະເມີນຄຸນນະພາບຄັ້ງຕໍ່ໄປ"</string>
-<string name="assessment_sent_score">"ຄະແນນ"</string>
+<string name="assessment_sent_competency">"ຄວາມສາມາດ"</string>
 <string name="feedback_show_only_failed">"ສະແດງສະເພາະຄຳຖາມທີ່ຕອບຜິດ"</string>
 <string name="feedback_show_only_media">"ສະແດງຄໍາຖາມເທົ່ານັ້ນທີ່ມີວິດີໂອ / ຮູບພາບ"</string>
 <string name="feedback_return">"ກັບຄືນສູ່ການປະເມີນຜົນທັງໝົດ"</string>

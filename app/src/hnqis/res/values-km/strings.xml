@@ -134,6 +134,7 @@
 <string name="dashboard_title_planned_productivity">"Prd"</string>
 <string name="dashboard_title_planned_competency">"សមត្ថកិច្ច"</string>
 <string name="dashboard_title_planned_next_qa">"QA បន្ទាប់"</string>
+<string name="assessment_sent_competency">"សមត្ថកិច្ច"</string>
 <string name="feedback_show_only_failed">"បង្ហាញតែសំណួរដែលបរាជ័យ"</string>
 <string name="feedback_show_only_media">"បង្ហាញតែសំណួរដែលមានវីដេអូ / រូបភាព"</string>
 <string name="feedback_show_only_one_or_show_all">"បង្ហាញតែមតិយោបល់ចុងក្រោយក្នុងមួយកម្មវិធី / PUll"</string>

@@ -26,15 +26,15 @@ import android.view.View;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
-import org.eyeseetea.malariacare.utils.AUtils;
+import org.eyeseetea.malariacare.utils.CompetencyUtils;
 import org.eyeseetea.malariacare.utils.DateParser;
 import org.eyeseetea.malariacare.views.CustomTextView;
-import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class AssessmentSentAdapter extends
         ADashboardAdapter {
@@ -93,21 +93,21 @@ public class AssessmentSentAdapter extends
     }
 
     private void decorateSentScore(SurveyDB survey, View rowView) {
+        CustomTextView competencyTextView = rowView.findViewById(R.id.score);
 
-        String scoreText;
+        String competencyText;
+
         if (survey.hasConflict()) {
-            scoreText = (getContext().getResources().getString(
+            competencyText = (getContext().getResources().getString(
                     R.string.feedback_info_conflict)).toUpperCase();
+            competencyTextView.setText(competencyText);
         } else {
-            if (survey.hasMainScore()) {
-                scoreText = String.format(SCORE_FORMAT, survey.getMainScore());
-            } else {
-                scoreText = "NaN";
-            }
-        }
+            CompetencyScoreClassification classification =
+                    CompetencyScoreClassification.get(
+                            survey.getCompetencyScoreClassification());
 
-        CustomTextView sentScore = (CustomTextView) rowView.findViewById(R.id.score);
-        sentScore.setText(scoreText);
+            CompetencyUtils.setTextByCompetency(competencyTextView, classification);
+        }
     }
 
     private void decorateSentDate(SurveyDB survey, View rowView) {
@@ -131,9 +131,9 @@ public class AssessmentSentAdapter extends
      */
     @Override
     protected View decorateBackground(int position, View rowView) {
-        if(position==0 || position%2==0){
+        if (position == 0 || position % 2 == 0) {
             rowView.setBackgroundColor(context.getResources().getColor(R.color.white));
-        }else {
+        } else {
             rowView.setBackgroundColor(context.getResources().getColor(R.color.white_grey));
         }
         return rowView;
