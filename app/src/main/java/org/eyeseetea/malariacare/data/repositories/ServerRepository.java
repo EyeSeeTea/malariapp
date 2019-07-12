@@ -30,7 +30,7 @@ public class ServerRepository implements IServerRepository {
     public Server getLoggedServer() throws Exception {
         Server cachedServer = serverLocalDataSource.get();
 
-        if (cachedServer.getUrl() != null &&
+        if (cachedServer != null && cachedServer.getUrl() != null &&
                 cachedServer.getName() != null && cachedServer.getLogo() != null){
             return cachedServer;
         } else {
