@@ -20,8 +20,7 @@
 package org.eyeseetea.malariacare.domain.usecase;
 
 import org.eyeseetea.malariacare.data.database.datasources.ServerInfoLocalDataSource;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushController;
-import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushDataController;
 import org.eyeseetea.malariacare.data.remote.api.ServerInfoRemoteDataSource;
 import org.eyeseetea.malariacare.data.repositories.ServerInfoRepository;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
@@ -63,7 +62,7 @@ public class PushUseCaseShould {
         loginUseCase.execute(credentials, new PushUseCase.Callback() {
 
             @Override
-            public void onComplete(PushController.Kind kind) { Assert.assertTrue(true); }
+            public void onComplete(PushDataController.Kind kind) { Assert.assertTrue(true); }
 
             @Override
             public void onPushError() {
@@ -108,7 +107,7 @@ public class PushUseCaseShould {
         loginUseCase.execute(credentials, new PushUseCase.Callback() {
 
             @Override
-            public void onComplete(PushController.Kind kind) {
+            public void onComplete(PushDataController.Kind kind) {
                 Assert.assertTrue(true); }
 
             @Override
@@ -156,7 +155,7 @@ public class PushUseCaseShould {
         loginUseCase.execute(credentials, new PushUseCase.Callback() {
 
             @Override
-            public void onComplete(PushController.Kind kind) {
+            public void onComplete(PushDataController.Kind kind) {
                 fail("onLoginSuccess");
             }
 
@@ -207,7 +206,7 @@ public class PushUseCaseShould {
         loginUseCase.execute(credentials, new PushUseCase.Callback() {
 
             @Override
-            public void onComplete(PushController.Kind kind) {
+            public void onComplete(PushDataController.Kind kind) {
                 fail("onLoginSuccess");
             }
 
@@ -259,7 +258,7 @@ public class PushUseCaseShould {
         loginUseCase.execute(credentials, new PushUseCase.Callback() {
 
             @Override
-            public void onComplete(PushController.Kind kind) {
+            public void onComplete(PushDataController.Kind kind) {
                 Assert.assertTrue(true);
             }
 
@@ -310,7 +309,7 @@ public class PushUseCaseShould {
         IPushController pushController = new IPushController() {
             @Override
             public void push(IPushControllerCallback callback) {
-                callback.onComplete(PushController.Kind.EVENTS);
+                callback.onComplete(PushDataController.Kind.EVENTS);
             }
 
             @Override

@@ -55,6 +55,7 @@ import org.eyeseetea.malariacare.data.database.model.TabDB;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.model.ValueDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramCompositeScoreDict;
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramQuestionDict;
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramStageSectionTabDict;
@@ -326,6 +327,8 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             appUser = new UserDB();
         }
         appUser.setUid(userAccount.getUId());
+        //TODO: retrieved user name usign SDK
+        appUser.setUsername(Session.getCredentials().getUsername());
         appUser.setName(userAccount.getName());
         appUser.setLastUpdated(null);
         appUser.save();
@@ -490,7 +493,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         if (dataValue.getDataElement().equals(ServerMetadataDB.findControlDataElementUid(
                 PreferencesState.getInstance().getContext().getString(
                         R.string.uploaded_by_code)))) {
-            UserDB user = UserDB.getUser(dataValue.getValue());
+            UserDB user = UserDB.searchUser(dataValue.getValue());
             if (user == null) {
                 user = new UserDB(dataValue.getValue(), dataValue.getValue());
                 user.save();

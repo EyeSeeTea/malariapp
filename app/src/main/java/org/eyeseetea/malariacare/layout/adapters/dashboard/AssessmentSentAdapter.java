@@ -106,7 +106,7 @@ public class AssessmentSentAdapter extends
                     CompetencyScoreClassification.get(
                             survey.getCompetencyScoreClassification());
 
-            CompetencyUtils.setTextByCompetency(competencyTextView, classification);
+            CompetencyUtils.setTextByCompetencyAbbreviation(competencyTextView, classification);
         }
     }
 

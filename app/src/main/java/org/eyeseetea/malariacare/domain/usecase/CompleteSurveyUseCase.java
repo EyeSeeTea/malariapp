@@ -53,7 +53,7 @@ public class CompleteSurveyUseCase implements UseCase {
                     new CompetencyScoreCalculationDomainService();
 
             List<QuestionDB> criticalFailedQuestions =
-                    QuestionDB.getCriticalFailedQuestions(surveyDB.getId_survey());
+                    QuestionDB.getFailedQuestions(surveyDB.getId_survey(), true);
 
             float nonCriticalStepsScore =
                     ScoreRegister.calculateScoreForNonCriticalsSteps(surveyDB,
