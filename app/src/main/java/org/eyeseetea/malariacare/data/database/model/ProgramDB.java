@@ -34,6 +34,8 @@ import java.util.List;
 @Table(database = AppDatabase.class, name = "Program")
 public class ProgramDB extends BaseModel{
 
+    public static String DEFAULT_PROGRAM_DELTA_MATRIX = "6,6;4,4;4,2";
+
     @Column
     @PrimaryKey(autoincrement = true)
     long id_program;
@@ -43,6 +45,9 @@ public class ProgramDB extends BaseModel{
     String name;
     @Column
     String stage_uid;
+
+    @Column
+    String next_schedule_delta_matrix;
 
     /**
      * List of tabs that belongs to this programstage
@@ -96,6 +101,14 @@ public class ProgramDB extends BaseModel{
 
     public void setStageUid(String stage_uid) {
         this.stage_uid = stage_uid;
+    }
+
+    public String getNextScheduleDeltaMatrix() {
+        return next_schedule_delta_matrix;
+    }
+
+    public void setNextScheduleDeltaMatrix(String nextScheduleDeltaMatrix) {
+        this.next_schedule_delta_matrix = nextScheduleDeltaMatrix;
     }
 
     public static List<ProgramDB> getAllPrograms(){
