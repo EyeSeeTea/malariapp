@@ -1,6 +1,6 @@
 package org.eyeseetea.malariacare.presentation.presenters.observations;
 
-import static org.eyeseetea.malariacare.domain.entity.ObservationStatus.*;
+import static org.eyeseetea.malariacare.domain.entity.ObservationStatus.COMPLETED;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -9,11 +9,12 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 import org.eyeseetea.malariacare.data.database.model.QuestionDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
-import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
+import org.eyeseetea.malariacare.domain.entity.NextScheduleDateConfiguration;
 import org.eyeseetea.malariacare.domain.entity.Observation;
 import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
 import org.eyeseetea.malariacare.domain.entity.ServerMetadata;
+import org.eyeseetea.malariacare.domain.service.SurveyNextScheduleDomainService;
 import org.eyeseetea.malariacare.domain.usecase.GetObservationBySurveyUidUseCase;
 import org.eyeseetea.malariacare.domain.usecase.GetServerMetadataUseCase;
 import org.eyeseetea.malariacare.domain.usecase.SaveObservationUseCase;
@@ -25,10 +26,12 @@ import org.eyeseetea.malariacare.presentation.viewmodels.observations.MissedStep
 import org.eyeseetea.malariacare.presentation.viewmodels.observations.ObservationViewModel;
 import org.eyeseetea.malariacare.utils.DateParser;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.utils.DateParser;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -46,6 +49,7 @@ public class ObservationsPresenter {
     private String mSurveyUid;
 
     private ObservationViewModel mObservationViewModel;
+    private String formattedNextScheduleDate;
 
     private List<MissedStepViewModel> missedCriticalSteps;
     private List<MissedStepViewModel> missedNonCriticalSteps;
@@ -143,10 +147,27 @@ public class ObservationsPresenter {
                         DateParser.EUROPEAN_DATE_FORMAT);
             }
 
-            String formattedNextDate = "NaN";
+            formattedNextScheduleDate = "NaN";
             if (mSurvey != null) {
-                formattedNextDate = dateParser.format(
-                        SurveyPlanner.getInstance().findScheduledDateBySurvey(mSurvey),
+                Date eventDate = mSurvey.getCompletionDate();
+
+                CompetencyScoreClassification competencyScoreClassification =
+                        CompetencyScoreClassification.get(mSurvey.getCompetencyScoreClassification());
+
+                NextScheduleDateConfiguration nextScheduleDateConfiguration =
+                        new NextScheduleDateConfiguration(mSurvey.getProgram().getNextScheduleDeltaMatrix());
+
+                SurveyNextScheduleDomainService surveyNextScheduleDomainService = new
+                        SurveyNextScheduleDomainService();
+
+                Date nextScheduleDate = surveyNextScheduleDomainService.calculate(
+                        nextScheduleDateConfiguration,
+                        eventDate,
+                        competencyScoreClassification,
+                        mSurvey.isLowProductivity());
+
+                formattedNextScheduleDate = dateParser.format(
+                        nextScheduleDate,
                         DateParser.EUROPEAN_DATE_FORMAT);
             }
 
@@ -155,7 +176,7 @@ public class ObservationsPresenter {
                             mSurvey.getCompetencyScoreClassification());
 
             mView.renderHeaderInfo(mSurvey.getOrgUnit().getName(), mSurvey.getMainScore(),
-                    formattedCompletionDate, formattedNextDate, classification);
+                    formattedCompletionDate, formattedNextScheduleDate, classification);
         }
     }
 
@@ -259,7 +280,7 @@ public class ObservationsPresenter {
             if (mSurvey.getStatus() != Constants.SURVEY_SENT) {
                 mView.shareNotSent(mContext.getString(R.string.feedback_not_sent));
             } else {
-                mView.shareByText(mObservationViewModel, mSurvey, missedCriticalSteps, missedNonCriticalSteps);
+                mView.shareByText(mObservationViewModel, mSurvey, formattedNextScheduleDate, missedCriticalSteps, missedNonCriticalSteps);
             }
         }
     }
@@ -356,6 +377,7 @@ public class ObservationsPresenter {
         void updateStatusView(ObservationStatus status);
 
         void shareByText(ObservationViewModel observationViewModel, SurveyDB survey,
+                String formattedNextScheduleDate,
                 List<MissedStepViewModel> missedCriticalStepViewModels,
                 List<MissedStepViewModel> missedNonCriticalStepViewModels);
 

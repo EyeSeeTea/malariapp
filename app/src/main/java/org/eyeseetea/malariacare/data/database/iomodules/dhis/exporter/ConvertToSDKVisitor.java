@@ -38,16 +38,17 @@ import org.eyeseetea.malariacare.data.database.model.ValueDB;
 import org.eyeseetea.malariacare.data.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
-import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.data.sync.IData;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
+import org.eyeseetea.malariacare.domain.entity.NextScheduleDateConfiguration;
 import org.eyeseetea.malariacare.domain.entity.ScoreType;
 import org.eyeseetea.malariacare.domain.entity.pushsummary.PushConflict;
 import org.eyeseetea.malariacare.domain.entity.pushsummary.PushReport;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
 import org.eyeseetea.malariacare.domain.exception.push.NullEventDateException;
 import org.eyeseetea.malariacare.domain.exception.push.PushValueException;
+import org.eyeseetea.malariacare.domain.service.SurveyNextScheduleDomainService;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.CompetencyUtils;
@@ -256,10 +257,8 @@ public class ConvertToSDKVisitor implements
         currentSurvey = survey;
         uploadedDate = new Date();
         try {
-            Log.d(TAG, String.format("Creating event for survey (%d) ...",
-                    currentSurvey.getId_survey()));
-            Log.d(TAG,
-                    String.format("Creating event for survey (%s) ...", currentSurvey.toString()));
+            Log.d(TAG, String.format("Creating event for survey (%d) ...", currentSurvey.getId_survey()));
+            Log.d(TAG, String.format("Creating event for survey (%s) ...", currentSurvey.toString()));
             try {
                 currentEvent = new EventExtended(survey.getEventUid());
                 currentEvent = buildEvent();
@@ -532,7 +531,7 @@ public class ConvertToSDKVisitor implements
         //Next assessment
         if (controlDataElementExistsInServer(nextAssessmentCode)) {
             addOrUpdateDataValue(nextAssessmentCode, dateParser.format(
-                    SurveyPlanner.getInstance().findScheduledDateBySurvey(survey),
+                    findScheduledDateBySurvey(survey),
                     DateParser.AMERICAN_DATE_FORMAT));
         }
 
@@ -566,6 +565,27 @@ public class ConvertToSDKVisitor implements
                     competency == CompetencyScoreClassification.COMPETENT_NEEDS_IMPROVEMENT ? "true"
                             : "false");
         }
+    }
+
+    private Date findScheduledDateBySurvey(SurveyDB survey) {
+        Date eventDate = survey.getCompletionDate();
+
+        CompetencyScoreClassification competencyScoreClassification =
+                CompetencyScoreClassification.get(survey.getCompetencyScoreClassification());
+
+        NextScheduleDateConfiguration nextScheduleDateConfiguration =
+                new NextScheduleDateConfiguration(survey.getProgram().getNextScheduleDeltaMatrix());
+
+        SurveyNextScheduleDomainService surveyNextScheduleDomainService = new
+                SurveyNextScheduleDomainService();
+
+        Date nextScheduleDate = surveyNextScheduleDomainService.calculate(
+                nextScheduleDateConfiguration,
+                eventDate,
+                competencyScoreClassification,
+                survey.isLowProductivity());
+
+        return nextScheduleDate;
     }
 
     private boolean controlDataElementExistsInServer(String controlDataElementUID) {
