@@ -243,7 +243,6 @@
 <string name="plan_action_today_date">ແລ້ວສິ້ນ: %s</string>
 <string name="plan_action_next_date">ຕໍ່ໄປ: %s</string>
 <string name="plan_action_description">ອະທິບາຍສິ່ງທີ່ໄດ້ສັງເກດເຫັນໃນໄລຍະການຢ້ຽມຢາມເປັນແຜນການດໍາເນີນການສະເພາະໃດຫນຶ່ງສໍາລັບການແກ້ໄຂຊ່ອງຫວ່າງ. ຍັງໄດ້ສັງເກດການການປັບປຸງໃນໄລຍະຊ່ອງຫວ່າງລະບຸໃນໄລຍະຢ້ຽມຢາມທີ່ຜ່ານມາ</string>
-<string name="plan_action_gasp_title">Gaps:</string>
 <string name="plan_action_action_plan_title">ແຜນປະຕິບັດງານ:</string>
 <string name="plan_action_action_title">ການປະຕິບັດ:</string>
 <string-array name="plan_action_dropdown_options">

@@ -245,7 +245,6 @@
 <string name="plan_action_today_date">"ສຳເລັດແລ້ວ: %s"</string>
 <string name="plan_action_next_date">ການປະເມີນຕໍ່ໄປນີ້: %s</string>
 <string name="plan_action_description">"ບັນຍາຍສິ່ງທີ່ໄດ້ສັງເກດເຫັນໃນລະຫວ່າງການລົງຍຽມຍາມລະບຸແຜນການແກ້ໄຂຊ່ອງວ່າງຕ່າງໆ. ພ້ອມທັງບັນທຶກການປັບປຸງຂໍ້ບົກຜ່ອງທີ່ພົບເຫັນໃນການລົງຍຽມຍາມຄັ້ງທີ່ຜ່ານມາ."</string>
-<string name="plan_action_gasp_title">"ຊ່ອງວ່າງ"</string>
 <string name="plan_action_action_plan_title">"ແຜນການປະຕິບັດງານ"</string>
 <string name="plan_action_action_title">"ການປະຕິບັດງານ"</string>
 <string-array name="plan_action_dropdown_options">

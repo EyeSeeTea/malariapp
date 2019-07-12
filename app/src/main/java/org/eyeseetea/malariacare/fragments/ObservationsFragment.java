@@ -87,7 +87,6 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
     private View otherView;
     private View secondaryView;
     private ImageButton mGoBack;
-    private CustomEditText mCustomGapsEditText;
     private CustomEditText mCustomProviderText;
     private CustomEditText mCustomActionPlanEditText;
     private CustomEditText mCustomActionOtherEditText;
@@ -112,14 +111,12 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
     public void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
-        /*List<Feedback> feedbackList = new ArrayList<>();
-        Session.putServiceValue(PREPARE_FEEDBACK_ACTION_ITEMS, feedbackList);*/
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        mRootView = (RelativeLayout) inflater.inflate(R.layout.plan_action_fragment, container,
+        mRootView = (RelativeLayout) inflater.inflate(R.layout.fragment_observations, container,
                 false);
 
         String surveyUid = getArguments().getString(SURVEY_UID);
@@ -178,15 +175,6 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
             @Override
             public void afterTextChanged(Editable editable) {
                 presenter.providerChanged(editable.toString());
-            }
-        });
-
-        mCustomGapsEditText = mRootView.findViewById(
-                R.id.plan_action_gasp_edit_text);
-        mCustomGapsEditText.addTextChangedListener(new CustomTextWatcher() {
-            @Override
-            public void afterTextChanged(Editable editable) {
-                presenter.gaspChanged(editable.toString());
             }
         });
 
@@ -311,7 +299,6 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
     @Override
     public void changeToReadOnlyMode() {
         mCustomProviderText.setEnabled(false);
-        mCustomGapsEditText.setEnabled(false);
         mCustomActionPlanEditText.setEnabled(false);
         mCustomActionOtherEditText.setEnabled(false);
         actionSpinner.setEnabled(false);
@@ -320,9 +307,8 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
     }
 
     @Override
-    public void renderBasicObservations(String provider, String gasp, String actionPlan) {
+    public void renderBasicObservations(String provider, String actionPlan) {
         mCustomProviderText.setText(provider);
-        mCustomGapsEditText.setText(gasp);
         mCustomActionPlanEditText.setText(actionPlan);
     }
 
@@ -470,11 +456,6 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
                     + observationViewModel.getProvider();
         }
 
-        data += "\n\n" + getString(R.string.plan_action_gasp_title) + " ";
-
-        if (observationViewModel.getGaps() != null && !observationViewModel.getGaps().isEmpty()) {
-            data += observationViewModel.getGaps();
-        }
 
         data += "\n" + getString(R.string.plan_action_action_plan_title) + " ";
 
