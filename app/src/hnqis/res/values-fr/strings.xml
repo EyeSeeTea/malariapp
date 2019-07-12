@@ -15,6 +15,8 @@
 <string name="settings_menu_about">"À propos de cette app"</string>
 <string name="settings_menu_configuration">"Paramètres"</string>
 <string name="settings_menu_licence">"Licence"</string>
+<string name="settings_menu_learning_center">"Centre d'apprentissage HNQIS"</string>
+<string name="settings_menu_submit_ticket">"Soumettre un ticket"</string>
 <string name="settings_menu_logout">"Se déconnecter"</string>
 
 <string name="dialog_title_delete_survey">"Supprimer rapport"</string>

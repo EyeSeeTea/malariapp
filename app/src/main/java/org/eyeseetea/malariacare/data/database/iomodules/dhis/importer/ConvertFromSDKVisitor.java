@@ -19,6 +19,8 @@
 
 package org.eyeseetea.malariacare.data.database.iomodules.dhis.importer;
 
+import static org.eyeseetea.malariacare.data.database.model.ProgramDB.DEFAULT_PROGRAM_DELTA_MATRIX;
+
 import android.content.Context;
 import android.util.Log;
 
@@ -53,14 +55,18 @@ import org.eyeseetea.malariacare.data.database.model.TabDB;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.model.ValueDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramCompositeScoreDict;
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramQuestionDict;
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramStageSectionTabDict;
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramSurveyDict;
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramTabDict;
 import org.eyeseetea.malariacare.data.remote.sdk.SdkQueries;
+import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
+import org.eyeseetea.malariacare.domain.entity.NextScheduleDateConfiguration;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.DateParser;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeValueFlow;
 import org.hisp.dhis.client.sdk.models.program.ProgramType;
 
 import java.text.DateFormat;
@@ -133,12 +139,15 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
      * Turns a sdk Program into an app Program
      */
     public void visit(ProgramExtended program) {
+        String nextScheduleDeltaMatrix = getNextScheduleDeltaMatrixForProgram(program);
+
         //Build program
         actualProgram = program;
         ProgramDB appProgram =
                 new ProgramDB();
         appProgram.setUid(program.getUid());
         appProgram.setName(program.getDisplayName());
+        appProgram.setNextScheduleDeltaMatrix(nextScheduleDeltaMatrix);
         appProgram.save();
 
 
@@ -149,6 +158,36 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         for (ProgramStageExtended ps : program.getProgramStages()) {
             new ProgramStageExtended(ps).accept(this);
         }
+
+
+    }
+
+    private String getNextScheduleDeltaMatrixForProgram(ProgramExtended program) {
+        String PROGRAM_DELTA_MATRIX_ATTRIBUTE_UID = "e7RtPgv94uh";
+
+        List<AttributeValueFlow> attributeValues = program.getProgram().getAttributeValueFlow();
+
+        String nextScheduleDeltaMatrix = DEFAULT_PROGRAM_DELTA_MATRIX;
+
+        for (AttributeValueFlow attributeValue:attributeValues) {
+            if (attributeValue.getAttribute().getUId().equals(PROGRAM_DELTA_MATRIX_ATTRIBUTE_UID)) {
+                nextScheduleDeltaMatrix = attributeValue.getValue();
+            }
+        }
+
+        NextScheduleDateConfiguration nextScheduleDateConfiguration;
+
+        try{
+            nextScheduleDateConfiguration = new NextScheduleDateConfiguration(nextScheduleDeltaMatrix);
+        } catch (IllegalArgumentException e) {
+            Log.w(TAG, "Invalid delta matrix value: " + nextScheduleDeltaMatrix +
+                    " for program: " + program.getUid() +
+                    " . Assigning default value: " + DEFAULT_PROGRAM_DELTA_MATRIX);
+
+            nextScheduleDateConfiguration = new NextScheduleDateConfiguration(DEFAULT_PROGRAM_DELTA_MATRIX);
+        }
+
+        return nextScheduleDateConfiguration.getNextScheduleDeltaMatrix();
     }
 
     /**
@@ -288,6 +327,8 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             appUser = new UserDB();
         }
         appUser.setUid(userAccount.getUId());
+        //TODO: retrieved user name usign SDK
+        appUser.setUsername(Session.getCredentials().getUsername());
         appUser.setName(userAccount.getName());
         appUser.setLastUpdated(null);
         appUser.save();
@@ -452,7 +493,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         if (dataValue.getDataElement().equals(ServerMetadataDB.findControlDataElementUid(
                 PreferencesState.getInstance().getContext().getString(
                         R.string.uploaded_by_code)))) {
-            UserDB user = UserDB.getUser(dataValue.getValue());
+            UserDB user = UserDB.searchUser(dataValue.getValue());
             if (user == null) {
                 user = new UserDB(dataValue.getValue(), dataValue.getValue());
                 user.save();
@@ -467,6 +508,18 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             // ,dataValue.getValue()));
             //return;
         }
+
+        //-> competency
+        if (dataValue.getDataElement().equals(ServerMetadataDB.findControlDataElementUid(
+                PreferencesState.getInstance().getContext().getString(R.string.overall_competency_code)))) {
+            CompetencyScoreClassification competencyScoreClassification =
+                    CompetencyScoreClassification.getByCode(dataValue.getValue());
+
+            survey.setCompetencyScoreClassification(competencyScoreClassification.getId());
+            survey.save();
+            return;
+        }
+
 
         ValueDB value = new ValueDB();
         //Datavalue is a value from a question
