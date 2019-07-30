@@ -142,7 +142,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             setTheme(R.style.EyeSeeTheme);
             android.support.v7.app.ActionBar actionBar = BaseActivity.this.getSupportActionBar();
 
-            if (server.getLogo() != null){
+            if (server != null && server.getLogo() != null){
                 LayoutUtils.setActionBarLogo(this, actionBar, server.getLogo());
             } else{
                 LayoutUtils.setActionBarLogo(actionBar);
