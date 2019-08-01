@@ -224,7 +224,7 @@ public abstract class ModuleController {
 
     public void setActionBarDashboard() {
         serverUseCase.execute(server -> {
-            if (server.getName() != null && !server.getName().isEmpty()){
+            if (server != null && server.getName() != null && !server.getName().isEmpty()){
                 LayoutUtils.setActionBarDashboard(dashboardActivity, server.getName(),getTitle());
             } else {
                 LayoutUtils.setActionBarDashboard(dashboardActivity, getTitle());
