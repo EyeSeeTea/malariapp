@@ -1,5 +1,7 @@
 package org.eyeseetea.malariacare.data.database.utils;
 
+import static android.content.Context.DOWNLOAD_SERVICE;
+
 import android.Manifest;
 import android.app.Activity;
 import android.app.DownloadManager;
@@ -96,13 +98,13 @@ public class ExportData {
         File compressedFile = dumpAndCompress(activity);
 
         if (compressedFile != null) {
-            result = exportToDownloadsFolder(compressedFile);
+            result = exportToDownloadsFolder(activity, compressedFile);
         }
 
         return result;
     }
 
-    private static boolean exportToDownloadsFolder(File compressedFile) {
+    private static boolean exportToDownloadsFolder(Activity activity, File compressedFile) {
         boolean result = false;
 
         File download_folder = Environment.getExternalStoragePublicDirectory(
@@ -116,6 +118,15 @@ public class ExportData {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        // This code communicate to downloadManager and It's necessary to:
+        // - show notification
+        // - turn visible the file for old devices in downloads folder
+        DownloadManager downloadManager = (DownloadManager) activity.getSystemService(DOWNLOAD_SERVICE);
+
+        downloadManager.addCompletedDownload(exportDataFile.getName(), exportDataFile.getName(),
+                true, "application/zip",
+                exportDataFile.getAbsolutePath(),exportDataFile.length(),true);
 
         return result;
     }
