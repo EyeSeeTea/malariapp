@@ -83,6 +83,12 @@ public class ObservationDB extends BaseModel  implements VisitableToSDK, IData {
     }
 
     @Override
+    public void changeStatusToSyncConversionError() {
+        setStatus_observation(ObservationStatus.ERROR_CONVERSION_SYNC.getCode());
+        save();
+    }
+
+    @Override
     public void changeStatusToQuarantine() {
         //Quarantine to observations is not necessary because generate duplicates are not possible,
         //This type of element only overwritte the server survey.
