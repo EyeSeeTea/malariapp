@@ -312,6 +312,14 @@ public class FeedbackAdapter extends BaseAdapter {
         textView.setText( Html.fromHtml(feedbackText, new CustomParser(textView, this.context), new CustomParser(textView, this.context)));
         textView.setMovementMethod(LinkMovementMethod.getInstance());
 
+        ImageView infoImageView =rowLayout.findViewById(R.id.feedback_question_info);
+
+        if (feedback.getFeedback() != null){
+            infoImageView.setVisibility(View.VISIBLE);
+        } else {
+            infoImageView.setVisibility(View.INVISIBLE);
+        }
+
         //Hide/Show feedback according to its inner state
         toggleFeedback(rowLayout, feedback.isFeedbackShown());
 
