@@ -54,26 +54,30 @@ public abstract class FiltersFragment extends Fragment implements IModuleFragmen
         if (orgUnitProgramFilterView == null){
             orgUnitProgramFilterView = DashboardActivity.dashboardActivity
                     .findViewById(R.id.monitor_org_unit_program_filter_view);
+
+            orgUnitProgramFilterView.setFilterType(OrgUnitProgramFilterView.FilterType.NON_EXCLUSIVE);
         }
 
 
         orgUnitProgramFilterView.setFilterChangedListener(
                 new OrgUnitProgramFilterView.FilterChangedListener() {
                     @Override
-                    public void onProgramFilterChanged(ProgramDB selectedProgramFilter) {
+                    public void onProgramFilterChanged(String selectedProgramFilter) {
                         if ((selectedProgramUidFilter == null && selectedProgramFilter!= null) ||
-                            !selectedProgramUidFilter.equals(selectedProgramFilter.getUid())){
-                            selectedProgramUidFilter = selectedProgramFilter.getUid();
+                            !selectedProgramUidFilter.equals(selectedProgramFilter)){
+
+                            selectedProgramUidFilter = selectedProgramFilter;
+
                             saveCurrentFilters();
                             onFiltersChanged();
                         }
                     }
 
                     @Override
-                    public void onOrgUnitFilterChanged(OrgUnitDB selectedOrgUnitFilter) {
+                    public void onOrgUnitFilterChanged(String selectedOrgUnitFilter) {
                         if ((selectedOrgUnitUidFilter == null && selectedOrgUnitFilter!= null) ||
-                                !selectedOrgUnitFilter.equals(selectedOrgUnitFilter.getUid())) {
-                            selectedOrgUnitUidFilter = selectedOrgUnitFilter.getUid();
+                                !selectedOrgUnitUidFilter.equals(selectedOrgUnitFilter)) {
+                            selectedOrgUnitUidFilter = selectedOrgUnitFilter;
                             saveCurrentFilters();
                             onFiltersChanged();
                         }
@@ -83,6 +87,6 @@ public abstract class FiltersFragment extends Fragment implements IModuleFragmen
 
     private void saveCurrentFilters() {
         PreferencesState.getInstance().setProgramUidFilter(selectedProgramUidFilter);
-        PreferencesState.getInstance().setOrgUnitUidFilter(selectedProgramUidFilter);
+        PreferencesState.getInstance().setOrgUnitUidFilter(selectedOrgUnitUidFilter);
     }
 }

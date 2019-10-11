@@ -68,7 +68,7 @@ public class PlanModuleController extends ModuleController {
         orgUnitProgramFilterView.setFilterChangedListener(
                         new OrgUnitProgramFilterView.FilterChangedListener() {
                             @Override
-                            public void onProgramFilterChanged(ProgramDB programFilter) {
+                            public void onProgramFilterChanged(String programFilter) {
                                 saveCurrentFilters();
 
                                 DashboardActivity.dashboardActivity.onProgramSelected(programFilter);
@@ -76,12 +76,10 @@ public class PlanModuleController extends ModuleController {
                             }
 
                             @Override
-                            public void onOrgUnitFilterChanged(OrgUnitDB orgUnitFilter) {
+                            public void onOrgUnitFilterChanged(String orgUnitFilter) {
                                 saveCurrentFilters();
 
-                                if (orgUnitFilter.getName().equals(
-                                        PreferencesState.getInstance().getContext().getResources()
-                                                .getString(R.string.filter_all_org_units))){
+                                if (orgUnitFilter == ""){
                                     DashboardActivity.dashboardActivity.onProgramSelected(
                                             orgUnitProgramFilterView.getSelectedProgramFilter()
                                     );
@@ -97,9 +95,9 @@ public class PlanModuleController extends ModuleController {
 
     private void saveCurrentFilters() {
         PreferencesState.getInstance().setProgramUidFilter(
-                orgUnitProgramFilterView.getSelectedProgramFilter().getUid());
+                orgUnitProgramFilterView.getSelectedProgramFilter());
         PreferencesState.getInstance().setOrgUnitUidFilter(
-                orgUnitProgramFilterView.getSelectedOrgUnitFilter().getUid());
+                orgUnitProgramFilterView.getSelectedOrgUnitFilter());
     }
 
     public boolean isVisible() {
@@ -111,7 +109,7 @@ public class PlanModuleController extends ModuleController {
     }
 
 
-    public void onOrgUnitSelected(OrgUnitDB orgUnit) {
+    public void onOrgUnitSelected(String orgUnitUid) {
         Log.d(TAG, "onOrgUnitSelected");
         //hide plannedFragment layout and show plannedOrgUnitsFragment
         programVisibility(View.GONE);
@@ -120,7 +118,7 @@ public class PlanModuleController extends ModuleController {
         if (plannedOrgUnitsFragment == null) {
             plannedOrgUnitsFragment = new PlannedPerOrgUnitFragment();
         }
-        plannedOrgUnitsFragment.setOrgUnitFilter(orgUnit.getUid());
+        plannedOrgUnitsFragment.setOrgUnitFilter(orgUnitUid);
         FragmentTransaction ft = getFragmentTransaction();
         ft.replace(R.id.dashboard_planning_orgunit, plannedOrgUnitsFragment);
         ft.commit();
@@ -128,7 +126,7 @@ public class PlanModuleController extends ModuleController {
     }
 
 
-    public void onProgramSelected(ProgramDB program) {
+    public void onProgramSelected(String programUid) {
         Log.d(TAG, "onProgramSelected");
         if (DashboardActivity.dashboardActivity.findViewById(
                 R.id.dashboard_planning_orgunit).getVisibility() == View.VISIBLE) {
@@ -144,7 +142,7 @@ public class PlanModuleController extends ModuleController {
             FragmentTransaction ft = getFragmentTransaction();
             ft.replace(R.id.dashboard_planning_init, fragment);
             ft.commit();
-            if (program != null) {
+            if (programUid != null) {
                 ((PlannedFragment) fragment).reloadFilter();
             }
         } else {

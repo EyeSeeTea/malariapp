@@ -303,15 +303,15 @@ public class DashboardActivity extends BaseActivity {
     /**
      * Handler that starts or edits a given survey
      */
-    public void onOrgUnitSelected(OrgUnitDB orgUnit) {
-        dashboardController.onOrgUnitSelected(orgUnit);
+    public void onOrgUnitSelected(String orgUnitUid) {
+        dashboardController.onOrgUnitSelected(orgUnitUid);
     }
 
     /**
      * Handler that starts or edits a given survey
      */
-    public void onProgramSelected(ProgramDB program) {
-        dashboardController.onProgramSelected(program);
+    public void onProgramSelected(String programUid) {
+        dashboardController.onProgramSelected(programUid);
     }
 
     /**

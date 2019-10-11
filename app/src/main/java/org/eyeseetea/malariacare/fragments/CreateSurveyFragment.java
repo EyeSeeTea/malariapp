@@ -222,9 +222,10 @@ public class CreateSurveyFragment extends Fragment {
         //set the first orgUnit saved
 
 
-        OrgUnitDB filteredOrgUnit = filter.getSelectedOrgUnitFilter();
-        if(filteredOrgUnit!=null) {
-            orgUnitStorage = filteredOrgUnit.getUid();
+        String orgunitUidFilter = filter.getSelectedOrgUnitFilter();
+
+        if(orgunitUidFilter!=null) {
+            orgUnitStorage = orgunitUidFilter;
         }else {
             if (orgUnitHierarchy.getSavedUidsList().length() > 1) {
                 orgUnitStorage = orgUnitHierarchy.getSavedUidsList().split(TOKEN)[0];
@@ -474,8 +475,9 @@ public class CreateSurveyFragment extends Fragment {
         programView.setAdapter(new ProgramArrayAdapter( getActivity(), initProgram));
         ProgramDB lastSelectedProgram= getLastSelectedProgram();
 
-        ProgramDB filteredProgram = filter.getSelectedProgramFilter();
-        if(filteredProgram!=null){
+        String programUidFilter = filter.getSelectedProgramFilter();
+        if(programUidFilter!=null){
+            ProgramDB filteredProgram = ProgramDB.getProgram(programUidFilter);
             programView.setSelection(getIndex(programView, filteredProgram.getName()));
         }else {
             if (lastSelectedProgram != null) {
@@ -626,7 +628,9 @@ public class CreateSurveyFragment extends Fragment {
         }
 
         public OrgUnitDB getLastSelected() {
-            OrgUnitDB filteredOrgUnit = filter.getSelectedOrgUnitFilter();
+
+            OrgUnitDB filteredOrgUnit =OrgUnitDB.getOrgUnit(filter.getSelectedOrgUnitFilter());
+
             if(filteredOrgUnit!=null && filteredOrgUnit.getUid()!=null) {
                 return filteredOrgUnit;
             }
