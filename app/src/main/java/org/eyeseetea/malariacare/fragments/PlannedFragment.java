@@ -180,7 +180,7 @@ public class PlannedFragment extends Fragment implements IModuleFragment{
     }
 
     public void loadProgram(String programUid) {
-        Log.d(TAG, "Loading program: " + programUid);
+        Log.d(TAG,"Loading program: " + programUid);
         programUidFilter = programUid;
         if(plannedAdapter != null) {
             plannedAdapter.applyFilter(programUidFilter);
