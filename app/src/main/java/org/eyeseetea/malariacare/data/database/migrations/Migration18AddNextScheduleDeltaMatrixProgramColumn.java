@@ -7,12 +7,13 @@ import com.raizlabs.android.dbflow.sql.migration.BaseMigration;
 import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
 
 import org.eyeseetea.malariacare.data.database.AppDatabase;
+import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 
-@Migration(version = 16, database = AppDatabase.class)
-public class Migration16AddCompetencyScoreClassificationSurveyColumn extends BaseMigration {
+@Migration(version = 18, database = AppDatabase.class)
+public class Migration18AddNextScheduleDeltaMatrixProgramColumn extends BaseMigration {
 
-    public Migration16AddCompetencyScoreClassificationSurveyColumn() {
+    public Migration18AddNextScheduleDeltaMatrixProgramColumn() {
         super();
     }
 
@@ -21,9 +22,10 @@ public class Migration16AddCompetencyScoreClassificationSurveyColumn extends Bas
 
     @Override
     public void migrate(DatabaseWrapper database) {
-        addColumn(database, SurveyDB.class, "competency_score_classification", "integer");
+        addColumn(database, ProgramDB.class, "next_schedule_delta_matrix", "String");
 
-        database.execSQL("update survey set competency_score_classification = 0");
+        database.execSQL("update program set next_schedule_delta_matrix = '" +
+                ProgramDB.DEFAULT_PROGRAM_DELTA_MATRIX + "'");
     }
 
     @Override

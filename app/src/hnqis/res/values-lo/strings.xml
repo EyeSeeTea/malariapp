@@ -17,6 +17,8 @@
 <string name="settings_menu_about">"ກ່ຽວກັບ"</string>
 <string name="settings_menu_configuration">"ການຕັ້ງຄ່າ"</string>
 <string name="settings_menu_licence">"ການໄດ້ຮັບອະນຸຍາດ"</string>
+<string name="settings_menu_learning_center">"ສູນການຮຽນ HNQIS"</string>
+<string name="settings_menu_submit_ticket">"ສົ່ງຕົ໋ວເປັນ"</string>
 <string name="settings_menu_logout">"ອອກຈາກລະບົບ"</string>
 
 <!-- # dialogs -->
@@ -214,6 +216,7 @@
 <string name="developer_option_summary">"ບ່ອນເລືອກສຳລັບຜູ້ພັດທະນາລະບົບ"</string>
 <string name="developer_option_title">"ສະແດງບ່ອນເລືອກສຳລັບຜູ້ພັດທະນາລະບົບ"</string>
 <string name="export_data_option_title">"ການສົ່ງຖານຂໍ້ມູນອອກ"</string>
+<string name="export_data_to_local_option_title">ສົ່ງຂໍ້ມູນຖານຂໍ້ມູນໄປເກັບຂໍ້ມູນໃນທ້ອງຖິ່ນ</string>
 <string name="progress_pull_validating_composite_scores">"ກຳລັງກວດຄະແນນລວມ..."</string>
 <string name="admin_announcement">"ການແຈ້ງການຈາກຜູ້ຄວບຄຸມລະບົບ"</string>
 <string name="user_close">"ຜູ້ໃຊ້ນີ້ຖືກປິດໂດຍຜູ້ຄວບຄຸມລະບົບ"</string>
@@ -309,4 +312,8 @@
 
 <string name="productivity_low_name">ຕ່ໍາ</string>
 <string name="productivity_high_name">ສູງ</string>
+
+
+<string name="export_db_to_local_success_message">ສົ່ງອອກໄປປະສົບຄວາມສໍາເລັດໃນການດາວໂຫລດໂຟເດີ</string>
+<string name="export_db_to_local_error_message">ມີຂໍ້ຜິດພາດເກີດຂື້ນສົ່ງອອກຖານຂໍ້ມູນ</string>
 </resources>
