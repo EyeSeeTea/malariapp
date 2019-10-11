@@ -19,20 +19,19 @@
 
 package org.eyeseetea.malariacare.fragments;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ListFragment;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import org.eyeseetea.malariacare.DashboardActivity;
@@ -45,31 +44,24 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentUnsentAdapter;
 import org.eyeseetea.malariacare.services.SurveyService;
-import org.eyeseetea.malariacare.views.CustomTextView;
 import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A placeholder fragment containing a simple view.
- */
-public class DashboardUnsentFragment extends ListFragment implements IModuleFragment {
+public class DashboardUnsentFragment extends Fragment implements IModuleFragment {
 
-    public static final String TAG = ".DetailsFragment";
+    public static final String TAG = ".UnsentFragment";
     private SurveyReceiver surveyReceiver;
-    private List<SurveyDB> surveys;
-    protected AssessmentUnsentAdapter adapter;
-    DashboardActivity dashboardActivity;
 
-    OrgUnitProgramFilterView orgUnitProgramFilterView;
-    FloatingActionButton startButton;
-    TextView noSurveysText;
-    ListView listView;
+    private AssessmentUnsentAdapter adapter;
 
-    public DashboardUnsentFragment() {
-        this.surveys = new ArrayList();
-    }
+    private OrgUnitProgramFilterView orgUnitProgramFilterView;
+    private FloatingActionButton startButton;
+    private TextView noSurveysText;
+
+    private RecyclerView recyclerView;
+    private View rootView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -100,11 +92,14 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
                         saveCurrentFilters();
                     }
                 });
-        View view =  inflater.inflate(R.layout.assess_listview, null);
+        rootView =  inflater.inflate(R.layout.assess_listview, null);
 
-        noSurveysText = (TextView) view.findViewById(R.id.no_surveys);
-        startButton = (FloatingActionButton) view.findViewById(R.id.start_button);
-        return view;
+        noSurveysText = rootView.findViewById(R.id.no_surveys);
+        startButton = rootView.findViewById(R.id.start_button);
+
+        initRecyclerView();
+
+        return rootView;
     }
 
     private void saveCurrentFilters() {
@@ -114,14 +109,6 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
                 orgUnitProgramFilterView.getSelectedOrgUnitFilter());
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        Log.d(TAG, "onActivityCreated");
-        super.onActivityCreated(savedInstanceState);
-        initAdapter();
-        initListView();
-        registerForContextMenu(getListView());
-    }
 
     @Override
     public void onResume() {
@@ -164,27 +151,12 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
         }
     }
 
-    /**
-     * Inits adapter.
-     * Most of times is just an AssessmentAdapter.
-     * In a version with several adapters in dashboard (like in 'mock' branch) a new one like the
-     * one in session is created.
-     */
-    private void initAdapter() {
-        this.adapter = new AssessmentUnsentAdapter(this.surveys, getActivity());
-    }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        dashboardActivity = (DashboardActivity) activity;
-    }
+    private void initRecyclerView() {
+        recyclerView = rootView.findViewById(R.id.unsentSurveyList);
 
-    //Remove survey from the list and reload list.
-    public void removeSurveyFromAdapter(SurveyDB survey) {
-        adapter.remove(survey);
-        adapter.notifyDataSetChanged();
-        showOrHiddenList(adapter.getItemList().isEmpty());
+        adapter = new AssessmentUnsentAdapter();
+        recyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -218,18 +190,17 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
         super.onPause();
     }
 
-    /**
+/*    *//**
      * Initializes the listview component, adding a listener for swiping right
-     */
+     *//*
     private void initListView() {
-        listView = getListView();
         if (PreferencesState.getInstance().isVerticalDashboard()) {
             CustomTextView title = (CustomTextView) getActivity().findViewById(
                     R.id.titleInProgress);
             title.setText(adapter.getTitle());
         }
-        setListAdapter(adapter);
-    }
+
+    }*/
 
     /**
      * Register a survey receiver to load surveys into the listadapter
@@ -295,9 +266,7 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
         if (newListSurveys != null) {
             Log.d(TAG, "refreshScreen (Thread: " + Thread.currentThread().getId() + "): "
                     + newListSurveys.size());
-            this.surveys.clear();
-            this.surveys.addAll(newListSurveys);
-            this.adapter.notifyDataSetChanged();
+            this.adapter.setSurveys(newListSurveys);
             SurveyDB surveyDB=null;
             if(newListSurveys.size()>0) {
                 surveyDB =newListSurveys.get(0);
@@ -310,9 +279,9 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
     private void showOrHiddenList(boolean hasSurveys) {
         if(hasSurveys){
             noSurveysText.setVisibility(View.VISIBLE);
-            listView.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.GONE);
         }else {
-            listView.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.VISIBLE);
             noSurveysText.setVisibility(View.GONE);
         }
     }
