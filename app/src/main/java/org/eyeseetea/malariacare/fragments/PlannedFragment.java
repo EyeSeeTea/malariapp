@@ -33,7 +33,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedItem;
@@ -183,7 +182,7 @@ public class PlannedFragment extends Fragment implements IModuleFragment{
     public void loadProgram(String programUid) {
         Log.d(TAG,"Loading program: " + programUid);
         programUidFilter = programUid;
-        if(plannedAdapter!=null){
+        if(plannedAdapter != null) {
             plannedAdapter.applyFilter(programUidFilter);
             plannedAdapter.notifyDataSetChanged();
         }
