@@ -185,11 +185,18 @@ public class OrgUnitProgramRelationDB extends BaseModel {
         this.id_orgunit_program_relation = id_orgunit_program_relation;
     }
 
-    public static boolean existProgramAndOrgUnitRelation(Long idProgram, Long idOrgUnit) {
+    public static boolean existProgramAndOrgUnitRelation(String programUid, String orgUnitUid) {
         OrgUnitProgramRelationDB
-                orgUnitProgramRelation = new Select().from(OrgUnitProgramRelationDB.class)
-                .where(OrgUnitProgramRelationDB_Table.id_org_unit_fk.eq(idOrgUnit))
-                .and(OrgUnitProgramRelationDB_Table.id_program_fk.eq(idProgram)).querySingle();
+                orgUnitProgramRelation =
+                new Select().from(OrgUnitProgramRelationDB.class)
+                        .leftOuterJoin(OrgUnitDB.class)
+                        .on(OrgUnitProgramRelationDB_Table.id_org_unit_fk.eq(
+                                OrgUnitDB_Table.id_org_unit))
+                        .leftOuterJoin(ProgramDB.class)
+                        .on(OrgUnitProgramRelationDB_Table.id_program_fk.eq(
+                                ProgramDB_Table.id_program))
+                        .where(OrgUnitDB_Table.uid_org_unit.eq(orgUnitUid))
+                        .and(ProgramDB_Table.uid_program.eq(programUid)).querySingle();
         return (orgUnitProgramRelation != null);
     }
 
@@ -202,11 +209,13 @@ public class OrgUnitProgramRelationDB extends BaseModel {
 
         if (id_orgunit_program_relation != that.id_orgunit_program_relation) return false;
         if (id_org_unit_fk != null ? !id_org_unit_fk.equals(that.id_org_unit_fk)
-                : that.id_org_unit_fk != null)
+                : that.id_org_unit_fk != null) {
             return false;
+        }
         if (id_program_fk != null ? !id_program_fk.equals(that.id_program_fk)
-                : that.id_program_fk != null)
+                : that.id_program_fk != null) {
             return false;
+        }
         return !(productivity != null ? !productivity.equals(that.productivity)
                 : that.productivity != null);
 

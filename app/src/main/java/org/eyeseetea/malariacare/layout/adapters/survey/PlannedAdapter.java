@@ -33,7 +33,6 @@ import android.widget.TextView;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedHeader;
@@ -46,7 +45,6 @@ import org.eyeseetea.malariacare.utils.DateParser;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class PlannedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -59,7 +57,14 @@ public class PlannedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     private Context context;
 
-    ProgramDB programFilter;
+    /**
+     * Items filtered by this program
+     */
+    String programUidFilter;
+
+    /**
+     * Current selected header (working like an accordeon)
+     */
     PlannedHeader currentHeader;
 
     int numShown;
@@ -118,9 +123,7 @@ public class PlannedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         for (int i = 0; i < items.size(); i++) {
             PlannedItem plannedItem = items.get(i);
 
-            if ((plannedItem.isShownByProgram(programFilter) || programFilter.getName().equals(
-                    PreferencesState.getInstance().getContext().getResources().getString(
-                            R.string.filter_all_org_assessments)))
+            if ((plannedItem.isShownByProgram(programUidFilter) || programUidFilter.equals(""))
                     && plannedItem.isShownByHeader(currentHeader)) {
                 numShownItems++;
                 if (position == (numShownItems - 1)) {
@@ -138,11 +141,11 @@ public class PlannedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         applyFilter(null);
     }
 
-    public void applyFilter(ProgramDB program) {
-        Log.d(TAG, "applyFilter:" + program);
+    public void applyFilter(String programUid) {
+        Log.d(TAG, "applyFilter:" + programUid);
 
         //Annotate filter
-        programFilter = program;
+        programUidFilter = programUid;
 
         //Update header counters according to new program filter
         updateHeaderCounters();
@@ -170,9 +173,7 @@ public class PlannedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 numItems++;
             } else {
                 //Surveys are shown
-                if ((plannedItem.isShownByProgram(programFilter) || programFilter.getName().equals(
-                        PreferencesState.getInstance().getContext().getResources().getString(
-                                R.string.filter_all_org_assessments)))
+                if ((plannedItem.isShownByProgram(programUidFilter) || programUidFilter.equals(""))
                         && plannedItem.isShownByHeader(currentHeader)) {
                     numItems++;
                 }
@@ -193,9 +194,7 @@ public class PlannedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             }
             //Check match survey/program -> update header.counter
             PlannedSurvey plannedSurvey = (PlannedSurvey) plannedItem;
-            if (plannedSurvey.isShownByProgram(programFilter) || programFilter.getName().equals(
-                    PreferencesState.getInstance().getContext().getResources().getString(
-                            R.string.filter_all_org_assessments))) {
+            if (plannedSurvey.isShownByProgram(programUidFilter) || programUidFilter.equals("")) {
                 plannedSurvey.incHeaderCounter();
             }
         }
@@ -217,7 +216,7 @@ public class PlannedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         //Annotate currentHeader
         Log.d(TAG, "toggleSection: " + header);
         currentHeader = (currentHeader == header) ? null : header;
-        applyFilter(programFilter);
+        applyFilter(programUidFilter);
     }
 
     class PlanItemViewHolder extends RecyclerView.ViewHolder {

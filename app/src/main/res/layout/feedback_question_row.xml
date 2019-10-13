@@ -30,32 +30,47 @@
             android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight=".80">
+            android:layout_weight=".74">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
-
-                <org.eyeseetea.malariacare.views.CustomTextView
-                    android:id="@+id/feedback_question_mandatory"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="*"
-                    android:padding="5dp"
-                    android:textColor="@color/red"
-                    android:visibility="invisible"/>
 
                 <org.eyeseetea.malariacare.views.CustomTextView
                     android:id="@+id/feedback_question_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_toLeftOf="@+id/feedback_question_mandatory"
                     android:paddingBottom="5dip"
-                    android:paddingRight="5dp"
+                    android:paddingLeft="10dip"
                     android:paddingTop="5dip"
                     android:text="@string/lorem_ipsum"
                     app:tDimension="@string/font_size_level1"
-                    app:tFontName="@string/light_font" />
-            </LinearLayout>
+                    app:tFontName="@string/regular_font"
+                    android:textColor="@color/black"/>
+
+                <org.eyeseetea.malariacare.views.CustomTextView
+                    android:id="@+id/feedback_question_mandatory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/feedback_question_info"
+                    android:paddingRight="15dp"
+                    android:text="*"
+                    android:layout_centerVertical="true"
+                    android:visibility="invisible"
+                    android:textColor="@color/black" />
+
+                <ImageView
+                    android:id="@+id/feedback_question_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    app:srcCompat="@drawable/ic_info"
+                    android:paddingRight="8dp"
+                    android:tint="@color/navy_blue"/>
+            </RelativeLayout>
             <org.eyeseetea.malariacare.views.CustomTextView
                 android:id="@+id/feedback_uid"
                 android:layout_width="wrap_content"

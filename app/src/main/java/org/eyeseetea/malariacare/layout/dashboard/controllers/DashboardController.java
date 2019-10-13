@@ -271,19 +271,19 @@ public class DashboardController {
     /**
      * Starts the org unit planning tab
      */
-    public void onOrgUnitSelected(OrgUnitDB orgUnit) {
+    public void onOrgUnitSelected(String orgUnitUid) {
         PlanModuleController planModuleController = (PlanModuleController) getModuleByName(
                 PlanModuleController.getSimpleName());
-        planModuleController.onOrgUnitSelected(orgUnit);
+        planModuleController.onOrgUnitSelected(orgUnitUid);
     }
 
     /**
      * Starts the program planning tab
      */
-    public void onProgramSelected(ProgramDB program) {
+    public void onProgramSelected(String programUid) {
         PlanModuleController planModuleController = (PlanModuleController) getModuleByName(
                 PlanModuleController.getSimpleName());
-        planModuleController.onProgramSelected(program);
+        planModuleController.onProgramSelected(programUid);
     }
 
     /**

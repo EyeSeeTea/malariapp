@@ -157,84 +157,84 @@ configurations {
 
 dependencies {
     // SDK submodules
-    compile project(':core')
-    compile project(':models')
-    compile project(':ui-bindings')
-    compile project(':EyeSeeTea-sdk')
+    implementation project(':core')
+    implementation project(':models')
+    implementation project(':ui-bindings')
+    implementation project(':EyeSeeTea-sdk')
 
     // App dependencies
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     apply plugin: 'com.github.dcendents.android-maven'
 
     //Android support
-    compile "com.android.support:support-v4:${libs.supportVersion}"
-    compile "com.android.support:appcompat-v7:${libs.supportVersion}"
-    compile "com.android.support:support-annotations:${libs.supportVersion}"
-    compile "com.android.support:multidex:${libs.multidex}"
+    implementation "com.android.support:support-v4:${libs.supportVersion}"
+    implementation "com.android.support:appcompat-v7:${libs.supportVersion}"
+    implementation "com.android.support:support-annotations:${libs.supportVersion}"
+    implementation "com.android.support:multidex:${libs.multidex}"
     //3rd party dependencies
-    compile "com.opencsv:opencsv:${libs.opencsvVersion}"
-    compile "com.google.android.gms:play-services:${libs.gmsPlayVersion}"
-    compile "com.google.guava:guava:${libs.guavaVersion}"
-    compile "com.squareup.okhttp3:okhttp:${libs.okhttpVersion}"
-    compile "com.googlecode.libphonenumber:libphonenumber:${libs.libphonenumberVersion}"
-    compile "com.github.PhilJay:MPAndroidChart:v${libs.MPAndroidChartVersion}"
+    implementation "com.opencsv:opencsv:${libs.opencsvVersion}"
+    implementation "com.google.android.gms:play-services:${libs.gmsPlayVersion}"
+    implementation "com.google.guava:guava:${libs.guavaVersion}"
+    implementation "com.squareup.okhttp3:okhttp:${libs.okhttpVersion}"
+    implementation "com.googlecode.libphonenumber:libphonenumber:${libs.libphonenumberVersion}"
+    implementation "com.github.PhilJay:MPAndroidChart:v${libs.MPAndroidChartVersion}"
 
     //Drive dependencies
-    compile "com.google.android.gms:play-services-identity:${libs.gmsPlayVersion}"
-    compile("com.google.api-client:google-api-client-android:${libs.googleApiClientAndroidVersion}") {
+    implementation "com.google.android.gms:play-services-identity:${libs.gmsPlayVersion}"
+    implementation("com.google.api-client:google-api-client-android:${libs.googleApiClientAndroidVersion}") {
         exclude group: 'org.apache.httpcomponents'
         exclude group: 'com.google.code.findbugs'
     }
-    compile("com.google.apis:google-api-services-drive:${libs.googleApiServicesDriveVersion}") {
+    implementation("com.google.apis:google-api-services-drive:${libs.googleApiServicesDriveVersion}") {
         exclude group: 'org.apache.httpcomponents'
     }
 
-    compile "com.google.code.findbugs:jsr305:${libs.jsr305Version}"
+    implementation "com.google.code.findbugs:jsr305:${libs.jsr305Version}"
 
     // Unit testing dependencies
-    testCompile "junit:junit:${libs.jUnitVersion}"
-    testCompile "org.mockito:mockito-core:${libs.mockitoVersion}"
-    testCompile "com.squareup.okhttp3:mockwebserver:${libs.mockwebserverVersion}"
-    testCompile "com.linkedin.dexmaker:dexmaker-mockito:${libs.dexmakerMockitoVersion}"
-    testCompile "com.google.code.gson:gson:${libs.gsonVersion}"
-    testCompile "com.fasterxml.jackson.core:jackson-core:${libs.jacksonVersion}"
-    testCompile "com.fasterxml.jackson.core:jackson-databind:${libs.jacksonVersion}"
-    testCompile "com.fasterxml.jackson.core:jackson-annotations:${libs.jacksonVersion}"
-    testCompile "com.fasterxml.jackson.datatype:jackson-datatype-joda:${libs.jacksonVersion}"
-    testCompile "joda-time:joda-time:${libs.jodaTimeVersion}"
+    testImplementation "junit:junit:${libs.jUnitVersion}"
+    testImplementation "org.mockito:mockito-core:${libs.mockitoVersion}"
+    testImplementation "com.squareup.okhttp3:mockwebserver:${libs.mockwebserverVersion}"
+    testImplementation "com.linkedin.dexmaker:dexmaker-mockito:${libs.dexmakerMockitoVersion}"
+    testImplementation "com.google.code.gson:gson:${libs.gsonVersion}"
+    testImplementation "com.fasterxml.jackson.core:jackson-core:${libs.jacksonVersion}"
+    testImplementation "com.fasterxml.jackson.core:jackson-databind:${libs.jacksonVersion}"
+    testImplementation "com.fasterxml.jackson.core:jackson-annotations:${libs.jacksonVersion}"
+    testImplementation "com.fasterxml.jackson.datatype:jackson-datatype-joda:${libs.jacksonVersion}"
+    testImplementation "joda-time:joda-time:${libs.jodaTimeVersion}"
 
     // Instrumented tests dependencies
     // Android Testing Support Library's runner and rules
 
-    androidTestCompile "com.android.support.test:runner:${libs.runnerVersion}"
-    androidTestCompile "com.android.support.test:rules:${libs.runnerVersion}"
+    androidTestImplementation "com.android.support.test:runner:${libs.runnerVersion}"
+    androidTestImplementation "com.android.support.test:rules:${libs.runnerVersion}"
 
     // Espresso UI Testing dependencies.
-    androidTestCompile "com.android.support.test.espresso:espresso-core:${libs.espressoVersion}"
-    androidTestCompile "com.android.support.test.espresso:espresso-intents:${libs.espressoVersion}"
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:${libs.espressoVersion}"
+    androidTestImplementation "com.android.support.test.espresso:espresso-intents:${libs.espressoVersion}"
     // Espresso-idling-resource for synchronization with background jobs
-    androidTestCompile "com.android.support.test.espresso:espresso-idling-resource:${libs.espressoVersion}"
+    androidTestImplementation "com.android.support.test.espresso:espresso-idling-resource:${libs.espressoVersion}"
     // Espresso-web for WebView support
-    androidTestCompile "com.android.support.test.espresso:espresso-web:${libs.espressoVersion}"
+    androidTestImplementation "com.android.support.test.espresso:espresso-web:${libs.espressoVersion}"
 
     //Tracking crashes
-    compile("com.crashlytics.sdk.android:crashlytics:${libs.crashlyticsVersion}") {
+    implementation("com.crashlytics.sdk.android:crashlytics:${libs.crashlyticsVersion}") {
         transitive = true
     }
 
     // JavaPoet (sucessor to JavaWriter)
-    compile "com.squareup:javapoet:${libs.javapoetVersion}"
+    implementation "com.squareup:javapoet:${libs.javapoetVersion}"
 
     //DBFlow
     annotationProcessor "com.github.agrosner.dbflow:dbflow-processor:${libs.dbFlowVersion}"
-    compile "com.github.agrosner.dbflow:dbflow:${libs.dbFlowVersion}"
-    compile "com.github.agrosner.dbflow:dbflow-core:${libs.dbFlowVersion}"
+    implementation "com.github.agrosner.dbflow:dbflow:${libs.dbFlowVersion}"
+    implementation "com.github.agrosner.dbflow:dbflow-core:${libs.dbFlowVersion}"
     // Instrumented tests dependencies
-    androidTestCompile "com.squareup.okhttp3:mockwebserver:${libs.mockwebserverVersion}"
-    androidTestCompile "org.mockito:mockito-core:${libs.mockitoVersion}"
-    androidTestCompile "com.linkedin.dexmaker:dexmaker-mockito:${libs.dexmakerMockitoVersion}"
+    androidTestImplementation "com.squareup.okhttp3:mockwebserver:${libs.mockwebserverVersion}"
+    androidTestImplementation "org.mockito:mockito-core:${libs.mockitoVersion}"
+    androidTestImplementation "com.linkedin.dexmaker:dexmaker-mockito:${libs.dexmakerMockitoVersion}"
 
-    compile(project(path: ':bugshaker')) {
+    implementation(project(path: ':bugshaker')) {
         exclude group: "com.google.android.gms"
     }
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
