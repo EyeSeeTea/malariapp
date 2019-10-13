@@ -3,7 +3,6 @@
 buildscript {
     ext.kotlin_version = '1.3.31'
     repositories {
-        maven { url "https://raw.github.com/Raizlabs/maven-releases/master/releases" }
         google()
         jcenter()
     }
@@ -20,9 +19,10 @@ buildscript {
 
 allprojects {
     repositories {
-        maven { url "https://www.jitpack.io" }
+
         google()
         jcenter()
+        maven { url "https://www.jitpack.io" }
     }
 
     configurations.all {
@@ -41,7 +41,7 @@ allprojects {
 ext {
     configuration = [
             package          : "org.hisp.dhis.android.skeleton",
-            buildToolsVersion: "28.0.0",
+            buildToolsVersion: "28.0.3",
             minSdkVersion    : 15,
             compileSdkVersion: 28,
             targetSdkVersion : 28,
@@ -54,7 +54,7 @@ ext {
 
             // android libs
             supportVersion          : "28.0.0",
-            rxAndroidVersion        : "1.1.0",
+            rxAndroidVersion        : "1.2.1",
             dbFlowVersion           : "3.0.1",
             progressBarVersion      : "1.3.0",
             smoothProgressBarVersion: "1.1.0",
