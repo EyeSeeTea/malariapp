@@ -25,10 +25,10 @@ object MetadataFactory {
     fun provideGetOrgUnitByUidUseCase(): GetOrgUnitByUidUseCase =
         GetOrgUnitByUidUseCase(provideOrgUnitRepository())
 
-    fun provideProgramsUseCase(): GetProgramsUseCase =
+    fun provideGetProgramsUseCase(): GetProgramsUseCase =
         GetProgramsUseCase(provideProgramRepository())
 
-    fun provideOrgUnitsUseCase(): GetOrgUnitsUseCase =
+    fun provideGetOrgUnitsUseCase(): GetOrgUnitsUseCase =
         GetOrgUnitsUseCase(provideOrgUnitRepository())
 
     fun provideServerMetadataUseCase(context: Context): GetServerMetadataUseCase =

@@ -84,11 +84,11 @@ public class PlannedHeader implements PlannedItem {
     }
     /**
      * Headers are always shown
-     * @param filterProgram
+     * @param programUidFilter
      * @return
      */
     @Override
-    public boolean isShownByProgram(ProgramDB filterProgram){
+    public boolean isShownByProgram(String programUidFilter){
         return true;
     }
 
