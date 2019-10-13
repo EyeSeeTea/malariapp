@@ -161,17 +161,16 @@ public class FeedbackAdapter extends BaseAdapter {
 
         rowLayout.findViewById(R.id.cs_header).setBackgroundResource(feedback.getBackgroundColor());
 
-        ImageView imageView = (ImageView)rowLayout.findViewById(R.id.feedback_image);
-        imageView.setBackgroundResource(feedback.getBackgroundColor());
+        ImageView imageView = rowLayout.findViewById(R.id.feedback_image);
         if(feedback.getFeedbackList().size()==0 && feedback.getCompositeScoreFeedbackList().size()==0){
             imageView.setVisibility(View.GONE);
         }else{
             if((feedback.getFeedbackList().size()>0 && feedback.getFeedbackList().get(0).isShown()) ||
                     (feedback.getCompositeScoreFeedbackList().size()>0 && feedback.getCompositeScoreFeedbackList().get(0).isShown()))
             {
-                imageView.setImageDrawable(parent.getContext().getResources().getDrawable(R.drawable.ic_media_arrow_up));
+                imageView.setImageResource(R.drawable.ic_arrow_drop_up);
             }else{
-                imageView.setImageDrawable(parent.getContext().getResources().getDrawable(R.drawable.ic_media_arrow));
+                imageView.setImageResource(R.drawable.ic_arrow_drop_down);
             }
 
         }
@@ -311,6 +310,14 @@ public class FeedbackAdapter extends BaseAdapter {
         }
         textView.setText( Html.fromHtml(feedbackText, new CustomParser(textView, this.context), new CustomParser(textView, this.context)));
         textView.setMovementMethod(LinkMovementMethod.getInstance());
+
+        ImageView infoImageView =rowLayout.findViewById(R.id.feedback_question_info);
+
+        if (feedback.getFeedback() != null){
+            infoImageView.setVisibility(View.VISIBLE);
+        } else {
+            infoImageView.setVisibility(View.INVISIBLE);
+        }
 
         //Hide/Show feedback according to its inner state
         toggleFeedback(rowLayout, feedback.isFeedbackShown());

@@ -33,7 +33,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedItem;
@@ -54,7 +53,7 @@ public class PlannedFragment extends Fragment implements IModuleFragment{
 
     OrgUnitProgramFilterView orgUnitProgramFilterView;
 
-    private ProgramDB programFilter;
+    private String programUidFilter;
 
     private View rootView;
     private RecyclerView plannedRecyclerView;
@@ -92,9 +91,9 @@ public class PlannedFragment extends Fragment implements IModuleFragment{
 
 
     public void reloadFilter(){
-        ProgramDB selectedProgram = orgUnitProgramFilterView.getSelectedProgramFilter();
+        String selectedProgram = orgUnitProgramFilterView.getSelectedProgramFilter();
 
-        if(selectedProgram!=null) {
+        if (selectedProgram != null) {
             loadProgram(selectedProgram);
         }
         if(plannedAdapter!=null){
@@ -103,7 +102,7 @@ public class PlannedFragment extends Fragment implements IModuleFragment{
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         Log.d(TAG, "onResume");
         //Listen for data
         registerPlannedItemsReceiver();
@@ -111,14 +110,14 @@ public class PlannedFragment extends Fragment implements IModuleFragment{
     }
 
     @Override
-    public void onStop(){
+    public void onStop() {
         Log.d(TAG, "onStop");
         unregisterPlannedItemsReceiver();
         super.onStop();
     }
 
     @Override
-    public void onPause(){
+    public void onPause() {
         Log.d(TAG, "onPause");
         unregisterPlannedItemsReceiver();
 
@@ -152,6 +151,7 @@ public class PlannedFragment extends Fragment implements IModuleFragment{
                     new IntentFilter(PlannedSurveyService.PLANNED_SURVEYS_ACTION));
         }
     }
+
     /**
      * Unregisters the survey receiver.
      * It really important to do this, otherwise each receiver will invoke its code.
@@ -159,13 +159,14 @@ public class PlannedFragment extends Fragment implements IModuleFragment{
     public void unregisterPlannedItemsReceiver() {
         Log.d(TAG, "unregisterPlannedItemsReceiver");
         if (plannedItemsReceiver != null) {
-            LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(plannedItemsReceiver);
+            LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(
+                    plannedItemsReceiver);
             plannedItemsReceiver = null;
         }
     }
 
     @Override
-    public void reloadData(){
+    public void reloadData() {
         updateSelectedFilters();
 
         //Reload data using service
@@ -174,14 +175,15 @@ public class PlannedFragment extends Fragment implements IModuleFragment{
                 PlannedSurveyService.class);
         surveysIntent.putExtra(PlannedSurveyService.SERVICE_METHOD,
                 PlannedSurveyService.PLANNED_SURVEYS_ACTION);
-        PreferencesState.getInstance().getContext().getApplicationContext().startService(surveysIntent);
+        PreferencesState.getInstance().getContext().getApplicationContext().startService(
+                surveysIntent);
     }
 
-    public void loadProgram(ProgramDB program) {
-        Log.d(TAG,"Loading program: "+program.getUid());
-        programFilter=program;
-        if(plannedAdapter!=null){
-            plannedAdapter.applyFilter(programFilter);
+    public void loadProgram(String programUid) {
+        Log.d(TAG,"Loading program: " + programUid);
+        programUidFilter = programUid;
+        if(plannedAdapter != null) {
+            plannedAdapter.applyFilter(programUidFilter);
             plannedAdapter.notifyDataSetChanged();
         }
         else {

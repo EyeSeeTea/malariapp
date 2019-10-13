@@ -111,14 +111,14 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
         orgUnitProgramFilterView.setFilterChangedListener(
                 new OrgUnitProgramFilterView.FilterChangedListener() {
                     @Override
-                    public void onProgramFilterChanged(ProgramDB selectedProgramFilter) {
-                        pushProgramFilterToJavascript(selectedProgramFilter.getUid());
+                    public void onProgramFilterChanged(String selectedProgramFilter) {
+                        pushProgramFilterToJavascript(selectedProgramFilter);
                         saveCurrentFilters();
                     }
 
                     @Override
-                    public void onOrgUnitFilterChanged(OrgUnitDB selectedOrgUnitFilter) {
-                        pushOrgUnitFilterToJavascript(selectedOrgUnitFilter.getUid());
+                    public void onOrgUnitFilterChanged(String selectedOrgUnitFilter) {
+                        pushOrgUnitFilterToJavascript(selectedOrgUnitFilter);
                         saveCurrentFilters();
                     }
                 });
@@ -157,9 +157,9 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
 
     private void saveCurrentFilters() {
         PreferencesState.getInstance().setProgramUidFilter(
-                orgUnitProgramFilterView.getSelectedProgramFilter().getUid());
+                orgUnitProgramFilterView.getSelectedProgramFilter());
         PreferencesState.getInstance().setOrgUnitUidFilter(
-                orgUnitProgramFilterView.getSelectedOrgUnitFilter().getUid());
+                orgUnitProgramFilterView.getSelectedOrgUnitFilter());
     }
 
     @Override
