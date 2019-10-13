@@ -51,7 +51,6 @@ import org.eyeseetea.malariacare.domain.exception.push.PushValueException;
 import org.eyeseetea.malariacare.domain.service.SurveyNextScheduleDomainService;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.AUtils;
-import org.eyeseetea.malariacare.utils.CompetencyUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.DateParser;
 import org.joda.time.DateTime;
