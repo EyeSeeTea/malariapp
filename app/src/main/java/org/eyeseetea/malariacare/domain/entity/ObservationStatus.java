@@ -9,7 +9,8 @@ public enum ObservationStatus {
     COMPLETED (1),
     SENT(2),
     CONFLICT(4),
-    SENDING(6);
+    SENDING(6),
+    ERROR_CONVERSION_SYNC(7);
 
     private static final Map<Integer, ObservationStatus> lookup
             = new HashMap<Integer, ObservationStatus>();

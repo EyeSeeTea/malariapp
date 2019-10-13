@@ -215,8 +215,7 @@ public class ConvertToSDKVisitor implements
         } catch (Exception e) {
             e.printStackTrace();
             errorMessage = showErrorConversionMessage(errorMessage);
-            removeSurveyAndEvent(IPushController.Kind.OBSERVATIONS);
-            throw new ConversionException(errorMessage);
+            throw new ConversionException(observationDB, errorMessage);
         }
 
     }
@@ -248,71 +247,60 @@ public class ConvertToSDKVisitor implements
         } catch (Exception e) {
             e.printStackTrace();
             errorMessage = showErrorConversionMessage(errorMessage);
-            removeSurveyAndEvent(PushDataController.Kind.EVENTS);
-            throw new ConversionException(errorMessage);
+            throw new ConversionException(survey, errorMessage);
         }
     }
 
-    private EventExtended buildEventFromSurvey(SurveyDB survey, String errorMessage) throws ConversionException{
+    private EventExtended buildEventFromSurvey(SurveyDB survey, String errorMessage) throws Exception{
         currentSurvey = survey;
         uploadedDate = new Date();
-        try {
-            Log.d(TAG, String.format("Creating event for survey (%d) ...", currentSurvey.getId_survey()));
-            Log.d(TAG, String.format("Creating event for survey (%s) ...", currentSurvey.toString()));
-            try {
-                currentEvent = new EventExtended(survey.getEventUid());
-                currentEvent = buildEvent();
 
-            } catch (Exception e) {
-                showErrorConversionMessage(errorMessage);
-                currentSurvey.delete();//invalid survey
-                return null;
-            }
-            currentSurvey.setEventUid(currentEvent.getUid());
-            currentSurvey.save();
-            currentEvent.save();
-            Log.d(TAG, "Event created" + currentEvent.getUid());
+        Log.d(TAG, String.format("Creating event for survey (%d) ...", currentSurvey.getId_survey()));
+        Log.d(TAG, String.format("Creating event for survey (%s) ...", currentSurvey.toString()));
+        currentEvent = new EventExtended(survey.getEventUid());
+        currentEvent = buildEvent();
 
-            //Calculates scores and update survey
-            Log.d(TAG, "Registering scores...");
-            errorMessage = "Calculating compositeScores";
-            List<CompositeScoreDB> compositeScores = ScoreRegister.loadCompositeScores(
-                    currentSurvey,
-                    Constants.PUSH_MODULE_KEY);
-            updateSurvey(currentSurvey, compositeScores, currentSurvey.getId_survey(),
-                    Constants.PUSH_MODULE_KEY);
+        currentSurvey.setEventUid(currentEvent.getUid());
+        currentSurvey.save();
+        currentEvent.save();
+        Log.d(TAG, "Event created" + currentEvent.getUid());
 
-            //Turn score values into dataValues
-            Log.d(TAG, "Creating datavalues from scores...");
+        //Calculates scores and update survey
+        Log.d(TAG, "Registering scores...");
+        errorMessage = "Calculating compositeScores";
+        List<CompositeScoreDB> compositeScores = ScoreRegister.loadCompositeScores(
+                currentSurvey,
+                Constants.PUSH_MODULE_KEY);
+        updateSurvey(currentSurvey, compositeScores, currentSurvey.getId_survey(),
+                Constants.PUSH_MODULE_KEY);
 
-            errorMessage = "compositeScores visitors";
-            for (CompositeScoreDB compositeScore : compositeScores) {
-                compositeScore.accept(this);
-            }
+        //Turn score values into dataValues
+        Log.d(TAG, "Creating datavalues from scores...");
 
-            errorMessage = "datavalue visitors ";
-            //Turn question values into dataValues
-            Log.d(TAG, "Creating datavalues from questions... Values"
-                    + currentSurvey.getValues().size());
-            for (ValueDB value : currentSurvey.getValues()) {
-                //value -> datavalue
-                value.accept(this);
-            }
-
-
-            errorMessage = "updating dates";
-            currentSurvey.setUploadDate(uploadedDate);
-
-            //Update all the dates after checks the new values
-            updateEventDates(currentEvent, currentSurvey);
-
-            Log.d(TAG, "Creating datavalues from other stuff...");
-            errorMessage = "building dataElements";
-            buildControlDataElements(currentSurvey);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new ConversionException(errorMessage);
+        errorMessage = "compositeScores visitors";
+        for (CompositeScoreDB compositeScore : compositeScores) {
+            compositeScore.accept(this);
         }
+
+        errorMessage = "datavalue visitors ";
+        //Turn question values into dataValues
+        Log.d(TAG, "Creating datavalues from questions... Values"
+                + currentSurvey.getValues().size());
+        for (ValueDB value : currentSurvey.getValues()) {
+            //value -> datavalue
+            value.accept(this);
+        }
+
+        errorMessage = "updating dates";
+        currentSurvey.setUploadDate(uploadedDate);
+
+        //Update all the dates after checks the new values
+        updateEventDates(currentEvent, currentSurvey);
+
+        Log.d(TAG, "Creating datavalues from other stuff...");
+        errorMessage = "building dataElements";
+        buildControlDataElements(currentSurvey);
+
         return currentEvent;
     }
 
@@ -334,25 +322,6 @@ public class ConvertToSDKVisitor implements
         return ": " + errorMessage + " surveyId: " + currentSurvey.getId_survey()
                 + "program: " + programName + " OrgUnit: "
                 + orgUnitName + "Survey: " + currentSurvey.toString();
-    }
-
-    private void removeSurveyAndEvent(PushDataController.Kind kind) {
-        Map<Long, EventExtended> events = getEventsByKind(kind);
-        List<SurveyDB> surveys = getSurveysByKind(kind);
-
-        //remove event from annotated event list and from db
-        if (events.containsKey(currentSurvey.getId_survey())) {
-            events.remove(currentSurvey.getId_survey());
-        }
-
-        currentEvent.getEvent().delete();
-
-        //remove survey from list and from db
-        if (surveys.contains(currentSurvey)) {
-            surveys.remove(currentSurvey);
-        }
-
-        currentSurvey.delete();
     }
 
     @Override
