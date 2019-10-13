@@ -80,11 +80,14 @@ public class PushController implements IPushController {
                 } catch (ConversionException e) {
                     callback.onInformativeError(e);//notify to the user
                     callback.onError(e);//close push
+
+                    markSurveyStatusAsSyncConversionError(e.getConversionFailedSurvey());
+
                     return;
                 }
 
                 if (EventExtended.getAllEvents().size() == 0) {
-                    callback.onError(new ConversionException());
+                    callback.onError(new ConversionException("Any event has been created from survey to push"));
                     return;
                 } else {
                     Log.d(TAG, "push data");
@@ -110,11 +113,13 @@ public class PushController implements IPushController {
             } catch (ConversionException e) {
                 callback.onInformativeError(e);//notify to the user
                 callback.onError(e);//close push
+
+                markObsAndActionPlanStatusAsSyncConversionError(e.getConversionFailedObsPan());
                 return;
             }
 
             if (EventExtended.getAllEvents().size() == 0) {
-                callback.onError(new ConversionException());
+                callback.onError(new ConversionException("Any event has been created from obsActionPlan to push"));
                 return;
             } else {
                 Log.d(TAG, "push data of observation and plan surveys");
@@ -176,6 +181,26 @@ public class PushController implements IPushController {
             obsActionPlan.setStatus(Constants.SURVEY_SENDING);
             obsActionPlan.save();
             obsActionPlan.accept(mConvertToSDKVisitor);
+        }
+    }
+
+    private void markSurveyStatusAsSyncConversionError(
+            SurveyDB conversionFailedSurvey) {
+        if (conversionFailedSurvey != null){
+            Log.w(TAG, "Set Survey status as SYNC_CONVERSION_ERROR: " + conversionFailedSurvey.toString());
+            conversionFailedSurvey.setStatus(Constants.SURVEY_SYNC_CONVERSION_ERROR);
+            conversionFailedSurvey.save();
+        }
+    }
+
+    private void markObsAndActionPlanStatusAsSyncConversionError(
+            ObsActionPlanDB conversionFailedObsPan) {
+        if (conversionFailedObsPan != null){
+            Log.w(TAG, "Set plan status as SYNC_CONVERSION_ERROR: " + conversionFailedObsPan.toString());
+            ObsActionPlanDB obsActionPlan = ObsActionPlanDB.findObsActionPlanBySurvey(conversionFailedObsPan.getId_survey_obs_action_fk());
+            //The obs action plan doesn't need the quarantine status.
+            obsActionPlan.setStatus(Constants.SURVEY_SYNC_CONVERSION_ERROR);
+            obsActionPlan.save();
         }
     }
 }
