@@ -262,8 +262,8 @@ Mensuelle"</string>
 <string name="observations_no_critical_steps_missed_text">Aucune étape critique manquée</string>
 <string name="observations_no_non_critical_steps_missed_text">Aucune étape non critique manquée</string>
 
-<string name="survey_imcomplete_text">Incomplète</string>
-<string name="survey_complete_text">Achevée</string>
+<string name="survey_incomplete_text">"Plans d'action incomplets"</string>
+<string name="survey_complete_text">"Plans d'action complets"</string>
 
 <string name="menu_monitoring_by_calendar_title">vieille surveillance</string>
 <string name="action_monitor_activity_title">Activité</string>
