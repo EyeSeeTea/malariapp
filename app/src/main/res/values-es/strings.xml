@@ -235,7 +235,7 @@ clínica"</string>
 <string name="plan_action_title">Observaciones y plan de acción</string>
 <string name="plan_action_today_date">Terminado: %s</string>
 <string name="plan_action_next_date">Próxima: %s</string>
-<string name="plan_action_description">Describa lo que se observó durante la visita de un plan de acción específico para abordar las lagunas. Obsérvese también una mejora respecto a la brecha identificada durante la última visita</string>
+<string name="plan_action_description">Escriba acciones específicas para abordar las brechas observadas durante la visita. Tenga en cuenta cualquier mejora en las brechas identificadas durante la última visita.</string>
 <string name="plan_action_action_plan_title">Plan de acción</string>
 <string name="observation_action_due_date">Fecha de vencimiento:</string>
 <string name="observation_action_responsible">Responsable:</string>

@@ -241,7 +241,7 @@ evaluation"</string>
 <string name="plan_action_title">ការសង្ក្រតនិងផែនការសកម្មភាព</string>
 <string name="plan_action_today_date">បានបញ្ចប់: %s</string>
 <string name="plan_action_next_date">បន្ទាប់: %s</string>
-<string name="plan_action_description">រៀបរាប់ពីអ្វីដែលបានគេសង្កេតឃើញក្នុងអំឡុងពេលដំណើរទស្សនកិច្ចផែនការសកម្មភាពជាក់លាក់មួយសម្រាប់ការដោះស្រាយគម្លាតនេះ។ ចំណាំផងដែរប្រសើរជាងគម្លាតកំណត់អត្តសញ្ញាណក្នុងអំឡុងដំណើរទស្សនកិច្ចចុងក្រោយនេះជាមួយ</string>
+<string name="plan_action_description">សរសេរសកម្មភាពជាក់លាក់ដើម្បីដោះស្រាយគម្លាតដែលបានសង្កេតឃើញក្នុងដំណើរទស្សនកិច្ចនេះ។ កត់សម្គាល់ពីភាពប្រសើរឡើងនៃគម្លាតដែលបានកំណត់ក្នុងដំណើរទស្សនកិច្ចចុងក្រោយ។</string>
 <string name="plan_action_action_plan_title">ផែនការសកម្មភាព</string>
 <string name="observation_action_due_date">កាលបរិច្ឆេទ​កំណត់:</string>
 <string name="observation_action_responsible">ទទួលខុសត្រូវ:</string>

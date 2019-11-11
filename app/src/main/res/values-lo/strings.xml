@@ -242,7 +242,7 @@
 <string name="plan_action_title">"Observations &amp; Action Plan"</string>
 <string name="plan_action_today_date">ແລ້ວສິ້ນ: %s</string>
 <string name="plan_action_next_date">ຕໍ່ໄປ: %s</string>
-<string name="plan_action_description">ອະທິບາຍສິ່ງທີ່ໄດ້ສັງເກດເຫັນໃນໄລຍະການຢ້ຽມຢາມເປັນແຜນການດໍາເນີນການສະເພາະໃດຫນຶ່ງສໍາລັບການແກ້ໄຂຊ່ອງຫວ່າງ. ຍັງໄດ້ສັງເກດການການປັບປຸງໃນໄລຍະຊ່ອງຫວ່າງລະບຸໃນໄລຍະຢ້ຽມຢາມທີ່ຜ່ານມາ</string>
+<string name="plan_action_description">ຂຽນການກະ ທຳ ສະເພາະເພື່ອແກ້ໄຂຊ່ອງຫວ່າງທີ່ສັງເກດໃນລະຫວ່າງການຢ້ຽມຢາມ. ໃຫ້ສັງເກດການປັບປຸງຊ່ອງຫວ່າງທີ່ໄດ້ລະບຸໃນລະຫວ່າງການຢ້ຽມຢາມຄັ້ງສຸດທ້າຍ.</string>
 <string name="plan_action_action_plan_title">ແຜນປະຕິບັດງານ</string>
 <string name="observation_action_due_date">ວັນ​ຄົບ​ກໍາ​ນົດ:</string>
 <string name="observation_action_responsible">ទទួលខុសត្រូវ:</string>

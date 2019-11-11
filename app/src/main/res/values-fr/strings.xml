@@ -226,7 +226,7 @@ Mensuelle"</string>
 <string name="plan_action_title">"Observations et plan d'action"</string>
 <string name="plan_action_today_date">"Terminé: %s"</string>
 <string name="plan_action_next_date">"Suivante: %s"</string>
-<string name="plan_action_description">"Décrivez ce qui a été observé lors de la visite d'un plan d'action spécifique pour combler les lacunes. Notez également une amélioration par rapport à un écart identifié lors de la dernière visite"</string>
+<string name="plan_action_description">"Écrire des actions spécifiques pour remédier aux lacunes observées lors de la visite. Notez toute amélioration des lacunes identifiées lors de la dernière visite."</string>
 <string name="plan_action_action_plan_title">"Plan d'action"</string>
 <string name="observation_action_due_date">"Date d'échéance:"</string>
 <string name="observation_action_responsible">Responsable:</string>
