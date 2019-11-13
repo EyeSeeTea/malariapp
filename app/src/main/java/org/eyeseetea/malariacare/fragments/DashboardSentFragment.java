@@ -198,6 +198,7 @@ public class DashboardSentFragment extends Fragment implements IModuleFragment {
 
         adapter = new AssessmentSentAdapter();
         recyclerView.setAdapter(adapter);
+        initFilterOrder();
     }
 
     public void setScoreOrder() {
@@ -231,34 +232,16 @@ public class DashboardSentFragment extends Fragment implements IModuleFragment {
     }
 
     //Adds the clicklistener to the header CustomTextView.
-    private View initFilterOrder(View header) {
+    private void initFilterOrder() {
 
-        CustomTextView statusctv = (CustomTextView) header.findViewById(R.id.statusHeader);
+        CustomTextView statusHeader = rootView.findViewById(R.id.statusHeader);
+        statusHeader.setOnClickListener(v -> setDateOrder());
 
-        statusctv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setDateOrder();
-            }
-        });
-        CustomTextView scorectv = (CustomTextView) header.findViewById(R.id.scoreHeader);
+        CustomTextView scoreHeader = rootView.findViewById(R.id.scoreHeader);
+        scoreHeader.setOnClickListener(v -> setScoreOrder());
 
-        scorectv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setScoreOrder();
-            }
-        });
-
-        CustomTextView facilityctv = (CustomTextView) header.findViewById(R.id.idHeader);
-
-        facilityctv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setFacilityOrder();
-            }
-        });
-        return header;
+        CustomTextView facilityHeader = rootView.findViewById(R.id.idHeader);
+        facilityHeader.setOnClickListener(v -> setFacilityOrder());
     }
 
     /**
