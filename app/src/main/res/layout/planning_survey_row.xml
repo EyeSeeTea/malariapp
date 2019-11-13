@@ -35,16 +35,14 @@
         android:gravity="center_horizontal"
         android:layout_gravity="center_horizontal">
 
-        <ImageButton
+        <ImageView
             android:id="@+id/planning_survey_action"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
             android:layout_gravity="center"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_media_play"
-            android:background="@null"
-            android:tintMode="src_over" />
+            app:srcCompat="@drawable/ic_add_action" />
 
     </LinearLayout>
 

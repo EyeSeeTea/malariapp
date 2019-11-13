@@ -27,7 +27,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -264,17 +263,11 @@ public class PlannedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
 
         private void setUpActionButton(PlannedSurvey plannedSurvey) {
-            ImageButton actionButton = itemView.findViewById(R.id.planning_survey_action);
+            ImageView actionButton = itemView.findViewById(R.id.planning_survey_action);
             if (plannedSurvey.getSurvey().isInProgress()) {
-                actionButton.setImageResource(R.drawable.ic_edit);
-                actionButton.setColorFilter(
-                        PreferencesState.getInstance().getContext().getResources().getColor(
-                                R.color.assess_yellow));
+                actionButton.setImageResource(R.drawable.ic_edit_action);
             } else {
-                actionButton.setImageResource(R.drawable.red_circle_cross);
-                actionButton.setColorFilter(
-                        PreferencesState.getInstance().getContext().getResources().getColor(
-                                R.color.plan_grey_light));
+                actionButton.setImageResource(R.drawable.ic_add_action);
             }
 
             //Planned survey -> onclick startSurvey
