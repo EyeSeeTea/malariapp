@@ -92,6 +92,9 @@ public class SurveyPlanner {
                 newSurvey.resetMainScore();
             }
         }
+        //Set as creationDate the completion date of the last survey
+        newSurvey.setCreationDate(lastSurveyScore.getCompletionDate());
+
         newSurvey.save();
         return newSurvey;
     }
@@ -113,6 +116,9 @@ public class SurveyPlanner {
             //Save last main score
             plannedSurvey.saveMainScore();
         }
+
+        //Set as creationDate the completion date of the last survey
+        plannedSurvey.setCreationDate(survey.getCompletionDate());
 
         plannedSurvey.setCompetencyScoreClassification(survey.getCompetencyScoreClassification());
         plannedSurvey.setScheduledDate(findScheduledDateBySurvey(survey));
