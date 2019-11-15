@@ -94,6 +94,10 @@ public class SurveyPlanner {
                 newSurvey.setMainScore(0f);
             }
         }
+
+        //Set as creationDate the completion date of the last survey
+        newSurvey.setCreationDate(lastSurveyScore.getCompletionDate());
+        
         newSurvey.save();
         return newSurvey;
     }
@@ -111,6 +115,10 @@ public class SurveyPlanner {
         plannedSurvey.setProgram(survey.getProgram());
         plannedSurvey.setMainScore(survey.getMainScore());
         plannedSurvey.setScheduledDate(findScheduledDateBySurvey(survey));
+
+        //Set as creationDate the completion date of the last survey
+        plannedSurvey.setCreationDate(survey.getCompletionDate());
+
         plannedSurvey.save();
 
         //Save last main score
