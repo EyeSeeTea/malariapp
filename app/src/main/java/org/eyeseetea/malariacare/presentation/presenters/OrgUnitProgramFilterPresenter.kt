@@ -71,10 +71,8 @@ class OrgUnitProgramFilterPresenter(
         val programToSelect =
             programs.firstOrNull { program -> program.uid == programUidFilter }
 
-
         val orgUnitToSelect =
             orgUnits.firstOrNull { orgUnit -> orgUnit.uid == orgUnitUidFilter }
-
 
         val programNameToSelect = programToSelect?.name ?: allProgramsText
         val orgUnitNameToSelect = orgUnitToSelect?.name ?: allOrgUnitText
