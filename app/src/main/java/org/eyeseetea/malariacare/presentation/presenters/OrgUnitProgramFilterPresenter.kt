@@ -68,21 +68,19 @@ class OrgUnitProgramFilterPresenter(
     }
 
     fun changeSelectedFilters(programUidFilter: String, orgUnitUidFilter: String) {
-        var programNameToSelect = allProgramsText
-        var orgUnitNameToSelect = allOrgUnitText
+        val programToSelect =
+            programs.firstOrNull { program -> program.uid == programUidFilter }
 
-        if (programUidFilter.isNotBlank()) {
-            programNameToSelect =
-                programs.first { program -> program.uid == programUidFilter }.name
-        }
 
-        if (orgUnitUidFilter.isNotBlank()) {
-            orgUnitNameToSelect =
-                orgUnits.first { orgUnit -> orgUnit.uid == orgUnitUidFilter }.name
-        }
+        val orgUnitToSelect =
+            orgUnits.firstOrNull { orgUnit -> orgUnit.uid == orgUnitUidFilter }
 
-        onOrgUnitSelected(orgUnitNameToSelect)
+
+        val programNameToSelect = programToSelect?.name ?: allProgramsText
+        val orgUnitNameToSelect = orgUnitToSelect?.name ?: allOrgUnitText
+
         onProgramSelected(programNameToSelect)
+        onOrgUnitSelected(orgUnitNameToSelect)
 
         notifySelectOrgUnit()
         notifySelectProgram()
