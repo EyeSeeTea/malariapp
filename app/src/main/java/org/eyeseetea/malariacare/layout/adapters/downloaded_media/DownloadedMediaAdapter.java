@@ -1,5 +1,7 @@
 package org.eyeseetea.malariacare.layout.adapters.downloaded_media;
 
+import static org.eyeseetea.malariacare.DashboardActivity.dashboardActivity;
+
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -23,6 +25,12 @@ public class DownloadedMediaAdapter extends
     LayoutInflater lInflater;
     protected Integer rowLayout;
     private AdapterView.OnItemClickListener mOnItemClickListener;
+
+    private OnMenuMediaClickListener onMenuMediaClickListener;
+
+    public interface OnMenuMediaClickListener{
+        void onMenuMediaClicked (MediaDB media);
+    }
 
     public DownloadedMediaAdapter(List<MediaDB> items, Context context) {
         this.items = items;
@@ -63,6 +71,12 @@ public class DownloadedMediaAdapter extends
                         getItemId(position));
             }
         });
+
+        holder.menuDots.setOnClickListener(view -> {
+            if (onMenuMediaClickListener != null){
+                onMenuMediaClickListener.onMenuMediaClicked(media);
+            }
+        });
     }
 
     private String removePathFromName(String filename) {
@@ -78,22 +92,28 @@ public class DownloadedMediaAdapter extends
         return items.size();
     }
 
+    public void setOnItemClickListener(AdapterView.OnItemClickListener onItemClickListener) {
+        mOnItemClickListener = onItemClickListener;
+    }
+
+    public void setOnMenuMediaClickListener(OnMenuMediaClickListener onMenuMediaClickListener) {
+        this.onMenuMediaClickListener = onMenuMediaClickListener;
+    }
+
     public class MediaViewHolder extends RecyclerView.ViewHolder {
         private final ImageView icon;
         private final CustomTextView fileName;
         private final CustomTextView size;
         private final View container;
+        private ImageView menuDots;
 
         public MediaViewHolder(View itemView) {
             super(itemView);
             icon = (ImageView) itemView.findViewById(R.id.icon);
             fileName = (CustomTextView) itemView.findViewById(R.id.filename);
             size = (CustomTextView) itemView.findViewById(R.id.size);
+            menuDots = itemView.findViewById(R.id.menu_dots);
             container = itemView;
         }
-    }
-
-    public void setOnItemClickListener(AdapterView.OnItemClickListener onItemClickListener) {
-        mOnItemClickListener = onItemClickListener;
     }
 }

@@ -1,16 +1,21 @@
 package org.eyeseetea.malariacare;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.Toast;
 
 import org.eyeseetea.malariacare.data.database.model.MediaDB;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.layout.adapters.downloaded_media.DownloadedMediaAdapter;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
@@ -37,12 +42,39 @@ public class DownloadedMediaActivity extends BaseActivity {
         // RecyclerView layout manager
         final LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         list.setLayoutManager(mLayoutManager);
-        downloadedMediaAdapter.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                openMediaFile(mediaList.get(position));
-            }
-        });
+        downloadedMediaAdapter.setOnItemClickListener(
+                (parent, view, position, id) -> openMediaFile(mediaList.get(position)));
+
+        downloadedMediaAdapter.setOnMenuMediaClickListener(
+                media -> {
+                    showMediaMenuDialog(media);
+                });
+    }
+
+    public void showMediaMenuDialog(MediaDB media) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        LayoutInflater inflater = this.getLayoutInflater();
+
+        View v = inflater.inflate(R.layout.modal_media_menu, null);
+
+        builder.setView(v);
+
+        builder.setCancelable(false);
+        Button shareMediaButton = v.findViewById(R.id.share_media_button);
+
+
+        AlertDialog mediaMenuDialog = builder.create();
+        shareMediaButton.setOnClickListener(
+                view -> {
+                    Toast.makeText(this, "Sharing...", Toast.LENGTH_LONG).show();
+                }
+        );
+
+
+        mediaMenuDialog.show();
+        mediaMenuDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
     }
 
     private void openMediaFile(MediaDB media) {
@@ -82,6 +114,7 @@ public class DownloadedMediaActivity extends BaseActivity {
         LayoutUtils.setActionBarLogo(actionBar);
         LayoutUtils.setActionBarDashboard(this, this.getString(R.string.downloaded_media_menu));
     }
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -108,7 +141,7 @@ public class DownloadedMediaActivity extends BaseActivity {
      */
     @Override
     public void onBackPressed() {
-        Intent returnIntent=new Intent(this, DashboardActivity.class);
+        Intent returnIntent = new Intent(this, DashboardActivity.class);
         returnIntent.putExtra(getString(R.string.show_announcement_key), false);
         startActivity(returnIntent);
     }

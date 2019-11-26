@@ -271,4 +271,5 @@ Mensuelle"</string>
 <string name="action_monitor_save_confirm_message">Toutes les actions sont effectuées, êtes-vous sûr de vouloir sauvegarder? Vous ne pouvez pas annuler cette action</string>
 <string name="load_error_message">"Une erreur s'est produite lors du chargement des données"</string>
 <string name="save_error_message">"Une erreur s'est produite lors de l'enregistrement des données"</string>
+<string name="share">partager</string>
 </resources>

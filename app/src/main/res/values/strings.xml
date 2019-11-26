@@ -284,4 +284,5 @@ evaluation"</string>
 <string name="load_error_message">An error has occurred loading the data</string>
 <string name="save_error_message">An error has occurred saving the data</string>
 
+<string name="share">Share</string>
 </resources>
