@@ -141,11 +141,13 @@
     </string-array>
     <string-array name="server_list">
         <item>@string/login_info_dhis_default_server_url</item>
-        <item>https://sfhnigeria.psi-mis.org/</item>
-        <item>https://singapore-dev.psi-mis.org/</item>
+        <item>https://ao-dev.hnqis.org/</item>
+        <item>https://im-dev.psi-mis.org/</item>
+        <item>https://imdatahub.org/</item>
+        <item>https://myanmar.psi-mis.org/</item>
+        <item>http://sfhza.psi-mis.org/</item>
+        <item>https://sm-dev.hnqis.org/</item>
         <item>https://zw.hnqis.org/</item>
-        <item>https://clone-zw.hnqis.org/</item>
-        <item>https://clone.psi-mis.org/</item>
         <item>@string/other</item>
     </string-array>
     <string name="server_version_preference" translatable="false">server_version_preference</string>
