@@ -29,7 +29,7 @@ public class DownloadedMediaAdapter extends
     private OnMenuMediaClickListener onMenuMediaClickListener;
 
     public interface OnMenuMediaClickListener{
-        void onMenuMediaClicked (MediaDB media);
+        void onMenuMediaClicked (View view, MediaDB media);
     }
 
     public DownloadedMediaAdapter(List<MediaDB> items, Context context) {
@@ -74,7 +74,7 @@ public class DownloadedMediaAdapter extends
 
         holder.menuDots.setOnClickListener(view -> {
             if (onMenuMediaClickListener != null){
-                onMenuMediaClickListener.onMenuMediaClicked(media);
+                onMenuMediaClickListener.onMenuMediaClicked(view, media);
             }
         });
     }

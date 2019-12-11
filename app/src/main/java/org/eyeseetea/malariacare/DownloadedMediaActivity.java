@@ -1,24 +1,24 @@
 package org.eyeseetea.malariacare;
 
-import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ShareCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.Toast;
+import android.webkit.MimeTypeMap;
 
 import org.eyeseetea.malariacare.data.database.model.MediaDB;
-import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.layout.adapters.downloaded_media.DownloadedMediaAdapter;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.List;
@@ -46,35 +46,52 @@ public class DownloadedMediaActivity extends BaseActivity {
                 (parent, view, position, id) -> openMediaFile(mediaList.get(position)));
 
         downloadedMediaAdapter.setOnMenuMediaClickListener(
-                media -> {
-                    showMediaMenuDialog(media);
+                (view,media) -> {
+                    showMediaPopupMenu(view, media);
                 });
     }
 
-    public void showMediaMenuDialog(MediaDB media) {
+    public void showMediaPopupMenu(View view, MediaDB media) {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        LayoutInflater inflater = this.getLayoutInflater();
-
-        View v = inflater.inflate(R.layout.modal_media_menu, null);
-
-        builder.setView(v);
-
-        builder.setCancelable(false);
-        Button shareMediaButton = v.findViewById(R.id.share_media_button);
+        //Creating the instance of PopupMenu
+        PopupMenu popup = new PopupMenu(this, view);
+        //Inflating the Popup using xml file
+        popup.getMenuInflater().inflate(R.menu.media_popup_menu, popup.getMenu());
 
 
-        AlertDialog mediaMenuDialog = builder.create();
-        shareMediaButton.setOnClickListener(
-                view -> {
-                    Toast.makeText(this, "Sharing...", Toast.LENGTH_LONG).show();
-                }
-        );
+        popup.setOnMenuItemClickListener(item -> {
+            shareMediaFile(media);
+            return true;
+        });
 
+        popup.show();
+    }
 
-        mediaMenuDialog.show();
-        mediaMenuDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+    private void shareMediaFile(MediaDB media) {
+        File file = new File(media.getFilename());
+        Uri fileURI = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
+                ? FileProvider.getUriForFile(this, this.getPackageName()
+                + ".DownloadedMediaActivity", file)
+                : Uri.fromFile(file);
+        ShareCompat.IntentBuilder.from(this)
+                .setStream(fileURI)
+                .setType(getMimeType(fileURI))
+                .setChooserTitle("Share media...")
+                .startChooser();
+    }
+
+    @NotNull
+    private String getMimeType(Uri fileURI) {
+        String type = null;
+        ContentResolver cR = this.getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        String extension = mime.getExtensionFromMimeType(cR.getType(fileURI));
+
+        if (extension != null) {
+            type = mime.getMimeTypeFromExtension(extension);
+        }
+
+        return type;
     }
 
     private void openMediaFile(MediaDB media) {
