@@ -42,3 +42,4 @@ app/src/main/res/raw/lastcommit.txt
 
 # local only private key for drive service account credentials
 app/src/*/res/raw/driveserviceprivatekey.json
+app/src/*/res/raw/config.json
