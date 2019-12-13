@@ -54,12 +54,9 @@ import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
 import org.eyeseetea.malariacare.data.sync.IData;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerInfoRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
-import org.eyeseetea.malariacare.domain.entity.Server;
-import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
 import org.eyeseetea.malariacare.domain.entity.ServerInfo;
 import org.eyeseetea.malariacare.domain.usecase.GetServerInfoUseCase;
 import org.eyeseetea.malariacare.domain.usecase.GetServerUseCase;
-import org.eyeseetea.malariacare.domain.usecase.GetServersUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.factories.ServerFactory;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
@@ -69,8 +66,6 @@ import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.utils.AUtils;
-import org.eyeseetea.malariacare.utils.Constants;
-import org.eyeseetea.malariacare.utils.Permissions;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -137,8 +132,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      * Common styling
      */
     private void initView(Bundle savedInstanceState) {
-        ServerFactory serverFactory = new ServerFactory();
-        GetServerUseCase getServerUseCase = serverFactory.getServerUseCase(this);
+        GetServerUseCase getServerUseCase = ServerFactory.INSTANCE.provideServerUseCase(this);
 
         getServerUseCase.execute(server -> {
             setTheme(R.style.EyeSeeTheme);

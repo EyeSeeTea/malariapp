@@ -1,30 +1,18 @@
 package org.eyeseetea.malariacare.data.database.datasources;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 import com.raizlabs.android.dbflow.data.Blob;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
-import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.IAllServersDataSource;
-import org.eyeseetea.malariacare.data.IServerDataSource;
+import org.eyeseetea.malariacare.data.ReadableServerDataSource;
+import org.eyeseetea.malariacare.data.WritableServerDataSource;
 import org.eyeseetea.malariacare.data.database.model.ServerDB;
-import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.domain.entity.Server;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ServerLocalDataSource implements IServerDataSource, IAllServersDataSource {
-
-    private Context context;
-
-    public ServerLocalDataSource(Context context){
-        this.context = context;
-    }
-
+public class ServerLocalDataSource implements ReadableServerDataSource, WritableServerDataSource {
     @Override
     public Server get() {
         Server server = null;
@@ -64,18 +52,11 @@ public class ServerLocalDataSource implements IServerDataSource, IAllServersData
 
     @Override
     public List<Server> getAll() {
-        String[] serverUrls = context.getResources().getStringArray(R.array.server_list);
-        List<Server> servers = new ArrayList<>();
-
-        for (String url:serverUrls) {
-            Server server = new Server(url);
-            servers.add(server);
-        }
-
-        return servers;
+        return new ArrayList<>();
     }
 
     private ServerDB getServerFromDB() {
         return new Select().from(ServerDB.class).querySingle();
     }
+
 }

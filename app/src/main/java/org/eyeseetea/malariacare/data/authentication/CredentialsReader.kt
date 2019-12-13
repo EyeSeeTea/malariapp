@@ -29,7 +29,7 @@ object CredentialsReader {
                 val credentials = loadCredentials(context)
 
                 if (credentials.poEditor?.projectId == null ||
-                    credentials.poEditor?.token == null){
+                    credentials.poEditor?.token == null) {
                     Either.Left(CredentialsFailure.ParseFailure)
                 } else {
                     credentialsCache = credentials
@@ -63,4 +63,3 @@ object CredentialsReader {
         return writer.toString()
     }
 }
-
