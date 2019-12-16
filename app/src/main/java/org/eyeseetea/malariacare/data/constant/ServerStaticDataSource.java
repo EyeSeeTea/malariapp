@@ -34,6 +34,7 @@ public class ServerStaticDataSource implements ReadableServerDataSource {
     @NotNull
     @Override
     public Server get() {
-        return getAll().get(0);
+        //not implemented
+        return null;
     }
 }

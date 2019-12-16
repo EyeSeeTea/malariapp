@@ -8,4 +8,5 @@ import java.util.List;
 public interface IServerRepository {
     List<Server> getAll(ReadPolicy readPolicy);
     Server getLoggedServer() throws Exception;
+    void save(Server server) throws Exception;
 }
