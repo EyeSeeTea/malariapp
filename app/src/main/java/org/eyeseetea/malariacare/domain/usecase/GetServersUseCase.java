@@ -36,6 +36,7 @@ public class GetServersUseCase implements UseCase{
     @Override
     public void run() {
         try {
+            notifyComplete(serverRepository.getAll(ReadPolicy.CACHE));
             notifyComplete(serverRepository.getAll(ReadPolicy.NETWORK_FIRST));
         } catch (Exception e) {
             e.printStackTrace();

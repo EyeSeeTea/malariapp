@@ -50,6 +50,10 @@ public class ServerRepository implements IServerRepository {
             }
         } else {
             servers = readableServerLocalDataSource.getAll();
+
+            if (servers.size() == 0){
+                servers = readableServerStaticDataSource.getAll();
+            }
         }
 
         return servers;
