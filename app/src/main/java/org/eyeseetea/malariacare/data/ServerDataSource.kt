@@ -12,4 +12,7 @@ interface ReadableServerDataSource {
 interface WritableServerDataSource {
     @Throws(Exception::class)
     fun save(server: Server)
+
+    @Throws(Exception::class)
+    fun saveAll(servers: List<Server>)
 }

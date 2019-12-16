@@ -126,7 +126,7 @@ public class LoginActivity extends AbsLoginActivity {
     }
 
     private void initServerAdapter() {
-        GetServersUseCase getServersUseCase = ServerFactory.INSTANCE.provideServersUseCase(this);
+        GetServersUseCase getServersUseCase = ServerFactory.INSTANCE.provideGetServersUseCase(this);
         getServersUseCase.execute(servers -> {
             servers.add(new Server(getResources().getString(R.string.other)));
 

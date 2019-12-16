@@ -132,13 +132,13 @@ public abstract class BaseActivity extends AppCompatActivity {
      * Common styling
      */
     private void initView(Bundle savedInstanceState) {
-        GetServerUseCase getServerUseCase = ServerFactory.INSTANCE.provideServerUseCase(this);
+        GetServerUseCase getServerUseCase = ServerFactory.INSTANCE.provideGetServerUseCase(this);
 
         getServerUseCase.execute(server -> {
             setTheme(R.style.EyeSeeTheme);
             android.support.v7.app.ActionBar actionBar = BaseActivity.this.getSupportActionBar();
 
-            if (server.getLogo() != null){
+            if (server != null && server.getLogo() != null){
                 LayoutUtils.setActionBarLogo(this, actionBar, server.getLogo());
             } else{
                 LayoutUtils.setActionBarLogo(actionBar);

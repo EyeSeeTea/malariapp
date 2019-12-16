@@ -1,5 +1,7 @@
 package org.eyeseetea.malariacare.data.repositories;
 
+import android.util.Log;
+
 import org.eyeseetea.malariacare.data.ReadableServerDataSource;
 import org.eyeseetea.malariacare.data.WritableServerDataSource;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerRepository;
@@ -39,16 +41,15 @@ public class ServerRepository implements IServerRepository {
             if (servers.size() == 0){
                 servers = readableServerStaticDataSource.getAll();
             }
+
+            try {
+                writableServerLocalDataSource.saveAll(servers);
+            } catch (Exception e) {
+                Log.e(this.getClass().getSimpleName(), "An error has occurred saving server list");
+                e.printStackTrace();
+            }
         } else {
             servers = readableServerLocalDataSource.getAll();
-
-            if(servers.size() == 0){
-                servers = readableServerRemoteDataSource.getAll();
-            }
-
-            if (servers.size() == 0){
-                servers = readableServerStaticDataSource.getAll();
-            }
         }
 
         return servers;
@@ -72,5 +73,10 @@ public class ServerRepository implements IServerRepository {
                 return cachedServer;
             }
         }
+    }
+
+    @Override
+    public void save(Server server) throws Exception {
+        writableServerLocalDataSource.save(server);;
     }
 }

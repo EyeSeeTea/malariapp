@@ -21,19 +21,15 @@ object ServerFactory {
     var mainExecutor: IMainExecutor = UIThreadExecutor()
     var asyncExecutor: IAsyncExecutor = AsyncExecutor()
 
-    fun provideServersUseCase(context: Context): GetServersUseCase {
+    fun provideGetServersUseCase(context: Context): GetServersUseCase {
         val serverRepository = provideServerRepository(context)
-        return GetServersUseCase(
-            serverRepository, mainExecutor,
-            asyncExecutor
+        return GetServersUseCase(serverRepository, mainExecutor, asyncExecutor
         )
     }
 
-    fun provideServerUseCase(context: Context): GetServerUseCase {
+    fun provideGetServerUseCase(context: Context): GetServerUseCase {
         val serverRepository = provideServerRepository(context)
-        return GetServerUseCase(
-            serverRepository, mainExecutor,
-            asyncExecutor
+        return GetServerUseCase(serverRepository, mainExecutor, asyncExecutor
         )
     }
 

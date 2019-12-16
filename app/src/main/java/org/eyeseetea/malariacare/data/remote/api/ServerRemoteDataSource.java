@@ -51,17 +51,18 @@ public class ServerRemoteDataSource implements ReadableServerDataSource {
 
     @Override
     public List<Server> getAll() {
-        Either<PoEditorApiClientFailure, List<Term>> result = poEditorApiClient.getTerms("en");
-
         List<Server> servers = new ArrayList<>();
+
+        Either<PoEditorApiClientFailure, List<Term>> result =
+                poEditorApiClient.getTerms("en");
 
         if (result.isRight()) {
             List<Term> terms = ((List<Term>) ((Either.Right) result).getValue());
 
             List<String> serverUrls = findServerUrls(terms);
 
-            if (serverUrls.size()>0){
-                for (String url:serverUrls) {
+            if (serverUrls.size() > 0) {
+                for (String url : serverUrls) {
                     Server server = new Server(url);
                     servers.add(server);
                 }
@@ -85,7 +86,7 @@ public class ServerRemoteDataSource implements ReadableServerDataSource {
 
             byte[] logo = getLogo(keyFlag);
 
-            server = new Server(credentials.getServerURL(), applicationTitle, logo);
+            server = new Server(credentials.getServerURL(), applicationTitle, logo, true);
 
         } catch (Exception ex) {
             Log.e(TAG, "Cannot read server name and logo");
