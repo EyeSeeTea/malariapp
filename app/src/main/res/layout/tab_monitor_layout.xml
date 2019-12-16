@@ -37,17 +37,4 @@
         android:id="@+id/dashboard_charts_container"
         android:layout_below="@id/monitor_org_unit_program_filter_view">
     </FrameLayout>
-
-    <ImageButton
-        android:id="@+id/back_to_monitoring_by_actions_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:background="@color/transparent"
-        android:gravity="center_horizontal"
-        android:src="@drawable/ic_back"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="52dp"/>
 </RelativeLayout>
