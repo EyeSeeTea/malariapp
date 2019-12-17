@@ -50,21 +50,12 @@ public class MonitorBySurveyActionsFragment extends FiltersFragment implements
             Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_monitor_by_survey_actions, container, false);
 
-        //hideBackButton();
         initializeRecyclerView();
         initializeProgressView();
         initializePresenter();
 
         return rootView;
     }
-
-/*    private void hideBackButton() {
-        if (backButton == null) {
-            backButton = getActivity().findViewById(R.id.back_to_monitoring_by_actions_view);
-        }
-
-        backButton.setVisibility(View.GONE);
-    }*/
 
     @Override
     public void onDestroy() {
@@ -74,7 +65,6 @@ public class MonitorBySurveyActionsFragment extends FiltersFragment implements
 
     @Override
     protected void onFiltersChanged() {
-        //presenter.refresh(selectedProgramUidFilter, selectedOrgUnitUidFilter);
         DashboardActivity.dashboardActivity.openMonitoringByCalendar();
     }
 
@@ -82,8 +72,9 @@ public class MonitorBySurveyActionsFragment extends FiltersFragment implements
     @Override
     public void reloadData() {
         super.reloadData();
-        //hideBackButton();
-        presenter.refresh(selectedProgramUidFilter, selectedOrgUnitUidFilter);
+        if (presenter != null){
+            presenter.refresh(selectedProgramUidFilter, selectedOrgUnitUidFilter);
+        }
     }
 
 

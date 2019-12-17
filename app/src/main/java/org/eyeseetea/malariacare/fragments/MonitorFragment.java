@@ -80,8 +80,6 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
     public MonitorFilter filterType;
     private WebViewInterceptor mWebViewInterceptor;
 
-    //private ImageView backButton;
-
     private OrgUnitProgramFilterView orgUnitProgramFilterView;
 
     private View rootView;
@@ -125,16 +123,6 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
 
 
         return rootView;
-    }
-
-    private void initializeBackButton() {
- /*       if (backButton == null){
-            backButton = DashboardActivity.dashboardActivity.findViewById(R.id.back_to_monitoring_by_actions_view);
-        }
-
-        backButton.setOnClickListener(v -> DashboardActivity.dashboardActivity.openMonitorByActions());
-
-        backButton.setVisibility(View.VISIBLE);*/
     }
 
     private void pushOrgUnitFilterToJavascript(String selectedOrgUnitFilter) {
@@ -290,8 +278,6 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
     }
 
     public void reloadMonitor() {
-
-        initializeBackButton();
 
         webView = initMonitor();
         //onPageFinish load data
