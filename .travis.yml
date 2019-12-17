@@ -2,8 +2,6 @@ language: android
 sudo: false
 jdk:
 - oraclejdk8
-#branches:
-#- master
 android:
   components:
   - tools
@@ -23,10 +21,7 @@ android:
   - sys-img-armeabi-v7a-android-22
   - extra-android-support
 script:
-#- "./gradlew ktlint --no-daemon testEyeseeteaDebugUnitTest"
 - "./gradlew ktlint --no-daemon testHnqisDebugUnitTest"
-before_script:
-- "./travis_before_script.sh"
 notifications:
   slack:
     secure: V8Wxde5RTNbNiOzulv6idvMpbWtjVc4DPwApjAgfDI01OD6nLkuogr/z3qqyKbA/uwWnzu5g7+vegFtSdjW1z32kiIO0bO2c0m2L/E542D1/zmWT9N0IPghQIZ+9BAj1ZrgG286tiX85lSV8uLy0r9bAefPWlbdrHhirYi3cTsI=
@@ -35,3 +30,6 @@ cache:
   directories:
   - "$HOME/.m2"
   - "$HOME/.gradle"
+before_install:
+  - openssl aes-256-cbc -K $encrypted_b4da38d765e0_key -iv $encrypted_b4da38d765e0_iv
+  -in app.tar.enc -out app.tar -d
