@@ -29,13 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ObservationLocalDataSource {
-    private final ObservationMapper mObservationMapper;
-
-    public ObservationLocalDataSource(){
-        List<SurveyDB> surveyDBS = new Select().from(SurveyDB.class).queryList();
-
-        mObservationMapper = new ObservationMapper(surveyDBS);
-    }
+    private  ObservationMapper mObservationMapper;
 
     public List<Observation> getSentObservations(
             String programUid,
@@ -44,6 +38,9 @@ public class ObservationLocalDataSource {
         List<ObservationDB> observationDBS =
                 getObservationsDBByStatus(programUid, orgUnitUid, observationStatuses);
 
+        List<SurveyDB> surveyDBS = new Select().from(SurveyDB.class).queryList();
+
+        mObservationMapper = new ObservationMapper(surveyDBS);
         List<Observation> observations = mObservationMapper.map(observationDBS);
 
         return observations;
@@ -58,6 +55,10 @@ public class ObservationLocalDataSource {
 
         if (observationDB != null) {
 
+            List<SurveyDB> surveyDBS = new Select().from(SurveyDB.class)
+                    .where(SurveyDB_Table.uid_event_fk.eq(surveyUId)).queryList();
+
+            mObservationMapper = new ObservationMapper(surveyDBS);
             Observation observation = mObservationMapper.map(observationDB);
 
             return observation;
@@ -102,15 +103,14 @@ public class ObservationLocalDataSource {
                 .leftOuterJoin(OrgUnitDB.class)
                 .on(SurveyDB_Table.id_org_unit_fk.eq(OrgUnitDB_Table.id_org_unit));
 
-        Where basicWhere = from.where(ObservationDB_Table.status_observation.isNotNull())
-                .and(SurveyDB_Table.status.eq(SurveyStatus.SENT.getCode()));
+        Where basicWhere = from.where(ObservationDB_Table.status_observation.isNotNull());
 
         if (programUid != null && !programUid.isEmpty()){
-            basicWhere.and(ProgramDB_Table.uid_program.eq(programUid));
+            basicWhere = basicWhere.and(ProgramDB_Table.uid_program.eq(programUid));
         }
 
         if (orgUnitUid != null && !orgUnitUid.isEmpty()){
-            basicWhere.and(OrgUnitDB_Table.uid_org_unit.eq(orgUnitUid));
+            basicWhere = basicWhere.and(OrgUnitDB_Table.uid_org_unit.eq(orgUnitUid));
         }
 
         if (observationStatuses != null && observationStatuses.size() > 0){
@@ -120,7 +120,7 @@ public class ObservationLocalDataSource {
                 statusCodes.add(observationStatus.getCode());
             }
 
-            basicWhere.and(ObservationDB_Table.status_observation.in(statusCodes));
+            basicWhere = basicWhere.and(ObservationDB_Table.status_observation.in(statusCodes));
         }
 
         observationDBS = basicWhere.queryList();
