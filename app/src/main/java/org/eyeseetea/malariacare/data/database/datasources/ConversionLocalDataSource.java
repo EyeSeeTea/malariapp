@@ -29,6 +29,7 @@ import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.ConvertFr
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullController;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.DataElementExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.ObservationExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.OptionSetExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models
         .OrganisationUnitExtended;
@@ -64,6 +65,11 @@ import org.eyeseetea.malariacare.data.database.model.ValueDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.data.remote.sdk.SdkQueries;
+import org.eyeseetea.malariacare.data.repositories.ServerMetadataRepository;
+import org.eyeseetea.malariacare.domain.boundary.IPullController;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IServerMetadataRepository;
+import org.eyeseetea.malariacare.domain.entity.ServerMetadata;
+import org.eyeseetea.malariacare.domain.exception.InvalidServerMetadataException;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
 import org.hisp.dhis.client.sdk.models.program.ProgramType;
 
@@ -77,9 +83,12 @@ import java.util.Map;
 public class ConversionLocalDataSource {
 
     PullController.IPullControllerCallback callback;
+    IServerMetadataRepository serverMetadataRepository;
 
-    public ConversionLocalDataSource(PullController.IPullControllerCallback callback) {
+    public ConversionLocalDataSource(PullController.IPullControllerCallback callback,
+            IServerMetadataRepository serverMetadataRepository) {
         this.callback = callback;
+        this.serverMetadataRepository = serverMetadataRepository;
     }
 
     private final String TAG = ".ConversionLocalData";
@@ -121,9 +130,10 @@ public class ConversionLocalDataSource {
         Log.d(TAG, "Converting SDK into APP data");
 
         //One shared converter to match parents within the hierarchy
-        ConvertFromSDKVisitor converter = new ConvertFromSDKVisitor();
+        ConvertFromSDKVisitor converter = new ConvertFromSDKVisitor(serverMetadataRepository);
         convertMetaData(converter);
         if (!PullController.PULL_IS_ACTIVE) return;
+
         convertDataValues(converter);
 
     }
@@ -381,6 +391,21 @@ public class ConversionLocalDataSource {
                         continue;
                     }
                     event.accept(converter);
+
+                    ServerMetadata serverMetadata = null;
+
+                    try {
+                        serverMetadata = serverMetadataRepository.getServerMetadata();
+                    } catch (InvalidServerMetadataException e) {
+                        e.printStackTrace();
+                    }
+
+                    if (event.hasObservations(serverMetadata)){
+                        ObservationExtended observationExtended =
+                                new ObservationExtended(event.getEvent());
+
+                        observationExtended.accept(converter);
+                    }
                 }
             }
         }
