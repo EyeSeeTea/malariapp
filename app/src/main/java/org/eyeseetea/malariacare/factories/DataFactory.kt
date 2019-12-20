@@ -35,6 +35,12 @@ object DataFactory {
     private fun provideSurveyRepository(): ISurveyRepository =
         SurveyRepository(provideSurveyLocalDataSource())
 
+    fun reset() {
+        // Reset data sources with cached metadata
+        surveyLocalDataSource = null
+        observationLocalDataSource = null
+    }
+
     private fun provideObservationRepository(): IObservationRepository =
         ObservationRepository(provideObservationLocalDataSource())
 
