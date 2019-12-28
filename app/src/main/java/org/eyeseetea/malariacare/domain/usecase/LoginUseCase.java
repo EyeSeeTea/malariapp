@@ -131,7 +131,7 @@ public class LoginUseCase implements UseCase{
                 if (connectedServer != null){
                     connectedServer.changeToConnected();
                     mServerRepository.save(connectedServer);
-                    mServerRepository.getLoggedServer();
+                    mServerRepository.getGetLoggedServer();
                 }
             } catch (Exception e) {
                 e.printStackTrace();

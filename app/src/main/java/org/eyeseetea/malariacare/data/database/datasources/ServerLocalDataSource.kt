@@ -49,7 +49,6 @@ class ServerLocalDataSource : ReadableServerDataSource, WritableServerDataSource
         return ServerDB.getAllServersFromDB().map { serverDB -> mapServer(serverDB) }
     }
 
-
     private fun mapServer(serverDB: ServerDB): Server {
         return Server(
             serverDB.url,

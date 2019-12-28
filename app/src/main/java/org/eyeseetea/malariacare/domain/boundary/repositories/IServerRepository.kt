@@ -7,7 +7,7 @@ interface IServerRepository {
     fun getAll(readPolicy: ReadPolicy): List<Server>
 
     @get:Throws(Exception::class)
-    val loggedServer: Server
+    val getLoggedServer: Server
 
     @Throws(Exception::class)
     fun save(server: Server)

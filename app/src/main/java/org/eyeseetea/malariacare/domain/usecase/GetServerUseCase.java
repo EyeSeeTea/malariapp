@@ -5,8 +5,6 @@ import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerRepository;
 import org.eyeseetea.malariacare.domain.entity.Server;
 
-import java.util.List;
-
 public class GetServerUseCase implements UseCase{
 
     public interface Callback{
@@ -35,7 +33,7 @@ public class GetServerUseCase implements UseCase{
     @Override
     public void run() {
         try {
-            notifyComplete(serverRepository.getLoggedServer());
+            notifyComplete(serverRepository.getGetLoggedServer());
         } catch (Exception e) {
             e.printStackTrace();
         }
