@@ -39,4 +39,8 @@ public class Server {
     public void changeToConnected(){
         connected = true;
     }
+
+    public boolean isDataCompleted(){
+        return url != null && name != null && logo != null;
+    }
 }

@@ -1,10 +1,14 @@
 package org.eyeseetea.malariacare.data.repositories
 
 import org.eyeseetea.malariacare.data.ReadableServerDataSource
+import org.eyeseetea.malariacare.data.ServerDataSourceFailure
 import org.eyeseetea.malariacare.data.WritableServerDataSource
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerRepository
+import org.eyeseetea.malariacare.domain.common.Either
 import org.eyeseetea.malariacare.domain.common.ReadPolicy
+import org.eyeseetea.malariacare.domain.common.fold
 import org.eyeseetea.malariacare.domain.entity.Server
+import org.eyeseetea.malariacare.domain.usecase.GetServerFailure
 
 class ServerRepository(
     private val writableServerLocalDataSource: WritableServerDataSource,
@@ -36,25 +40,41 @@ class ServerRepository(
         return servers
     }
 
-    override val getLoggedServer: Server
-        get() {
-            val cachedServer = readableServerLocalDataSource.get()
-
-            return if (cachedServer != null && cachedServer.url != null && cachedServer.name != null && cachedServer.logo != null
-            ) {
-                cachedServer
-            } else {
-                try {
-                    val remoteServer = readableServerRemoteDataSource.get()
-                    writableServerLocalDataSource.save(remoteServer)
-                    remoteServer
-                } catch (e: Exception) {
-                    cachedServer
-                }
-            }
-        }
-
     override fun save(server: Server) {
         writableServerLocalDataSource.save(server)
+    }
+
+    override fun getLoggedServer(): Either<GetServerFailure, Server> {
+        val localServerResult = readableServerLocalDataSource.get()
+
+        return localServerResult.fold(
+            { getServerFromRemote(localServerResult) },
+            { server ->
+                if (server.isDataCompleted) {
+                    Either.Right(server)
+                } else {
+                    getServerFromRemote(localServerResult)
+                }
+            })
+    }
+
+    private fun getServerFromRemote(localResult: Either<ServerDataSourceFailure, Server>): Either<GetServerFailure, Server> {
+        val remoteServerResult = readableServerRemoteDataSource.get()
+
+        return remoteServerResult.fold(
+            { handleRemoteFailure(localResult) },
+            { server ->
+                writableServerLocalDataSource.save(server)
+                Either.Right(server)
+            })
+    }
+
+    private fun handleRemoteFailure(
+        localResult: Either<ServerDataSourceFailure, Server>
+    ): Either<GetServerFailure, Server> {
+
+        return localResult.fold(
+            { Either.Left(GetServerFailure.ServerNotFoundFailure) },
+            { server -> Either.Right(server) })
     }
 }

@@ -2,6 +2,7 @@ package org.eyeseetea.malariacare.data.remote.api
 
 import android.util.Log
 import org.eyeseetea.malariacare.data.ReadableServerDataSource
+import org.eyeseetea.malariacare.data.ServerDataSourceFailure
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState
 import org.eyeseetea.malariacare.data.remote.poeditor.PoEditorApiClient
 import org.eyeseetea.malariacare.data.remote.poeditor.Term
@@ -23,8 +24,7 @@ class ServerRemoteDataSource(private val poEditorApiClient: PoEditorApiClient) :
         }
     }
 
-    @Throws(Exception::class)
-    override fun get(): Server {
+    override fun get(): Either<ServerDataSourceFailure, Server> {
         val server: Server
         try {
             val credentials = PreferencesState.getInstance().creedentials
@@ -41,12 +41,10 @@ class ServerRemoteDataSource(private val poEditorApiClient: PoEditorApiClient) :
             val logo = getLogo(keyFlag, credentials.serverURL)
 
             server = Server(credentials.serverURL, applicationTitle, logo, true)
+            return Either.Right(server)
         } catch (ex: Exception) {
-            Log.e(TAG, "Cannot read server name and logo")
-            ex.printStackTrace()
-            throw ex
+            return Either.Left(ServerDataSourceFailure.NetworkFailure)
         }
-        return server
     }
 
     private fun getLogo(keyFlag: String, serverUrl: String): ByteArray? {

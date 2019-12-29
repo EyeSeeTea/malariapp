@@ -3,7 +3,12 @@ package org.eyeseetea.malariacare.domain.usecase
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerRepository
+import org.eyeseetea.malariacare.domain.common.Either
 import org.eyeseetea.malariacare.domain.entity.Server
+
+sealed class GetServerFailure {
+    object ServerNotFoundFailure : GetServerFailure()
+}
 
 class GetServerUseCase(
     private val serverRepository: IServerRepository,
@@ -11,7 +16,7 @@ class GetServerUseCase(
     private val asyncExecutor: IAsyncExecutor
 ) : UseCase {
     interface Callback {
-        fun onSuccess(server: Server)
+        fun onSuccess(serverResult: Either<GetServerFailure, Server>)
     }
 
     private lateinit var mCallback: Callback
@@ -22,10 +27,10 @@ class GetServerUseCase(
     }
 
     override fun run() {
-        notifyComplete(serverRepository.getLoggedServer)
+        notifyComplete(serverRepository.getLoggedServer())
     }
 
-    private fun notifyComplete(server: Server) {
-        mainExecutor.run { mCallback.onSuccess(server) }
+    private fun notifyComplete(serverResult: Either<GetServerFailure, Server>) {
+        mainExecutor.run { mCallback.onSuccess(serverResult) }
     }
 }

@@ -35,6 +35,8 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.domain.common.Either;
+import org.eyeseetea.malariacare.domain.entity.Server;
 import org.eyeseetea.malariacare.domain.usecase.GetServerUseCase;
 import org.eyeseetea.malariacare.factories.ServerFactory;
 import org.eyeseetea.malariacare.fragments.IModuleFragment;
@@ -221,17 +223,24 @@ public abstract class ModuleController {
     }
 
     public void setActionBarDashboard() {
-        serverUseCase.execute(server -> {
-            if (server != null && server.getName() != null && !server.getName().isEmpty()){
-                LayoutUtils.setActionBarDashboard(dashboardActivity, server.getName(),getTitle());
-            } else {
+        serverUseCase.execute(serverResult -> {
+            if (serverResult.isLeft()) {
                 LayoutUtils.setActionBarDashboard(dashboardActivity, getTitle());
+            } else {
+                Server server = ((Either.Right<Server>) serverResult).getValue();
+                if (server.isDataCompleted()) {
+                    LayoutUtils.setActionBarDashboard(dashboardActivity, server.getName(),
+                            getTitle());
+                } else {
+                    LayoutUtils.setActionBarDashboard(dashboardActivity, getTitle());
+                }
             }
         });
     }
 
     public void setActionBarDashboardWithProgram() {
-        LayoutUtils.setActionBarDashboard(dashboardActivity, getTitle()+" - "+Session.getSurveyByModule(getName()).getProgram().getName());
+        LayoutUtils.setActionBarDashboard(dashboardActivity,
+                getTitle() + " - " + Session.getSurveyByModule(getName()).getProgram().getName());
     }
 
     public void replaceFragment(int layout, Fragment fragment) {

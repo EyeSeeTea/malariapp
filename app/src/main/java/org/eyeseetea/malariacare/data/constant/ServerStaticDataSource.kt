@@ -4,6 +4,8 @@ import android.content.Context
 import android.util.Log
 import org.eyeseetea.malariacare.R
 import org.eyeseetea.malariacare.data.ReadableServerDataSource
+import org.eyeseetea.malariacare.data.ServerDataSourceFailure
+import org.eyeseetea.malariacare.domain.common.Either
 import org.eyeseetea.malariacare.domain.entity.Server
 
 class ServerStaticDataSource(private val context: Context) :
@@ -15,7 +17,7 @@ class ServerStaticDataSource(private val context: Context) :
         return serverUrls.map { url -> Server(url) }
     }
 
-    override fun get(): Server { // not implemented
-        return Server("Not found")
+    override fun get(): Either<ServerDataSourceFailure, Server> { // not implemented
+        return Either.Left(ServerDataSourceFailure.ServerNotFoundFailure)
     }
 }

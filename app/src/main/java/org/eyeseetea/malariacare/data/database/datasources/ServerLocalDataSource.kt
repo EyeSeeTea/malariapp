@@ -4,20 +4,21 @@ import android.util.Log
 import com.raizlabs.android.dbflow.data.Blob
 import com.raizlabs.android.dbflow.sql.language.Delete
 import org.eyeseetea.malariacare.data.ReadableServerDataSource
+import org.eyeseetea.malariacare.data.ServerDataSourceFailure
 import org.eyeseetea.malariacare.data.WritableServerDataSource
 import org.eyeseetea.malariacare.data.database.model.ServerDB
+import org.eyeseetea.malariacare.domain.common.Either
 import org.eyeseetea.malariacare.domain.entity.Server
 
 class ServerLocalDataSource : ReadableServerDataSource, WritableServerDataSource {
-    override fun get(): Server {
+    override fun get(): Either<ServerDataSourceFailure, Server> {
         Log.d(this.javaClass.simpleName, "Retrieving connected server from local Database")
         val serverDB = ServerDB.getConnectedServerFromDB()
 
         return if (serverDB == null) {
-            // TODO: server either
-            Server("NotFound")
+            Either.Left(ServerDataSourceFailure.ServerNotFoundFailure)
         } else {
-            mapServer(serverDB)
+            Either.Right(mapServer(serverDB))
         }
     }
 
