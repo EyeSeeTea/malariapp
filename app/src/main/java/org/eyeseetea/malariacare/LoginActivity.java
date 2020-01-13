@@ -140,7 +140,7 @@ public class LoginActivity extends AbsLoginActivity implements LoginPresenter.Vi
     private void initPresenter() {
         loginPresenter = AuthenticationFactory.INSTANCE.provideLoginPresenter(this);
 
-        loginPresenter.attachView(this);
+        loginPresenter.attachView(this, getResources().getString(R.string.other));
     }
 
     private void initServerAdapter() {
@@ -148,21 +148,11 @@ public class LoginActivity extends AbsLoginActivity implements LoginPresenter.Vi
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Server server =(Server) parent.getItemAtPosition(position);
-                if (server.getUrl().equals(parent.getContext().getResources().getString(R.string.other))) {
-                    serverEditText.setText("");
-                    serverContainer.setVisibility(View.VISIBLE);
-                } else {
-                    if (serverContainer.getVisibility() == View.VISIBLE) {
-                        serverContainer.setVisibility(View.GONE);
-                    }
-                    serverEditText.setText(server.getUrl());
-                }
+                loginPresenter.selectServer(server);
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                parent.setSelection(0);
-            }
+            public void onNothingSelected(AdapterView<?> parent) { }
         });
     }
 
@@ -397,13 +387,23 @@ public class LoginActivity extends AbsLoginActivity implements LoginPresenter.Vi
 
     @Override
     public void showServers(@NotNull List<Server> servers) {
-        servers.add(new Server(getResources().getString(R.string.other)));
-
         ArrayAdapter serversListAdapter =
                 new ServerArrayAdapter(LoginActivity.this, servers);
         serverSpinner.setAdapter(serversListAdapter);
 
         getServerUrl().setText(servers.get(0).getUrl());
+    }
+
+    @Override
+    public void showManualServerUrlView() {
+        serverEditText.setText("");
+        serverContainer.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideManualServerUrlView(String serverUrl) {
+        serverEditText.setText(serverUrl);
+        serverContainer.setVisibility(View.GONE);
     }
 
     public class AsyncPullAnnouncement extends AsyncTask<LoginActivity, Void, Void> {

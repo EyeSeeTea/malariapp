@@ -9,6 +9,6 @@ object AuthenticationFactory {
         val executor = WrapperExecutor()
         val getServersUseCase = ServerFactory.provideGetServersUseCase(context)
 
-        return LoginPresenter(executor,getServersUseCase)
+        return LoginPresenter(executor, getServersUseCase)
     }
 }

@@ -5,7 +5,7 @@ import org.eyeseetea.malariacare.domain.common.ReadPolicy
 import org.eyeseetea.malariacare.domain.entity.Server
 
 class GetServersUseCase(private val serverRepository: IServerRepository) {
-    fun execute():List<Server>{
+    fun execute(): List<Server> {
         return serverRepository.getAll(ReadPolicy.NETWORK_FIRST)
     }
 }

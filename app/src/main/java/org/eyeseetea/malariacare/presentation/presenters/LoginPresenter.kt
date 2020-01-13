@@ -10,9 +10,12 @@ class LoginPresenter(
 ) {
 
     private var view: View? = null
+    private lateinit var otherText: String
+    private lateinit var server: Server
 
-    fun attachView(view: View) {
+    fun attachView(view: View, otherText: String) {
         this.view = view
+        this.otherText = otherText
 
         loadServers()
     }
@@ -21,11 +24,21 @@ class LoginPresenter(
         this.view = null
     }
 
+    fun selectServer(server: Server) {
+        this.server = server
+
+        if (server.url == otherText) {
+            showManualServerUrlView()
+        } else {
+            hideManualServerUrlView(server.url)
+        }
+    }
+
     private fun loadServers() = executor.asyncExecute {
         showLoading()
         val servers = getServersUseCase.execute()
         hideLoading()
-        showServers(servers)
+        showServers(servers + Server(otherText))
     }
 
     private fun showServers(servers: List<Server>) = executor.uiExecute {
@@ -40,9 +53,19 @@ class LoginPresenter(
         view?.hideLoading()
     }
 
+    private fun showManualServerUrlView() = executor.uiExecute {
+        view?.showManualServerUrlView()
+    }
+
+    private fun hideManualServerUrlView(serverUrl: String) = executor.uiExecute {
+        view?.hideManualServerUrlView(serverUrl)
+    }
+
     interface View {
         fun showLoading()
         fun hideLoading()
+        fun showManualServerUrlView()
+        fun hideManualServerUrlView(serverUrl: String)
         fun showServers(servers: List<@JvmSuppressWildcards Server>)
     }
 }
