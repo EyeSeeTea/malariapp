@@ -10,6 +10,7 @@ sealed class GetServerFailure {
     object ServerNotFoundFailure : GetServerFailure()
 }
 
+//TODO: this use case should not use executors, the executors
 class GetServerUseCase(
     private val serverRepository: IServerRepository,
     private val mainExecutor: IMainExecutor,
