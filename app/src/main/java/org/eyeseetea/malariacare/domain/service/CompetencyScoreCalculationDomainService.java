@@ -23,7 +23,8 @@ import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
 
 public class CompetencyScoreCalculationDomainService {
 
-    public final static float NON_CRITICAL_COMPETENT_SCORE_LIMIT = 80f;
+    public final static float NON_CRITICAL_COMPETENT_SCORE_LIMIT = 90f;
+    public final static float NON_CRITICAL_COMPETENT_NEEDS_IMPROVEMENT_SCORE_LIMIT = 80f;
 
     public CompetencyScoreClassification calculateClassification(
             boolean hasCriticalStepsMissed, Float nonCriticalStepsScore) {
@@ -31,8 +32,10 @@ public class CompetencyScoreCalculationDomainService {
         if (!hasCriticalStepsMissed){
             if(nonCriticalStepsScore>= NON_CRITICAL_COMPETENT_SCORE_LIMIT){
                 return CompetencyScoreClassification.COMPETENT;
-            } else {
+            } else if (nonCriticalStepsScore >= NON_CRITICAL_COMPETENT_NEEDS_IMPROVEMENT_SCORE_LIMIT){
                 return CompetencyScoreClassification.COMPETENT_NEEDS_IMPROVEMENT;
+            } else {
+                return CompetencyScoreClassification.NOT_COMPETENT;
             }
         } else {
             return CompetencyScoreClassification.NOT_COMPETENT;

@@ -1,11 +1,11 @@
 package org.eyeseetea.malariacare.factories
 
 import android.content.Context
-
 import org.eyeseetea.malariacare.data.database.datasources.ServerInfoLocalDataSource
 import org.eyeseetea.malariacare.data.remote.api.ServerInfoRemoteDataSource
 import org.eyeseetea.malariacare.data.repositories.ServerInfoRepository
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository
+import org.eyeseetea.malariacare.domain.boundary.repositories.IServerRepository
 import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase
@@ -26,9 +26,14 @@ object AuthenticationFactory {
             serverRemoteDataSource
         )
 
+        val serverRepository: IServerRepository = ServerFactory().getServerRepository(context)
+
         return LoginUseCase(
-            userAccountRepository, serverInfoRepository,
-            mainExecutor, asyncExecutor
+            userAccountRepository,
+            serverRepository,
+            serverInfoRepository,
+            mainExecutor,
+            asyncExecutor
         )
     }
 

@@ -74,8 +74,8 @@ public class LoginActivityStrategy {
 
                 Credentials demoCredentials = Credentials.createDemoCredentials();
 
-                LoginUseCase mLoginUseCase =
-                        AuthenticationFactory.INSTANCE.provideLoginUseCase(loginActivity);
+                LoginUseCase mLoginUseCase = AuthenticationFactory.INSTANCE.provideLoginUseCase(
+                        loginActivity);
 
                 mLoginUseCase.execute(demoCredentials,
                         new LoginUseCase.Callback() {
@@ -154,4 +154,5 @@ public class LoginActivityStrategy {
 
         loginActivity.finish();
     }
+
 }

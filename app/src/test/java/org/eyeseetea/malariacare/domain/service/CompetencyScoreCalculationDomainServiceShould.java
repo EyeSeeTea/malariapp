@@ -1,5 +1,7 @@
 package org.eyeseetea.malariacare.domain.service;
 
+import static org.eyeseetea.malariacare.domain.service.CompetencyScoreCalculationDomainService.NON_CRITICAL_COMPETENT_NEEDS_IMPROVEMENT_SCORE_LIMIT;
+import static org.eyeseetea.malariacare.domain.service.CompetencyScoreCalculationDomainService.NON_CRITICAL_COMPETENT_SCORE_LIMIT;
 import static org.junit.Assert.assertThat;
 
 import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
@@ -26,11 +28,28 @@ public class CompetencyScoreCalculationDomainServiceShould {
     }
 
     @Test
-    public void return_competent_needs_improvement_if_has_not_critical_steps_missed_and_non_critical_score_is_lower_than_limit() {
+    public void return_not_competent_if_has_not_critical_steps_missed_and_non_critical_score_is_lower_than_cni_limit() {
         CompetencyScoreClassification classification =
                 domainService.calculateClassification(false,
-                        CompetencyScoreCalculationDomainService.NON_CRITICAL_COMPETENT_SCORE_LIMIT
-                                - 1);
+                        NON_CRITICAL_COMPETENT_NEEDS_IMPROVEMENT_SCORE_LIMIT - 1);
+
+        assertThat(classification, is(CompetencyScoreClassification.NOT_COMPETENT));
+    }
+
+    @Test
+    public void return_cni_if_has_not_critical_steps_missed_and_non_critical_score_is_lower_than_c_limit() {
+        CompetencyScoreClassification classification =
+                domainService.calculateClassification(false,
+                        NON_CRITICAL_COMPETENT_SCORE_LIMIT - 1);
+
+        assertThat(classification, is(CompetencyScoreClassification.COMPETENT_NEEDS_IMPROVEMENT));
+    }
+
+    @Test
+    public void return_cni_if_has_not_critical_steps_missed_and_non_critical_score_is_greater_than_cni_limit() {
+        CompetencyScoreClassification classification =
+                domainService.calculateClassification(false,
+                        NON_CRITICAL_COMPETENT_NEEDS_IMPROVEMENT_SCORE_LIMIT + 1);
 
         assertThat(classification, is(CompetencyScoreClassification.COMPETENT_NEEDS_IMPROVEMENT));
     }
@@ -39,7 +58,7 @@ public class CompetencyScoreCalculationDomainServiceShould {
     public void return_competent_if_has_not_critical_steps_missed_and_non_critical_score_is_equal_or_uppers_than_limit() {
         CompetencyScoreClassification classification =
                 domainService.calculateClassification(false,
-                        CompetencyScoreCalculationDomainService.NON_CRITICAL_COMPETENT_SCORE_LIMIT
+                        NON_CRITICAL_COMPETENT_SCORE_LIMIT
                                 + 1);
 
         assertThat(classification, is(CompetencyScoreClassification.COMPETENT));

@@ -31,7 +31,7 @@
             android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight=".80">
+            android:layout_weight=".74">
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -55,11 +55,22 @@
                     android:id="@+id/feedback_question_mandatory"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_toLeftOf="@+id/feedback_question_info"
                     android:paddingRight="15dp"
                     android:text="*"
+                    android:layout_centerVertical="true"
                     android:visibility="invisible"
                     android:textColor="@color/black" />
+
+                <ImageView
+                    android:id="@+id/feedback_question_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    app:srcCompat="@drawable/ic_info"
+                    android:paddingRight="8dp"
+                    android:tint="@color/navy_blue"/>
             </RelativeLayout>
             <org.eyeseetea.malariacare.views.CustomTextView
                 android:id="@+id/feedback_uid"

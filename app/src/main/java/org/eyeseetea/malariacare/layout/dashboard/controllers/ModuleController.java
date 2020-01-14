@@ -35,6 +35,9 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.domain.entity.Server;
+import org.eyeseetea.malariacare.domain.usecase.GetServerUseCase;
+import org.eyeseetea.malariacare.factories.ServerFactory;
 import org.eyeseetea.malariacare.fragments.IModuleFragment;
 import org.eyeseetea.malariacare.layout.dashboard.config.ModuleSettings;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
@@ -66,6 +69,8 @@ public abstract class ModuleController {
     Fragment fragment;
     boolean visible;
 
+    private GetServerUseCase serverUseCase;
+
     protected ModuleController() {
     }
 
@@ -80,6 +85,9 @@ public abstract class ModuleController {
 
     public void init(DashboardActivity activity) {
         this.dashboardActivity = activity;
+
+        ServerFactory serverFactory = new ServerFactory();
+        serverUseCase = serverFactory.getServerUseCase(dashboardActivity);
     }
 
     public String getName() {
@@ -215,7 +223,13 @@ public abstract class ModuleController {
     }
 
     public void setActionBarDashboard() {
-        LayoutUtils.setActionBarDashboard(dashboardActivity, getTitle());
+        serverUseCase.execute(server -> {
+            if (server != null && server.getName() != null && !server.getName().isEmpty()){
+                LayoutUtils.setActionBarDashboard(dashboardActivity, server.getName(),getTitle());
+            } else {
+                LayoutUtils.setActionBarDashboard(dashboardActivity, getTitle());
+            }
+        });
     }
 
     public void setActionBarDashboardWithProgram() {
