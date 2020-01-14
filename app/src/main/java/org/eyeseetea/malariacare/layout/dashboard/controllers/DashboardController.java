@@ -20,6 +20,7 @@
 package org.eyeseetea.malariacare.layout.dashboard.controllers;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -270,19 +271,19 @@ public class DashboardController {
     /**
      * Starts the org unit planning tab
      */
-    public void onOrgUnitSelected(OrgUnitDB orgUnit) {
+    public void onOrgUnitSelected(String orgUnitUid) {
         PlanModuleController planModuleController = (PlanModuleController) getModuleByName(
                 PlanModuleController.getSimpleName());
-        planModuleController.onOrgUnitSelected(orgUnit);
+        planModuleController.onOrgUnitSelected(orgUnitUid);
     }
 
     /**
      * Starts the program planning tab
      */
-    public void onProgramSelected(ProgramDB program) {
+    public void onProgramSelected(String programUid) {
         PlanModuleController planModuleController = (PlanModuleController) getModuleByName(
                 PlanModuleController.getSimpleName());
-        planModuleController.onProgramSelected(program);
+        planModuleController.onProgramSelected(programUid);
     }
 
     /**
@@ -331,54 +332,58 @@ public class DashboardController {
         feedbackModelDialog(survey);
     }
 
-    public AlertDialog feedbackModelDialog(final SurveyDB survey) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(dashboardActivity);
+    private AlertDialog sentItemDialog = null;
 
-        LayoutInflater inflater = dashboardActivity.getLayoutInflater();
+    public void feedbackModelDialog(final SurveyDB survey) {
 
-        View v = inflater.inflate(R.layout.modal_feedback_menu, null);
+        if (sentItemDialog == null || !sentItemDialog.isShowing()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(dashboardActivity);
 
-        builder.setView(v);
+            LayoutInflater inflater = dashboardActivity.getLayoutInflater();
 
-        builder.setCancelable(false);
-        Button viewFeedback = (Button) v.findViewById(R.id.view);
-        Button actionPlan = (Button) v.findViewById(R.id.action_plan);
-        Button cancel = (Button) v.findViewById(R.id.cancel);
+            View v = inflater.inflate(R.layout.modal_feedback_menu, null);
 
-        final AlertDialog alertDialog = builder.create();
-        viewFeedback.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        openFeedback(survey, true);
+            builder.setView(v);
 
-                        alertDialog.dismiss();
+            builder.setCancelable(false);
+            Button viewFeedback = (Button) v.findViewById(R.id.view);
+            Button actionPlan = (Button) v.findViewById(R.id.action_plan);
+            Button cancel = (Button) v.findViewById(R.id.cancel);
+
+            sentItemDialog = builder.create();
+            viewFeedback.setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            openFeedback(survey, true);
+
+                            sentItemDialog.dismiss();
+                        }
                     }
-                }
-        );
+            );
 
-        actionPlan.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        DashboardActivity.dashboardActivity.openActionPlan(survey);
-                        alertDialog.dismiss();
+            actionPlan.setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            DashboardActivity.dashboardActivity.openActionPlan(survey);
+                            sentItemDialog.dismiss();
+                        }
                     }
-                }
 
-        );
-        cancel.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        alertDialog.dismiss();
+            );
+            cancel.setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            sentItemDialog.dismiss();
+                        }
                     }
-                }
 
-        );
-        alertDialog.show();
-        alertDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        return alertDialog;
+            );
+            sentItemDialog.show();
+            sentItemDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        }
     }
 
 
@@ -465,8 +470,29 @@ public class DashboardController {
         alertDialog.show();
     }
 
+    public void openFeedback(String surveyUid, boolean modifyFilter){
+        activeImproveTab();
+
+        ImproveModuleController improveModuleController = (ImproveModuleController) getModuleByName(
+                ImproveModuleController.getSimpleName());
+
+        improveModuleController.onFeedbackSelected(surveyUid, modifyFilter);
+
+        improveModuleController.setActionBarDashboardWithProgram();
+    }
 
     public void openFeedback(SurveyDB survey, boolean modifyFilter) {
+        activeImproveTab();
+
+        ImproveModuleController improveModuleController = (ImproveModuleController) getModuleByName(
+                ImproveModuleController.getSimpleName());
+
+        improveModuleController.onFeedbackSelected(survey, modifyFilter);
+
+        improveModuleController.setActionBarDashboardWithProgram();
+    }
+
+    private void activeImproveTab() {
         //Vertical -> Hide improve module
         if (DashboardOrientation.VERTICAL.equals(getOrientation())) {
             //Mark currentTab (only necessary for vertical orientation)
@@ -482,13 +508,24 @@ public class DashboardController {
             }
 
         }
-
-        ImproveModuleController improveModuleController = (ImproveModuleController) getModuleByName(
-                ImproveModuleController.getSimpleName());
-        improveModuleController.onFeedbackSelected(survey, modifyFilter);
-        improveModuleController.setActionBarDashboardWithProgram();
     }
 
+    public void openMonitoringByCalendar(){
+        MonitorModuleController monitorModuleController = (MonitorModuleController) getModuleByName(
+                MonitorModuleController.class.getSimpleName());
+
+        currentTab = getModuleByName(MonitorModuleController.class.getSimpleName()).getName();
+        tabHost.setCurrentTabByTag(MonitorModuleController.class.getSimpleName());
+
+        monitorModuleController.openMonitoringByCalendar();
+    }
+
+    public void openMonitorByActions(){
+        MonitorModuleController monitorModuleController = (MonitorModuleController) getModuleByName(
+                MonitorModuleController.class.getSimpleName());
+
+        monitorModuleController.openMonitorByActions();
+    }
 
     public void onPlannedSurvey(SurveyDB survey, View.OnClickListener scheduleClickListener) {
         plannedModelDialog(survey, scheduleClickListener);

@@ -26,7 +26,6 @@ public class Migration17AddObservationValueTable extends BaseMigration {
 
     @Override
     public void migrate(DatabaseWrapper database) {
-
         Cursor obsActionPlanDBCursor = database.rawQuery(
                 "Select id_obs_action_plan, id_survey_obs_action_fk, provider, gaps, "
                         + "action_plan, action1, action2, status from ObsActionPlan", null);
@@ -104,8 +103,9 @@ public class Migration17AddObservationValueTable extends BaseMigration {
                 database.execSQL(dataMigration);
             }
 
-            database.execSQL("DROP TABLE IF EXISTS ObsActionPlan");
         }
+
+        database.execSQL("DROP TABLE IF EXISTS ObsActionPlan");
     }
 
     private boolean hasValue(String observationValue) {

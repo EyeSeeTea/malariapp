@@ -65,6 +65,10 @@ public class UserDB extends BaseModel {
         this.name = name;
     }
 
+    public static List<UserDB> list() {
+        return new Select().from(UserDB.class).queryList();
+    }
+
     public Long getId_user() {
         return id_user;
     }
@@ -108,9 +112,9 @@ public class UserDB extends BaseModel {
     }
 
     public static UserDB getLoggedUser() {
-        List<UserDB> users = new Select().from(UserDB.class)
-                .where(UserDB_Table.username.isNotNull())
-                .queryList();
+        // for the moment we return just the first entry assuming there will be only one entry,	        List<UserDB> users = new Select().from(UserDB.class)
+        // but in the future we will have to tag the logged user  .where(UserDB_Table.username.isNotNull())
+        List<UserDB> users = new Select().from(UserDB.class).queryList();
         if (users != null && users.size() != 0) {
             return users.get(0);
         }

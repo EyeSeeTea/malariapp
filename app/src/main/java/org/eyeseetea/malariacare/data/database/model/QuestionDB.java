@@ -183,6 +183,10 @@ public class QuestionDB extends BaseModel {
         this.setCompositeScore(compositeScore);
     }
 
+    public static List<QuestionDB> list() {
+        return new Select().from(QuestionDB.class).queryList();
+    }
+
     public Long getId_question() {
         return id_question;
     }

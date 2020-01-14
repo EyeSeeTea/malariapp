@@ -21,121 +21,144 @@ package org.eyeseetea.malariacare.layout.adapters.dashboard;
 
 import static org.eyeseetea.malariacare.DashboardActivity.dashboardActivity;
 
-import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
-import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
-import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.CompetencyUtils;
 import org.eyeseetea.malariacare.utils.DateParser;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class AssessmentSentAdapter extends
-        ADashboardAdapter {
+public class AssessmentSentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {
 
     public static final String SCORE_FORMAT = "%.1f %%";
 
-    public AssessmentSentAdapter(List<SurveyDB> items, Context context) {
-        super(context);
-        this.items = items;
-        this.recordLayout = R.layout.assessment_sent_record;
-        this.footerLayout = R.layout.assessment_sent_footer;
-        if (PreferencesState.getInstance().isVerticalDashboard()) {
-            this.title = context.getString(R.string.assessment_sent_title_header);
-        }
+    List<SurveyDB> surveys = new ArrayList<>();
+
+    public void setSurveys(List<SurveyDB> surveys){
+        this.surveys = surveys;
+        this.notifyDataSetChanged();
     }
 
+    @NonNull
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(
+                R.layout.assessment_sent_record, viewGroup, false);
+        return new AssessmentSentAdapter.ViewHolder(itemView);
+    }
 
     @Override
-    protected void initMenu(final SurveyDB survey) {
-        menuDots.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dashboardActivity.onFeedbackSelected(survey);
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
+        ((AssessmentSentAdapter.ViewHolder) viewHolder).bindView(position);
+    }
+
+    @Override
+    public int getItemCount() {
+        return surveys.size();
+    }
+
+    class ViewHolder extends RecyclerView.ViewHolder {
+        public static final String COMPLETED_SURVEY_MARK = "* ";
+
+        private SurveyDB survey;
+        private ImageView menuDots;
+        private CustomTextView facilityName;
+        private CustomTextView surveyType;
+        private CustomTextView competencyTextView;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+
+            menuDots = itemView.findViewById(R.id.menu_dots);
+            facilityName = itemView.findViewById(R.id.facility);
+            surveyType = itemView.findViewById(R.id.survey_type);
+            menuDots.setOnClickListener(view -> dashboardActivity.onFeedbackSelected(survey));
+            competencyTextView = itemView.findViewById(R.id.score);
+        }
+
+        void bindView(int position) {
+            survey = surveys.get(position);
+
+            adjustRowPadding();
+
+            renderSentDate(survey);
+            renderSentScore(survey);
+            renderFacility(facilityName, surveyType, survey);
+            renderSurveyType(surveyType, survey);
+
+            decorateBackground(position);
+        }
+
+        private void renderFacility(CustomTextView facilityName, CustomTextView surveyType,
+                SurveyDB survey) {
+            facilityName.setText(survey.getOrgUnit().getName());
+        }
+
+        private void renderSentScore(SurveyDB survey) {
+
+            String competencyText;
+
+            if (survey.hasConflict()) {
+                competencyText = (itemView.getContext().getResources().getString(
+                        R.string.feedback_info_conflict)).toUpperCase();
+                competencyTextView.setText(competencyText);
+            } else {
+                CompetencyScoreClassification classification =
+                        CompetencyScoreClassification.get(
+                                survey.getCompetencyScoreClassification());
+
+                CompetencyUtils.setTextByCompetencyAbbreviation(competencyTextView, classification);
             }
-        });
     }
 
-    /**
-     * Determines whether to show facility or not according to:
-     * - The previous survey belongs to the same one.
-     */
-    @Override
-    protected boolean hasToShowFacility(int position, SurveyDB survey) {
-        if (position == 0) {
-            return true;
-        } else {
-            return false;
+        private void renderSentDate(SurveyDB survey) {
+            CustomTextView sentDate = itemView.findViewById(R.id.sentDate);
+            sentDate.setText(decorateCompletionDate(survey));
         }
-    }
 
-    @Override
-    protected void hideFacility(CustomTextView facilityName, CustomTextView surveyType) {
-        facilityName.setVisibility(View.GONE);
-    }
-
-    @Override
-    protected void showFacility(CustomTextView facilityName, CustomTextView surveyType,
-            SurveyDB survey) {
-        facilityName.setText(survey.getOrgUnit().getName());
-    }
-
-    @Override
-    protected void decorateCustomColumns(SurveyDB survey, View rowView) {
-        decorateSentDate(survey, rowView);
-        decorateSentScore(survey, rowView);
-    }
-
-    private void decorateSentScore(SurveyDB survey, View rowView) {
-        CustomTextView competencyTextView = rowView.findViewById(R.id.score);
-
-        String competencyText;
-
-        if (survey.hasConflict()) {
-            competencyText = (getContext().getResources().getString(
-                    R.string.feedback_info_conflict)).toUpperCase();
-            competencyTextView.setText(competencyText);
-        } else {
-            CompetencyScoreClassification classification =
-                    CompetencyScoreClassification.get(
-                            survey.getCompetencyScoreClassification());
-
-            CompetencyUtils.setTextByCompetencyAbbreviation(competencyTextView, classification);
+        private String decorateCompletionDate(SurveyDB survey) {
+            Date completionDate = survey.getCompletionDate();
+            DateParser dateParser = new DateParser();
+            return dateParser.getEuropeanFormattedDate(completionDate);
         }
-    }
 
-    private void decorateSentDate(SurveyDB survey, View rowView) {
-        CustomTextView sentDate = (CustomTextView) rowView.findViewById(R.id.sentDate);
-        sentDate.setText(decorateCompletionDate(survey));
-    }
-
-    private String decorateCompletionDate(SurveyDB survey) {
-        Date completionDate = survey.getCompletionDate();
-        DateParser dateParser = new DateParser();
-        return dateParser.getEuropeanFormattedDate(completionDate);
-    }
-
-    private int getColorByScore(SurveyDB survey) {
-        return LayoutUtils.trafficColor(survey.hasMainScore() ? survey.getMainScore() : 0f);
-    }
-
-
-    /**
-     * The orgunit background in DashboardSentFragment is always the same.
-     */
-    @Override
-    protected View decorateBackground(int position, View rowView) {
-        if (position == 0 || position % 2 == 0) {
-            rowView.setBackgroundColor(context.getResources().getColor(R.color.white));
-        } else {
-            rowView.setBackgroundColor(context.getResources().getColor(R.color.white_grey));
+        private CustomTextView renderSurveyType(CustomTextView surveyType, SurveyDB survey) {
+            String surveyDescription;
+            if (survey.isCompleted()) {
+                surveyDescription = COMPLETED_SURVEY_MARK + survey.getProgram().getName();
+            } else {
+                surveyDescription = survey.getProgram().getName();
+            }
+            surveyType.setText(surveyDescription);
+            return surveyType;
         }
-        return rowView;
+
+        private void decorateBackground(int position) {
+            if (position == 0 || position % 2 == 0) {
+                itemView.setBackgroundColor(
+                        itemView.getContext().getResources().getColor(R.color.white));
+            } else {
+                itemView.setBackgroundColor(
+                        itemView.getContext().getResources().getColor(R.color.white_grey));
+            }
+        }
+
+        protected void adjustRowPadding() {
+            float density = itemView.getContext().getResources().getDisplayMetrics().density;
+            int paddingDp = (int) (5 * density);
+
+            itemView.setPadding(paddingDp, paddingDp, paddingDp, paddingDp);
+        }
     }
 }

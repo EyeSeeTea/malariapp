@@ -26,6 +26,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.LocalBroadcastManager;
@@ -37,6 +39,7 @@ import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import org.eyeseetea.malariacare.DashboardActivity;
@@ -77,7 +80,11 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
     public MonitorFilter filterType;
     private WebViewInterceptor mWebViewInterceptor;
 
+    private ImageView backButton;
+
     private OrgUnitProgramFilterView orgUnitProgramFilterView;
+
+    private View rootView;
 
     public MonitorFragment() {
         this.surveys = new ArrayList();
@@ -94,10 +101,8 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        Log.d(TAG, "onCreateView");
-        if (container == null) {
-            return null;
-        }
+
+        rootView = inflater.inflate(R.layout.fragment_monitor_by_calendar, container, false);
 
         loadFilter();
 
@@ -106,20 +111,30 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
         orgUnitProgramFilterView.setFilterChangedListener(
                 new OrgUnitProgramFilterView.FilterChangedListener() {
                     @Override
-                    public void onProgramFilterChanged(ProgramDB selectedProgramFilter) {
-                        pushProgramFilterToJavascript(selectedProgramFilter.getUid());
+                    public void onProgramFilterChanged(String selectedProgramFilter) {
+                        pushProgramFilterToJavascript(selectedProgramFilter);
                         saveCurrentFilters();
                     }
 
                     @Override
-                    public void onOrgUnitFilterChanged(OrgUnitDB selectedOrgUnitFilter) {
-                        pushOrgUnitFilterToJavascript(selectedOrgUnitFilter.getUid());
+                    public void onOrgUnitFilterChanged(String selectedOrgUnitFilter) {
+                        pushOrgUnitFilterToJavascript(selectedOrgUnitFilter);
                         saveCurrentFilters();
                     }
                 });
 
 
-        return super.onCreateView(inflater, container, savedInstanceState);
+        return rootView;
+    }
+
+    private void initializeBackButton() {
+        if (backButton == null){
+            backButton = DashboardActivity.dashboardActivity.findViewById(R.id.back_to_monitoring_by_actions_view);
+        }
+
+        backButton.setOnClickListener(v -> DashboardActivity.dashboardActivity.openMonitorByActions());
+
+        backButton.setVisibility(View.VISIBLE);
     }
 
     private void pushOrgUnitFilterToJavascript(String selectedOrgUnitFilter) {
@@ -142,9 +157,9 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
 
     private void saveCurrentFilters() {
         PreferencesState.getInstance().setProgramUidFilter(
-                orgUnitProgramFilterView.getSelectedProgramFilter().getUid());
+                orgUnitProgramFilterView.getSelectedProgramFilter());
         PreferencesState.getInstance().setOrgUnitUidFilter(
-                orgUnitProgramFilterView.getSelectedOrgUnitFilter().getUid());
+                orgUnitProgramFilterView.getSelectedOrgUnitFilter());
     }
 
     @Override
@@ -270,6 +285,9 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
     }
 
     public void reloadMonitor() {
+
+        initializeBackButton();
+
         webView = initMonitor();
         //onPageFinish load data
         webView.setWebViewClient(new WebViewClient() {

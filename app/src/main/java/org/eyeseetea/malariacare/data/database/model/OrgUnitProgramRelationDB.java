@@ -73,13 +73,21 @@ public class OrgUnitProgramRelationDB extends BaseModel {
     }
 
     public OrgUnitProgramRelationDB(OrgUnitDB orgUnit, ProgramDB program, Integer productivity) {
-        this(orgUnit,program);
-        this.productivity=productivity;
+        this(orgUnit, program);
+        this.productivity = productivity;
+    }
+
+    public static List<OrgUnitProgramRelationDB> list() {
+        return new Select().from(OrgUnitProgramRelationDB.class).queryList();
+    }
+
+    public Long getId_org_unit_fk() {
+        return id_org_unit_fk;
     }
 
     public OrgUnitDB getOrgUnit() {
-        if(orgUnit==null){
-            if(id_org_unit_fk==null) return null;
+        if (orgUnit == null) {
+            if (id_org_unit_fk == null) return null;
             orgUnit = new Select()
                     .from(OrgUnitDB.class)
                     .where(OrgUnitDB_Table.id_org_unit
@@ -89,18 +97,22 @@ public class OrgUnitProgramRelationDB extends BaseModel {
     }
 
     public void setOrgUnit(OrgUnitDB orgUnit) {
-        this.orgUnit= orgUnit;
-        this.id_org_unit_fk = (orgUnit!=null)?orgUnit.getId_org_unit():null;
+        this.orgUnit = orgUnit;
+        this.id_org_unit_fk = (orgUnit != null) ? orgUnit.getId_org_unit() : null;
     }
 
-    public void setOrgUnit(Long id_org_unit){
+    public void setOrgUnit(Long id_org_unit) {
         this.id_org_unit_fk = id_org_unit;
         this.orgUnit = null;
     }
 
+    public Long getId_program_fk() {
+        return id_program_fk;
+    }
+
     public ProgramDB getProgram() {
-        if(program==null){
-            if(id_program_fk==null) return null;
+        if (program == null) {
+            if (id_program_fk == null) return null;
             program = new Select()
                     .from(ProgramDB.class)
                     .where(ProgramDB_Table.id_program
@@ -110,11 +122,11 @@ public class OrgUnitProgramRelationDB extends BaseModel {
     }
 
     public void setProgram(ProgramDB program) {
-        this.program=program;
-        this.id_program_fk = (program!=null)?program.getId_program():null;
+        this.program = program;
+        this.id_program_fk = (program != null) ? program.getId_program() : null;
     }
 
-    public void setProgram(Long id_program){
+    public void setProgram(Long id_program) {
         this.id_program_fk = id_program;
         this.program = null;
     }
@@ -130,30 +142,29 @@ public class OrgUnitProgramRelationDB extends BaseModel {
     /**
      * Helper method to get the productivity for a given survey.
      * If its orgunit + program combination does NOT have a productivity value then returns 0
-     * @param survey
-     * @return
      */
-    public static Integer getProductivity(SurveyDB survey){
-        if(survey==null){
+    public static Integer getProductivity(SurveyDB survey) {
+        if (survey == null) {
             return DEFAULT_PRODUCTIVITY;
         }
 
         OrgUnitDB orgUnit = survey.getOrgUnit();
-        if(orgUnit==null){
+        if (orgUnit == null) {
             return DEFAULT_PRODUCTIVITY;
         }
 
         ProgramDB program = survey.getProgram();
-        if(program==null){
+        if (program == null) {
             return DEFAULT_PRODUCTIVITY;
         }
 
         OrgUnitProgramRelationDB
                 orgUnitProgramRelation = new Select().from(OrgUnitProgramRelationDB.class)
                 .where(OrgUnitProgramRelationDB_Table.id_org_unit_fk.eq(orgUnit.getId_org_unit()))
-                .and(OrgUnitProgramRelationDB_Table.id_program_fk.eq(program.getId_program())).querySingle();
+                .and(OrgUnitProgramRelationDB_Table.id_program_fk.eq(
+                        program.getId_program())).querySingle();
 
-        if(orgUnitProgramRelation==null){
+        if (orgUnitProgramRelation == null) {
             return DEFAULT_PRODUCTIVITY;
         }
 
@@ -173,13 +184,20 @@ public class OrgUnitProgramRelationDB extends BaseModel {
     public void setId_orgunit_program_relation(long id_orgunit_program_relation) {
         this.id_orgunit_program_relation = id_orgunit_program_relation;
     }
-    
-    public static boolean existProgramAndOrgUnitRelation(Long idProgram, Long idOrgUnit) {
-            OrgUnitProgramRelationDB
-                    orgUnitProgramRelation = new Select().from(OrgUnitProgramRelationDB.class)
-                    .where(OrgUnitProgramRelationDB_Table.id_org_unit_fk.eq(idOrgUnit))
-                    .and(OrgUnitProgramRelationDB_Table.id_program_fk.eq(idProgram)).querySingle();
-            return (orgUnitProgramRelation != null);
+
+    public static boolean existProgramAndOrgUnitRelation(String programUid, String orgUnitUid) {
+        OrgUnitProgramRelationDB
+                orgUnitProgramRelation =
+                new Select().from(OrgUnitProgramRelationDB.class)
+                        .leftOuterJoin(OrgUnitDB.class)
+                        .on(OrgUnitProgramRelationDB_Table.id_org_unit_fk.eq(
+                                OrgUnitDB_Table.id_org_unit))
+                        .leftOuterJoin(ProgramDB.class)
+                        .on(OrgUnitProgramRelationDB_Table.id_program_fk.eq(
+                                ProgramDB_Table.id_program))
+                        .where(OrgUnitDB_Table.uid_org_unit.eq(orgUnitUid))
+                        .and(ProgramDB_Table.uid_program.eq(programUid)).querySingle();
+        return (orgUnitProgramRelation != null);
     }
 
     @Override
@@ -190,11 +208,16 @@ public class OrgUnitProgramRelationDB extends BaseModel {
         OrgUnitProgramRelationDB that = (OrgUnitProgramRelationDB) o;
 
         if (id_orgunit_program_relation != that.id_orgunit_program_relation) return false;
-        if (id_org_unit_fk != null ? !id_org_unit_fk.equals(that.id_org_unit_fk) : that.id_org_unit_fk != null)
+        if (id_org_unit_fk != null ? !id_org_unit_fk.equals(that.id_org_unit_fk)
+                : that.id_org_unit_fk != null) {
             return false;
-        if (id_program_fk != null ? !id_program_fk.equals(that.id_program_fk) : that.id_program_fk != null)
+        }
+        if (id_program_fk != null ? !id_program_fk.equals(that.id_program_fk)
+                : that.id_program_fk != null) {
             return false;
-        return !(productivity != null ? !productivity.equals(that.productivity) : that.productivity != null);
+        }
+        return !(productivity != null ? !productivity.equals(that.productivity)
+                : that.productivity != null);
 
     }
 
@@ -217,3 +240,4 @@ public class OrgUnitProgramRelationDB extends BaseModel {
                 '}';
     }
 }
+

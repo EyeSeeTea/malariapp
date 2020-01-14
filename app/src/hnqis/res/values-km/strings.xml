@@ -221,6 +221,7 @@
 <string name="developer_option_summary">"ជម្រើសនេះអនុញ្ញាតជម្រើសអភិវឌ្ឍន៍"</string>
 <string name="developer_option_title">"អភិវឌ្ឍន៍បង្ហាញជម្រើស"</string>
 <string name="export_data_option_title">"មូលដ្ឋានទិន្នន័យដែលបាននាំចេញ"</string>
+<string name="export_data_to_local_option_title">នាំចេញមូលដ្ឋានទិន្នន័យទៅឧបករណ៍ផ្ទុកក្នុងមូលដ្ឋាន</string>
 <string name="progress_pull_validating_composite_scores">"សុពលភាពពិន្ទុសមាសធាតុ ..."</string>
 <string name="admin_announcement">"សេចក្តីប្រកាស admin"</string>
 <string name="user_close">"អ្នកប្រើប្រាស់នេះត្រូវបានបិទដោយអ្នកគ្រប់គ្រង។"</string>
@@ -249,21 +250,7 @@
 <string name="plan_action_today_date">បានបញ្ចប់: %s</string>
 <string name="plan_action_next_date">ការវាយតម្លៃក្រោយ: %s</string>
 <string name="plan_action_description">រៀបរាប់ពីអ្វីដែលបានគេសង្កេតឃើញក្នុងអំឡុងពេលដំណើរទស្សនកិច្ចផែនការសកម្មភាពជាក់លាក់មួយសម្រាប់ការដោះស្រាយគម្លាតនេះ។ ចំណាំផងដែរប្រសើរជាងគម្លាតកំណត់អត្តសញ្ញាណក្នុងអំឡុងដំណើរទស្សនកិច្ចចុងក្រោយនេះជាមួយ</string>
-<string name="plan_action_action_plan_title">ផែនការសកម្មភាព:</string>
-<string name="plan_action_action_title">សកម្មភាព:</string>
-<string-array name="plan_action_dropdown_options">
-<item>"..."</item>
-<item>ការបណ្តុះបណ្តាលបំប៉នក្នុងអំឡុងពេល SSV</item>
-<item>បណ្តុះបណ្តារំលឹកជាក្រុមនៅថ្ងៃក្រោយ</item>
-<item>ផែនការសកម្មភាព CME</item>
-<item>បង្ហាញពីបច្ចេកទេសជាមួយអតិថិជន</item>
-<item>ផ្សេងទៀត</item>
-</string-array>
-<string-array name="plan_action_dropdown_suboptions">
-<item>...</item>
-<item>មើលវីដេអូ</item>
-<item>អនុវត្តបច្ចេកទេសបានត្រឹមត្រូវនៅពេលដែលការបញ្ចូលនៃដំណើរទស្សនកិច្ច</item>
-</string-array>
+<string name="plan_action_action_plan_title">ផែនការសកម្មភាព</string>
 <string name="supervision_on">ការត្រួតពិនិត្យលទ្ធផលលើ:</string>
 <string name="critical_steps">ជំហានរិះគន់ខកខាន:</string>
 <string name="url_not_available">URL ឆ្លើយតបមិនមានទេពីព្រោះការស្ទង់មតិមិនត្រូវបានផ្ញើទៅម៉ាស៊ីនមេនៅឡើយទេ។ ព្យាយាមចែករំលែកមតិត្រឡប់ម្តងទៀតពេលក្រោយ។</string>
@@ -331,4 +318,7 @@
 
 <string name="productivity_low_name">ទាប</string>
 <string name="productivity_high_name">ខ្ពស់</string>
+
+<string name="export_db_to_local_success_message">បាននាំចេញដោយជោគជ័យដើម្បីទាញយកថត</string>
+<string name="export_db_to_local_error_message">មានកំហុសកើតឡើងនៅពេលនាំចេញមូលដ្ឋានទិន្នន័យ</string>
 </resources>

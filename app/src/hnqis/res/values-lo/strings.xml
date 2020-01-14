@@ -216,6 +216,7 @@
 <string name="developer_option_summary">"ບ່ອນເລືອກສຳລັບຜູ້ພັດທະນາລະບົບ"</string>
 <string name="developer_option_title">"ສະແດງບ່ອນເລືອກສຳລັບຜູ້ພັດທະນາລະບົບ"</string>
 <string name="export_data_option_title">"ການສົ່ງຖານຂໍ້ມູນອອກ"</string>
+<string name="export_data_to_local_option_title">ສົ່ງຂໍ້ມູນຖານຂໍ້ມູນໄປເກັບຂໍ້ມູນໃນທ້ອງຖິ່ນ</string>
 <string name="progress_pull_validating_composite_scores">"ກຳລັງກວດຄະແນນລວມ..."</string>
 <string name="admin_announcement">"ການແຈ້ງການຈາກຜູ້ຄວບຄຸມລະບົບ"</string>
 <string name="user_close">"ຜູ້ໃຊ້ນີ້ຖືກປິດໂດຍຜູ້ຄວບຄຸມລະບົບ"</string>
@@ -249,20 +250,7 @@
 <string name="plan_action_next_date">ການປະເມີນຕໍ່ໄປນີ້: %s</string>
 <string name="plan_action_description">"ບັນຍາຍສິ່ງທີ່ໄດ້ສັງເກດເຫັນໃນລະຫວ່າງການລົງຍຽມຍາມລະບຸແຜນການແກ້ໄຂຊ່ອງວ່າງຕ່າງໆ. ພ້ອມທັງບັນທຶກການປັບປຸງຂໍ້ບົກຜ່ອງທີ່ພົບເຫັນໃນການລົງຍຽມຍາມຄັ້ງທີ່ຜ່ານມາ."</string>
 <string name="plan_action_action_plan_title">"ແຜນການປະຕິບັດງານ"</string>
-<string name="plan_action_action_title">"ການປະຕິບັດງານ"</string>
-<string-array name="plan_action_dropdown_options">
-<item>"..."</item>
-<item>ການຝຶກອົບຮົມທົບທວນໄລຍະ SSV</item>
-<item>ການຝຶກອົບຮົມທົບທວນ Group ໃນວັນຕໍ່ມາ</item>
-<item>ແຜນກິດຈະກໍາ CME</item>
-<item>ສະແດງໃຫ້ເຫັນເຕັກນິກກັບລູກຄ້າ</item>
-<item>ອື່ນໆ</item>
-</string-array>
-<string-array name="plan_action_dropdown_suboptions">
-<item>...</item>
-<item>ເບິ່ງວິດີໂອ</item>
-<item>ຕິບັດເຕັກນິກການແຊກທີ່ເຫມາະສົມໃນເວລາຂອງການຢ້ຽມຢາມ</item>
-</string-array>
+
 <string name="supervision_on">ຜົນການຊີ້ນໍາກ່ຽວກັບ:</string>
 <string name="critical_steps">ຂັ້ນຕອນສໍາຄັນທີ່ພາດໂອກາດນີ້:</string>
 <string name="url_not_available">URL ຄວາມຄິດເຫັນບໍ່ສາມາດໃຊ້ໄດ້ເພາະວ່າການສໍາຫຼວດບໍ່ໄດ້ຖືກສົ່ງໄປຍັງເຄື່ອງແມ່ຂ່າຍ. ລອງແບ່ງປັນຄວາມຄິດເຫັນຕໍ່ອີກເທື່ອຫນຶ່ງ.</string>
@@ -324,4 +312,8 @@
 
 <string name="productivity_low_name">ຕ່ໍາ</string>
 <string name="productivity_high_name">ສູງ</string>
+
+
+<string name="export_db_to_local_success_message">ສົ່ງອອກໄປປະສົບຄວາມສໍາເລັດໃນການດາວໂຫລດໂຟເດີ</string>
+<string name="export_db_to_local_error_message">ມີຂໍ້ຜິດພາດເກີດຂື້ນສົ່ງອອກຖານຂໍ້ມູນ</string>
 </resources>

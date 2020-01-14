@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 public class DateParser {
     public final static String AMERICAN_DATE_FORMAT = "yyyy-MM-dd";
@@ -62,6 +63,47 @@ public class DateParser {
     public Date parseDate(String dateAsString, String format) {
         try {
             return (dateAsString != null) ? new SimpleDateFormat(format).parse(dateAsString) : null;
+        } catch (ParseException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Date parseDate(String dateAsString, String format, TimeZone timeZone) {
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
+            simpleDateFormat.setTimeZone(timeZone);
+            return (dateAsString != null) ? simpleDateFormat.parse(dateAsString) : null;
+        } catch (ParseException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Date toLocalDate(Date utcDate) {
+        try {
+            SimpleDateFormat dateFormatUTC = new SimpleDateFormat(LONG_DATE_FORMAT);
+            dateFormatUTC.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+            //Local time zone
+            SimpleDateFormat dateFormatLocal = new SimpleDateFormat(LONG_DATE_FORMAT);
+
+            return (utcDate != null) ? dateFormatLocal.parse(dateFormatUTC.format(utcDate)) : null;
+        } catch (ParseException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Date toUTCDate(Date localDate) {
+        try {
+            SimpleDateFormat dateFormatUTC = new SimpleDateFormat(LONG_DATE_FORMAT);
+            dateFormatUTC.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+            //Local time zone
+            SimpleDateFormat dateFormatLocal = new SimpleDateFormat(LONG_DATE_FORMAT);
+
+            return (localDate != null) ? dateFormatUTC.parse(dateFormatLocal.format(localDate)) : null;
         } catch (ParseException e){
             e.printStackTrace();
             return null;

@@ -25,7 +25,8 @@
             android:textSize="18dp"
             android:textStyle="bold"
             app:font_name="@string/font_name_medium"
-            app:tDimension="@string/font_size_level4" />
+            app:tDimension="@string/font_size_level4"
+            tools:text="KE HNQIS Family Planning Long-Acting and Permanent Method"/>
 
         <org.eyeseetea.sdk.presentation.views.CustomTextView
             android:id="@+id/programName"
@@ -36,7 +37,8 @@
             android:textSize="18dp"
             android:textStyle="bold"
             app:font_name="@string/font_name_medium"
-            app:tDimension="@string/font_size_level4" />
+            app:tDimension="@string/font_size_level4"
+            tools:text="ORG UNIT KE HNQIS Family Planning Long-Acting and Permanent Method" />
     </LinearLayout>
 
     <ScrollView
@@ -137,17 +139,12 @@
 
     <org.eyeseetea.sdk.presentation.views.CustomButton
         android:id="@id/cancel"
+        style="@style/EyeSeeTheme.Dialog.Button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_gravity="center"
-        android:layout_margin="20dp"
-        android:background="@color/dialog_button_text"
-        android:gravity="center"
-        android:padding="20dp"
-        android:text="@string/cancel"
-        android:textColor="@android:color/white"
         app:font_name="@string/font_name_medium"
-        app:tDimension="@string/font_size_level4" />
+        app:tDimension="@string/font_size_level4"
+        android:text="@string/cancel"/>
 
 </RelativeLayout>

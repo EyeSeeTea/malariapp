@@ -230,9 +230,15 @@
                 android:id="@+id/missed_critical_steps_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layoutManager="android.support.v7.widget.LinearLayoutManager">
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
 
-            </android.support.v7.widget.RecyclerView>
+
+            <org.eyeseetea.malariacare.views.CustomTextView
+                android:id="@+id/no_critical_steps_missed_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/observations_no_critical_steps_missed_text"
+                android:padding="16dp"/>
 
             <org.eyeseetea.malariacare.views.CustomTextView
                 style="@style/EyeSeeTheme.observation.valueTitle"
@@ -252,9 +258,14 @@
                 android:id="@+id/missed_non_critical_steps_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layoutManager="android.support.v7.widget.LinearLayoutManager">
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
 
-            </android.support.v7.widget.RecyclerView>
+            <org.eyeseetea.malariacare.views.CustomTextView
+                android:id="@+id/no_non_critical_steps_missed_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/observations_no_non_critical_steps_missed_text"
+                android:padding="16dp"/>
 
             <org.eyeseetea.malariacare.views.CustomTextView
                 style="@style/EyeSeeTheme.observation.valueTitle"
@@ -284,107 +295,23 @@
                 android:minLines="1"
                 android:scrollbars="none" />
 
-            <org.eyeseetea.malariacare.views.CustomTextView
-                style="@style/EyeSeeTheme.observation.valueTitle"
+            <org.eyeseetea.malariacare.presentation.views.observations.ActionView
+                android:id="@+id/action1_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/plan_action_action_plan_title"
-                app:tDimension="@string/font_size_level2"
-                app:tFontName="@string/font_name_medium"/>
+                android:layout_marginBottom="16dp"/>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:layout_marginTop="8dp"
-                android:background="@color/assess_grey"/>
-
-            <org.eyeseetea.malariacare.views.CustomEditText
-                android:id="@+id/plan_action_action_plan_edit_text"
+            <org.eyeseetea.malariacare.presentation.views.observations.ActionView
+                android:id="@+id/action2_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_feedback_top_bottom_radiobutton"
-                android:layout_marginLeft="@dimen/margin_lateral_feedback_radiobutton"
-                android:layout_marginRight="@dimen/margin_lateral_feedback_radiobutton"
-                android:layout_marginTop="@dimen/margin_feedback_top_bottom_radiobutton"
-                android:background="@android:color/transparent"
-                android:gravity="top"
-                android:inputType="textMultiLine"
-                android:minLines="5"
-                android:scrollbars="none" />
+                android:layout_marginBottom="16dp"/>
 
-            <org.eyeseetea.malariacare.views.CustomTextView
-                style="@style/EyeSeeTheme.observation.valueTitle"
+            <org.eyeseetea.malariacare.presentation.views.observations.ActionView
+                android:id="@+id/action3_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/plan_action_action_title"
-                app:tDimension="@string/font_size_level2"
-                app:tFontName="@string/font_name_medium"/>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:layout_marginTop="8dp"
-                android:background="@color/assess_grey"/>
-
-            <org.eyeseetea.malariacare.views.CustomSpinner
-                android:id="@+id/plan_action_spinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_feedback_top_bottom_radiobutton"
-                android:layout_marginLeft="@dimen/margin_lateral_feedback_radiobutton"
-                android:layout_marginTop="@dimen/margin_feedback_top_bottom_radiobutton">
-
-            </org.eyeseetea.malariacare.views.CustomSpinner>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:layout_marginLeft="6dp"
-                android:layout_marginRight="14dp"
-                android:layout_marginTop="2dp"
-                android:background="@color/assess_grey"/>
-
-            <org.eyeseetea.malariacare.views.CustomSpinner
-                android:id="@+id/plan_action_secondary_spinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_feedback_top_bottom_radiobutton"
-                android:layout_marginLeft="@dimen/margin_lateral_feedback_radiobutton"
-                android:layout_marginTop="@dimen/margin_feedback_top_bottom_radiobutton"
-                android:visibility="gone">
-
-            </org.eyeseetea.malariacare.views.CustomSpinner>
-
-            <View
-                android:id="@+id/secondaryView"
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:layout_marginLeft="6dp"
-                android:layout_marginRight="14dp"
-                android:layout_marginTop="2dp"
-                android:background="@color/assess_grey"/>
-
-            <org.eyeseetea.malariacare.views.CustomEditText
-                android:id="@+id/plan_action_others_edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_feedback_top_bottom_radiobutton"
-                android:layout_marginLeft="@dimen/margin_lateral_feedback_radiobutton"
-                android:layout_marginRight="@dimen/margin_lateral_feedback_radiobutton"
-                android:layout_marginTop="@dimen/margin_feedback_top_bottom_radiobutton"
-                android:background="@android:color/transparent"
-                android:minLines="1"
-                android:scrollbars="none"
-                android:visibility="gone" />
-
-            <View
-                android:id="@+id/otherView"
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:layout_marginLeft="6dp"
-                android:layout_marginRight="14dp"
-                android:layout_marginTop="2dp"
-                android:background="@color/assess_grey"/>
+                android:layout_marginBottom="16dp"/>
 
             <View
                 android:layout_width="match_parent"

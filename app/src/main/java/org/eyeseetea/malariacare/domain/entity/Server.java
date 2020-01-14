@@ -1,13 +1,12 @@
 package org.eyeseetea.malariacare.domain.entity;
 
-import static org.eyeseetea.malariacare.domain.utils.RequiredChecker.required;
+import static org.eyeseetea.malariacare.domain.common.RequiredChecker.required;
 
 public class Server {
 
     private String url;
     private String name;
     private byte[] logo;
-    private NextScheduleMonths nextScheduleMatrix;
 
     public Server(String url){
         this.url = required(url,"url is required");
@@ -17,11 +16,6 @@ public class Server {
         this.url = url;
         this.name = name;
         this.logo = logo;
-    }
-
-    public Server(String url, NextScheduleMonths nextScheduleMatrix){
-        this.url = required(url,"url is required");
-        this.nextScheduleMatrix = required(nextScheduleMatrix,"nextScheduleMatrix is required");
     }
 
     public String getUrl() {
@@ -34,9 +28,5 @@ public class Server {
 
     public byte[] getLogo() {
         return logo;
-    }
-
-    public NextScheduleMonths getNextScheduleMatrix() {
-        return nextScheduleMatrix;
     }
 }

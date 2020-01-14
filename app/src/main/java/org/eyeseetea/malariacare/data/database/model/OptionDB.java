@@ -78,6 +78,10 @@ public class OptionDB extends BaseModel {
         this.name = name;
     }
 
+    public static List<OptionDB> list() {
+        return new Select().from(OptionDB.class).queryList();
+    }
+
     public Long getId_option() {
         return id_option;
     }

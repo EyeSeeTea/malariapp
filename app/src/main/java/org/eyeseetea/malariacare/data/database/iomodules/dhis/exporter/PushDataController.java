@@ -90,6 +90,10 @@ public class PushDataController implements IPushController {
             } catch (ConversionException e) {
                 callback.onInformativeError(e);//notify to the user
                 callback.onError(e);//close push
+
+                if (e.getConversionFailedData() != null){
+                    e.getConversionFailedData().changeStatusToSyncConversionError();
+                }
             }
 
             if (EventExtended.getAllEvents().size() == 0) {

@@ -59,7 +59,9 @@ import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.VisitableToSDK;
 import org.eyeseetea.malariacare.data.sync.IData;
+import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
+import org.eyeseetea.malariacare.domain.entity.SurveyStatus;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -146,6 +148,7 @@ public class SurveyDB extends BaseModel implements VisitableToSDK, IData {
     Integer productivity;
 
     private SurveyAnsweredRatioDB mSurveyAnsweredRatio;
+    private ScoreDB scoreDB;
 
     public SurveyDB() {
         //Set dates
@@ -184,6 +187,18 @@ public class SurveyDB extends BaseModel implements VisitableToSDK, IData {
 
     public void setEventUid(String eventuid) {
         this.uid_event_fk = eventuid;
+    }
+
+    public Long getId_program_fk() {
+        return id_program_fk;
+    }
+
+    public Long getId_org_unit_fk() {
+        return id_org_unit_fk;
+    }
+
+    public Long getId_user_fk() {
+        return id_user_fk;
     }
 
     public OrgUnitDB getOrgUnit() {
@@ -352,13 +367,21 @@ public class SurveyDB extends BaseModel implements VisitableToSDK, IData {
         return (isCompleted() || isSent());
     }
 
-    public Float getMainScore() {
+    public Float getMainScoreValue() {
+        float score = 0;
+
+        if (getMainScore() != null)
+            score = getMainScore().getScore();
+
+        return score;
+    }
+
+    public ScoreDB getMainScore() {
         //The main score is only return from a query 1 time
-        if (this.mainScore == null) {
-            ScoreDB score = getScore();
-            this.mainScore = (score == null) ? 0f : score.getScore();
+        if (this.scoreDB == null) {
+            scoreDB = getScore();
         }
-        return mainScore;
+        return scoreDB;
     }
 
     public Boolean hasMainScore() {
@@ -374,29 +397,35 @@ public class SurveyDB extends BaseModel implements VisitableToSDK, IData {
         return hasMainScore;
     }
 
-    public void setMainScore(Float mainScore) {
-        this.mainScore = mainScore;
+    public void setMainScore(long survey_id, String compositeScoreUid, Float mainScore) {
+        scoreDB = new ScoreDB(survey_id, compositeScoreUid, mainScore);
     }
 
     public void saveMainScore() {
-        Float valScore = 0f;
-        if (mainScore != null) {
-            valScore = mainScore;
+        if (scoreDB == null) {
+
+            scoreDB = getScore();
+
+            if (scoreDB == null) {
+                calculateScore(this.getClass().getSimpleName());
+            }
         }
-        //Update or New row
-        ScoreDB score = getScore();
-        if (score == null) {
-            score = new ScoreDB(this, "", valScore);
-        } else {
-            score.setScore(valScore);
-        }
-        score.save();
+
+        scoreDB.save();
     }
 
     private ScoreDB getScore() {
         return new Select()
                 .from(ScoreDB.class)
                 .where(ScoreDB_Table.id_survey_fk.eq(this.getId_survey())).querySingle();
+    }
+
+    public ScoreDB getScoreDB() {
+        return scoreDB;
+    }
+
+    public void setScoreDB(ScoreDB scoreDB) {
+        this.scoreDB = scoreDB;
     }
 
     /**
@@ -438,6 +467,10 @@ public class SurveyDB extends BaseModel implements VisitableToSDK, IData {
                             .eq(this.getId_survey())).queryList();
         }
         return values;
+    }
+
+    public void setValues(List<ValueDB> values) {
+        this.values = values;
     }
 
     /**
@@ -527,11 +560,19 @@ public class SurveyDB extends BaseModel implements VisitableToSDK, IData {
     }
 
     public void saveScore(String module) {        //Prepare scores info
+        calculateScore(module);
+
+        this.saveMainScore();
+    }
+
+    private void calculateScore(String module) {
         List<CompositeScoreDB> compositeScoreList = ScoreRegister.loadCompositeScores(this, module);
 
         //Calculate main score to push later
-        this.setMainScore(ScoreRegister.calculateMainScore(compositeScoreList, id_survey, module));
-        this.saveMainScore();
+
+        this.setMainScore(id_survey,
+                ScoreRegister.getCompositeScoreRoot(compositeScoreList).getUid(),
+                ScoreRegister.calculateMainScore(compositeScoreList, id_survey, module));
     }
 
     /**
@@ -942,25 +983,31 @@ public class SurveyDB extends BaseModel implements VisitableToSDK, IData {
 
     @Override
     public void changeStatusToSending() {
-        setStatus(Constants.SURVEY_SENDING);
+        setStatus(SurveyStatus.SENDING.getCode());
+        save();
+    }
+
+    @Override
+    public void changeStatusToSyncConversionError() {
+        setStatus(SurveyStatus.ERROR_CONVERSION_SYNC.getCode());
         save();
     }
 
     @Override
     public void changeStatusToQuarantine() {
-        setStatus(SURVEY_QUARANTINE);
+        setStatus(SurveyStatus.QUARANTINE.getCode());
         save();
     }
 
     @Override
     public void changeStatusToConflict() {
-        setStatus(SURVEY_CONFLICT);
+        setStatus(SurveyStatus.CONFLICT.getCode());
         save();
     }
 
     @Override
     public void changeStatusToSent() {
-        setStatus(SURVEY_SENT);
+        setStatus(SurveyStatus.SENT.getCode());
         saveMainScore();
         save();
     }
@@ -1048,5 +1095,13 @@ public class SurveyDB extends BaseModel implements VisitableToSDK, IData {
                 ", status=" + status +
                 ", uid_event_fk=" + uid_event_fk +
                 '}';
+    }
+
+    public void resetMainScore() {
+        scoreDB = getMainScore();
+        if(scoreDB!=null){
+            scoreDB.delete();
+        }
+        scoreDB = null;
     }
 }
