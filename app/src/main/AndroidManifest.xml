@@ -14,8 +14,7 @@
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission
-        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        tools:node="remove" />
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:name=".EyeSeeTeaApplication"
@@ -44,6 +43,7 @@
 
         <service
             android:name=".services.PushService"
+            android:permission="android.permission.BIND_JOB_SERVICE"
             android:exported="false" />
 
         <service

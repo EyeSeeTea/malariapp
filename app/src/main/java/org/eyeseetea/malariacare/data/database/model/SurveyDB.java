@@ -59,7 +59,9 @@ import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.VisitableToSDK;
 import org.eyeseetea.malariacare.data.sync.IData;
+import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
+import org.eyeseetea.malariacare.domain.entity.SurveyStatus;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -981,25 +983,31 @@ public class SurveyDB extends BaseModel implements VisitableToSDK, IData {
 
     @Override
     public void changeStatusToSending() {
-        setStatus(Constants.SURVEY_SENDING);
+        setStatus(SurveyStatus.SENDING.getCode());
+        save();
+    }
+
+    @Override
+    public void changeStatusToSyncConversionError() {
+        setStatus(SurveyStatus.ERROR_CONVERSION_SYNC.getCode());
         save();
     }
 
     @Override
     public void changeStatusToQuarantine() {
-        setStatus(SURVEY_QUARANTINE);
+        setStatus(SurveyStatus.QUARANTINE.getCode());
         save();
     }
 
     @Override
     public void changeStatusToConflict() {
-        setStatus(SURVEY_CONFLICT);
+        setStatus(SurveyStatus.CONFLICT.getCode());
         save();
     }
 
     @Override
     public void changeStatusToSent() {
-        setStatus(SURVEY_SENT);
+        setStatus(SurveyStatus.SENT.getCode());
         saveMainScore();
         save();
     }

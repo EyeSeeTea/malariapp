@@ -112,8 +112,8 @@ public class UserDB extends BaseModel {
     }
 
     public static UserDB getLoggedUser() {
-        // for the moment we return just the first entry assuming there will be only one entry,
-        // but in the future we will have to tag the logged user
+        // for the moment we return just the first entry assuming there will be only one entry,	        List<UserDB> users = new Select().from(UserDB.class)
+        // but in the future we will have to tag the logged user  .where(UserDB_Table.username.isNotNull())
         List<UserDB> users = new Select().from(UserDB.class).queryList();
         if (users != null && users.size() != 0) {
             return users.get(0);
@@ -125,10 +125,13 @@ public class UserDB extends BaseModel {
         return new Select().from(UserDB.class).where(UserDB_Table.uid_user.eq(uid)).querySingle();
     }
 
-    public static UserDB getUser(String value) {
+    public static UserDB searchUser(String value) {
         return new Select()
                 .from(UserDB.class)
-                .where(UserDB_Table.uid_user.eq(value)).querySingle();
+                .where(UserDB_Table.uid_user.eq(value))
+                .or(UserDB_Table.name.eq(value))
+                .or(UserDB_Table.username.eq(value))
+                .querySingle();
     }
 
     public String getAnnouncement() {
