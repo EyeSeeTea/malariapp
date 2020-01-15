@@ -9,18 +9,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.android.gms.plus.model.people.Person;
-
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.layout.adapters.sectionDetail.SectionDetailAdapter;
 import org.eyeseetea.malariacare.presentation.viewmodels.SectionViewModel;
 import org.eyeseetea.malariacare.presentation.viewmodels.SurveyViewModel;
 import org.eyeseetea.malariacare.utils.CompetencyUtils;
 import org.eyeseetea.malariacare.utils.DateParser;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,7 +49,7 @@ public class MonitorBySurveyActionsAdapter extends SectionDetailAdapter {
 
         incompleteSection = new
                 SectionViewModel(
-                String.format("%s (%d)", context.getString(R.string.survey_imcomplete_text),
+                String.format("%s (%d)", context.getString(R.string.survey_incomplete_text),
                         incompleteSurveys.size()),
                 R.color.red);
 
