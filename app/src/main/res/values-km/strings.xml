@@ -286,4 +286,5 @@ evaluation"</string>
 <string name="action_monitor_save_confirm_message">សកម្មភាពទាំងអស់ត្រូវបានធ្វើឡើងតើអ្នកប្រាកដថាអ្នកចង់សន្សំ? អ្នកមិនអាចធ្វើសកម្មភាពនេះវិញបានទេ</string>
 <string name="load_error_message">កំហុសមួយបានកើតឡើងពេលផ្ទុកទិន្នន័យ</string>
 <string name="save_error_message">កំហុសមួយបានកើតឡើងការរក្សាទុកទិន្នន័យ</string>
+<string name="share">ចែករំលែក</string>
 </resources>

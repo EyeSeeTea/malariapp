@@ -264,4 +264,5 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="observations_no_non_critical_steps_missed_text">Nenhuma etapa não crítica perdida</string>
 <string name="survey_incomplete_text">Planos de ação incompletos</string>
 <string name="survey_complete_text">Planos de ação completos</string>
+<string name="share">Compartilhar</string>
 </resources>

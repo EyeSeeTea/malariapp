@@ -284,4 +284,5 @@
 <string name="action_monitor_save_confirm_message">ທຸກໆກິດຈະກໍາຖືກດໍາເນີນການ, ທ່ານແນ່ໃຈວ່າທ່ານຕ້ອງການຊ່ວຍປະຢັດບໍ? ທ່ານບໍ່ສາມາດຍົກເລີກການປະຕິບັດນີ້ໄດ້</string>
 <string name="load_error_message">ມີຂໍ້ຜິດພາດທີ່ເກີດຂື້ນໃນການໂຫລດຂໍ້ມູນ</string>
 <string name="save_error_message">ມີຂໍ້ຜິດພາດທີ່ເກີດຂື້ນໃນການບັນທຶກຂໍ້ມູນ</string>
+<string name="share">ແບ່ງປັນ</string>
 </resources>

@@ -244,4 +244,5 @@
 <string name="action_monitor_save_confirm_message"></string>
 <string name="load_error_message"></string>
 <string name="save_error_message"></string>
+<string name="share"></string>
 </resources>
