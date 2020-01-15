@@ -2,6 +2,9 @@ package org.eyeseetea.malariacare.domain.entity;
 
 import static org.eyeseetea.malariacare.domain.common.RequiredChecker.required;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ServerMetadata {
     private final ServerMetadataItem nextAssessment;
     private final ServerMetadataItem creationDate;
@@ -29,6 +32,8 @@ public class ServerMetadata {
     private final ServerMetadataItem dueDateAction3;
     private final ServerMetadataItem responsibleAction3;
     private final ServerMetadataItem completionDateAction3;
+
+    private final List<String> observationDataElementUids = new ArrayList<>();
 
     public ServerMetadata(ServerMetadataItem nextAssessment, ServerMetadataItem creationDate,
             ServerMetadataItem completionDate, ServerMetadataItem uploadDate,
@@ -72,6 +77,23 @@ public class ServerMetadata {
         this.dueDateAction3 = required(dueDateAction3, "dueDateAction3 is required");
         this.responsibleAction3 = required(responsibleAction3, "responsibleAction3 is required");
         this.completionDateAction3 = required(completionDateAction3, "completionDateAction3 is required");
+
+        observationDataElementUids.add(this.provider.getUId());
+
+        observationDataElementUids.add(this.action1.getUId());
+        observationDataElementUids.add(this.dueDateAction1.getUId());
+        observationDataElementUids.add(this.responsibleAction1.getUId());
+        observationDataElementUids.add(this.completionDateAction1.getUId());
+
+        observationDataElementUids.add(this.action2.getUId());
+        observationDataElementUids.add(this.dueDateAction2.getUId());
+        observationDataElementUids.add(this.responsibleAction2.getUId());
+        observationDataElementUids.add(this.completionDateAction2.getUId());
+
+        observationDataElementUids.add(this.action3.getUId());
+        observationDataElementUids.add(this.dueDateAction3.getUId());
+        observationDataElementUids.add(this.responsibleAction3.getUId());
+        observationDataElementUids.add(this.completionDateAction3.getUId());
     }
 
     public ServerMetadataItem getNextAssessment() {
@@ -176,5 +198,9 @@ public class ServerMetadata {
 
     public ServerMetadataItem getCompletionDateAction3() {
         return completionDateAction3;
+    }
+
+    public List<String> getObservationsDataElementUids() {
+        return observationDataElementUids;
     }
 }
