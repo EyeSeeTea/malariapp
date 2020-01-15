@@ -242,7 +242,7 @@
 <string name="plan_action_title">"Observations &amp; Action Plan"</string>
 <string name="plan_action_today_date">ແລ້ວສິ້ນ: %s</string>
 <string name="plan_action_next_date">ຕໍ່ໄປ: %s</string>
-<string name="plan_action_description">ອະທິບາຍສິ່ງທີ່ໄດ້ສັງເກດເຫັນໃນໄລຍະການຢ້ຽມຢາມເປັນແຜນການດໍາເນີນການສະເພາະໃດຫນຶ່ງສໍາລັບການແກ້ໄຂຊ່ອງຫວ່າງ. ຍັງໄດ້ສັງເກດການການປັບປຸງໃນໄລຍະຊ່ອງຫວ່າງລະບຸໃນໄລຍະຢ້ຽມຢາມທີ່ຜ່ານມາ</string>
+<string name="plan_action_description">ຂຽນການກະ ທຳ ສະເພາະເພື່ອແກ້ໄຂຊ່ອງຫວ່າງທີ່ສັງເກດໃນລະຫວ່າງການຢ້ຽມຢາມ. ໃຫ້ສັງເກດການປັບປຸງຊ່ອງຫວ່າງທີ່ໄດ້ລະບຸໃນລະຫວ່າງການຢ້ຽມຢາມຄັ້ງສຸດທ້າຍ.</string>
 <string name="plan_action_action_plan_title">ແຜນປະຕິບັດງານ</string>
 <string name="observation_action_due_date">ວັນ​ຄົບ​ກໍາ​ນົດ:</string>
 <string name="observation_action_responsible">ទទួលខុសត្រូវ:</string>
@@ -275,8 +275,8 @@
 <string name="observations_no_critical_steps_missed_text">ບໍ່ມີຂັ້ນຕອນທີ່ສໍາຄັນທີ່ພາດ</string>
 <string name="observations_no_non_critical_steps_missed_text">ບໍ່ມີຂັ້ນຕອນທີ່ບໍ່ມີຄວາມສໍາຄັນທີ່ພາດ</string>
 
-<string name="survey_imcomplete_text">ບໍ່ຄົບຖ້ວນ</string>
-<string name="survey_complete_text">ຄົບຖ້ວນ</string>
+<string name="survey_incomplete_text">ແຜນປະຕິບັດງານບໍ່ຄົບຖ້ວນ</string>
+<string name="survey_complete_text">ສຳ ເລັດແຜນການ ດຳ ເນີນງານ</string>
 
 <string name="menu_monitoring_by_calendar_title">ການກວດສອບເກົ່າ</string>
 <string name="action_monitor_activity_title">ກິດຈະກໍາ</string>
@@ -284,4 +284,5 @@
 <string name="action_monitor_save_confirm_message">ທຸກໆກິດຈະກໍາຖືກດໍາເນີນການ, ທ່ານແນ່ໃຈວ່າທ່ານຕ້ອງການຊ່ວຍປະຢັດບໍ? ທ່ານບໍ່ສາມາດຍົກເລີກການປະຕິບັດນີ້ໄດ້</string>
 <string name="load_error_message">ມີຂໍ້ຜິດພາດທີ່ເກີດຂື້ນໃນການໂຫລດຂໍ້ມູນ</string>
 <string name="save_error_message">ມີຂໍ້ຜິດພາດທີ່ເກີດຂື້ນໃນການບັນທຶກຂໍ້ມູນ</string>
+<string name="share">ແບ່ງປັນ</string>
 </resources>
