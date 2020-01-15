@@ -64,23 +64,26 @@ import org.eyeseetea.malariacare.domain.boundary.repositories.IServerRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.Server;
-import org.eyeseetea.malariacare.domain.usecase.GetServersUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
+import org.eyeseetea.malariacare.factories.AuthenticationFactory;
 import org.eyeseetea.malariacare.factories.ServerFactory;
 import org.eyeseetea.malariacare.layout.adapters.general.ServerArrayAdapter;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
+import org.eyeseetea.malariacare.presentation.presenters.LoginPresenter;
 import org.eyeseetea.malariacare.strategies.LoginActivityStrategy;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Permissions;
 import org.hisp.dhis.client.sdk.ui.activities.AbsLoginActivity;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.InputStream;
+import java.util.List;
 
 import fr.castorflex.android.circularprogressbar.CircularProgressBar;
 
-public class LoginActivity extends AbsLoginActivity {
+public class LoginActivity extends AbsLoginActivity implements LoginPresenter.View {
     private static final String TAG = ".LoginActivity";
 
     public IUserAccountRepository mUserAccountRepository = new UserAccountRepository(this);
@@ -95,6 +98,8 @@ public class LoginActivity extends AbsLoginActivity {
     private LinearLayout serverContainer;
     private EditText serverEditText;
     private static LoginActivity mLoginActivity;
+
+    private LoginPresenter loginPresenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -122,41 +127,32 @@ public class LoginActivity extends AbsLoginActivity {
         serverContainer = (LinearLayout) findViewById(R.id.edittext_server_url_container);
         serverEditText = (EditText) findViewById(R.id.edittext_server_url);
 
+        initPresenter();
         initServerAdapter();
     }
 
+    @Override
+    protected void onDestroy() {
+        loginPresenter.detachView();
+        super.onDestroy();
+    }
+
+    private void initPresenter() {
+        loginPresenter = AuthenticationFactory.INSTANCE.provideLoginPresenter(this);
+
+        loginPresenter.attachView(this, getResources().getString(R.string.other));
+    }
+
     private void initServerAdapter() {
-        GetServersUseCase getServersUseCase = ServerFactory.INSTANCE.provideGetServersUseCase(this);
-        getServersUseCase.execute(servers -> {
-            servers.add(new Server(getResources().getString(R.string.other)));
-
-            ArrayAdapter serversListAdapter =
-                    new ServerArrayAdapter(LoginActivity.this, servers);
-            serverSpinner.setAdapter(serversListAdapter);
-
-            getServerUrl().setText(servers.get(0).getUrl());
-        });
-
-
         serverSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Server server =(Server) parent.getItemAtPosition(position);
-                if (server.getUrl().equals(parent.getContext().getResources().getString(R.string.other))) {
-                    serverEditText.setText("");
-                    serverContainer.setVisibility(View.VISIBLE);
-                } else {
-                    if (serverContainer.getVisibility() == View.VISIBLE) {
-                        serverContainer.setVisibility(View.GONE);
-                    }
-                    serverEditText.setText(server.getUrl());
-                }
+                loginPresenter.selectServer(server);
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                parent.setSelection(0);
-            }
+            public void onNothingSelected(AdapterView<?> parent) { }
         });
     }
 
@@ -377,6 +373,37 @@ public class LoginActivity extends AbsLoginActivity {
         if (!EyeSeeTeaApplication.permissions.areAllPermissionsGranted()) {
             EyeSeeTeaApplication.permissions.requestNextPermission();
         }
+    }
+
+    @Override
+    public void showLoading() {
+        showProgress();
+    }
+
+    @Override
+    public void hideLoading() {
+        hideProgress();
+    }
+
+    @Override
+    public void showServers(@NotNull List<Server> servers) {
+        ArrayAdapter serversListAdapter =
+                new ServerArrayAdapter(LoginActivity.this, servers);
+        serverSpinner.setAdapter(serversListAdapter);
+
+        getServerUrl().setText(servers.get(0).getUrl());
+    }
+
+    @Override
+    public void showManualServerUrlView() {
+        serverEditText.setText("");
+        serverContainer.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideManualServerUrlView(String serverUrl) {
+        serverEditText.setText(serverUrl);
+        serverContainer.setVisibility(View.GONE);
     }
 
     public class AsyncPullAnnouncement extends AsyncTask<LoginActivity, Void, Void> {
