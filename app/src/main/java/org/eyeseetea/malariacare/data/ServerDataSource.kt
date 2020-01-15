@@ -1,18 +1,19 @@
 package org.eyeseetea.malariacare.data
 
+import org.eyeseetea.malariacare.domain.common.Either
 import org.eyeseetea.malariacare.domain.entity.Server
+
+sealed class ServerDataSourceFailure {
+    object NetworkFailure : ServerDataSourceFailure()
+    object ServerNotFoundFailure : ServerDataSourceFailure()
+}
 
 interface ReadableServerDataSource {
     fun getAll(): List<Server>
-
-    @Throws(Exception::class)
-    fun get(): Server
+    fun get(): Either<ServerDataSourceFailure, Server>
 }
 
 interface WritableServerDataSource {
-    @Throws(Exception::class)
     fun save(server: Server)
-
-    @Throws(Exception::class)
     fun saveAll(servers: List<Server>)
 }

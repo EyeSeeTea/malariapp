@@ -54,6 +54,8 @@ import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
 import org.eyeseetea.malariacare.data.sync.IData;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerInfoRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
+import org.eyeseetea.malariacare.domain.common.Either;
+import org.eyeseetea.malariacare.domain.entity.Server;
 import org.eyeseetea.malariacare.domain.entity.ServerInfo;
 import org.eyeseetea.malariacare.domain.usecase.GetServerInfoUseCase;
 import org.eyeseetea.malariacare.domain.usecase.GetServerUseCase;
@@ -96,14 +98,15 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         mUserAccountRepository = new UserAccountRepository(this);
         mLogoutUseCase = new LogoutUseCase(mUserAccountRepository);
-        IServerInfoRepository serverStatusRepository = new ServerInfoRepository(new ServerInfoLocalDataSource(getApplicationContext()),
+        IServerInfoRepository serverStatusRepository = new ServerInfoRepository(
+                new ServerInfoLocalDataSource(getApplicationContext()),
                 new ServerInfoRemoteDataSource(Session.getCredentials()));
         GetServerInfoUseCase serverStatusUseCase = new GetServerInfoUseCase(serverStatusRepository,
                 new UIThreadExecutor(), new AsyncExecutor());
         serverStatusUseCase.execute(new GetServerInfoUseCase.Callback() {
             @Override
             public void onComplete(ServerInfo serverInfo) {
-                if(serverInfo.isServerSupported()){
+                if (serverInfo.isServerSupported()) {
                     checkQuarantineData();
                     alarmPush = new AlarmPushReceiver();
                     alarmPush.setPushAlarm(getApplicationContext());
@@ -134,15 +137,22 @@ public abstract class BaseActivity extends AppCompatActivity {
     private void initView(Bundle savedInstanceState) {
         GetServerUseCase getServerUseCase = ServerFactory.INSTANCE.provideGetServerUseCase(this);
 
-        getServerUseCase.execute(server -> {
+        getServerUseCase.execute(serverResult -> {
             setTheme(R.style.EyeSeeTheme);
             android.support.v7.app.ActionBar actionBar = BaseActivity.this.getSupportActionBar();
 
-            if (server != null && server.getLogo() != null){
-                LayoutUtils.setActionBarLogo(this, actionBar, server.getLogo());
-            } else{
+            if (serverResult.isLeft()){
                 LayoutUtils.setActionBarLogo(actionBar);
+            } else {
+                Server server = ((Either.Right<Server>) serverResult).getValue();
+
+                if (server.isDataCompleted()) {
+                    LayoutUtils.setActionBarLogo(this, actionBar, server.getLogo());
+                } else {
+                    LayoutUtils.setActionBarLogo(actionBar);
+                }
             }
+
 
             if (savedInstanceState == null) {
                 initTransition();
@@ -256,9 +266,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         debugMessage("Export db to local storage");
         boolean resultOK = ExportData.dumpAndExportToLocalStorage(this);
 
-        if (resultOK){
+        if (resultOK) {
             Toast.makeText(this, ExportData.EXPORT_DATA_FILE + " " +
-                    getString(R.string.export_db_to_local_success_message), Toast.LENGTH_LONG).show();
+                            getString(R.string.export_db_to_local_success_message),
+                    Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(this, getString(R.string.export_db_to_local_error_message),
                     Toast.LENGTH_LONG).show();
