@@ -2,7 +2,6 @@ package org.eyeseetea.malariacare.data.database.datasources;
 
 import com.raizlabs.android.dbflow.sql.language.Delete;
 import com.raizlabs.android.dbflow.sql.language.From;
-import com.raizlabs.android.dbflow.sql.language.SQLCondition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.sql.language.Where;
 
@@ -22,20 +21,16 @@ import org.eyeseetea.malariacare.domain.entity.Observation;
 import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
 import org.eyeseetea.malariacare.domain.entity.SurveyStatus;
 import org.eyeseetea.malariacare.domain.exception.ObservationNotFoundException;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class ObservationLocalDataSource {
-    private final ObservationMapper mObservationMapper;
-
-    public ObservationLocalDataSource(){
-        List<SurveyDB> surveyDBS = new Select().from(SurveyDB.class).queryList();
-
-        mObservationMapper = new ObservationMapper(surveyDBS);
-    }
+    private ObservationMapper mObservationMapper;
 
     public List<Observation> getSentObservations(
             String programUid,
@@ -43,6 +38,9 @@ public class ObservationLocalDataSource {
             List<ObservationStatus> observationStatuses) {
         List<ObservationDB> observationDBS =
                 getObservationsDBByStatus(programUid, orgUnitUid, observationStatuses);
+
+        List<SurveyDB> surveyDBS = getSurveysByObservationsDB(observationDBS);
+        mObservationMapper = new ObservationMapper(surveyDBS);
 
         List<Observation> observations = mObservationMapper.map(observationDBS);
 
@@ -57,6 +55,9 @@ public class ObservationLocalDataSource {
         ObservationDB observationDB = getObservationDB(surveyUId);
 
         if (observationDB != null) {
+
+            SurveyDB surveyDB = SurveyDB.getSurveyByUId(surveyUId);
+            mObservationMapper = new ObservationMapper(Arrays.asList(surveyDB));
 
             Observation observation = mObservationMapper.map(observationDB);
 
@@ -90,7 +91,7 @@ public class ObservationLocalDataSource {
     private List<ObservationDB> getObservationsDBByStatus(
             String programUid,
             String orgUnitUid,
-            List<ObservationStatus> observationStatuses){
+            List<ObservationStatus> observationStatuses) {
 
         List<ObservationDB> observationDBS;
 
@@ -105,18 +106,18 @@ public class ObservationLocalDataSource {
         Where basicWhere = from.where(ObservationDB_Table.status_observation.isNotNull())
                 .and(SurveyDB_Table.status.eq(SurveyStatus.SENT.getCode()));
 
-        if (programUid != null && !programUid.isEmpty()){
+        if (programUid != null && !programUid.isEmpty()) {
             basicWhere.and(ProgramDB_Table.uid_program.eq(programUid));
         }
 
-        if (orgUnitUid != null && !orgUnitUid.isEmpty()){
+        if (orgUnitUid != null && !orgUnitUid.isEmpty()) {
             basicWhere.and(OrgUnitDB_Table.uid_org_unit.eq(orgUnitUid));
         }
 
-        if (observationStatuses != null && observationStatuses.size() > 0){
+        if (observationStatuses != null && observationStatuses.size() > 0) {
             List<Integer> statusCodes = new ArrayList<>();
 
-            for (ObservationStatus observationStatus:observationStatuses) {
+            for (ObservationStatus observationStatus : observationStatuses) {
                 statusCodes.add(observationStatus.getCode());
             }
 
@@ -125,8 +126,9 @@ public class ObservationLocalDataSource {
 
         observationDBS = basicWhere.queryList();
 
-        if (observationDBS.size() > 0)
+        if (observationDBS.size() > 0) {
             loadValuesInObservation(observationDBS);
+        }
 
         return observationDBS;
     }
@@ -137,15 +139,16 @@ public class ObservationLocalDataSource {
 
         Map<Long, List<ObservationValueDB>> valuesMap = new HashMap<>();
         for (ObservationValueDB observationValueDB : allValues) {
-            if (!valuesMap.containsKey(observationValueDB.getId_observation_fk()))
+            if (!valuesMap.containsKey(observationValueDB.getId_observation_fk())) {
                 valuesMap.put(observationValueDB.getId_observation_fk(),
                         new ArrayList<ObservationValueDB>());
+            }
 
             valuesMap.get(observationValueDB.getId_observation_fk()).add(observationValueDB);
         }
 
         for (ObservationDB observationDB : observationDBS) {
-            if (valuesMap.containsKey(observationDB.getId_observation())){
+            if (valuesMap.containsKey(observationDB.getId_observation())) {
                 observationDB.setValuesDB(valuesMap.get(observationDB.getId_observation()));
             }
         }
@@ -182,7 +185,7 @@ public class ObservationLocalDataSource {
     }
 
     private void modify(ObservationDB observationDB, Observation observation) {
-        observationDB = createMapper().mapToModify(observationDB ,observation);
+        observationDB = createMapper().mapToModify(observationDB, observation);
 
         saveChanges(observationDB);
 
@@ -206,12 +209,30 @@ public class ObservationLocalDataSource {
     private void deleteNonExistedValuesInModifiedObservation(ObservationDB observationDB) {
         List<String> existedValuesInSurvey = new ArrayList<>();
 
-        for (ObservationValueDB observationValueDB:observationDB.getValuesDB()) {
+        for (ObservationValueDB observationValueDB : observationDB.getValuesDB()) {
             existedValuesInSurvey.add(observationValueDB.getUid_observation_value());
         }
 
         new Delete().from(ObservationValueDB.class)
-                .where(ObservationValueDB_Table.id_observation_fk.is(observationDB.getId_observation()))
-                .and(ObservationValueDB_Table.uid_observation_value.notIn(existedValuesInSurvey)).execute();
+                .where(ObservationValueDB_Table.id_observation_fk.is(
+                        observationDB.getId_observation()))
+                .and(ObservationValueDB_Table.uid_observation_value.notIn(
+                        existedValuesInSurvey)).execute();
+    }
+
+    @NotNull
+    private List<SurveyDB> getSurveysByObservationsDB(List<ObservationDB> observationDBS) {
+        List<Long> surveyIds = new ArrayList<>();
+
+        for (ObservationDB observationDB : observationDBS) {
+            surveyIds.add(observationDB.getId_survey_observation_fk());
+        }
+
+        return new Select(SurveyDB_Table.id_survey, SurveyDB_Table.uid_event_fk)
+                .from(SurveyDB.class)
+                .leftOuterJoin(ObservationDB.class)
+                .on(SurveyDB_Table.id_survey.eq(ObservationDB_Table.id_survey_observation_fk))
+                .where(ObservationDB_Table.id_survey_observation_fk.in(surveyIds))
+                .queryList();
     }
 }

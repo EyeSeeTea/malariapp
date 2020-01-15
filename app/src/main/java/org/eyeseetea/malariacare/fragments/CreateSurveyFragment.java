@@ -476,7 +476,7 @@ public class CreateSurveyFragment extends Fragment {
         ProgramDB lastSelectedProgram= getLastSelectedProgram();
 
         String programUidFilter = filter.getSelectedProgramFilter();
-        if(programUidFilter!=null){
+        if(!programUidFilter.isEmpty()){
             ProgramDB filteredProgram = ProgramDB.getProgram(programUidFilter);
             programView.setSelection(getIndex(programView, filteredProgram.getName()));
         }else {
