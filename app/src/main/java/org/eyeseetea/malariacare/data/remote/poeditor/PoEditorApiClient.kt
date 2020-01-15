@@ -1,10 +1,9 @@
 package org.eyeseetea.malariacare.data.remote.poeditor
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import okhttp3.OkHttpClient
 import org.eyeseetea.malariacare.domain.common.Either
 import retrofit2.Retrofit
-import retrofit2.converter.jackson.JacksonConverterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
 
 sealed class PoEditorApiClientFailure {
@@ -34,7 +33,7 @@ class PoEditorApiClient(private val projectID: String, private val apiToken: Str
 
     init {
         val retrofit: Retrofit = Retrofit.Builder()
-            .addConverterFactory(JacksonConverterFactory.create(jacksonObjectMapper()))
+            .addConverterFactory(GsonConverterFactory.create())
             .client(OkHttpClient.Builder().build())
             .baseUrl("https://api.poeditor.com/")
             .build()
