@@ -229,13 +229,15 @@ evaluation"</string>
 <string name="header_reschedule">"Reschedule"</string>
 <string name="planing_due_date">"Due date"</string>
 <string name="action_button_text">ACTION PLAN</string>
+
 <string name="plan_action_title">Observations &amp; Action Plan</string>
 <string name="plan_action_today_date">Completed: %s</string>
 <string name="plan_action_next_date">Next: %s</string>
-<string name="plan_action_description">Describe what was observed during the visit a specific action plan for addressing gaps. Also note an improvement over a gap identified during the last visit</string>
+<string name="plan_action_description">Write specific actions to address gaps observed during the visit. Note any improvement in gaps identified during the last visit.</string>
 <string name="plan_action_action_plan_title">Action plan</string>
 <string name="observation_action_due_date">Due Date:</string>
 <string name="observation_action_responsible">Responsible:</string>
+
 <string name="supervision_on">Results supervision on:</string>
 <string name="critical_steps">Critical Steps missed:</string>
 <string name="url_not_available">"The feedback URL is not available because the survey hasn't been sent to the server yet. Try sharing the feedback again later."</string>
@@ -274,8 +276,8 @@ evaluation"</string>
 <string name="observations_no_non_critical_steps_missed_text">No non-critical steps missed</string>
 
 
-<string name="survey_imcomplete_text">Imcomplete</string>
-<string name="survey_complete_text">Complete</string>
+<string name="survey_incomplete_text">Incomplete Action Plans</string>
+<string name="survey_complete_text">Complete Action Plans</string>
 
 <string name="menu_monitoring_by_calendar_title">Old monitoring</string>
 <string name="action_monitor_activity_title">Activity</string>
