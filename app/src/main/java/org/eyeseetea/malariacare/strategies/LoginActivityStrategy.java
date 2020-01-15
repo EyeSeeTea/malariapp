@@ -108,8 +108,7 @@ public class LoginActivityStrategy {
                 ServerInfoRepository serverInfoRepository = new ServerInfoRepository(
                         mServerLocalDataSource, mServerRemoteDataSource);
 
-                ServerFactory serverFactory = new ServerFactory();
-                IServerRepository serverRepository = serverFactory.getServerRepository(
+                IServerRepository serverRepository = ServerFactory.INSTANCE.provideServerRepository(
                         loginActivity);
 
                 LoginUseCase mLoginUseCase =

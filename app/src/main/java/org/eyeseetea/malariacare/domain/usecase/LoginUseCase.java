@@ -26,6 +26,7 @@ import org.eyeseetea.malariacare.domain.boundary.repositories.IServerInfoReposit
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
+import org.eyeseetea.malariacare.domain.entity.Server;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
 import org.eyeseetea.malariacare.domain.common.ReadPolicy;
 import org.eyeseetea.malariacare.domain.exception.InvalidCredentialsException;
@@ -34,6 +35,7 @@ import org.hisp.dhis.client.sdk.models.common.UnsupportedServerVersionException;
 
 import java.net.MalformedURLException;
 import java.net.UnknownHostException;
+import java.util.List;
 
 public class LoginUseCase implements UseCase{
 
@@ -82,7 +84,7 @@ public class LoginUseCase implements UseCase{
             @Override
             public void onSuccess(UserAccount userAccount) {
                 notifyOnLoginSuccess();
-                getLoggedServer();
+                updateLoggedServer();
             }
 
             @Override
@@ -113,10 +115,24 @@ public class LoginUseCase implements UseCase{
         }
     }
 
-    private void getLoggedServer() {
+    private void updateLoggedServer() {
         if(!credentials.isDemoCredentials()) {
             try {
-                mServerRepository.getLoggedServer();
+                List<Server> servers = mServerRepository.getAll(ReadPolicy.CACHE);
+
+                Server connectedServer = null;
+
+                for (Server server:servers) {
+                    if (server.getUrl().equals(this.credentials.getServerURL())){
+                        connectedServer = server;
+                    }
+                }
+
+                if (connectedServer != null){
+                    connectedServer.changeToConnected();
+                    mServerRepository.save(connectedServer);
+                    mServerRepository.getLoggedServer();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

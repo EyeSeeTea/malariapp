@@ -248,7 +248,6 @@
 <string name="plan_action_title">"ການສັງເກດການ &amp; ແຜນການປະຕິບັດງານ"</string>
 <string name="plan_action_today_date">"ສຳເລັດແລ້ວ: %s"</string>
 <string name="plan_action_next_date">ການປະເມີນຕໍ່ໄປນີ້: %s</string>
-<string name="plan_action_description">"ບັນຍາຍສິ່ງທີ່ໄດ້ສັງເກດເຫັນໃນລະຫວ່າງການລົງຍຽມຍາມລະບຸແຜນການແກ້ໄຂຊ່ອງວ່າງຕ່າງໆ. ພ້ອມທັງບັນທຶກການປັບປຸງຂໍ້ບົກຜ່ອງທີ່ພົບເຫັນໃນການລົງຍຽມຍາມຄັ້ງທີ່ຜ່ານມາ."</string>
 <string name="plan_action_action_plan_title">"ແຜນການປະຕິບັດງານ"</string>
 
 <string name="supervision_on">ຜົນການຊີ້ນໍາກ່ຽວກັບ:</string>
