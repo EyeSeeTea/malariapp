@@ -29,6 +29,7 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.VisitableFromSDK;
 import org.eyeseetea.malariacare.data.remote.sdk.SdkQueries;
+import org.eyeseetea.malariacare.domain.entity.ServerMetadata;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.FailedItemFlow;
@@ -106,6 +107,7 @@ public class EventExtended implements VisitableFromSDK {
         }
         return event.getCreated().toDate();
     }
+
     /**
      * Returns the survey.completionDate associated with this event (lastUpdated field)
      */
@@ -289,5 +291,21 @@ public class EventExtended implements VisitableFromSDK {
             eventExtendedList.add(eventExtended);
         }
         return eventExtendedList;
+    }
+
+    public boolean hasObservations(ServerMetadata serverMetadata) {
+        boolean hasOverallCompetencyCode = false;
+
+        List<DataValueExtended> dataValues = getDataValues();
+
+        for (DataValueExtended dataValue : dataValues) {
+            if (serverMetadata.getObservationsDataElementUids()
+                    .contains(dataValue.getDataValue().getDataElement())){
+                hasOverallCompetencyCode = true;
+                break;
+            }
+        }
+
+        return hasOverallCompetencyCode;
     }
 }

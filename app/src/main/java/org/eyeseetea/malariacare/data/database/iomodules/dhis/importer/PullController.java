@@ -27,7 +27,10 @@ import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.remote.sdk.PullDhisSDKDataSource;
 import org.eyeseetea.malariacare.domain.boundary.IPullController;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IServerMetadataRepository;
+import org.eyeseetea.malariacare.domain.entity.ServerMetadata;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
+import org.eyeseetea.malariacare.domain.exception.InvalidServerMetadataException;
 import org.eyeseetea.malariacare.domain.exception.PullException;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullFilters;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
@@ -42,9 +45,12 @@ public class PullController implements IPullController {
     PullDhisSDKDataSource pullRemoteDataSource;
     IPullControllerCallback callback;
 
-    public PullController() {
-    }
+    IServerMetadataRepository serverMetadataRepository;
+    ServerMetadata serverMetadata;
 
+    public PullController(IServerMetadataRepository serverMetadataRepository) {
+        this.serverMetadataRepository = serverMetadataRepository;
+    }
 
     public void conversions() {
 
@@ -52,7 +58,6 @@ public class PullController implements IPullController {
 
         conversionLocalDataSource.validateCS();
     }
-
 
     /**
      * Notifies that the pull is over
@@ -76,7 +81,7 @@ public class PullController implements IPullController {
         conversionLocalDataSource.wipeDataBase();
         PULL_IS_ACTIVE = true;
         this.callback = callback;
-        conversionLocalDataSource = new ConversionLocalDataSource(callback);
+        conversionLocalDataSource = new ConversionLocalDataSource(callback, serverMetadataRepository);
         pullRemoteDataSource = new PullDhisSDKDataSource();
         pullRemoteDataSource.wipeDataBase();
 
@@ -91,6 +96,7 @@ public class PullController implements IPullController {
                     return;
                 }
                 callback.onStep(PullStep.EVENTS);
+
                 pullData(filters);
             }
 
