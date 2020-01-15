@@ -7,8 +7,12 @@ import android.util.Log;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-import org.eyeseetea.malariacare.data.IServerDataSource;
+import org.eyeseetea.malariacare.data.ReadableServerDataSource;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.data.remote.poeditor.PoEditorApiClient;
+import org.eyeseetea.malariacare.data.remote.poeditor.PoEditorApiClientFailure;
+import org.eyeseetea.malariacare.data.remote.poeditor.Term;
+import org.eyeseetea.malariacare.domain.common.Either;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.Server;
 
@@ -18,10 +22,13 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import okhttp3.Response;
 
-public class ServerRemoteDataSource implements IServerDataSource {
+public class ServerRemoteDataSource implements ReadableServerDataSource {
 
     private static final String SERVER_VERSION_CALL = "api/systemSettings/";
     private static final String KEY_FLAG_FIELD = "keyFlag";
@@ -30,10 +37,41 @@ public class ServerRemoteDataSource implements IServerDataSource {
     private static final String LOGO_URL_ENDPOINT = "dhis-web-commons/flags/%s.png";
 
     private static final String TAG = ".ServerRemoteDataSource";
+
+    private static final String SERVERS_TERM = "server_list";
+    private static final String SERVERS_TERM_SEPARATOR = "\n";
+
     private Credentials credentials;
 
-    public ServerRemoteDataSource() {
+    private PoEditorApiClient poEditorApiClient;
+
+    public ServerRemoteDataSource(PoEditorApiClient poEditorApiClient) {
+        this.poEditorApiClient = poEditorApiClient;
     }
+
+    @Override
+    public List<Server> getAll() {
+        List<Server> servers = new ArrayList<>();
+
+        Either<PoEditorApiClientFailure, List<Term>> result =
+                poEditorApiClient.getTerms("en");
+
+        if (result.isRight()) {
+            List<Term> terms = ((List<Term>) ((Either.Right) result).getValue());
+
+            List<String> serverUrls = findServerUrls(terms);
+
+            if (serverUrls.size() > 0) {
+                for (String url : serverUrls) {
+                    Server server = new Server(url);
+                    servers.add(server);
+                }
+            }
+        }
+
+        return servers;
+    }
+
 
     @Override
     public Server get() throws Exception {
@@ -48,7 +86,7 @@ public class ServerRemoteDataSource implements IServerDataSource {
 
             byte[] logo = getLogo(keyFlag);
 
-            server = new Server(credentials.getServerURL(), applicationTitle, logo);
+            server = new Server(credentials.getServerURL(), applicationTitle, logo, true);
 
         } catch (Exception ex) {
             Log.e(TAG, "Cannot read server name and logo");
@@ -89,8 +127,8 @@ public class ServerRemoteDataSource implements IServerDataSource {
         }
     }
 
-    public static byte[] readBytes( InputStream stream ) throws IOException {
-        if (stream == null) return new byte[] {};
+    public static byte[] readBytes(InputStream stream) throws IOException {
+        if (stream == null) return new byte[]{};
         byte[] buffer = new byte[1024];
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         boolean error = false;
@@ -116,9 +154,17 @@ public class ServerRemoteDataSource implements IServerDataSource {
         return output.toByteArray();
     }
 
+    private List<String> findServerUrls(List<Term> terms) {
+        List<String> urls = new ArrayList<>();
 
-    @Override
-    public void save(Server server) {
-        //Not implemented
+        for (Term term : terms) {
+            if (term.getTerm().equals(SERVERS_TERM)) {
+                urls.addAll(
+                        Arrays.asList(
+                                term.getTranslation().getContent().split(SERVERS_TERM_SEPARATOR))
+                );
+            }
+        }
+        return urls;
     }
 }

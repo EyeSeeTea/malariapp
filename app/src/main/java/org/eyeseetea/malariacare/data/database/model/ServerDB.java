@@ -45,6 +45,9 @@ public class ServerDB extends BaseModel {
     @Column
     Blob logo;
 
+    @Column
+    boolean connected;
+
 
     public long getId_server() {
         return id_server;
@@ -76,6 +79,14 @@ public class ServerDB extends BaseModel {
 
     public void setLogo(Blob logo) {
         this.logo = logo;
+    }
+
+    public boolean isConnected() {
+        return connected;
+    }
+
+    public void setConnected(boolean connected) {
+        this.connected = connected;
     }
 
     @Override

@@ -35,7 +35,6 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.Session;
-import org.eyeseetea.malariacare.domain.entity.Server;
 import org.eyeseetea.malariacare.domain.usecase.GetServerUseCase;
 import org.eyeseetea.malariacare.factories.ServerFactory;
 import org.eyeseetea.malariacare.fragments.IModuleFragment;
@@ -86,8 +85,7 @@ public abstract class ModuleController {
     public void init(DashboardActivity activity) {
         this.dashboardActivity = activity;
 
-        ServerFactory serverFactory = new ServerFactory();
-        serverUseCase = serverFactory.getServerUseCase(dashboardActivity);
+        serverUseCase = ServerFactory.INSTANCE.provideGetServerUseCase(dashboardActivity);
     }
 
     public String getName() {
@@ -224,7 +222,7 @@ public abstract class ModuleController {
 
     public void setActionBarDashboard() {
         serverUseCase.execute(server -> {
-            if (server.getName() != null && !server.getName().isEmpty()){
+            if (server != null && server.getName() != null && !server.getName().isEmpty()){
                 LayoutUtils.setActionBarDashboard(dashboardActivity, server.getName(),getTitle());
             } else {
                 LayoutUtils.setActionBarDashboard(dashboardActivity, getTitle());

@@ -191,6 +191,13 @@ dependencies {
 
     implementation "com.google.code.findbugs:jsr305:${libs.jsr305Version}"
 
+    // Square
+    implementation "com.squareup.okhttp3:okhttp:${libs.okhttpVersion}"
+    implementation "com.squareup.retrofit2:retrofit:${libs.retrofitVersion}"
+    implementation "com.squareup.retrofit2:converter-jackson:${libs.retrofitVersion}"
+
+    implementation "com.fasterxml.jackson.module:jackson-module-kotlin:${libs.jacksonModuleKotlin}"
+
     // Unit testing dependencies
     testImplementation "junit:junit:${libs.jUnitVersion}"
     testImplementation "org.mockito:mockito-core:${libs.mockitoVersion}"
@@ -238,6 +245,7 @@ dependencies {
         exclude group: "com.google.android.gms"
     }
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:${kotlin_version}"
 }
 
 check.dependsOn ktlint
