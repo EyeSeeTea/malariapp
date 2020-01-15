@@ -81,17 +81,8 @@ public class UserAccountLocalDataSource implements IUserAccountDataSource {
         editor.putString(mContext.getString(R.string.dhis_password), credentials.getPassword());
         editor.commit();
 
-        saveServer(credentials.getServerURL());
-
         PreferencesState.getInstance().reloadPreferences();
         Session.setCredentials(credentials);
-    }
-
-    private void saveServer(String serverUrl) {
-        ServerDB serverDB = new ServerDB();
-        serverDB.setUrl(serverUrl);
-
-        serverDB.save();
     }
 
     private void clearPreferences() {

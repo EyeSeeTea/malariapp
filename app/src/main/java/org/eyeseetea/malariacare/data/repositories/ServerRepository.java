@@ -1,48 +1,86 @@
 package org.eyeseetea.malariacare.data.repositories;
 
-import org.eyeseetea.malariacare.data.IAllServersDataSource;
-import org.eyeseetea.malariacare.data.IServerDataSource;
+import android.util.Log;
+
+import org.eyeseetea.malariacare.data.ReadableServerDataSource;
+import org.eyeseetea.malariacare.data.WritableServerDataSource;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerRepository;
+import org.eyeseetea.malariacare.domain.common.ReadPolicy;
 import org.eyeseetea.malariacare.domain.entity.Server;
 
 import java.util.List;
 
 public class ServerRepository implements IServerRepository {
-    IAllServersDataSource allServersDataSource;
-    IServerDataSource serverLocalDataSource;
-    IServerDataSource serverRemoteDataSource;
+    private WritableServerDataSource writableServerLocalDataSource;
+    private ReadableServerDataSource readableServerLocalDataSource;
+    private ReadableServerDataSource readableServerRemoteDataSource;
+    private ReadableServerDataSource readableServerStaticDataSource;
 
     public ServerRepository(
-            IAllServersDataSource allServersDataSource,
-            IServerDataSource serverLocalDataSource,
-            IServerDataSource serverRemoteDataSource) {
-        this.allServersDataSource = allServersDataSource;
-        this.serverLocalDataSource = serverLocalDataSource;
-        this.serverRemoteDataSource = serverRemoteDataSource;
+            WritableServerDataSource writableServerLocalDataSource,
+            ReadableServerDataSource readableServerLocalDataSource,
+            ReadableServerDataSource readableServerRemoteDataSource,
+            ReadableServerDataSource readableServerStaticDataSource) {
+        this.writableServerLocalDataSource = writableServerLocalDataSource;
+        this.readableServerLocalDataSource = readableServerLocalDataSource;
+        this.readableServerRemoteDataSource = readableServerRemoteDataSource;
+        this.readableServerStaticDataSource = readableServerStaticDataSource;
     }
 
     @Override
-    public List<Server> getAll() {
-        return allServersDataSource.getAll();
+    public List<Server> getAll(ReadPolicy readPolicy) {
+        List<Server> servers;
+
+        if (readPolicy == ReadPolicy.NETWORK_FIRST){
+            servers = readableServerRemoteDataSource.getAll();
+
+            if(servers.size() == 0){
+                servers = readableServerLocalDataSource.getAll();
+            }
+
+            if (servers.size() == 0){
+                servers = readableServerStaticDataSource.getAll();
+            }
+
+            try {
+                writableServerLocalDataSource.saveAll(servers);
+            } catch (Exception e) {
+                Log.e(this.getClass().getSimpleName(), "An error has occurred saving server list");
+                e.printStackTrace();
+            }
+        } else {
+            servers = readableServerLocalDataSource.getAll();
+
+            if (servers.size() == 0){
+                servers = readableServerStaticDataSource.getAll();
+            }
+        }
+
+        return servers;
     }
 
     @Override
     public Server getLoggedServer() throws Exception {
-        Server cachedServer = serverLocalDataSource.get();
+        Server cachedServer = readableServerLocalDataSource.get();
 
         if (cachedServer != null && cachedServer.getUrl() != null &&
                 cachedServer.getName() != null && cachedServer.getLogo() != null){
             return cachedServer;
         } else {
             try{
-                Server remoteServer = serverRemoteDataSource.get();
+                Server remoteServer = readableServerRemoteDataSource.get();
 
-                serverLocalDataSource.save(remoteServer);
+                writableServerLocalDataSource.save(remoteServer);
 
                 return remoteServer;
             } catch (Exception e){
                 return cachedServer;
             }
         }
+    }
+
+    @Override
+    public void save(Server server) throws Exception {
+        writableServerLocalDataSource.save(server);;
     }
 }

@@ -111,7 +111,6 @@ public class LoginActivity extends AbsLoginActivity {
             launchActivity(LoginActivity.this, DashboardActivity.class);
         }
         ProgressActivity.PULL_CANCEL = false;
-        getServerUrl().setText(R.string.login_info_dhis_default_server_url);
 
         progressBar = (CircularProgressBar) findViewById(R.id.progress_bar_circular);
 
@@ -127,14 +126,15 @@ public class LoginActivity extends AbsLoginActivity {
     }
 
     private void initServerAdapter() {
-
-        ServerFactory serverFactory = new ServerFactory();
-
-        GetServersUseCase getServersUseCase = serverFactory.getServersUseCase(this);
+        GetServersUseCase getServersUseCase = ServerFactory.INSTANCE.provideGetServersUseCase(this);
         getServersUseCase.execute(servers -> {
+            servers.add(new Server(getResources().getString(R.string.other)));
+
             ArrayAdapter serversListAdapter =
                     new ServerArrayAdapter(LoginActivity.this, servers);
             serverSpinner.setAdapter(serversListAdapter);
+
+            getServerUrl().setText(servers.get(0).getUrl());
         });
 
 
@@ -252,8 +252,7 @@ public class LoginActivity extends AbsLoginActivity {
         ServerInfoRepository serverInfoRepository = new ServerInfoRepository(mServerLocalDataSource,
                 mServerRemoteDataSource);
 
-        ServerFactory serverFactory = new ServerFactory();
-        IServerRepository serverRepository = serverFactory.getServerRepository(this);
+        IServerRepository serverRepository = ServerFactory.INSTANCE.provideServerRepository(this);
 
         LoginUseCase mLoginUseCase = new LoginUseCase(mUserAccountRepository,serverRepository,
                 serverInfoRepository, mainExecutor, asyncExecutor);
