@@ -30,6 +30,8 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.DataElementExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.DataValueExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.ObservationExtended;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.ObservationValueExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.OptionExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.OptionSetExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.OrganisationUnitExtended;
@@ -42,6 +44,8 @@ import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.Us
 import org.eyeseetea.malariacare.data.database.model.AnswerDB;
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 import org.eyeseetea.malariacare.data.database.model.MediaDB;
+import org.eyeseetea.malariacare.data.database.model.ObservationDB;
+import org.eyeseetea.malariacare.data.database.model.ObservationValueDB;
 import org.eyeseetea.malariacare.data.database.model.OptionDB;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitLevelDB;
@@ -62,8 +66,14 @@ import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.Progra
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramSurveyDict;
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramTabDict;
 import org.eyeseetea.malariacare.data.remote.sdk.SdkQueries;
+import org.eyeseetea.malariacare.data.repositories.ServerMetadataRepository;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IServerMetadataRepository;
 import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
 import org.eyeseetea.malariacare.domain.entity.NextScheduleDateConfiguration;
+import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
+import org.eyeseetea.malariacare.domain.entity.ObservationValue;
+import org.eyeseetea.malariacare.domain.entity.ServerMetadata;
+import org.eyeseetea.malariacare.domain.exception.InvalidServerMetadataException;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.DateParser;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeValueFlow;
@@ -91,7 +101,9 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     static ProgramSurveyDict programSurveyDict;
     static ProgramCompositeScoreDict programCompositeScoreDict;
     static ProgramQuestionDict programQuestionDict;
+    static Map<String, ObservationDB> observationsMap;
 
+    ServerMetadata serverMetadata;
 
     /**
      * Builders that helps while linking compositeScores and questions
@@ -104,7 +116,10 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     private final String SDKDateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
     public ProgramExtended actualProgram;
 
-    public ConvertFromSDKVisitor() {
+    private IServerMetadataRepository serverMetadataRepository;
+
+    public ConvertFromSDKVisitor(
+            IServerMetadataRepository serverMetadataRepository) {
         programMapObjects = new HashMap();
         controlDataElementMapObjects = new HashMap();
         orgUnitLevelMap = new HashMap();
@@ -118,6 +133,9 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         compositeScoreBuilder = new CompositeScoreBuilder();
         questionBuilder = new QuestionBuilder();
         questions = new ArrayList<>();
+        observationsMap = new HashMap<>();
+
+        this.serverMetadataRepository = serverMetadataRepository;
 
         //Reload static dataElement codes
         DataElementExtended.reloadDataElementTypeCodes();
@@ -414,6 +432,49 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         }
         //Once all the values are processed save common data across created surveys
         //eventToSurveyBuilder.saveCommonData();
+    }
+
+    @Override
+    public void visit(ObservationExtended observationExtended) {
+
+        if (serverMetadata == null){
+            try {
+                serverMetadata = serverMetadataRepository.getServerMetadata();
+            } catch (InvalidServerMetadataException e) {
+                e.printStackTrace();
+            }
+        }
+
+        ObservationDB observationDB = new ObservationDB();
+
+        SurveyDB surveyDB = SurveyDB.getSurveyByUId(observationExtended.getEvent().getUId());
+
+        observationDB.setId_survey_observation_fk(surveyDB.getId_survey());
+        observationDB.setStatus_observation(ObservationStatus.SENT.getCode());
+
+        observationDB.save();
+
+        observationsMap.put(observationExtended.getEvent().getUId(),observationDB);
+
+        //Visit its values
+        for (ObservationValueExtended observationValueExtended :
+                observationExtended.getObservationValues(serverMetadata)) {
+            observationValueExtended.accept(this);
+        }
+    }
+
+    @Override
+    public void visit(ObservationValueExtended observationValueExtended) {
+        ObservationDB observationDB =
+                observationsMap.get(observationValueExtended.getDataValue().getEvent().getUId());
+
+
+        ObservationValueDB observationValueDB = new ObservationValueDB();
+        observationValueDB.setId_observation_fk(observationDB.getId_observation());
+        observationValueDB.setUid_observation_value(observationValueExtended.getDataValue().getDataElement());
+        observationValueDB.setValue(observationValueExtended.getDataValue().getValue());
+
+        observationValueDB.save();
     }
 
     private Date convertStringToDate(String format, String dateText) {

@@ -191,6 +191,12 @@ dependencies {
 
     implementation "com.google.code.findbugs:jsr305:${libs.jsr305Version}"
 
+
+    // Square
+    implementation "com.squareup.okhttp3:okhttp:${libs.okhttpVersion}"
+    implementation "com.squareup.retrofit2:retrofit:${libs.retrofitVersion}"
+    implementation "com.squareup.retrofit2:converter-gson:${libs.retrofitVersion}"
+
     // Unit testing dependencies
     testImplementation "junit:junit:${libs.jUnitVersion}"
     testImplementation "org.mockito:mockito-core:${libs.mockitoVersion}"

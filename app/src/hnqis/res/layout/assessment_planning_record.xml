@@ -92,7 +92,7 @@
             android:ellipsize="end"
             android:paddingTop="@dimen/planning_padding"
             android:paddingBottom="@dimen/planning_padding"
-            android:text="@string/planing_due_date"
+            android:text="@string/assessment_sent_date"
             android:textSize="@dimen/planing_per_org_text_size"
             app:tDimension="@string/font_size_level1"
             app:tFontName="@string/medium_font_name"/>
@@ -140,7 +140,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.3"
-                android:id="@+id/dueDate"
+                android:id="@+id/completionDate"
                 android:typeface="sans"
                 android:gravity="center"
                 android:lines="1"

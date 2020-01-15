@@ -7,15 +7,17 @@ public class Server {
     private String url;
     private String name;
     private byte[] logo;
+    private boolean connected;
 
     public Server(String url){
         this.url = required(url,"url is required");
     }
 
-    public Server(String url, String name, byte[] logo) {
+    public Server(String url, String name, byte[] logo, boolean connected) {
         this.url = url;
         this.name = name;
         this.logo = logo;
+        this.connected = connected;
     }
 
     public String getUrl() {
@@ -28,5 +30,17 @@ public class Server {
 
     public byte[] getLogo() {
         return logo;
+    }
+
+    public boolean isConnected() {
+        return connected;
+    }
+
+    public void changeToConnected(){
+        connected = true;
+    }
+
+    public boolean isDataCompleted(){
+        return url != null && name != null && logo != null;
     }
 }
