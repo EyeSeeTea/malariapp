@@ -22,6 +22,8 @@ package org.eyeseetea.malariacare.data.database.iomodules.dhis.importer;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.DataElementExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.DataValueExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.ObservationExtended;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.ObservationValueExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.OptionExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.OptionSetExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.OrganisationUnitExtended;
@@ -43,6 +45,7 @@ public interface IConvertFromSDKVisitor {
     void visit(DataElementExtended dataElement);
     void visit(EventExtended sdkEventExtended);
     void visit(DataValueExtended sdkDataValueExtended);
+    void visit(ObservationExtended observationExtended);
+    void visit(ObservationValueExtended observationValueExtended);
     void buildScores();
-
 }

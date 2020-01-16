@@ -3,6 +3,7 @@ package org.eyeseetea.malariacare.domain.usecase;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerRepository;
+import org.eyeseetea.malariacare.domain.common.ReadPolicy;
 import org.eyeseetea.malariacare.domain.entity.Server;
 
 import java.util.List;
@@ -35,7 +36,8 @@ public class GetServersUseCase implements UseCase{
     @Override
     public void run() {
         try {
-            notifyComplete(serverRepository.getAll());
+            notifyComplete(serverRepository.getAll(ReadPolicy.CACHE));
+            notifyComplete(serverRepository.getAll(ReadPolicy.NETWORK_FIRST));
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -190,14 +190,15 @@ public class LoginActivity extends Activity {
     }
 
     private void initServerAdapter() {
-
-        ServerFactory serverFactory = new ServerFactory();
-
-        GetServersUseCase getServersUseCase = serverFactory.getServersUseCase(this);
+        GetServersUseCase getServersUseCase = ServerFactory.INSTANCE.provideGetServersUseCase(this);
         getServersUseCase.execute(servers -> {
+            servers.add(new Server(getResources().getString(R.string.other)));
+
             ArrayAdapter serversListAdapter =
                     new ServerArrayAdapter(LoginActivity.this, servers);
             serverSpinner.setAdapter(serversListAdapter);
+
+            mServerUrl.setText(servers.get(0).getUrl());
         });
 
 

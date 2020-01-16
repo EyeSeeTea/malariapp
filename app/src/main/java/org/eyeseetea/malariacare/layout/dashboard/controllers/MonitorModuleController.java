@@ -43,18 +43,22 @@ public class MonitorModuleController extends ModuleController {
         monitorBySurveyActionsFragment =
                 MonitorBySurveyActionsFragment.newInstance();
 
-        fragment = monitorBySurveyActionsFragment;
-/*
-        monitorFragment.setFilterType(moduleSettings.getMonitorFilter());
-        fragment = monitorFragment;*/
+        monitoringByCalendar = new MonitorFragment();
+        monitoringByCalendar.setFilterType(moduleSettings.getMonitorFilter());
+
+
+        String selectedProgramUidFilter = PreferencesState.getInstance().getProgramUidFilter();
+        String selectedOrgUnitUidFilter = PreferencesState.getInstance().getOrgUnitUidFilter();
+
+        if (selectedOrgUnitUidFilter.equals("") && selectedProgramUidFilter.equals("")){
+            fragment = monitorBySurveyActionsFragment;
+
+        } else {
+            fragment = monitoringByCalendar;
+        }
     }
 
     public void openMonitoringByCalendar() {
-        if (monitoringByCalendar == null) {
-            monitoringByCalendar = new MonitorFragment();
-            monitoringByCalendar.setFilterType(moduleSettings.getMonitorFilter());
-        }
-
         fragment = monitoringByCalendar;
 
         replaceFragment(R.id.dashboard_charts_container, monitoringByCalendar);

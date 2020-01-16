@@ -236,7 +236,7 @@
 <string name="observations_invalid_server_metadata_error_message"></string>
 <string name="observations_no_critical_steps_missed_text">No critical steps missed</string>
 <string name="observations_no_non_critical_steps_missed_text">No non-critical steps missed</string>
-<string name="survey_imcomplete_text"></string>
+<string name="survey_incomplete_text"></string>
 <string name="survey_complete_text"></string>
 <string name="menu_monitoring_by_calendar_title"></string>
 <string name="action_monitor_activity_title"></string>
@@ -244,6 +244,7 @@
 <string name="action_monitor_save_confirm_message"></string>
 <string name="load_error_message"></string>
 <string name="save_error_message"></string>
+<string name="share"></string>
 
 <string name="error_unauthorized"></string>
 <string name="title_error_unexpected"></string>

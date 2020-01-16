@@ -1,52 +1,40 @@
 package org.eyeseetea.malariacare.data.database.datasources;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 import com.raizlabs.android.dbflow.data.Blob;
+import com.raizlabs.android.dbflow.sql.language.Delete;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
-import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.IAllServersDataSource;
-import org.eyeseetea.malariacare.data.IServerDataSource;
+import org.eyeseetea.malariacare.data.ReadableServerDataSource;
+import org.eyeseetea.malariacare.data.WritableServerDataSource;
 import org.eyeseetea.malariacare.data.database.model.ServerDB;
-import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.data.database.model.ServerDB_Table;
 import org.eyeseetea.malariacare.domain.entity.Server;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ServerLocalDataSource implements IServerDataSource, IAllServersDataSource {
+public class ServerLocalDataSource implements ReadableServerDataSource, WritableServerDataSource {
+    @Override
+    public Server get() {
+        ServerDB serverDB = getConnectedServerFromDB();
 
-    private Context context;
-
-    public ServerLocalDataSource(Context context){
-        this.context = context;
+        return mapServer(serverDB);
     }
 
     @Override
-    public Server get() {
-        Server server = null;
+    public void saveAll(@NotNull List<? extends Server> servers)  {
+        Delete.table(ServerDB.class);
 
-        ServerDB serverDB = getServerFromDB();
-
-        byte[] logo = null;
-
-        if (serverDB != null) {
-            if (serverDB.getLogo() != null) {
-                logo = serverDB.getLogo().getBlob();
-            }
-
-            server = new Server(serverDB.getUrl(), serverDB.getName(),logo);
+        for (Server server:servers) {
+            save(server);
         }
-
-        return server;
     }
 
     @Override
     public void save(Server server) {
-        ServerDB serverDB = getServerFromDB();
+        ServerDB serverDB = getServerFromDByUrl(server.getUrl());
 
         if (serverDB == null){
             serverDB = new ServerDB();
@@ -54,6 +42,7 @@ public class ServerLocalDataSource implements IServerDataSource, IAllServersData
 
         serverDB.setUrl(server.getUrl());
         serverDB.setName(server.getName());
+        serverDB.setConnected(server.isConnected());
 
         if (server.getLogo() != null) {
             serverDB.setLogo(new Blob(server.getLogo()));
@@ -64,18 +53,44 @@ public class ServerLocalDataSource implements IServerDataSource, IAllServersData
 
     @Override
     public List<Server> getAll() {
-        String[] serverUrls = context.getResources().getStringArray(R.array.server_list);
         List<Server> servers = new ArrayList<>();
 
-        for (String url:serverUrls) {
-            Server server = new Server(url);
-            servers.add(server);
+        List<ServerDB> serversDB = getAllServersFromDB();
+
+        for (ServerDB serverDB:serversDB) {
+            servers.add(mapServer(serverDB));
         }
 
         return servers;
     }
 
-    private ServerDB getServerFromDB() {
-        return new Select().from(ServerDB.class).querySingle();
+    private ServerDB getConnectedServerFromDB() {
+        return new Select().from(ServerDB.class)
+                .where(ServerDB_Table.connected.is(true)).querySingle();
     }
+
+    private List<ServerDB> getAllServersFromDB() {
+        return new Select().from(ServerDB.class).queryList();
+    }
+
+    private ServerDB getServerFromDByUrl(String url) {
+        return new Select().from(ServerDB.class)
+                .where(ServerDB_Table.url.eq(url)).querySingle();
+    }
+
+    private Server mapServer(ServerDB serverDB) {
+        Server server = null;
+
+        byte[] logo = null;
+
+        if (serverDB != null) {
+            if (serverDB.getLogo() != null) {
+                logo = serverDB.getLogo().getBlob();
+            }
+
+            server = new Server(serverDB.getUrl(), serverDB.getName(),logo,serverDB.isConnected());
+        }
+        return server;
+    }
+
 }

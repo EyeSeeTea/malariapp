@@ -26,7 +26,7 @@ object AuthenticationFactory {
             serverRemoteDataSource
         )
 
-        val serverRepository: IServerRepository = ServerFactory().getServerRepository(context)
+        val serverRepository: IServerRepository = ServerFactory.provideServerRepository(context)
 
         return LoginUseCase(
             userAccountRepository,
