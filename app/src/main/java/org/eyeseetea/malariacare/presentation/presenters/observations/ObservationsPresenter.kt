@@ -179,10 +179,10 @@ class ObservationsPresenter(
     }
 
     private fun saveObservation() = executor.asyncExecute {
-        val observation =
-            ObservationMapper.mapToObservation(observationViewModel, serverMetadata)
-
         try {
+            val observation =
+                ObservationMapper.mapToObservation(observationViewModel, serverMetadata)
+
             saveObservationUseCase.execute(observation)
         } catch (e: Exception) {
             println(
