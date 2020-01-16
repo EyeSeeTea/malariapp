@@ -283,4 +283,6 @@ clínica"</string>
 <string name="error_unauthorized">"Usuario o password incorrectos."</string>
 <string name="title_error_unexpected">"Error inesperado"</string>
 <string name="error_not_found">Servidor no encontrado.</string>
+
+<string name="network_error">"Hay un problema con la red. Por favor vuelve a intentarlo más tarde."</string>
 </resources>
