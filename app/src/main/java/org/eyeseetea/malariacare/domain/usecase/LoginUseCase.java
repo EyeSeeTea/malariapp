@@ -60,10 +60,10 @@ public class LoginUseCase implements UseCase{
     private Callback callback;
 
     public LoginUseCase(IUserAccountRepository userAccountRepository,
-                        IServerRepository serverRepository,
-                        IServerInfoRepository serverInfoRepository,
-                        IMainExecutor mainExecutor,
-                        IAsyncExecutor asyncExecutor) {
+            IServerRepository serverRepository,
+            IServerInfoRepository serverInfoRepository,
+            IMainExecutor mainExecutor,
+            IAsyncExecutor asyncExecutor) {
         mMainExecutor = mainExecutor;
         mAsyncExecutor = asyncExecutor;
         mServerRepository = serverRepository;
@@ -181,4 +181,3 @@ public class LoginUseCase implements UseCase{
         });
     }
 }
-
