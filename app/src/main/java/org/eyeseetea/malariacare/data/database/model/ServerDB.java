@@ -45,6 +45,9 @@ public class ServerDB extends BaseModel {
     @Column
     Blob logo;
 
+    @Column
+    boolean connected;
+
 
     public long getId_server() {
         return id_server;
@@ -76,6 +79,31 @@ public class ServerDB extends BaseModel {
 
     public void setLogo(Blob logo) {
         this.logo = logo;
+    }
+
+    public boolean isConnected() {
+        return connected;
+    }
+
+    public void setConnected(boolean connected) {
+        this.connected = connected;
+    }
+
+    // Query method are here instead of ServerLocalDataSource because Kapt plugin
+    // launch error to build for DbFlow 3.0.1
+    // "Could not resolve all files for configuration ':app:kapt'
+    public static ServerDB getConnectedServerFromDB() {
+        return new Select().from(ServerDB.class)
+                .where(ServerDB_Table.connected.is(true)).querySingle();
+    }
+
+    public static List<ServerDB> getAllServersFromDB() {
+        return new Select().from(ServerDB.class).queryList();
+    }
+
+    public static ServerDB getServerFromDByUrl(String url) {
+        return new Select().from(ServerDB.class)
+                .where(ServerDB_Table.url.eq(url)).querySingle();
     }
 
     @Override

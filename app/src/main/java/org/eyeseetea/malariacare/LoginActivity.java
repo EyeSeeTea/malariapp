@@ -62,23 +62,23 @@ import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.remote.api.PullDhisApiDataSource;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.Server;
-import org.eyeseetea.malariacare.domain.usecase.GetServersUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.factories.AuthenticationFactory;
-import org.eyeseetea.malariacare.factories.ServerFactory;
 import org.eyeseetea.malariacare.layout.adapters.general.ServerArrayAdapter;
+import org.eyeseetea.malariacare.presentation.presenters.LoginPresenter;
 import org.eyeseetea.malariacare.strategies.LoginActivityStrategy;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Permissions;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.io.InputStream;
+import java.util.List;
 
 import fr.castorflex.android.circularprogressbar.CircularProgressBar;
 import fr.castorflex.android.circularprogressbar.CircularProgressDrawable;
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends Activity implements LoginPresenter.View {
     private static final String TAG = ".LoginActivity";
 
     public LoginActivityStrategy mLoginActivityStrategy = new LoginActivityStrategy(this);
@@ -108,6 +108,8 @@ public class LoginActivity extends Activity {
     private Animation layoutTransitionSlideIn;
     private Animation layoutTransitionSlideOut;
 
+    private LoginPresenter loginPresenter;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
@@ -127,6 +129,7 @@ public class LoginActivity extends Activity {
         ProgressActivity.PULL_CANCEL = false;
 
         initViews();
+        initPresenter();
         initServerAdapter();
     }
 
@@ -189,37 +192,28 @@ public class LoginActivity extends Activity {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
     }
 
+    @Override
+    protected void onDestroy() {
+        loginPresenter.detachView();
+        super.onDestroy();
+    }
+
+    private void initPresenter() {
+        loginPresenter = AuthenticationFactory.INSTANCE.provideLoginPresenter(this);
+
+        loginPresenter.attachView(this, getResources().getString(R.string.other));
+    }
+
     private void initServerAdapter() {
-
-        ServerFactory serverFactory = new ServerFactory();
-
-        GetServersUseCase getServersUseCase = serverFactory.getServersUseCase(this);
-        getServersUseCase.execute(servers -> {
-            ArrayAdapter serversListAdapter =
-                    new ServerArrayAdapter(LoginActivity.this, servers);
-            serverSpinner.setAdapter(serversListAdapter);
-        });
-
-
         serverSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Server server =(Server) parent.getItemAtPosition(position);
-                if (server.getUrl().equals(parent.getContext().getResources().getString(R.string.other))) {
-                    serverEditText.setText("");
-                    serverContainer.setVisibility(View.VISIBLE);
-                } else {
-                    if (serverContainer.getVisibility() == View.VISIBLE) {
-                        serverContainer.setVisibility(View.GONE);
-                    }
-                    serverEditText.setText(server.getUrl());
-                }
+                loginPresenter.selectServer(server);
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                parent.setSelection(0);
-            }
+            public void onNothingSelected(AdapterView<?> parent) { }
         });
     }
 
@@ -429,6 +423,37 @@ public class LoginActivity extends Activity {
         if (!EyeSeeTeaApplication.permissions.areAllPermissionsGranted()) {
             EyeSeeTeaApplication.permissions.requestNextPermission();
         }
+    }
+
+    @Override
+    public void showLoading() {
+        showProgress();
+    }
+
+    @Override
+    public void hideLoading() {
+        hideProgress();
+    }
+
+    @Override
+    public void showServers(List<Server> servers) {
+        ArrayAdapter serversListAdapter =
+                new ServerArrayAdapter(LoginActivity.this, servers);
+        serverSpinner.setAdapter(serversListAdapter);
+
+        mServerUrl.setText(servers.get(0).getUrl());
+    }
+
+    @Override
+    public void showManualServerUrlView() {
+        serverEditText.setText("");
+        serverContainer.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideManualServerUrlView(String serverUrl) {
+        serverEditText.setText(serverUrl);
+        serverContainer.setVisibility(View.GONE);
     }
 
     public class AsyncPullAnnouncement extends AsyncTask<LoginActivity, Void, Void> {

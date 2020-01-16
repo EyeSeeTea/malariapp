@@ -68,9 +68,11 @@ public class SurveyMapper {
         String programUid = programsDBMap.get(surveyDB.getId_program_fk()).getUid();
         String userUid = null;
 
-        if (usersDBMap.containsKey(surveyDB.getId_user_fk())){
-            UserDB userDB = usersDBMap.get(surveyDB.getId_user_fk());
-            userUid = userDB.getUid();
+        if (usersDBMap.containsKey(surveyDB.getId_user_fk())) {
+            userUid = usersDBMap.get(surveyDB.getId_user_fk()).getUid();
+        }
+        else{
+            userUid = ((UserDB)usersDBMap.values().toArray()[0]).getUid();
         }
 
         ScoreDB scoreDB = scoreDBMap.get(surveyDB.getId_survey());

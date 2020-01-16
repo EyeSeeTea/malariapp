@@ -235,7 +235,7 @@ clínica"</string>
 <string name="plan_action_title">Observaciones y plan de acción</string>
 <string name="plan_action_today_date">Terminado: %s</string>
 <string name="plan_action_next_date">Próxima: %s</string>
-<string name="plan_action_description">Describa lo que se observó durante la visita de un plan de acción específico para abordar las lagunas. Obsérvese también una mejora respecto a la brecha identificada durante la última visita</string>
+<string name="plan_action_description">Escriba acciones específicas para abordar las brechas observadas durante la visita. Tenga en cuenta cualquier mejora en las brechas identificadas durante la última visita.</string>
 <string name="plan_action_action_plan_title">Plan de acción</string>
 <string name="observation_action_due_date">Fecha de vencimiento:</string>
 <string name="observation_action_responsible">Responsable:</string>
@@ -268,8 +268,8 @@ clínica"</string>
 <string name="observations_no_critical_steps_missed_text">No existen pasos críticos perdidos</string>
 <string name="observations_no_non_critical_steps_missed_text">No existen pasos no críticos perdidos</string>
 
-<string name="survey_imcomplete_text">Incompletas</string>
-<string name="survey_complete_text">Completas</string>
+<string name="survey_incomplete_text">Planes de acción incompletos</string>
+<string name="survey_complete_text">Planes de acción completos</string>
 
 <string name="menu_monitoring_by_calendar_title">Antigua monitorización</string>
 <string name="action_monitor_activity_title">Actividad</string>
@@ -277,6 +277,8 @@ clínica"</string>
 <string name="action_monitor_save_confirm_message">Todas las acciones estan conducidas, estas seguro de que quierer guardar? No podrás deshacer esta acción</string>
 <string name="load_error_message">Ha ocurrido un errror cargando los datos</string>
 <string name="save_error_message">Ha ocurrido un errror guardando los datos</string>
+
+<string name="share">Compartir</string>
 
 <string name="error_unauthorized">"Usuario o password incorrectos."</string>
 <string name="title_error_unexpected">"Error inesperado"</string>

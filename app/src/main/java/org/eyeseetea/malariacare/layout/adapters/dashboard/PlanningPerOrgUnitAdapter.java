@@ -67,7 +67,7 @@ public class PlanningPerOrgUnitAdapter extends RecyclerView.Adapter<RecyclerView
     class ViewHolder extends RecyclerView.ViewHolder {
         private CheckBox surveyCheckBox;
         private CustomTextView scheduleTextView;
-        private CustomTextView dueDateTextView;
+        private CustomTextView completionDateTextView;
         private CustomTextView programTextView;
         private CustomTextView orgUnitTextView;
         private ImageView menuDots;
@@ -77,7 +77,7 @@ public class PlanningPerOrgUnitAdapter extends RecyclerView.Adapter<RecyclerView
 
             surveyCheckBox = itemView.findViewById(R.id.survey_type);
             scheduleTextView = itemView.findViewById(R.id.schedule);
-            dueDateTextView = itemView.findViewById(R.id.dueDate);
+            completionDateTextView = itemView.findViewById(R.id.completionDate);
             programTextView = itemView.findViewById(R.id.program);
             orgUnitTextView = itemView.findViewById(R.id.org_unit);
             menuDots = itemView.findViewById(R.id.menu_dots);
@@ -116,7 +116,7 @@ public class PlanningPerOrgUnitAdapter extends RecyclerView.Adapter<RecyclerView
                 scheduleTextView.setText(R.string.assessment_no_schedule_date);
             }
 
-            dueDateTextView.setText(dateParser.getEuropeanFormattedDate(survey.getCreationDate()));
+            completionDateTextView.setText(dateParser.getEuropeanFormattedDate(survey.getCreationDate()));
             programTextView.setText(survey.getProgram().getName());
             orgUnitTextView.setText(survey.getOrgUnit().getName());
 

@@ -11,10 +11,19 @@ import org.eyeseetea.malariacare.domain.usecase.LoginUseCase
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor
+import org.eyeseetea.malariacare.presentation.executors.WrapperExecutor
+import org.eyeseetea.malariacare.presentation.presenters.LoginPresenter
 
 object AuthenticationFactory {
     private val mainExecutor = UIThreadExecutor()
     private val asyncExecutor = AsyncExecutor()
+
+    fun provideLoginPresenter(context: Context): LoginPresenter {
+        val executor = WrapperExecutor()
+        val getServersUseCase = ServerFactory.provideGetServersUseCase(context)
+
+        return LoginPresenter(executor, getServersUseCase)
+    }
 
     fun provideLoginUseCase(context: Context): LoginUseCase {
 
@@ -26,7 +35,7 @@ object AuthenticationFactory {
             serverRemoteDataSource
         )
 
-        val serverRepository: IServerRepository = ServerFactory().getServerRepository(context)
+        val serverRepository: IServerRepository = ServerFactory.provideServerRepository(context)
 
         return LoginUseCase(
             userAccountRepository,

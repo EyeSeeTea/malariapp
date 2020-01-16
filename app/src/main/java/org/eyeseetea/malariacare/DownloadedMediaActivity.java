@@ -1,19 +1,24 @@
 package org.eyeseetea.malariacare;
 
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ShareCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
+import android.webkit.MimeTypeMap;
 
 import org.eyeseetea.malariacare.data.database.model.MediaDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.layout.adapters.downloaded_media.DownloadedMediaAdapter;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.List;
@@ -37,12 +42,56 @@ public class DownloadedMediaActivity extends BaseActivity {
         // RecyclerView layout manager
         final LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         list.setLayoutManager(mLayoutManager);
-        downloadedMediaAdapter.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                openMediaFile(mediaList.get(position));
-            }
+        downloadedMediaAdapter.setOnItemClickListener(
+                (parent, view, position, id) -> openMediaFile(mediaList.get(position)));
+
+        downloadedMediaAdapter.setOnMenuMediaClickListener(
+                (view,media) -> {
+                    showMediaPopupMenu(view, media);
+                });
+    }
+
+    public void showMediaPopupMenu(View view, MediaDB media) {
+
+        //Creating the instance of PopupMenu
+        PopupMenu popup = new PopupMenu(this, view);
+        //Inflating the Popup using xml file
+        popup.getMenuInflater().inflate(R.menu.media_popup_menu, popup.getMenu());
+
+
+        popup.setOnMenuItemClickListener(item -> {
+            shareMediaFile(media);
+            return true;
         });
+
+        popup.show();
+    }
+
+    private void shareMediaFile(MediaDB media) {
+        File file = new File(media.getFilename());
+        Uri fileURI = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
+                ? FileProvider.getUriForFile(this, this.getPackageName()
+                + ".DownloadedMediaActivity", file)
+                : Uri.fromFile(file);
+        ShareCompat.IntentBuilder.from(this)
+                .setStream(fileURI)
+                .setType(getMimeType(fileURI))
+                .setChooserTitle("Share media...")
+                .startChooser();
+    }
+
+    @NotNull
+    private String getMimeType(Uri fileURI) {
+        String type = null;
+        ContentResolver cR = this.getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        String extension = mime.getExtensionFromMimeType(cR.getType(fileURI));
+
+        if (extension != null) {
+            type = mime.getMimeTypeFromExtension(extension);
+        }
+
+        return type;
     }
 
     private void openMediaFile(MediaDB media) {
@@ -82,6 +131,7 @@ public class DownloadedMediaActivity extends BaseActivity {
         LayoutUtils.setActionBarLogo(actionBar);
         LayoutUtils.setActionBarDashboard(this, this.getString(R.string.downloaded_media_menu));
     }
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -108,7 +158,7 @@ public class DownloadedMediaActivity extends BaseActivity {
      */
     @Override
     public void onBackPressed() {
-        Intent returnIntent=new Intent(this, DashboardActivity.class);
+        Intent returnIntent = new Intent(this, DashboardActivity.class);
         returnIntent.putExtra(getString(R.string.show_announcement_key), false);
         startActivity(returnIntent);
     }

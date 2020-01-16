@@ -37,6 +37,7 @@ import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.LocalPull
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullController;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.data.repositories.ServerMetadataRepository;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
 import org.eyeseetea.malariacare.domain.boundary.IPullController;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
@@ -44,6 +45,7 @@ import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullFilters;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullUseCase;
+import org.eyeseetea.malariacare.factories.DataFactory;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 
 import java.util.Calendar;
@@ -129,7 +131,7 @@ public class ProgressActivity extends Activity {
         if (Session.getCredentials().isDemoCredentials()) {
             pullController = new LocalPullController(this);
         } else {
-            pullController = new PullController();
+            pullController = new PullController(new ServerMetadataRepository(this));
         }
         mPullUseCase = new PullUseCase(pullController);
     }
@@ -328,6 +330,7 @@ public class ProgressActivity extends Activity {
             @Override
             public void onComplete() {
                 postFinish();
+                DataFactory.INSTANCE.reset();
             }
 
             @Override
@@ -394,8 +397,7 @@ public class ProgressActivity extends Activity {
             @Override
             public void onNetworkError() {
                 showException(PreferencesState.getInstance().getContext().getString(
-                        org.hisp.dhis.client.sdk.ui.bindings.R.string
-                                .title_error_unexpected));
+                        R.string.title_error_unexpected));
             }
         });
     }

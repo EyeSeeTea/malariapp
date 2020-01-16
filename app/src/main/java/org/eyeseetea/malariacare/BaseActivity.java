@@ -54,12 +54,11 @@ import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
 import org.eyeseetea.malariacare.data.sync.IData;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerInfoRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
+import org.eyeseetea.malariacare.domain.common.Either;
 import org.eyeseetea.malariacare.domain.entity.Server;
-import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
 import org.eyeseetea.malariacare.domain.entity.ServerInfo;
 import org.eyeseetea.malariacare.domain.usecase.GetServerInfoUseCase;
 import org.eyeseetea.malariacare.domain.usecase.GetServerUseCase;
-import org.eyeseetea.malariacare.domain.usecase.GetServersUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.factories.ServerFactory;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
@@ -69,8 +68,6 @@ import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.utils.AUtils;
-import org.eyeseetea.malariacare.utils.Constants;
-import org.eyeseetea.malariacare.utils.Permissions;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -108,7 +105,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         serverStatusUseCase.execute(new GetServerInfoUseCase.Callback() {
             @Override
             public void onComplete(ServerInfo serverInfo) {
-                if(serverInfo.isServerSupported()){
+                if (serverInfo.isServerSupported()) {
                     checkQuarantineData();
                     alarmPush = new AlarmPushReceiver();
                     alarmPush.setPushAlarm(getApplicationContext());
@@ -137,18 +134,24 @@ public abstract class BaseActivity extends AppCompatActivity {
      * Common styling
      */
     private void initView(Bundle savedInstanceState) {
-        ServerFactory serverFactory = new ServerFactory();
-        GetServerUseCase getServerUseCase = serverFactory.getServerUseCase(this);
+        GetServerUseCase getServerUseCase = ServerFactory.INSTANCE.provideGetServerUseCase(this);
 
-        getServerUseCase.execute(server -> {
+        getServerUseCase.execute(serverResult -> {
             setTheme(R.style.EyeSeeTheme);
             android.support.v7.app.ActionBar actionBar = BaseActivity.this.getSupportActionBar();
 
-            if (server.getLogo() != null){
-                LayoutUtils.setActionBarLogo(this, actionBar, server.getLogo());
-            } else{
+            if (serverResult.isLeft()){
                 LayoutUtils.setActionBarLogo(actionBar);
+            } else {
+                Server server = ((Either.Right<Server>) serverResult).getValue();
+
+                if (server.isDataCompleted()) {
+                    LayoutUtils.setActionBarLogo(this, actionBar, server.getLogo());
+                } else {
+                    LayoutUtils.setActionBarLogo(actionBar);
+                }
             }
+
 
             if (savedInstanceState == null) {
                 initTransition();
@@ -225,9 +228,6 @@ public abstract class BaseActivity extends AppCompatActivity {
                 debugMessage("Import db");
                 showFileChooser();
                 break;
-            case R.id.action_monitoring_by_calendar:
-                DashboardActivity.dashboardActivity.openMonitoringByCalendar();
-                break;
             case R.id.learning_center:
                 debugMessage("learning center");
                 navigateToUrl(getString(R.string.learning_center_url));
@@ -265,9 +265,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         debugMessage("Export db to local storage");
         boolean resultOK = ExportData.dumpAndExportToLocalStorage(this);
 
-        if (resultOK){
+        if (resultOK) {
             Toast.makeText(this, ExportData.EXPORT_DATA_FILE + " " +
-                    getString(R.string.export_db_to_local_success_message), Toast.LENGTH_LONG).show();
+                            getString(R.string.export_db_to_local_success_message),
+                    Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(this, getString(R.string.export_db_to_local_error_message),
                     Toast.LENGTH_LONG).show();

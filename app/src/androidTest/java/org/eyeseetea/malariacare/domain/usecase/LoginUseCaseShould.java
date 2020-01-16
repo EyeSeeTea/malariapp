@@ -24,6 +24,7 @@ import android.support.test.InstrumentationRegistry;
 import org.eyeseetea.malariacare.data.database.datasources.ServerInfoLocalDataSource;
 import org.eyeseetea.malariacare.data.remote.api.ServerInfoRemoteDataSource;
 import org.eyeseetea.malariacare.data.repositories.ServerInfoRepository;
+import org.eyeseetea.malariacare.data.repositories.ServerRepository;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
@@ -50,6 +51,8 @@ public class LoginUseCaseShould {
     public MockitoRule rule = MockitoJUnit.rule();
     @Rule
     public MockWebServerRule mockWebServerRule = new MockWebServerRule();
+    @Mock
+    ServerRepository serverRepository;
     @Mock
     ServerInfoLocalDataSource mServerLocalDataSource;
     @Test
@@ -135,7 +138,11 @@ public class LoginUseCaseShould {
         when(mServerLocalDataSource.get()).thenReturn(new ServerInfo(serverVersion));
         ServerInfoRemoteDataSource mServerRemoteDataSource = new ServerInfoRemoteDataSource(InstrumentationRegistry.getTargetContext());
         ServerInfoRepository serverInfoRepository = new ServerInfoRepository(mServerLocalDataSource, mServerRemoteDataSource);
-        return new LoginUseCase(new UserAccountRepository(InstrumentationRegistry.getTargetContext()),
-                serverInfoRepository, mainExecutor, asyncExecutor);
+        return new LoginUseCase(
+                new UserAccountRepository(InstrumentationRegistry.getTargetContext()),
+                serverRepository,
+                serverInfoRepository,
+                mainExecutor,
+                asyncExecutor);
     }
 }

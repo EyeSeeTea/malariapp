@@ -35,13 +35,12 @@ import android.widget.TextView;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
-import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramOUSurveyDict;
 import org.eyeseetea.malariacare.data.database.utils.services.BaseServiceBundle;
+import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentSentAdapter;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.views.CustomRadioButton;
@@ -61,7 +60,7 @@ public class DashboardSentFragment extends Fragment implements IModuleFragment {
     private final static int WITHOUT_ORDER = 0;
     private final static int FACILITY_ORDER = 1;
     private final static int DATE_ORDER = 2;
-    private final static int SCORE_ORDER = 3;
+    private final static int COMPETENCY_ORDER = 3;
     private static int LAST_ORDER = WITHOUT_ORDER;
 
     private SurveyReceiver surveyReceiver;
@@ -198,10 +197,11 @@ public class DashboardSentFragment extends Fragment implements IModuleFragment {
 
         adapter = new AssessmentSentAdapter();
         recyclerView.setAdapter(adapter);
+        initFilterOrder();
     }
 
-    public void setScoreOrder() {
-        orderBy = SCORE_ORDER;
+    public void setCompetencyOrder() {
+        orderBy = COMPETENCY_ORDER;
         reloadSentSurveys(surveys);
     }
 
@@ -231,34 +231,16 @@ public class DashboardSentFragment extends Fragment implements IModuleFragment {
     }
 
     //Adds the clicklistener to the header CustomTextView.
-    private View initFilterOrder(View header) {
+    private void initFilterOrder() {
 
-        CustomTextView statusctv = (CustomTextView) header.findViewById(R.id.statusHeader);
+        CustomTextView statusHeader = rootView.findViewById(R.id.statusHeader);
+        statusHeader.setOnClickListener(v -> setDateOrder());
 
-        statusctv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setDateOrder();
-            }
-        });
-        CustomTextView scorectv = (CustomTextView) header.findViewById(R.id.scoreHeader);
+        CustomTextView scoreHeader = rootView.findViewById(R.id.scoreHeader);
+        scoreHeader.setOnClickListener(v -> setCompetencyOrder());
 
-        scorectv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setScoreOrder();
-            }
-        });
-
-        CustomTextView facilityctv = (CustomTextView) header.findViewById(R.id.idHeader);
-
-        facilityctv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setFacilityOrder();
-            }
-        });
-        return header;
+        CustomTextView facilityHeader = rootView.findViewById(R.id.idHeader);
+        facilityHeader.setOnClickListener(v -> setFacilityOrder());
     }
 
     /**
@@ -370,25 +352,31 @@ public class DashboardSentFragment extends Fragment implements IModuleFragment {
             if (orderBy == LAST_ORDER) {
                 reverse = true;
             }
+
             Collections.sort(oneSurveyForOrgUnit, new Comparator<SurveyDB>() {
                 public int compare(SurveyDB survey1, SurveyDB survey2) {
                     int compare;
-                    Float noScore = 0f;
                     switch (orderBy) {
                         case FACILITY_ORDER:
                             String surveyA = survey1.getOrgUnit().getName();
                             String surveyB = survey2.getOrgUnit().getName();
                             compare = surveyA.compareTo(surveyB);
                             break;
-                        case DATE_ORDER:
-                            compare = survey1.getCompletionDate().compareTo(
-                                    survey2.getCompletionDate());
-                            break;
-                        case SCORE_ORDER:
-                            compare = (survey1.hasMainScore()?survey1.getMainScoreValue():noScore).compareTo((survey2.hasMainScore()?survey2.getMainScoreValue():noScore));
+                        case COMPETENCY_ORDER:
+                            CompetencyScoreClassification classification1 =
+                                    CompetencyScoreClassification.get(
+                                            survey1.getCompetencyScoreClassification());
+
+                            CompetencyScoreClassification classification2 =
+                                    CompetencyScoreClassification.get(
+                                            survey2.getCompetencyScoreClassification());
+
+                            compare = classification1.toString().compareTo(classification2.toString());
                             break;
                         default:
-                            compare = (survey1.hasMainScore()?survey1.getMainScoreValue():noScore).compareTo((survey2.hasMainScore()?survey2.getMainScoreValue():noScore));
+                            //By Date
+                            compare = survey1.getCompletionDate().compareTo(
+                                    survey2.getCompletionDate());
                             break;
                     }
 
