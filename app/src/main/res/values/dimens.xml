@@ -109,4 +109,6 @@
     <dimen name="item_single_line_height">48dp</dimen>
 
     <dimen name="dialog_layout_margins">16dp</dimen>
+
+    <dimen name="progressbar_stroke_width">10dp</dimen>
 </resources>

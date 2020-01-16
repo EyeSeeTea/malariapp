@@ -279,4 +279,8 @@ clínica"</string>
 <string name="save_error_message">Ha ocurrido un errror guardando los datos</string>
 
 <string name="share">Compartir</string>
+
+<string name="error_unauthorized">"Usuario o password incorrectos."</string>
+<string name="title_error_unexpected">"Error inesperado"</string>
+<string name="error_not_found">Servidor no encontrado.</string>
 </resources>

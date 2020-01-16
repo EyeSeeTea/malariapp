@@ -287,4 +287,7 @@ evaluation"</string>
 <string name="save_error_message">An error has occurred saving the data</string>
 
 <string name="share">Share</string>
+<string name="error_unauthorized">"Wrong username or password."</string>
+<string name="title_error_unexpected">"Unexpected error"</string>
+<string name="error_not_found">Server not found.</string>
 </resources>

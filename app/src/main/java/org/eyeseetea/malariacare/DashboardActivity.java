@@ -219,7 +219,7 @@ public class DashboardActivity extends BaseActivity {
 
     private void showInvalidServerDialogIfIsRequired() {
         IServerInfoRepository serverStatusRepository = new ServerInfoRepository(new ServerInfoLocalDataSource(getApplicationContext()),
-                new ServerInfoRemoteDataSource(Session.getCredentials()));
+                new ServerInfoRemoteDataSource(this));
         GetServerInfoUseCase serverStatusUseCase = new GetServerInfoUseCase(serverStatusRepository,
                 new UIThreadExecutor(), new AsyncExecutor());
         serverStatusUseCase.execute(new GetServerInfoUseCase.Callback() {

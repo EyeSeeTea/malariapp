@@ -272,4 +272,8 @@ Mensuelle"</string>
 <string name="load_error_message">"Une erreur s'est produite lors du chargement des données"</string>
 <string name="save_error_message">"Une erreur s'est produite lors de l'enregistrement des données"</string>
 <string name="share">partager</string>
+
+<string name="error_unauthorized">"Nom d'utilisateur ou mot de passe incorrect."</string>
+<string name="title_error_unexpected">"Erreur inattendue"</string>
+<string name="error_not_found">Serveur introuvable.</string>
 </resources>

@@ -285,4 +285,8 @@
 <string name="load_error_message">ມີຂໍ້ຜິດພາດທີ່ເກີດຂື້ນໃນການໂຫລດຂໍ້ມູນ</string>
 <string name="save_error_message">ມີຂໍ້ຜິດພາດທີ່ເກີດຂື້ນໃນການບັນທຶກຂໍ້ມູນ</string>
 <string name="share">ແບ່ງປັນ</string>
+
+<string name="error_unauthorized">"ឈຊື່ຜູ້ໃຊ້ຫຼືລະຫັດຜ່ານທີ່ບໍ່ຖືກຕ້ອງ."</string>
+<string name="title_error_unexpected">"ຜິດພາດຜິດພາດ"</string>
+<string name="error_not_found">ບໍ່ພົບເຄື່ອງແມ່ຂ່າຍ.</string>
 </resources>
