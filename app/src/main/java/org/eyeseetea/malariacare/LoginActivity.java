@@ -36,6 +36,7 @@ import android.support.v7.widget.CardView;
 import android.text.Editable;
 import android.text.Html;
 import android.text.SpannableString;
+import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.util.Log;
@@ -87,7 +88,6 @@ public class LoginActivity extends Activity implements LoginPresenter.View {
     private ViewGroup loginViewsContainer;
     private Spinner serverSpinner;
     private LinearLayout serverContainer;
-    private EditText serverEditText;
     private static LoginActivity mLoginActivity;
 
     private EditText mServerUrl;
@@ -136,12 +136,32 @@ public class LoginActivity extends Activity implements LoginPresenter.View {
     private void initViews() {
         serverSpinner = findViewById(R.id.server_spinner);
         serverContainer = findViewById(R.id.edittext_server_url_container);
-        serverEditText = findViewById(R.id.edittext_server_url);
+
+        TextWatcher watcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                enableOrDisableLoginButton();
+            }
+        };
+
 
 
         mServerUrl = findViewById(R.id.edittext_server_url);
+        mServerUrl.addTextChangedListener(watcher);
         mUsername = findViewById(R.id.edittext_username);
+        mUsername.addTextChangedListener(watcher);
         mPassword = findViewById(R.id.edittext_password);
+        mPassword.addTextChangedListener(watcher);
         mLoginButton = findViewById(R.id.button_log_in);
 
         mServerUrl.setText(R.string.login_info_dhis_default_server_url);
@@ -165,6 +185,7 @@ public class LoginActivity extends Activity implements LoginPresenter.View {
         mLoginButton.setOnClickListener(
                 v -> onLoginButtonClicked(mServerUrl.getText(), mUsername.getText(),
                         mPassword.getText()));
+        mLoginButton.setEnabled(false);
 
         onPostAnimationListener = new OnPostAnimationListener();
 
@@ -188,6 +209,16 @@ public class LoginActivity extends Activity implements LoginPresenter.View {
         hideProgress();
     }
 
+    private void  enableOrDisableLoginButton() {
+        String url = mServerUrl.getText().toString();
+        String username = mUsername.getText().toString();
+        String password = mPassword.getText().toString();
+
+        mLoginButton.setEnabled((url != null && !url.equals("") &&
+                username != null && !username.equals("") &&
+                password != null && !password.equals("")));
+    }
+
     private boolean isGreaterThanOrJellyBean() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
     }
@@ -208,12 +239,13 @@ public class LoginActivity extends Activity implements LoginPresenter.View {
         serverSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Server server =(Server) parent.getItemAtPosition(position);
+                Server server = (Server) parent.getItemAtPosition(position);
                 loginPresenter.selectServer(server);
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) { }
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
         });
     }
 
@@ -328,7 +360,7 @@ public class LoginActivity extends Activity implements LoginPresenter.View {
                     @Override
                     public void onNetworkError() {
                         showError(PreferencesState.getInstance().getContext().getString(
-                                R.string.title_error_unexpected));
+                                R.string.network_error));
                     }
 
                     @Override
@@ -446,13 +478,13 @@ public class LoginActivity extends Activity implements LoginPresenter.View {
 
     @Override
     public void showManualServerUrlView() {
-        serverEditText.setText("");
+        mServerUrl.setText("");
         serverContainer.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideManualServerUrlView(String serverUrl) {
-        serverEditText.setText(serverUrl);
+        mServerUrl.setText(serverUrl);
         serverContainer.setVisibility(View.GONE);
     }
 
