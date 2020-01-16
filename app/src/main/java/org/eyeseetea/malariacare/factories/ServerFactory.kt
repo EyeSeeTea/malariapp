@@ -23,8 +23,7 @@ object ServerFactory {
 
     fun provideGetServersUseCase(context: Context): GetServersUseCase {
         val serverRepository = provideServerRepository(context)
-        return GetServersUseCase(serverRepository, mainExecutor, asyncExecutor
-        )
+        return GetServersUseCase(serverRepository)
     }
 
     fun provideGetServerUseCase(context: Context): GetServerUseCase {

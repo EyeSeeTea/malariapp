@@ -89,6 +89,23 @@ public class ServerDB extends BaseModel {
         this.connected = connected;
     }
 
+    // Query method are here instead of ServerLocalDataSource because Kapt plugin
+    // launch error to build for DbFlow 3.0.1
+    // "Could not resolve all files for configuration ':app:kapt'
+    public static ServerDB getConnectedServerFromDB() {
+        return new Select().from(ServerDB.class)
+                .where(ServerDB_Table.connected.is(true)).querySingle();
+    }
+
+    public static List<ServerDB> getAllServersFromDB() {
+        return new Select().from(ServerDB.class).queryList();
+    }
+
+    public static ServerDB getServerFromDByUrl(String url) {
+        return new Select().from(ServerDB.class)
+                .where(ServerDB_Table.url.eq(url)).querySingle();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
