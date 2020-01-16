@@ -65,7 +65,6 @@ import org.eyeseetea.malariacare.domain.entity.Server;
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.factories.AuthenticationFactory;
-import org.eyeseetea.malariacare.factories.ServerFactory;
 import org.eyeseetea.malariacare.layout.adapters.general.ServerArrayAdapter;
 import org.eyeseetea.malariacare.presentation.presenters.LoginPresenter;
 import org.eyeseetea.malariacare.strategies.LoginActivityStrategy;
