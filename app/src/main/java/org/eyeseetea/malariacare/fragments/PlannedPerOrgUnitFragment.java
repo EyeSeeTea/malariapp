@@ -64,6 +64,7 @@ public class PlannedPerOrgUnitFragment extends Fragment {
     private String filterOrgUnitUid;
 
     private View rootView;
+    private RecyclerView recyclerView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -177,7 +178,8 @@ public class PlannedPerOrgUnitFragment extends Fragment {
 
     private void resetList() {
         refreshMenuDots();
-        this.adapter.notifyDataSetChanged();
+
+        this.recyclerView.post(() -> PlannedPerOrgUnitFragment.this.adapter.notifyDataSetChanged());
     }
 
     private void initSelectAllCheckbox() {
@@ -202,7 +204,7 @@ public class PlannedPerOrgUnitFragment extends Fragment {
 
 
     private void initRecyclerView() {
-        RecyclerView recyclerView = rootView.findViewById(R.id.planByOrgUnitList);
+        recyclerView = rootView.findViewById(R.id.planByOrgUnitList);
 
         this.adapter = new PlanningPerOrgUnitAdapter(getActivity(),
                 () -> {

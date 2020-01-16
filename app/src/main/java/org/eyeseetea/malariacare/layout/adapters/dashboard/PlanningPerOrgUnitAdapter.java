@@ -30,7 +30,7 @@ public class PlanningPerOrgUnitAdapter extends RecyclerView.Adapter<RecyclerView
 
     private Context context;
 
-    List<PlannedSurveyByOrgUnit> items =  new ArrayList<>();
+    List<PlannedSurveyByOrgUnit> items = new ArrayList<>();
 
     public PlanningPerOrgUnitAdapter(Context context, PlannedPerOrgUnitFragment.Callback callback) {
         this.context = context;
@@ -55,7 +55,7 @@ public class PlanningPerOrgUnitAdapter extends RecyclerView.Adapter<RecyclerView
         return items.size();
     }
 
-    public void setItems (List<PlannedSurveyByOrgUnit> items){
+    public void setItems(List<PlannedSurveyByOrgUnit> items) {
         this.items = items;
         notifyDataSetChanged();
     }
@@ -91,43 +91,39 @@ public class PlanningPerOrgUnitAdapter extends RecyclerView.Adapter<RecyclerView
 
             itemView.setPadding(paddingDp, paddingDp, paddingDp, paddingDp);
 
+            surveyCheckBox.setOnCheckedChangeListener(null);
+            surveyCheckBox.setChecked(plannedSurvey.getChecked());
 
             surveyCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                boolean isChanged = false;
-                if(plannedSurvey.getChecked()!=isChecked) {
-                    isChanged = true;
-                }
                 plannedSurvey.setChecked(isChecked);
-                if(isChanged) {
-                    callback.onItemCheckboxChanged();
-                }
+
+                callback.onItemCheckboxChanged();
             }
             );
-
-            if (plannedSurvey.getChecked()) {
-                surveyCheckBox.setChecked(true);
-            }
 
             DateParser dateParser = new DateParser();
 
             if (survey.getScheduledDate() != null) {
-                scheduleTextView.setText(dateParser.getEuropeanFormattedDate(survey.getScheduledDate()));
+                scheduleTextView.setText(
+                        dateParser.getEuropeanFormattedDate(survey.getScheduledDate()));
             } else {
                 scheduleTextView.setText(R.string.assessment_no_schedule_date);
             }
 
-            completionDateTextView.setText(dateParser.getEuropeanFormattedDate(survey.getCreationDate()));
+            completionDateTextView.setText(
+                    dateParser.getEuropeanFormattedDate(survey.getCreationDate()));
             programTextView.setText(survey.getProgram().getName());
             orgUnitTextView.setText(survey.getOrgUnit().getName());
 
             assignBackgroundColor(position);
 
-            if(plannedSurvey.isHideMenu()){
+            if (plannedSurvey.isHideMenu()) {
                 menuDots.setVisibility(View.INVISIBLE);
-            }else {
+            } else {
                 menuDots.setVisibility(View.VISIBLE);
                 menuDots.setOnClickListener(view -> {
-                    // TODO : review after merge questmark cosmetics and remove or create a strategy if is necessary
+                    // TODO : review after merge questmark cosmetics and remove or create a
+                    //  strategy if is necessary
                     dashboardActivity.onPlannedSurvey(plannedSurvey.getSurvey(),
                             new ScheduleListener(plannedSurvey.getSurvey(), context));
                 });
@@ -136,11 +132,11 @@ public class PlanningPerOrgUnitAdapter extends RecyclerView.Adapter<RecyclerView
         }
 
         private void assignBackgroundColor(int position) {
-            if(position==0 || position%2==0) {
+            if (position == 0 || position % 2 == 0) {
                 itemView.setBackgroundColor(
                         PreferencesState.getInstance().getContext().getResources().getColor(
                                 R.color.white_grey));
-            }else{
+            } else {
                 itemView.setBackgroundColor(
                         PreferencesState.getInstance().getContext().getResources().getColor(
                                 R.color.white));
