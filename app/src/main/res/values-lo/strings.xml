@@ -285,4 +285,6 @@
 <string name="load_error_message">ມີຂໍ້ຜິດພາດທີ່ເກີດຂື້ນໃນການໂຫລດຂໍ້ມູນ</string>
 <string name="save_error_message">ມີຂໍ້ຜິດພາດທີ່ເກີດຂື້ນໃນການບັນທຶກຂໍ້ມູນ</string>
 <string name="share">ແບ່ງປັນ</string>
+
+<string name="network_error">"ມີປັນຫາກັບເຄືອຂ່າຍ, ກະລຸນາລອງ ໃໝ່ ໃນພາຍຫຼັງ."</string>
 </resources>

@@ -280,8 +280,7 @@ public class LoginActivity extends AbsLoginActivity implements LoginPresenter.Vi
                     @Override
                     public void onNetworkError() {
                         showError(PreferencesState.getInstance().getContext().getString(
-                                org.hisp.dhis.client.sdk.ui.bindings.R.string
-                                        .title_error_unexpected));
+                                R.string.network_error));
                     }
 
                     @Override

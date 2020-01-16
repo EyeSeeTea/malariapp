@@ -287,4 +287,6 @@ evaluation"</string>
 <string name="save_error_message">An error has occurred saving the data</string>
 
 <string name="share">Share</string>
+
+<string name="network_error">"There is a problem with the network, please try again later."</string>
 </resources>

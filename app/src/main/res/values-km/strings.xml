@@ -287,4 +287,6 @@ evaluation"</string>
 <string name="load_error_message">កំហុសមួយបានកើតឡើងពេលផ្ទុកទិន្នន័យ</string>
 <string name="save_error_message">កំហុសមួយបានកើតឡើងការរក្សាទុកទិន្នន័យ</string>
 <string name="share">ចែករំលែក</string>
+
+<string name="network_error">"មានបញ្ហាជាមួយបណ្តាញសូមព្យាយាមម្តងទៀតនៅពេលក្រោយ។"</string>
 </resources>

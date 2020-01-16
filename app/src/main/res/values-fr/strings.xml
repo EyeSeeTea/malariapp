@@ -272,4 +272,6 @@ Mensuelle"</string>
 <string name="load_error_message">"Une erreur s'est produite lors du chargement des données"</string>
 <string name="save_error_message">"Une erreur s'est produite lors de l'enregistrement des données"</string>
 <string name="share">partager</string>
+
+<string name="network_error">"Il y a un problème avec le réseau, veuillez réessayer plus tard."</string>
 </resources>

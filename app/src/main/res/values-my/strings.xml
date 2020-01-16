@@ -245,4 +245,5 @@
 <string name="load_error_message"></string>
 <string name="save_error_message"></string>
 <string name="share"></string>
+<string name="network_error"></string>
 </resources>
