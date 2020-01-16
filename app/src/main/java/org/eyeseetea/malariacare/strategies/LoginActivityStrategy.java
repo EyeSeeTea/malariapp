@@ -23,38 +23,25 @@ import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.datasources.ServerInfoLocalDataSource;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.LocalPullController;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
-import org.eyeseetea.malariacare.data.remote.api.ServerInfoRemoteDataSource;
-import org.eyeseetea.malariacare.data.repositories.ServerInfoRepository;
-import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
-import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
-import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
-import org.eyeseetea.malariacare.domain.boundary.repositories.IServerRepository;
-import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.usecase.LoadUserAndCredentialsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullFilters;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullUseCase;
-import org.eyeseetea.malariacare.factories.ServerFactory;
-import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
-import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
-import org.hisp.dhis.client.sdk.ui.views.FontButton;
+import org.eyeseetea.malariacare.factories.AuthenticationFactory;
+import org.eyeseetea.malariacare.views.CustomButton;
 
 public class LoginActivityStrategy {
 
     protected LoginActivity loginActivity;
-
-    private static final String TAG = ".LoginActivityStrategy";
 
     public LoginActivityStrategy(LoginActivity loginActivity) {
         this.loginActivity = loginActivity;
@@ -69,11 +56,7 @@ public class LoginActivityStrategy {
 
             finishAndGo(DashboardActivity.class);
         } else {
-            loginActivity.runOnUiThread(new Runnable() {
-                public void run() {
-                    addDemoButton();
-                }
-            });
+            addDemoButton();
         }
     }
 
@@ -83,39 +66,18 @@ public class LoginActivityStrategy {
     }
 
     private void addDemoButton() {
-        ViewGroup loginViewsContainer = (ViewGroup) loginActivity.findViewById(
-                R.id.layout_login_views);
-
-        loginActivity.getLayoutInflater().inflate(R.layout.demo_login_button, loginViewsContainer,
-                true);
-
-        FontButton demoButton = (FontButton) loginActivity.findViewById(R.id.demo_login_button);
+        CustomButton demoButton = loginActivity.findViewById(R.id.demo_login_button);
 
         demoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Credentials demoCrededentials = Credentials.createDemoCredentials();
+                Credentials demoCredentials = Credentials.createDemoCredentials();
 
-                IUserAccountRepository mUserAccountRepository = new UserAccountRepository(
-                        loginActivity);
-                IAsyncExecutor asyncExecutor = new AsyncExecutor();
-                IMainExecutor mainExecutor = new UIThreadExecutor();
-                ServerInfoLocalDataSource mServerLocalDataSource = new ServerInfoLocalDataSource(
-                        loginActivity);
-                ServerInfoRemoteDataSource mServerRemoteDataSource = new ServerInfoRemoteDataSource(
-                        demoCrededentials);
-                ServerInfoRepository serverInfoRepository = new ServerInfoRepository(
-                        mServerLocalDataSource, mServerRemoteDataSource);
-
-                IServerRepository serverRepository = ServerFactory.INSTANCE.provideServerRepository(
+                LoginUseCase mLoginUseCase = AuthenticationFactory.INSTANCE.provideLoginUseCase(
                         loginActivity);
 
-                LoginUseCase mLoginUseCase =
-                        new LoginUseCase(mUserAccountRepository, serverRepository,
-                                serverInfoRepository, mainExecutor, asyncExecutor);
-
-                mLoginUseCase.execute(demoCrededentials,
+                mLoginUseCase.execute(demoCredentials,
                         new LoginUseCase.Callback() {
                             @Override
                             public void onLoginSuccess() {

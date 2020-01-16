@@ -79,10 +79,10 @@ public class LoginUseCase implements UseCase{
 
     @Override
     public void run() {
-        getServerVersion();
         mUserAccountRepository.login(credentials, new IRepositoryCallback<UserAccount>() {
             @Override
             public void onSuccess(UserAccount userAccount) {
+                getServerVersion();
                 notifyOnLoginSuccess();
                 updateLoggedServer();
             }
