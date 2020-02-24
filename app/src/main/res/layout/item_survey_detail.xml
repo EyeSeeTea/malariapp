@@ -64,7 +64,7 @@
                 android:ellipsize="end"
                 android:lines="1"
                 android:textSize="@dimen/planing_text_size"
-                android:text="@string/dashboard_title_planned_next_qa"
+                android:text="@string/assessment_sent_date"
                 app:tDimension="@string/font_size_level1"
                 app:tFontName="@string/medium_font_name"/>
 
