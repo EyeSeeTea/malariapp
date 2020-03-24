@@ -931,6 +931,22 @@ public class QuestionDB extends BaseModel {
                 .queryList();
     }
 
+    public static List<QuestionDB> getAnsweredQuestions(long idSurvey, boolean critical) {
+        return SQLite.select()
+                .from(QuestionDB.class).as(questionName)
+                .join(ValueDB.class, Join.JoinType.LEFT_OUTER).as(valueName)
+                .on(ValueDB_Table.id_question_fk.withTable(valueAlias)
+                        .eq(QuestionDB_Table.id_question.withTable(questionAlias)))
+                .join(OptionDB.class, Join.JoinType.LEFT_OUTER).as(optionFlowName)
+                .on(OptionDB_Table.id_answer_fk.withTable(optionFlowAlias)
+                        .eq(QuestionDB_Table.id_answer_fk.withTable(questionAlias)))
+                .where(ValueDB_Table.id_survey_fk.eq(idSurvey))
+                .and(QuestionDB_Table.compulsory.is(critical))
+                .and(ValueDB_Table.value.withTable(valueAlias).is(OptionDB_Table.name.withTable(optionFlowAlias)))
+                .queryList();
+    }
+
+
     public static List<CompositeScoreDB> getCompositeScoreOfFailedQuestions(long idSurvey, boolean critical) {
         return new Select()
                 .from(CompositeScoreDB.class).as(compositeScoreName)
