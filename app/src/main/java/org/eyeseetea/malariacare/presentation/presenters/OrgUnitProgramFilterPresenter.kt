@@ -43,7 +43,7 @@ class OrgUnitProgramFilterPresenter(
         if (selectedProgramName != programName) {
             changeSelectedProgram(programName)
 
-            if (exclusiveFilter) {
+            if (exclusiveFilter ) {
                 unSelectOrgUnit()
             }
 
@@ -78,7 +78,13 @@ class OrgUnitProgramFilterPresenter(
         val orgUnitNameToSelect = orgUnitToSelect?.name ?: allOrgUnitText
 
         onProgramSelected(programNameToSelect)
-        onOrgUnitSelected(orgUnitNameToSelect)
+
+        if (exclusiveFilter ) {
+            unSelectOrgUnit()
+            notifyOrgUnitFilterChange()
+        }else{
+            onOrgUnitSelected(orgUnitNameToSelect)
+        }
 
         notifySelectOrgUnit()
         notifySelectProgram()

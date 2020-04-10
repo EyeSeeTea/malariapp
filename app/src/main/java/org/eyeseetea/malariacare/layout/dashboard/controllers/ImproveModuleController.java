@@ -158,7 +158,7 @@ public class ImproveModuleController extends ModuleController {
         //Reload improve fragment
         if (DashboardOrientation.VERTICAL.equals(dashboardController.getOrientation())) {
             dashboardController.reloadVertical();
-        } else if (fragment instanceof FeedbackFragment) {
+        } else if (fragment instanceof FeedbackFragment || fragment instanceof ObservationsFragment) {
             reloadFragment();
         }
 
