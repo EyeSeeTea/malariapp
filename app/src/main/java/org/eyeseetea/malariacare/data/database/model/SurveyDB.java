@@ -386,7 +386,7 @@ public class SurveyDB extends BaseModel implements VisitableToSDK, IData {
 
     public Boolean hasMainScore() {
         if (hasMainScore == null || !hasMainScore) {
-            ScoreDB score = getScore();
+            ScoreDB score = getMainScore();
             Float value = (score == null) ? null : score.getScore();
             if (value == null) {
                 hasMainScore = false;
