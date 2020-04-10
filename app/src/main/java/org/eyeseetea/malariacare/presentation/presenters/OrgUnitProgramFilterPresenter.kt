@@ -43,7 +43,7 @@ class OrgUnitProgramFilterPresenter(
         if (selectedProgramName != programName) {
             changeSelectedProgram(programName)
 
-            if (exclusiveFilter ) {
+            if (exclusiveFilter) {
                 unSelectOrgUnit()
             }
 
@@ -79,10 +79,10 @@ class OrgUnitProgramFilterPresenter(
 
         onProgramSelected(programNameToSelect)
 
-        if (exclusiveFilter ) {
+        if (exclusiveFilter) {
             unSelectOrgUnit()
             notifyOrgUnitFilterChange()
-        }else{
+        } else {
             onOrgUnitSelected(orgUnitNameToSelect)
         }
 
