@@ -92,7 +92,6 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
     }
 
@@ -173,7 +172,6 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
 
     @Override
     public void onStop() {
-        Log.d(TAG, "onStop");
         unregisterSurveysReceiver();
         stopMonitor();
         super.onStop();
@@ -181,7 +179,6 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
 
     @Override
     public void onPause() {
-        Log.d(TAG, "onPause");
         unregisterSurveysReceiver();
 
         super.onPause();
