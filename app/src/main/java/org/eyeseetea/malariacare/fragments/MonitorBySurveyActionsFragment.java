@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import org.eyeseetea.malariacare.DashboardActivity;
@@ -58,21 +57,28 @@ public class MonitorBySurveyActionsFragment extends FiltersFragment implements
     }
 
     @Override
-    public void onDestroy() {
+    public void onPause() {
         presenter.detachView();
-        super.onDestroy();
+        super.onPause();
     }
 
     @Override
     protected void onFiltersChanged() {
-        DashboardActivity.dashboardActivity.openMonitoringByCalendar();
+        if (existFilter()) {
+            DashboardActivity.dashboardActivity.openMonitoringByCalendar();
+        }
+    }
+
+    private boolean existFilter() {
+        return !selectedProgramUidFilter.isEmpty() || !selectedOrgUnitUidFilter.isEmpty();
     }
 
 
     @Override
     public void reloadData() {
         super.reloadData();
-        if (presenter != null){
+
+        if (presenter != null && !existFilter()) {
             presenter.refresh(selectedProgramUidFilter, selectedOrgUnitUidFilter);
         }
     }
