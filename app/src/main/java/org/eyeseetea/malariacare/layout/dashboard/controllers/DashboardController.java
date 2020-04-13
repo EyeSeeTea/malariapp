@@ -148,7 +148,7 @@ public class DashboardController {
     /**
      * Returns the module in charge of the currently selected tab
      */
-    private ModuleController getCurrentModule() {
+    public ModuleController getCurrentModule() {
         if (currentTab == null) {
             return null;
         }
