@@ -79,7 +79,7 @@ class OrgUnitProgramFilterPresenter(
 
         onProgramSelected(programNameToSelect)
 
-        if (exclusiveFilter) {
+        if (exclusiveFilter && programToSelect != null && orgUnitToSelect != null) {
             unSelectOrgUnit()
             notifyOrgUnitFilterChange()
         } else {
