@@ -129,13 +129,12 @@ public class PreferencesState {
         locationRequired = initLocationRequired();
         hidePlanningTab = initHidePlanningTab();
         maxEvents = initMaxEvents();
-        monitoringTarget = initMonitoringTarget();
         languageCode = initLanguageCode();
         userAccept = initUserAccept();
         Log.d(TAG, String.format(
                 "reloadPreferences: scale: %s | locationRequired: %b | "
-                        + "maxEvents: %d | largeTextOption: %b  | target: %d",
-                scale, locationRequired, maxEvents, showLargeText, monitoringTarget));
+                        + "maxEvents: %d | largeTextOption: %b",
+                scale, locationRequired, maxEvents, showLargeText));
 
         creedentials = initCredentials();
     }
@@ -245,18 +244,6 @@ public class PreferencesState {
     }
 
     /**
-     * Inits target settings
-     */
-    private int initMonitoringTarget() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
-                instance.getContext());
-        String maxValue = sharedPreferences.getString(
-                instance.getContext().getString(R.string.monitoring_target),
-                instance.getContext().getString(R.string.default_monitoring_target));
-        return Integer.valueOf(maxValue);
-    }
-
-    /**
      * Inits maps of dimensions
      */
     private Map<String, Map<String, Float>> initScaleDimensionsMap() {
@@ -335,11 +322,11 @@ public class PreferencesState {
     }
 
     public int getMonitoringTarget() {
-        return monitoringTarget;
-    }
-
-    public void setMonitoringTarget(int monitoringTarget) {
-        this.monitoringTarget = monitoringTarget;
+        // TODO: The monitoring target preference is removed because is used by old monitoring
+        //  without filters that It's not visible any more. But since the old monitoring code
+        //  is still present reading from this getter, we leave the getter returning
+        //  always default value. When the old monitoring code is removed, delete this getter.
+        return Integer.valueOf(instance.getContext().getString(R.string.default_monitoring_target));
     }
 
     public Float getFontSize(String scale, String dimension) {

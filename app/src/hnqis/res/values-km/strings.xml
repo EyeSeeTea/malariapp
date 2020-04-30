@@ -159,7 +159,6 @@
 <string name="server_url">"DHIS2 server"</string>
 <string name="settings_text_dhis_password">"ពាក្យសម្ងាត់ DHIS"</string>
 <string name="settings_text_dhis_max_items">"DHIS អតិបរមាការស្ទង់មតិបានផ្ទុក"</string>
-<string name="settings_monitoring_target">"គោលដៅតាមដាន"</string>
 <string name="dialog_error_push_uids">"UID ដែលមិនត្រឹមត្រូវបានរកឃើញក្នុងការរុញ"</string>
 <string name="dialog_error_push_no_location_and_required">"គ្មានទីតាំងដែលអាចប្រើបានទេហើយវាជាវាលចាំបាច់"</string>
 <string name="dialog_info_push_imported">"បាននាំចូល"</string>

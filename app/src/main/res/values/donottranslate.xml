@@ -46,7 +46,6 @@
     <string name="dhis_password" translatable="false">dhis_password</string>
     <string name="dhis_max_items" translatable="false">dhis_max_items</string>
     <string name="dhis_default_max_items" translatable="false">30</string>
-    <string name="monitoring_target" translatable="false">monitoring_target</string>
     <string name="default_monitoring_target" translatable="false">30</string>
     <string name="location_required" translatable="false">location_required</string>
     <string name="pull_metadata" translatable="false">pull_metadata</string>
