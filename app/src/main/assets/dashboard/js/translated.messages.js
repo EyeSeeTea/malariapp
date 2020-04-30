@@ -14,7 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 var messages= {
     "assesmentUnderTaken":"Assessment undertaken",
     "target": "Target",
-    "qualityOfCare": "Quality of care: Last ",
+    "qualityOfCare": "Competency Classes - ",
     "months": " months",
     "noSurveys": "No surveys to show",
     "multipleEventLegend": "(*)More than one survey exist on the same month"

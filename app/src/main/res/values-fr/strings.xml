@@ -184,7 +184,7 @@ Mensuelle"</string>
 <string name="error_message_push">"L'événement avec identifiant : %s. a été envoyé sans sa date. S'il vous plaît contactez l'administrateur."</string>
 <string name="monitor_js_assessments">"Rapports réalisés"</string>
 <string name="monitor_js_target">"Objectif"</string>
-<string name="monitor_js_quality_of_care">"Qualité des soins: Dernier "</string>
+<string name="monitor_js_quality_of_care">"Classes de compétence -"</string>
 <string name="monitor_js_months">" mois"</string>
 
 <string name="create">"Créer"</string>
