@@ -196,14 +196,13 @@ class MonitorActionsDialogFragment : DialogFragment(), MonitorActionsDialogPrese
 
         val dateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
         val date = dateFormatter.format(action.dueDate)
-        val maxLength = 75;
+        val maxLength = 75
         val description =
-            if (action.description.length >maxLength)
-                "${action.description.substring(0,maxLength)} ..."
+            if (action.description.length > maxLength)
+                "${action.description.substring(0, maxLength)} ..."
             else action.description
 
-
-        return "$description \n$responsibleLabel ${action.responsible} \n$dueDateLabel $date";
+        return "$description \n$responsibleLabel ${action.responsible} \n$dueDateLabel $date"
     }
 
     companion object {
