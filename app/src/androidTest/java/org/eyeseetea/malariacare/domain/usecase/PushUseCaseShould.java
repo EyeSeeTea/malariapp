@@ -21,6 +21,7 @@ package org.eyeseetea.malariacare.domain.usecase;
 
 import org.eyeseetea.malariacare.data.database.datasources.ServerInfoLocalDataSource;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushDataController;
+import org.eyeseetea.malariacare.data.file.AssetsFileReader;
 import org.eyeseetea.malariacare.data.remote.api.ServerInfoRemoteDataSource;
 import org.eyeseetea.malariacare.data.repositories.ServerInfoRepository;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
@@ -50,7 +51,7 @@ public class PushUseCaseShould {
     @Rule
     public MockitoRule rule = MockitoJUnit.rule();
     @Rule
-    public MockWebServerRule mockWebServerRule = new MockWebServerRule();
+    public MockWebServerRule mockWebServerRule = new MockWebServerRule(new AssetsFileReader());
     @Mock
     ServerInfoLocalDataSource mServerLocalDataSource;
 
