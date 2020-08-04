@@ -48,6 +48,8 @@ public class ServerDB extends BaseModel {
     @Column
     boolean connected;
 
+    @Column
+    Integer classification;
 
     public long getId_server() {
         return id_server;
@@ -106,6 +108,14 @@ public class ServerDB extends BaseModel {
                 .where(ServerDB_Table.url.eq(url)).querySingle();
     }
 
+    public Integer getClassification() {
+        return classification;
+    }
+
+    public void setClassification(Integer classification) {
+        this.classification = classification;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -114,17 +124,21 @@ public class ServerDB extends BaseModel {
         ServerDB serverDB = (ServerDB) o;
 
         if (id_server != serverDB.id_server) return false;
-        if (name != null ? !name.equals(serverDB.name) : serverDB.name != null) return false;
+        if (connected != serverDB.connected) return false;
+        if (!name.equals(serverDB.name)) return false;
         if (!url.equals(serverDB.url)) return false;
-        return logo != null ? logo.equals(serverDB.logo) : serverDB.logo == null;
+        if (!logo.equals(serverDB.logo)) return false;
+        return classification.equals(serverDB.classification);
     }
 
     @Override
     public int hashCode() {
         int result = (int) (id_server ^ (id_server >>> 32));
-        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + name.hashCode();
         result = 31 * result + url.hashCode();
-        result = 31 * result + (logo != null ? logo.hashCode() : 0);
+        result = 31 * result + logo.hashCode();
+        result = 31 * result + (connected ? 1 : 0);
+        result = 31 * result + classification.hashCode();
         return result;
     }
 }
