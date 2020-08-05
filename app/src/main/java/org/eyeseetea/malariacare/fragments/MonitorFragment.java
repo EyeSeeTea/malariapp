@@ -26,8 +26,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.LocalBroadcastManager;
@@ -50,9 +48,6 @@ import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.monitor.MonitorMessagesBuilder;
-import org.eyeseetea.malariacare.data.database.utils.monitor.allassessments.SentSurveysBuilderBase;
-import org.eyeseetea.malariacare.data.database.utils.monitor.allassessments.SentSurveysBuilderByOrgUnit;
-import org.eyeseetea.malariacare.data.database.utils.monitor.allassessments.SentSurveysBuilderByProgram;
 import org.eyeseetea.malariacare.data.database.utils.monitor.facilities.FacilityTableBuilderBase;
 import org.eyeseetea.malariacare.data.database.utils.monitor.facilities.FacilityTableBuilderByOrgUnit;
 import org.eyeseetea.malariacare.data.database.utils.monitor.facilities.FacilityTableBuilderByProgram;
@@ -109,13 +104,11 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
                 new OrgUnitProgramFilterView.FilterChangedListener() {
                     @Override
                     public void onProgramFilterChanged(String selectedProgramFilter) {
-                        pushProgramFilterToJavascript(selectedProgramFilter);
                         saveCurrentFilters();
                     }
 
                     @Override
                     public void onOrgUnitFilterChanged(String selectedOrgUnitFilter) {
-                        pushOrgUnitFilterToJavascript(selectedOrgUnitFilter);
                         saveCurrentFilters();
                     }
                 });
@@ -151,6 +144,12 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
         if (orgUnitProgramFilterView.getSelectedProgramFilter().equals("") &&
                 orgUnitProgramFilterView.getSelectedOrgUnitFilter().equals("")){
             DashboardActivity.dashboardActivity.openMonitorByActions();
+        } else {
+            if (!orgUnitProgramFilterView.getSelectedProgramFilter().equals("")){
+                pushProgramFilterToJavascript(orgUnitProgramFilterView.getSelectedProgramFilter());
+            } else{
+                pushOrgUnitFilterToJavascript(orgUnitProgramFilterView.getSelectedOrgUnitFilter());
+            }
         }
     }
 
@@ -294,23 +293,6 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
                 //Set the colors of red/green/yellow pie and table
                 FacilityTableBuilderBase.setColor(view);
 
-                //Add line chart
-                if (isOrgUnitFilterActive()) {
-                    new SentSurveysBuilderByOrgUnit(surveysForGraphic, getActivity(),
-                            orgUnits).addDataInChart(view);
-                }
-
-                if (isProgramFilterActive()) {
-                    new SentSurveysBuilderByProgram(surveysForGraphic, getActivity(),
-                            programs).addDataInChart(view);
-                }
-                //Set chart title
-                SentSurveysBuilderBase.injectChartTitle(webView);
-
-                //Show stats by program
-                SentSurveysBuilderBase.showData(view);
-
-                //Add line chart
                 if (isOrgUnitFilterActive()) {
                     new PieBuilderByOrgUnit(surveysForGraphic).addDataInChart(view);
                 }
@@ -318,7 +300,6 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
                     new PieBuilderByProgram(surveysForGraphic).addDataInChart(view);
                 }
 
-                //Add line chart
                 if (isOrgUnitFilterActive()) {
                     //facility by progam-> is a orgunit facility
                     new FacilityTableBuilderByProgram(surveysForGraphic).addDataInChart(view);

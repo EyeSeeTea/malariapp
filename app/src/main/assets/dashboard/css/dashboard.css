@@ -11,7 +11,7 @@
   }
   @font-face {
       font-family: "Roboto-Condensed";
-      src: url("../fonts/Roboto-Condensed.ttf");
+      src: url("../../fonts/Roboto-Condensed.ttf");
       font-weight: bold;
   }
   body {
@@ -33,8 +33,7 @@
   .line-title {
       float: left;
       font-size: 20px;
-      padding: 10px;
-      padding-left: 0px;
+      margin: 10px;
   }
 
   .tip {
@@ -44,9 +43,6 @@
   canvas,
   table {
       margin: 0px;
-  }
-  #tableCanvas {
-      padding: 12px;
   }
 
   .chart-legend li span {
@@ -125,4 +121,11 @@
       left: 0% !important;
       width: 98.5% !important;
       font-size: 40px !important;
+  }
+  #noSurveysText {
+      display:table;
+      margin:0 auto;
+  }
+  #multipleEventLegend {
+    margin: 8px;
   }

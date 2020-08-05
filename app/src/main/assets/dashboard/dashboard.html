@@ -19,38 +19,21 @@
 <html xmlns="http://www.w3.org/1999/html">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <script type="text/javascript" src="Chart.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="dashboard.css">
-    <link rel="stylesheet" type="text/css" href="scoring.css">
-    <link rel="stylesheet" type="text/css" href="competencies.css">
+
+    <link rel="stylesheet" type="text/css" href="css/dashboard.css">
+    <link rel="stylesheet" type="text/css" href="css/scoring.css">
+    <link rel="stylesheet" type="text/css" href="css/competencies.css">
+
+    <script type="text/javascript" src="js/Chart.min.js" async></script>
+    <script type="text/javascript" src="js/translated.messages.js" async></script>
+    <script type="text/javascript" src="js/html.nodes.modifications.js" async></script>
+    <script type="text/javascript" src="js/controller.js" async></script>
+    <script type="text/javascript" src="js/pie.tabgroup.js" async></script>
+    <script type="text/javascript" src="js/table.facilities.js" async></script>
 </head>
 <body>
-<!--Sent surveys x month-->
-<div id="tableCanvas" class="show">
-    <!--title of the chart-->
-    <span class="line-title" id="titleSent"></span>
-    <br/>
-    <br/>
-    <div id="sentLegend" class="chart-legend horizontal"></div>
-    <!--Multiline chart holder-->
-    <canvas id="surveyXMonthCanvas" style="width: 100%; height: auto;"></canvas>
-</div>
+
 <div id="pieChartContent"></div>
-<!--Pie charts will be added right here-->
-
-<!--Table 12 months-->
-
-<script type="text/javascript" src="translated.messages.js"></script>
-
-<script type="text/javascript" src="html.nodes.modifications.js"></script>
-
-<script type="text/javascript" src="controller.js"></script>
-
-<script type="text/javascript" src="sent.month.js"></script>
-
-<script type="text/javascript" src="pie.tabgroup.js"></script>
-
-<script type="text/javascript" src="table.facilities.js"></script>
 
 <!-- pie template with table-->
 <script type="text/html" id="pieTemplate">

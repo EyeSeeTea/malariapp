@@ -45,35 +45,6 @@ function buildTablesPerProgram(tabGroupId,dataFacilities){
 //Save the table data
 function buildTablesPerOrgUnit(tabGroupId,dataFacilities){
 	inputDataTablesPerOrgUnit.push(dataFacilities);
-} 
-
-
-//show the data in the table.
-function showMainTableByProgram(){
-	if(inputPrograms.length>1){
-		surveyXMonthChart = SentXMonthChart();
-		//Show main table by program
-		for(var i=0;i<allDataByProgram.length;i++){
-			surveyXMonthChart.addData([allDataByProgram[i][0], allDataByProgram[i][1]], allDataByProgram[i][4]); 
-		}
-	}
-	else{
-	    console.log("Not have surveys");
-	}
-}
-	
-//show the data in the table.
-function showMainTableByOrgUnit(){
-	if(inputOrgUnits.length>1){
-		surveyXMonthChart = SentXMonthChart();
-		//Show main table by orgunit
-		for(var i=0;i<allDataByOrgUnit.length;i++){ 
-			surveyXMonthChart.addData([allDataByOrgUnit[i][0], allDataByOrgUnit[i][1]], allDataByOrgUnit[i][4]); 
-		}
-	}
-	else{
-	    console.log("Not have surveys");
-	}
 }
 
 //Build the correct table
