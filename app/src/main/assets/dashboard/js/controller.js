@@ -1,5 +1,5 @@
-var selectedProgram=allAssessmentKey;
-var selectedOrgUnit=allOrgUnitKey;
+var selectedProgram="";
+var selectedOrgUnit="";
 var piesDataByProgram;
 var piesDataByOrgUnit;
 

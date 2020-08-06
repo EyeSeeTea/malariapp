@@ -20,6 +20,7 @@
 package org.eyeseetea.malariacare.data.database.utils.monitor.facilities;
 
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.domain.entity.ServerClassification;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +30,10 @@ import java.util.List;
  */
 public class FacilityColumnData {
     private List<SurveyDB> surveys;
+    private ServerClassification serverClassification;
 
-    public FacilityColumnData(){
+    public FacilityColumnData(ServerClassification serverClassification){
+        this.serverClassification = serverClassification;
         surveys=new ArrayList<>();
     }
 
@@ -52,7 +55,11 @@ public class FacilityColumnData {
         }
         String jsonObject="[";
         for(SurveyDB survey:surveys){
-            jsonObject+="{\"id\":"+survey.getId_survey() + ",\"competency\":" +  survey.getCompetencyScoreClassification()+"},";
+            if (serverClassification == ServerClassification.COMPETENCIES){
+                jsonObject+="{\"id\":"+survey.getId_survey() + ",\"competency\":" +  survey.getCompetencyScoreClassification()+"},";
+            } else {
+                jsonObject+="{\"id\":"+survey.getId_survey() + ",\"score\":" +  survey.getMainScore().getScore()+"},";
+            }
         }
         jsonObject=jsonObject.substring(0,jsonObject.lastIndexOf(","));
         jsonObject= jsonObject +"]";

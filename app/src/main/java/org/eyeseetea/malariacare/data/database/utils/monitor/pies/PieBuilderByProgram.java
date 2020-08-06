@@ -25,6 +25,7 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.domain.entity.ServerClassification;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,15 +56,25 @@ public class PieBuilderByProgram extends PieBuilderBase {
      * Adds calculated entries to the given webView
      * @param webView
      */
-    public void addDataInChart(WebView webView){
+    public void addDataInChart(WebView webView, ServerClassification serverClassification){
         //Build entries
-        List<PieDataByProgram> entries=build(surveys);
+        List<PieDataByProgram> entries=build(surveys, serverClassification);
         //Inyect entries in view
         injectDataInChart(webView, entries);
         buildJSONArray(entries);
         entries.clear();
     }
-    private void build(SurveyDB survey) {
+
+    private List<PieDataByProgram> build(List<SurveyDB> surveys,
+            ServerClassification serverClassification) {
+        for(SurveyDB survey:surveys){
+            build(survey, serverClassification);
+        }
+
+        return new ArrayList(pieTabGroupDataMap.values());
+    }
+
+    private void build(SurveyDB survey, ServerClassification serverClassification) {
         //Get the program
         ProgramDB program=survey.getProgram();
 
@@ -75,22 +86,20 @@ public class PieBuilderByProgram extends PieBuilderBase {
             pieTabGroupData =new PieDataByProgram(program);
             pieTabGroupDataMap.put(program, pieTabGroupData);
         }
-        //Increment surveys for that month
-        pieTabGroupData.incCounter(survey.getCompetencyScoreClassification());
-    }
-    private List<PieDataByProgram> build(List<SurveyDB> surveys) {
-        for(SurveyDB survey:surveys){
-            build(survey);
-        }
 
-        return new ArrayList(pieTabGroupDataMap.values());
+        if (serverClassification == ServerClassification.COMPETENCIES){
+            pieTabGroupData.incCounterByCompetency(survey.getCompetencyScoreClassification());
+        } else {
+            pieTabGroupData.incCounterByScoring(survey.getMainScore().getScore());
+        }
     }
+
     private void injectDataInChart(WebView webView, List<PieDataByProgram> entries) {
         //Build array JSON
         String json=buildJSONArray(entries);
 
         //Inyect in browser
-        inyectInBrowser(webView, JAVASCRIPT_UPDATE_CHARTS, json);
+        injectInBrowser(webView, JAVASCRIPT_UPDATE_CHARTS, json);
     }
     private String buildJSONArray(List<PieDataByProgram> entries){
         String arrayJSON="[";

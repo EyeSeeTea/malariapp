@@ -21,12 +21,14 @@ package org.eyeseetea.malariacare.data.database.utils.monitor.pies;
 
 import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
 import org.eyeseetea.malariacare.domain.entity.ScoreType;
+import org.eyeseetea.malariacare.domain.entity.ServerClassification;
 import org.eyeseetea.malariacare.utils.Constants;
 
 public class PieDataBase {
 
     static final String JSONFORMAT =
-            "{title:'%s',tip:'%s',idTabGroup: %d,valueA:%d,valueB:%d,valueC:%d,valueNA:%d,uidprogram:'%s',"
+            "{title:'%s',tip:'%s',idTabGroup: %d,valueA:%d,valueB:%d,valueC:%d,valueNA:%d,"
+                    + "uidprogram:'%s',"
                     + "uidorgunit:'%s'}";
 
     int numA;
@@ -38,7 +40,7 @@ public class PieDataBase {
     int numNA;
 
 
-    public void incCounter(int competencyScoreClassification) {
+    public void incCounterByCompetency(int competencyScoreClassification) {
         CompetencyScoreClassification classification =
                 CompetencyScoreClassification.get(competencyScoreClassification);
 
@@ -51,5 +53,21 @@ public class PieDataBase {
         } else {
             numNA++;
         }
+    }
+
+    public void incCounterByScoring(float score){
+        ScoreType scoreType = new ScoreType(score);
+        if(scoreType.getClassification() == ScoreType.Classification.LOW){
+            numC++;
+            return;
+        }
+
+        else if(scoreType.getClassification() == ScoreType.Classification.MEDIUM){
+            numB++;
+            return;
+        }
+
+        numA++;
+        return;
     }
 }

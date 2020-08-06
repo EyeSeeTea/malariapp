@@ -24,6 +24,7 @@ import android.util.Log;
 import android.webkit.WebView;
 
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.domain.entity.ServerClassification;
 
 import java.util.HashMap;
 import java.util.List;
@@ -32,15 +33,15 @@ import java.util.Map;
 /**
  * Created by idelcano on 23/08/2016.
  */
-public class FacilityTableBuilderByProgram extends  FacilityTableBuilderBase {
-    public static final String JAVASCRIPT_UPDATE_TABLE = "javascript:buildTablesPerProgram('%s',%s)";
-    private static final String TAG=".FacilityTableBuilderP";
-    Map<String,FacilityTableDataByProgram> facilityTableDataMap;
+public class FacilityTableBuilderByProgram extends FacilityTableBuilderBase {
+    public static final String JAVASCRIPT_UPDATE_TABLE =
+            "javascript:buildTablesPerProgram('%s',%s)";
+    private static final String TAG = ".FacilityTableBuilderP";
+    Map<String, FacilityTableDataByProgram> facilityTableDataMap;
     public static final String JAVASCRIPT_SHOW = "javascript:renderPieChartsByProgram()";
+
     /**
      * Default constructor
-     *
-     * @param surveys
      */
     public FacilityTableBuilderByProgram(List<SurveyDB> surveys) {
         super(surveys);
@@ -49,19 +50,20 @@ public class FacilityTableBuilderByProgram extends  FacilityTableBuilderBase {
 
     /**
      * Build table data from surveys
-     * @param surveys
-     * @return
      */
-    private void build(List<SurveyDB> surveys){
-        for(SurveyDB survey:surveys){
+    private void build(List<SurveyDB> surveys,
+            ServerClassification serverClassification) {
+        for (SurveyDB survey : surveys) {
 
             //Get right table
-            FacilityTableDataByProgram facilityTableData=facilityTableDataMap.get(survey.getOrgUnit().getUid());
+            FacilityTableDataByProgram facilityTableData = facilityTableDataMap.get(
+                    survey.getOrgUnit().getUid());
 
             //Init entry first time of a program
-            if(facilityTableData==null){
-                facilityTableData=new FacilityTableDataByProgram(survey.getOrgUnit());
-                facilityTableDataMap.put(survey.getOrgUnit().getUid(),facilityTableData);
+            if (facilityTableData == null) {
+                facilityTableData = new FacilityTableDataByProgram(survey.getOrgUnit(),
+                        serverClassification);
+                facilityTableDataMap.put(survey.getOrgUnit().getUid(), facilityTableData);
             }
 
             //Add survey to that table
@@ -71,15 +73,16 @@ public class FacilityTableBuilderByProgram extends  FacilityTableBuilderBase {
 
     /**
      * Adds calculated entries to the given webView
-     * @param webView
      */
-    public void addDataInChart(WebView webView){
+    public void addDataInChart(WebView webView,
+            ServerClassification serverClassification) {
         //Build tables
-        build(surveys);
+        build(surveys, serverClassification);
         //Inyect tables in view
-        for(Map.Entry<String,FacilityTableDataByProgram> tableEntry:facilityTableDataMap.entrySet()){
-            String cadena=tableEntry.getKey();
-            FacilityTableDataByProgram facilityTableData=tableEntry.getValue();
+        for (Map.Entry<String, FacilityTableDataByProgram> tableEntry :
+                facilityTableDataMap.entrySet()) {
+            String cadena = tableEntry.getKey();
+            FacilityTableDataByProgram facilityTableData = tableEntry.getValue();
             injectDataInChart(webView, cadena, facilityTableData.getAsJSON());
         }
 
@@ -91,8 +94,8 @@ public class FacilityTableBuilderByProgram extends  FacilityTableBuilderBase {
     }
 
     void injectDataInChart(WebView webView, String id, String json) {
-        //Inyect in browser
-        String updateChartJS=String.format(JAVASCRIPT_UPDATE_TABLE,id,json);
+        //Inject in browser
+        String updateChartJS = String.format(JAVASCRIPT_UPDATE_TABLE, id, json);
         Log.d(TAG, updateChartJS);
         webView.loadUrl(updateChartJS);
     }

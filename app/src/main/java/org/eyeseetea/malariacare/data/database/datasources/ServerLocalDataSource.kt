@@ -49,7 +49,6 @@ class ServerLocalDataSource : ReadableServerDataSource, WritableServerDataSource
             serverDB.logo = Blob(server.logo)
         }
 
-
         serverDB.save()
     }
 

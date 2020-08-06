@@ -20,6 +20,7 @@
 package org.eyeseetea.malariacare.data.database.utils.monitor.facilities;
 
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.domain.entity.ServerClassification;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -38,6 +39,13 @@ public class FacilityTableDataBase {
     String uid;
 
     String id;
+
+    protected ServerClassification serverClassification;
+
+    public FacilityTableDataBase(
+            ServerClassification serverClassification) {
+        this.serverClassification = serverClassification;
+    }
 
     /**
      * Returns an ordered list of the previous 12 months: ['jan','feb',...]

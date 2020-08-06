@@ -49,7 +49,7 @@ public class PieBuilderBase {
     }
 
 
-    void inyectInBrowser(WebView webView, String formatter, String json) {
+    void injectInBrowser(WebView webView, String formatter, String json) {
         String updateChartJS=String.format(formatter, json);
         Log.d(TAG, updateChartJS);
         webView.loadUrl(updateChartJS);

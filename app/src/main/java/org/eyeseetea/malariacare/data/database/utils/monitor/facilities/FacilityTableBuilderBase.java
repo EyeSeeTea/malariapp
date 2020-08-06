@@ -27,6 +27,7 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
+import org.eyeseetea.malariacare.domain.entity.ScoreType;
 import org.eyeseetea.malariacare.utils.CompetencyUtils;
 
 import java.util.List;
@@ -45,13 +46,18 @@ public class FacilityTableBuilderBase {
             "javascript:setNotCompetentColor(%s)";
     public static final String JAVASCRIPT_SET_NOT_AVAILABLE_COLOR =
             "javascript:setNotAvailableColor(%s)";
+
+    public static final String JAVASCRIPT_SET_GREEN = "javascript:setGreen(%s)";
+    public static final String JAVASCRIPT_SET_YELLOW = "javascript:setYellow(%s)";
+    public static final String JAVASCRIPT_SET_RED = "javascript:setRed(%s)";
+
     public static final String JAVASCRIPT_SET_CLASSIFICATION = "javascript:setClassification(%s)";
+
 
     /**
      * List of sent surveys
      */
     List<SurveyDB> surveys;
-
 
     /**
      * Default constructor
@@ -60,7 +66,32 @@ public class FacilityTableBuilderBase {
         this.surveys = surveys;
     }
 
-    public static void setColor(WebView webView) {
+    public static void setScoringColor(WebView webView){
+        //noinspection ResourceType
+        String color=PreferencesState.getInstance().getContext().getResources().getString(R.color.lightGreen);
+        String injectColor=String.format(JAVASCRIPT_SET_GREEN,"{color:'"+getHtmlCodeColor(color)+"'}");
+        Log.d(TAG, injectColor);
+        webView.loadUrl(injectColor);
+        //noinspection ResourceType
+        color=PreferencesState.getInstance().getContext().getResources().getString(R.color.darkRed);
+        injectColor=String.format(JAVASCRIPT_SET_RED,"{color:'"+getHtmlCodeColor(color)+"'}");
+        Log.d(TAG, injectColor);
+        webView.loadUrl(injectColor);
+        //noinspection ResourceType
+        color=PreferencesState.getInstance().getContext().getResources().getString(R.color.assess_yellow);
+        injectColor = String.format(JAVASCRIPT_SET_YELLOW,"{color:'"+getHtmlCodeColor(color)+"'}");
+        Log.d(TAG,injectColor);
+        webView.loadUrl(injectColor);
+        String injectClassification = String.format(JAVASCRIPT_SET_CLASSIFICATION,"{high:'"+ ScoreType.getMonitoringMinimalHigh()+"'," +
+                "medium:'"+ScoreType.getMonitoringMaximumMedium()+"'," +
+                "mediumFormatted:'"+ScoreType.getMonitoringMediumPieFormat()+"'," +
+                "low:'"+ScoreType.getMonitoringMaximumLow()+"'}");
+        Log.d(TAG,injectClassification);
+        webView.loadUrl(injectClassification);
+
+    }
+
+    public static void setCompetenciesColor(WebView webView) {
         Context context = PreferencesState.getInstance().getContext();
 
         //noinspection ResourceType
