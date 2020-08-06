@@ -19,7 +19,6 @@
 
 package org.eyeseetea.malariacare.data.database.utils.monitor.facilities;
 
-import android.content.Context;
 import android.util.Log;
 import android.webkit.WebView;
 

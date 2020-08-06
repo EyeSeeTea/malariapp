@@ -25,6 +25,8 @@ var medium;
 var low;
 var mediumPieFormatted;
 
+// ----- functions invoked from Android --------
+
 function setClassification(classification){
     high=classification["high"];
     medium=classification["medium"];
@@ -34,28 +36,35 @@ function setClassification(classification){
 
 function setGreen(color){
     green=color["color"];
-    //console.log(green);
 }
 
 function setYellow(color){
     yellow=color["color"];
-    //console.log(yellow);
 }
 
 function setRed(color){
     red=color["color"];
-    //console.log(red);
+}
+
+// -----------------------------------------------
+
+//Insert the pie in the html
+function showDataPie(dataPie){
+    var defaultTemplate= document.getElementById('pieTemplate').innerHTML;
+	document.getElementById("pieChartContent").innerHTML=defaultTemplate;
+    pieXTabGroupChart(dataPie);
+
+}
+//Remove the pie from html
+function removeDataPie(){
+	document.getElementById("pieChartContent").innerHTML="";
 }
 
 function pieXTabGroupChart(data){
 
-    var canvasDOMId="tabgroupCanvas"+data.idTabGroup;
-    var legendDOMId="tabgroupLegend"+data.idTabGroup;
-    var titleDOMId="tabgroupTitle"+data.idTabGroup;
-    var titleTableDOMId="tabgroupTip"+data.idTabGroup;
-    //console.log(green);
-    //console.log(yellow);
-    //console.log(red);
+    var canvasDOMId="tabgroupCanvas";
+    var legendDOMId="tabgroupLegend";
+    var titleTableDOMId="tabgroupTip";
 
     //Chart
     var ctx = document.getElementById(canvasDOMId).getContext("2d");
@@ -87,48 +96,4 @@ function pieXTabGroupChart(data){
 
     //Update title && tip
     updateChartTitle(titleTableDOMId,data.tip);
-}
-
-/*
-    Use:
-      buildPieCharts([
-        {
-            title:'Sample tabgroup',
-            tip:'Quality of care(based on last assessment)',
-            idTabGroup: 1,
-            valueA:14,
-            valueB:8,
-            valueC:10
-        },
-        {
-            title:'Sample tabgroup',
-            tip:'Quality of care(based on last assessment)',
-            idTabGroup: 2,
-            valueA:24,
-            valueB:12,
-            valueC:10
-        }
-        ]);
-*/
-//Save the data of the pies
-function buildPieCharts(dataPies){
-    //For each pie
-	setPieData(dataPies);
-}
-
-//Insert the pie in the html
-function showDataPie(dataPie){
-    var defaultTemplate= document.getElementById('pieTemplate').innerHTML;
-	document.getElementById("pieChartContent").innerHTML=defaultTemplate;
-    //Create template with right ids
-    var customTemplate=defaultTemplate.replace(/###/g, dataPie.idTabGroup);
-    //Add DOM element
-    document.getElementById("pieChartContent").innerHTML=customTemplate;
-    //Draw chart on it
-    pieXTabGroupChart(dataPie);
-
-}
-//Remove the pie from html
-function removeDataPie(){
-	document.getElementById("pieChartContent").innerHTML="";
 }

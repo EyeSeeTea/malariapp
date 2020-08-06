@@ -40,18 +40,15 @@ const competencyScoreClassification = {
 
 //Save the table data
 function buildTablesPerProgram(tabGroupId,dataFacilities){
-    console.log({tabGroupId},{dataFacilities});
 	inputDataTablesPerProgram.push(dataFacilities);
 }
 //Save the table data
 function buildTablesPerOrgUnit(tabGroupId,dataFacilities){
-    console.log({tabGroupId},{dataFacilities});
 	inputDataTablesPerOrgUnit.push(dataFacilities);
 }
 
 //Build the correct table
 function rebuildTableFacilities(selectedUid, group){
-    console.log({selectedUid},{group});
 	if(group==undefined){
 		return;
 	}

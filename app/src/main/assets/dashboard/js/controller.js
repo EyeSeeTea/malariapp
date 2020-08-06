@@ -27,15 +27,25 @@ function setOrgUnitPieData(data){
 
 function changeProgram(){
 	hideMultipleEventLegend();
-	renderPieChartsByProgram();
     showProgram();
 }
 
 function changeOrgUnit(){
     hideMultipleEventLegend();
-    renderPieChartsByOrgUnit();
     showOrgUnit();
-} 
+}
+
+//Show tables/Pies by program.
+function showProgram(){
+    removeDataPie();
+	changePieAndTablesByProgram();
+}
+
+//Show tables/Pies by org unit.
+function showOrgUnit(){
+    removeDataPie();
+	changePieAndTablesByOrgUnit();
+}
 
 //event on click select/or in program "spinner" to change the selected program and reload.
 function changePieAndTablesByProgram(){
@@ -77,17 +87,6 @@ function changePieAndTablesByOrgUnit(){
     }
 
     renderPieChartsByOrgUnit();
-}
-//Show tables/Pies by program.
-function showProgram(){
-    removeDataPie();
-	changePieAndTablesByProgram();
-}
-
-//Show tables/Pies by org unit.
-function showOrgUnit(){
-    removeDataPie();
-	changePieAndTablesByOrgUnit();
 }
 
 //Render the pie and table by program filter and reload the spinners

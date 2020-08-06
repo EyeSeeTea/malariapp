@@ -327,13 +327,11 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
                             }
 
                             if (isOrgUnitFilterActive()) {
-                                //facility by progam-> is a orgunit facility
                                 new FacilityTableBuilderByProgram(surveysForGraphic).addDataInChart(
                                         view,
                                         serverClassification);
                             }
                             if (isProgramFilterActive()) {
-                                //facility by orgunit-> is a program facility
                                 new FacilityTableBuilderByOrgUnit(surveysForGraphic).addDataInChart(
                                         view,
                                         serverClassification);
