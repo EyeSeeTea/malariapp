@@ -35,7 +35,12 @@ class ServerLocalDataSource : ReadableServerDataSource, WritableServerDataSource
 
         if (serverDB == null) {
             serverDB = ServerDB()
+
+            // server classification is assigned only first time when is saving all servers from
+            // poeditor response
+            serverDB.classification = server.classification.code
         }
+
         serverDB.url = server.url
         serverDB.name = server.name
         serverDB.isConnected = server.isConnected
@@ -44,7 +49,7 @@ class ServerLocalDataSource : ReadableServerDataSource, WritableServerDataSource
             serverDB.logo = Blob(server.logo)
         }
 
-        serverDB.classification = server.classification.code
+
         serverDB.save()
     }
 
