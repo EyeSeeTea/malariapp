@@ -80,11 +80,24 @@ function buildTableHeader(tabGroupId,months){
 }
 
 function buildTableBody(tabGroupId, facilities){
-	var facilitiesBodyId="facilitiesBody";
+	const facilitiesBodyId="facilitiesBody";
+	const rowFacilityBuilder = createRowFacilityBuilder();
+
 	for(var i=0;i<facilities.length;i++){
-		var rowFacility=buildRowFacility(facilities[i]);
+		var rowFacility=rowFacilityBuilder.buildRowFacility(facilities[i]);
 		document.getElementById(facilitiesBodyId).insertAdjacentHTML("beforeend",rowFacility);
 	}
+}
+
+function createRowFacilityBuilder(){
+    // Request to Android function server classification to current connected server
+    const serverClassification = Android.getServerClassification();
+
+    if (serverClassification === 1){
+        return new CompetenciesBubblesRowBuilder()
+    } else {
+        return new ScoringBubblesRowBuilder()
+    }
 }
 
 function getListOfUids(listOfSurveys){
