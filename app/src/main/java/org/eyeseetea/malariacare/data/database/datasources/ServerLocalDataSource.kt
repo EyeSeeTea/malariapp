@@ -63,7 +63,8 @@ class ServerLocalDataSource : ReadableServerDataSource, WritableServerDataSource
             serverDB.name,
             serverDB.logo?.blob,
             serverDB.isConnected,
-            ServerClassification[serverDB.classification] ?: ServerClassification.COMPETENCIES
+            ServerClassification.SCORING
+            //ServerClassification[serverDB.classification] ?: ServerClassification.COMPETENCIES
         )
     }
 }

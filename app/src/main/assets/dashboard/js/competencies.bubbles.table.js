@@ -1,98 +1,8 @@
-/*
-	Usage:
-		buildTablesPerProgram(
-			{
-				title:"Quality of care - Last 12 months"
-				months:['jan.','feb.','mar.','apr.','may.','jun.','jul.','aug.','sep','oct.','nov.','dec.']
-				tables:[
-					{
-						name:' Sample facility 1',
-						values:[
-							null,
-							null,
-							[{"uid":31,"competency":3},{"uid":30,"competency":3}],
-							null,
-							[{"uid":1,"competency":2},{"uid":12,"competency":100.0},{"uid":21,"competency":0}],
-							null,
-							null,
-							null,
-							null,
-							null,
-							null,
-							[{"uid":113,"competency":1}]
-						]
-					},
-					...
-					{name:},
-				]
-			}
-		);
-*/
-var inputDataTablesPerProgram=[];
-var inputDataTablesPerOrgUnit=[];
-
 const competencyScoreClassification = {
     NOT_AVAILABLE: 0,
     COMPETENT: 1,
     COMPETENT_NEEDS_IMPROVEMENT: 2,
     NOT_COMPETENT: 3
-}
-
-//Save the table data
-function buildTablesPerProgram(tabGroupId,dataFacilities){
-	inputDataTablesPerProgram.push(dataFacilities);
-}
-//Save the table data
-function buildTablesPerOrgUnit(tabGroupId,dataFacilities){
-	inputDataTablesPerOrgUnit.push(dataFacilities);
-}
-
-//Build the correct table
-function rebuildTableFacilities(selectedUid, group){
-	if(group==undefined){
-		return;
-	}
-	for(var i=0;i<group.length;i++){
-		if(group[i].tableuid==selectedUid){
-		    var id=group[i].id;
-			var facilitiesHeadId="facilitiesHead";
-			var facilitiesBodyId="facilitiesBody";
-			var titleFacilitiesId="titleFacilities";
-			//Clear table
-			document.getElementById(facilitiesHeadId).innerHTML='';
-			document.getElementById(facilitiesBodyId).innerHTML='';
-
-			//Title to table
-			updateChartTitle(titleFacilitiesId,messages["qualityOfCare"]+group[i].months.length+messages["months"]);
-
-			//Add header
-			buildTableHeader(id,group[i].months);
-
-			//Add body
-			buildTableBody(id, group[i].tables);
-
-		}
-	}
-}
-
-
-function buildTableHeader(tabGroupId,months){
-	var facilitiesHeadId="facilitiesHead";
-	var rowsHeader="<tr>";
-	for(var i=0;i<months.length;i++){
-		rowsHeader=rowsHeader+"<th>"+months[i]+"</th>";
-	}
-	rowsHeader=rowsHeader+"</tr>";
-	//Add tr to thead
-	document.getElementById(facilitiesHeadId).insertAdjacentHTML("beforeend",rowsHeader);
-}
-
-function buildTableBody(tabGroupId, facilities){
-	var facilitiesBodyId="facilitiesBody";
-	for(var i=0;i<facilities.length;i++){
-		var rowFacility=buildRowFacility(facilities[i]);
-		document.getElementById(facilitiesBodyId).insertAdjacentHTML("beforeend",rowFacility);
-	}
 }
 
 function buildRowFacility(facility){
@@ -173,15 +83,3 @@ function buildCellXScore(competency){
 
 	return value;
 }
-
-function getListOfUids(listOfSurveys){
-	var uidList = '';
-	if(listOfSurveys!=null){
-		for(var i=0;i<listOfSurveys.length;i++){
-			uidList += listOfSurveys[i].id+";";
-		}
-		uidList = uidList.substring(0,uidList.lastIndexOf(";"));
-	}
-	return uidList;
-}
-
