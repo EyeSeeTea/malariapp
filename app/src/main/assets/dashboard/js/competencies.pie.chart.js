@@ -17,48 +17,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         valueC:0
     })
 */
-var competentColor;
-var competentImprovementColor;
-var notCompetentColor;
-var notAvailableColor;
-var competentText;
-var competentImprovementText;
-var notCompetentText;
-var notAvailableText;
-var competentAbbreviationText;
-var competentImprovementAbbreviationText;
-var notCompetentAbbreviationText;
-var notAvailableAbbreviationText;
-
-// ----- functions invoked from Android --------
-
-function setClassification(classification){
-    competentText=classification["competentText"];
-    competentImprovementText=classification["competentImprovementText"];
-    notCompetentText=classification["notCompetentText"];
-    notAvailableText=classification["notAvailableText"];
-    competentAbbreviationText=classification["competentAbbreviationText"];
-    competentImprovementAbbreviationText=classification["competentImprovementAbbreviationText"];
-    notCompetentAbbreviationText=classification["notCompetentAbbreviationText"];
-    notAvailableAbbreviationText=classification["notAvailableAbbreviationText"];
-}
-function setCompetentColor(color){
-    competentColor=color["color"];
-}
-
-function setCompetentImprovementColor(color){
-    competentImprovementColor=color["color"];
-}
-
-function setNotCompetentColor(color){
-    notCompetentColor=color["color"];
-}
-
-function setNotAvailableColor(color){
-    notAvailableColor=color["color"];
-}
-
-// ----------------------------------------------------------
 
 //Insert the pie in the html
 function showDataPie(dataPie){
@@ -83,20 +41,20 @@ function pieXTabGroupChart(data){
     var  myChart  = new Chart(ctx).Pie(
                                [{
                                    value: data.valueA,
-                                   color: competentColor,
-                                   label: "A ("+competentText+")"
+                                   color: classificationContext.colors.competentColor,
+                                   label: "A ("+classificationContext.texts.competentText+")"
                                }, {
                                    value: data.valueB,
-                                   color: competentImprovementColor,
-                                   label: "B ("+competentImprovementText +")"
+                                   color: classificationContext.colors.competentImprovementColor,
+                                   label: "B ("+classificationContext.texts.competentImprovementText +")"
                                }, {
                                    value: data.valueC,
-                                   color: notCompetentColor,
-                                   label: "C ("+notCompetentText+")"
+                                   color: classificationContext.colors.notCompetentColor,
+                                   label: "C ("+classificationContext.texts.notCompetentText+")"
                                }, {
                                    value: data.valueNA,
-                                   color: notAvailableColor,
-                                   label: ""+notAvailableText+""
+                                   color: classificationContext.colors.notAvailableColor,
+                                   label: ""+classificationContext.texts.notAvailableText+""
                                }],
                                {
                                    tooltipTemplate: "<%= value %>",

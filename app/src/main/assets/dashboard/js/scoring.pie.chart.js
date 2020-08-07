@@ -25,29 +25,6 @@ var medium;
 var low;
 var mediumPieFormatted;
 
-// ----- functions invoked from Android --------
-
-function setClassification(classification){
-    high=classification["high"];
-    medium=classification["medium"];
-    low=classification["low"];
-    mediumPieFormatted=classification["mediumFormatted"];
-}
-
-function setGreen(color){
-    green=color["color"];
-}
-
-function setYellow(color){
-    yellow=color["color"];
-}
-
-function setRed(color){
-    red=color["color"];
-}
-
-// -----------------------------------------------
-
 //Insert the pie in the html
 function showDataPie(dataPie){
     var defaultTemplate= document.getElementById('pieTemplate').innerHTML;
@@ -71,16 +48,16 @@ function pieXTabGroupChart(data){
     var  myChart  = new Chart(ctx).Pie(
                                [{
                                    value: data.valueA,
-                                   color: green,
-                                   label: "A (>"+high+")"
+                                   color: classificationContext.colors.a,
+                                   label: "A (>"+classificationContext.scores.high+")"
                                }, {
                                    value: data.valueB,
-                                   color: yellow,
-                                   label: "B ("+mediumPieFormatted+")"
+                                   color: classificationContext.colors.b,
+                                   label: "B ("+classificationContext.scores.mediumFormatted+")"
                                }, {
                                    value: data.valueC,
-                                   color: red,
-                                   label: "C (<"+low+")"
+                                   color: classificationContext.colors.c,
+                                   label: "C (<"+classificationContext.scores.low+")"
                                }],
                                {
                                    tooltipTemplate: "<%= value %>",

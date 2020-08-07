@@ -39,19 +39,40 @@ import java.util.List;
 public class FacilityTableBuilderBase {
 
     private static final String TAG = ".FacilityTableBuilder";
-    public static final String JAVASCRIPT_SET_COMPETENT_COLOR = "javascript:setCompetentColor(%s)";
-    public static final String JAVASCRIPT_SET_COMPETENT_IMPROVEMENT_COLOR =
-            "javascript:setCompetentImprovementColor(%s)";
-    public static final String JAVASCRIPT_SET_NOT_COMPETENT_COLOR =
-            "javascript:setNotCompetentColor(%s)";
-    public static final String JAVASCRIPT_SET_NOT_AVAILABLE_COLOR =
-            "javascript:setNotAvailableColor(%s)";
 
-    public static final String JAVASCRIPT_SET_GREEN = "javascript:setGreen(%s)";
-    public static final String JAVASCRIPT_SET_YELLOW = "javascript:setYellow(%s)";
-    public static final String JAVASCRIPT_SET_RED = "javascript:setRed(%s)";
-
-    public static final String JAVASCRIPT_SET_CLASSIFICATION = "javascript:setClassification(%s)";
+    public static final String JAVASCRIPT_SCORING_SET_CLASSIFICATION_CONTEXT =
+            "javascript:setClassificationContext(    {\n"
+                    + "        scores : {\n"
+                    + "            high: %d,\n"
+                    + "            medium: %d,\n"
+                    + "            mediumFormatted: '%s',\n"
+                    + "            low: %d\n"
+                    + "        },\n"
+                    + "        colors: {\n"
+                    + "            a: '%s',\n"
+                    + "            b: '%s',\n"
+                    + "            c: '%s'\n"
+                    + "        }\n"
+                    + "    })";
+    public static final String JAVASCRIPT_COMPETENCIES_SET_CLASSIFICATION_CONTEXT =
+            "javascript:setClassificationContext(    {\n"
+                    + "        texts : {\n"
+                    + "            competentText: '%s',\n"
+                    + "            competentImprovementText: '%s',\n"
+                    + "            notCompetentText: '%s',\n"
+                    + "            notAvailableText: '%s',\n"
+                    + "            competentAbbreviationText: '%s',\n"
+                    + "            competentImprovementAbbreviationText: '%s',\n"
+                    + "            notCompetentAbbreviationText: '%s',\n"
+                    + "            notAvailableAbbreviationText: '%s'\n"
+                    + "        },\n"
+                    + "        colors: {\n"
+                    + "            competentColor: '%s',\n"
+                    + "            competentImprovementColor: '%s',\n"
+                    + "            notCompetentColor: '%s',\n"
+                    + "            notAvailableColor: '%s'\n"
+                    + "        }\n"
+                    + "    })";
 
 
     /**
@@ -66,88 +87,76 @@ public class FacilityTableBuilderBase {
         this.surveys = surveys;
     }
 
-    public static void setScoringColor(WebView webView){
-        //noinspection ResourceType
-        String color=PreferencesState.getInstance().getContext().getResources().getString(R.color.lightGreen);
-        String injectColor=String.format(JAVASCRIPT_SET_GREEN,"{color:'"+getHtmlCodeColor(color)+"'}");
-        Log.d(TAG, injectColor);
-        webView.loadUrl(injectColor);
-        //noinspection ResourceType
-        color=PreferencesState.getInstance().getContext().getResources().getString(R.color.darkRed);
-        injectColor=String.format(JAVASCRIPT_SET_RED,"{color:'"+getHtmlCodeColor(color)+"'}");
-        Log.d(TAG, injectColor);
-        webView.loadUrl(injectColor);
-        //noinspection ResourceType
-        color=PreferencesState.getInstance().getContext().getResources().getString(R.color.assess_yellow);
-        injectColor = String.format(JAVASCRIPT_SET_YELLOW,"{color:'"+getHtmlCodeColor(color)+"'}");
-        Log.d(TAG,injectColor);
-        webView.loadUrl(injectColor);
-        String injectClassification = String.format(JAVASCRIPT_SET_CLASSIFICATION,"{high:'"+ ScoreType.getMonitoringMinimalHigh()+"'," +
-                "medium:'"+ScoreType.getMonitoringMaximumMedium()+"'," +
-                "mediumFormatted:'"+ScoreType.getMonitoringMediumPieFormat()+"'," +
-                "low:'"+ScoreType.getMonitoringMaximumLow()+"'}");
-        Log.d(TAG,injectClassification);
-        webView.loadUrl(injectClassification);
+    public static void setScoringColor(WebView webView) {
+        Context context = PreferencesState.getInstance().getContext();
 
+        //noinspection ResourceType
+        String colorA = context.getResources().getString(
+                R.color.lightGreen);
+        String colorB = context.getResources().getString(
+                R.color.assess_yellow);
+        String colorC = context.getResources().getString(
+                R.color.darkRed);
+
+
+        String injectColor = String.format(
+                JAVASCRIPT_SCORING_SET_CLASSIFICATION_CONTEXT,
+                ScoreType.getMonitoringMinimalHigh(),
+                ScoreType.getMonitoringMaximumMedium(),
+                ScoreType.getMonitoringMediumPieFormat(),
+                ScoreType.getMonitoringMaximumLow(),
+                getHtmlCodeColor(colorA),
+                getHtmlCodeColor(colorB),
+                getHtmlCodeColor(colorC));
+        Log.d(TAG, injectColor);
+        webView.loadUrl(injectColor);
     }
 
     public static void setCompetenciesColor(WebView webView) {
         Context context = PreferencesState.getInstance().getContext();
 
         //noinspection ResourceType
-        String color = context.getResources().getString(R.color.competency_competent_background_color);
+        String competentColor = context.getResources().getString(
+                R.color.competency_competent_background_color);
+        String competentImprovementColor = context.getResources().getString(
+                R.color.competency_competent_improvement_background_color);
+        String notCompetentColor = context.getResources().getString(
+                R.color.competency_not_competent_background_color);
+        String notAvailableColor = context.getResources().getString(
+                R.color.competency_not_available_background_color);
+
         String injectColor = String.format(
-                JAVASCRIPT_SET_COMPETENT_COLOR, "{color:'" + getHtmlCodeColor(color) + "'}");
+                JAVASCRIPT_COMPETENCIES_SET_CLASSIFICATION_CONTEXT,
+                CompetencyUtils.getTextByCompetencyAbbreviation(
+                        CompetencyScoreClassification.COMPETENT, context),
+                CompetencyUtils.getTextByCompetencyAbbreviation(
+                        CompetencyScoreClassification.COMPETENT_NEEDS_IMPROVEMENT, context),
+                CompetencyUtils.getTextByCompetencyAbbreviation(
+                        CompetencyScoreClassification.NOT_COMPETENT, context),
+                CompetencyUtils.getTextByCompetencyAbbreviation(
+                        CompetencyScoreClassification.NOT_AVAILABLE, context),
+                CompetencyUtils.getTextByCompetencyAbbreviation(
+                        CompetencyScoreClassification.COMPETENT, context),
+                CompetencyUtils.getTextByCompetencyAbbreviation(
+                        CompetencyScoreClassification.COMPETENT_NEEDS_IMPROVEMENT, context),
+                CompetencyUtils.getTextByCompetencyAbbreviation(
+                        CompetencyScoreClassification.NOT_COMPETENT, context),
+                CompetencyUtils.getTextByCompetencyAbbreviation(
+                        CompetencyScoreClassification.NOT_AVAILABLE, context),
+                getHtmlCodeColor(competentColor),
+                getHtmlCodeColor(competentImprovementColor),
+                getHtmlCodeColor(notCompetentColor),
+                getHtmlCodeColor(notAvailableColor));
         Log.d(TAG, injectColor);
         webView.loadUrl(injectColor);
-        //noinspection ResourceType
-        color = context.getResources().getString(R.color.competency_not_competent_background_color);
-        injectColor = String.format(
-                JAVASCRIPT_SET_NOT_COMPETENT_COLOR, "{color:'" + getHtmlCodeColor(color) + "'}");
-        Log.d(TAG, injectColor);
-        webView.loadUrl(injectColor);
-        //noinspection ResourceType
-        color = context.getResources().getString(R.color.competency_competent_improvement_background_color);
-        injectColor = String.format(
-                JAVASCRIPT_SET_COMPETENT_IMPROVEMENT_COLOR,
-                "{color:'" + getHtmlCodeColor(color) + "'}");
-        Log.d(TAG, injectColor);
-        webView.loadUrl(injectColor);
-        color = context.getResources().getString(R.color.competency_not_available_background_color);
-        injectColor = String.format(
-                JAVASCRIPT_SET_NOT_AVAILABLE_COLOR,
-                "{color:'" + getHtmlCodeColor(color) + "'}");
-        Log.d(TAG, injectColor);
-        webView.loadUrl(injectColor);
-
-        String injectClassification = String.format(JAVASCRIPT_SET_CLASSIFICATION,
-                "{competentText:'" + CompetencyUtils.getTextByCompetencyAbbreviation(
-                        CompetencyScoreClassification.COMPETENT, context) + "'," +
-                        "competentImprovementText:'" + CompetencyUtils.getTextByCompetencyAbbreviation(
-                        CompetencyScoreClassification.COMPETENT_NEEDS_IMPROVEMENT, context) + "'," +
-                        "notCompetentText:'" + CompetencyUtils.getTextByCompetencyAbbreviation(
-                        CompetencyScoreClassification.NOT_COMPETENT, context)+ "'," +
-                        "notAvailableText:'" + CompetencyUtils.getTextByCompetencyAbbreviation(
-                        CompetencyScoreClassification.NOT_AVAILABLE, context)+ "'," +
-                        "competentAbbreviationText:'" + CompetencyUtils.getTextByCompetencyAbbreviation(
-                CompetencyScoreClassification.COMPETENT, context) + "'," +
-                        "competentImprovementAbbreviationText:'" + CompetencyUtils.getTextByCompetencyAbbreviation(
-                        CompetencyScoreClassification.COMPETENT_NEEDS_IMPROVEMENT, context) + "'," +
-                        "notCompetentAbbreviationText:'" + CompetencyUtils.getTextByCompetencyAbbreviation(
-                        CompetencyScoreClassification.NOT_COMPETENT, context) + "'," +
-                        "notAvailableAbbreviationText:'" + CompetencyUtils.getTextByCompetencyAbbreviation(
-                            CompetencyScoreClassification.NOT_AVAILABLE, context) + "'}");
-
-        Log.d(TAG, injectClassification);
-        webView.loadUrl(injectClassification);
     }
 
     private static String getHtmlCodeColor(String color) {
-        try{
+        try {
             //remove the first two characters(about alpha color).
             String colorRRGGBB = "#" + color.substring(3, 9);
             return colorRRGGBB;
-        } catch (Exception e){
+        } catch (Exception e) {
             return "";
         }
     }

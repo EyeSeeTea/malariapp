@@ -37,23 +37,23 @@ class ScoringBubblesRowBuilder {
         if (value == null) {
             return "<td class='novisible' ><div class='circlerow' ><span class='centerspan'>";
         }
-        if (value < low) {
+        if (value < classificationContext.scores.low) {
             if (listOfSurveys.length > 1) {
-                return "<td class='redcircle'   onclick=\"androidPassUids(\'" + getListOfUids(listOfSurveys) + "\')\"><div class='circlerow' style='background-color:" + red + "'><span class='centerspan'>";
+                return "<td class='redcircle'   onclick=\"androidPassUids(\'" + getListOfUids(listOfSurveys) + "\')\"><div class='circlerow' style='background-color:" + classificationContext.colors.c + "'><span class='centerspan'>";
             } else {
-                return "<td class='redcircle'   onclick=\"androidMoveToFeedback(\'" + listOfSurveys[0].id + "\')\"><div class='circlerow' style='background-color:" + red + "'><span class='centerspan'>";
+                return "<td class='redcircle'   onclick=\"androidMoveToFeedback(\'" + listOfSurveys[0].id + "\')\"><div class='circlerow' style='background-color:" + classificationContext.colors.c + "'><span class='centerspan'>";
             }
-        } else if (value < medium) {
+        } else if (value < classificationContext.scores.medium) {
             if (listOfSurveys.length > 1) {
-                return "<td class='ambercircle'  onclick=\"androidPassUids(\'" + getListOfUids(listOfSurveys) + "\')\"><div class='circlerow' style='background-color:" + yellow + "'><span class='centerspan'>";
+                return "<td class='ambercircle'  onclick=\"androidPassUids(\'" + getListOfUids(listOfSurveys) + "\')\"><div class='circlerow' style='background-color:" + classificationContext.colors.b + "'><span class='centerspan'>";
             } else {
-                return "<td class='ambercircle'  onclick=\"androidMoveToFeedback(\'" + listOfSurveys[0].id + "\')\"><div class='circlerow' style='background-color:" + yellow + "'><span class='centerspan'>";
+                return "<td class='ambercircle'  onclick=\"androidMoveToFeedback(\'" + listOfSurveys[0].id + "\')\"><div class='circlerow' style='background-color:" + classificationContext.colors.b + "'><span class='centerspan'>";
             }
         } else {
             if (listOfSurveys.length > 1) {
-                return "<td class='greencircle'  onclick=\"androidPassUids(\'" + getListOfUids(listOfSurveys) + "\')\" ><div class='circlerow' style='background-color:" + green + "'><span class='centerspan'>";
+                return "<td class='greencircle'  onclick=\"androidPassUids(\'" + getListOfUids(listOfSurveys) + "\')\" ><div class='circlerow' style='background-color:" + classificationContext.colors.a + "'><span class='centerspan'>";
             } else {
-                return "<td class='greencircle'  onclick=\"androidMoveToFeedback(\'" + listOfSurveys[0].id + "\')\" ><div class='circlerow' style='background-color:" + green + "'><span class='centerspan'>";
+                return "<td class='greencircle'  onclick=\"androidMoveToFeedback(\'" + listOfSurveys[0].id + "\')\" ><div class='circlerow' style='background-color:" + classificationContext.colors.a + "'><span class='centerspan'>";
             }
         }
     }

@@ -2,8 +2,15 @@ var selectedProgram="";
 var selectedOrgUnit="";
 var piesDataByProgram;
 var piesDataByOrgUnit;
+var classificationContext;
 
 // ----- functions invoked from Android --------
+
+function setClassificationContext(context){
+    classificationContext = context;
+    console.log({classificationContext});
+}
+
 function updateOrgUnitFilter(uid){
     selectedOrgUnit = uid;
 	changeOrgUnit();
