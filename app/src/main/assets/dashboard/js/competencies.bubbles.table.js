@@ -185,17 +185,3 @@ function getListOfUids(listOfSurveys){
 	return uidList;
 }
 
-function androidPassUids(value){
-    showLog(value);
-    Android.passUidList(value);
-}
-
-function androidMoveToFeedback(value){
-    showLog(value);
-    Android.moveToFeedback(value);
-}
-
-function showLog(value){
-    console.log(value);
-    Android.clickLog();
-}
