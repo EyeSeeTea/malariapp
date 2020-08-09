@@ -103,7 +103,7 @@ function renderPieChartsByProgram(){
         for(var i=0;i<piesDataByProgram.length;i++){
             if (piesDataByProgram[i].uidprogram==selectedProgram){
 				programOrgUnit=piesDataByProgram[i].uidprogram;
-                showDataPie(piesDataByProgram[i]);
+                buildPieChart(piesDataByProgram[i]);
 				break;
             }
         }
@@ -118,12 +118,34 @@ function renderPieChartsByOrgUnit(){
         for(var i=0;i<piesDataByOrgUnit.length;i++){
             if (piesDataByOrgUnit[i].uidorgunit==selectedOrgUnit){
 				orgUnitPrograms=piesDataByOrgUnit[i].uidorgunit;
-                showDataPie(piesDataByOrgUnit[i]);
+                buildPieChart(piesDataByOrgUnit[i]);
 				break;
             }
         }
         rebuildTableFacilities(orgUnitPrograms, inputDataTablesPerProgram);
     }   
+}
+
+//Insert the pie in the html
+function buildPieChart(dataPie){
+    var defaultTemplate= document.getElementById('pieTemplate').innerHTML;
+	document.getElementById("pieChartContent").innerHTML=defaultTemplate;
+
+    // Request to Android function server classification to current connected server
+    const serverClassification = Android.getServerClassification();
+
+    if (serverClassification === 1){
+        const pieChartBuilder = new CompetenciesPieChartBuilder();
+        pieChartBuilder.build(dataPie)
+    } else {
+        const pieChartBuilder = new ScoringPieChartBuilder();
+        pieChartBuilder.build(dataPie)
+    }
+}
+
+//Remove the pie from html
+function removeDataPie(){
+	document.getElementById("pieChartContent").innerHTML="";
 }
 
 // ----- functions invoked to Android --------
