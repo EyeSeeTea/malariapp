@@ -35,12 +35,6 @@ public class WebViewInterceptor {
         }
     }
 
-    @android.webkit.JavascriptInterface
-    public int getServerClassification() {
-        return serverClassification.getCode();
-    }
-
-
     public void setBubbleClickListener(
             BubbleClickListener bubbleClickListener) {
         mBubbleClickListener = bubbleClickListener;

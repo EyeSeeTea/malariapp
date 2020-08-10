@@ -3,8 +3,13 @@ var selectedOrgUnit="";
 var piesDataByProgram;
 var piesDataByOrgUnit;
 var classificationContext;
+var serverClassification;
 
 // ----- functions invoked from Android --------
+
+function setServerClassification(classification){
+    serverClassification = classification;
+}
 
 function setClassificationContext(context){
     classificationContext = context;
@@ -130,9 +135,6 @@ function renderPieChartsByOrgUnit(){
 function buildPieChart(dataPie){
     var defaultTemplate= document.getElementById('pieTemplate').innerHTML;
 	document.getElementById("pieChartContent").innerHTML=defaultTemplate;
-
-    // Request to Android function server classification to current connected server
-    const serverClassification = Android.getServerClassification();
 
     if (serverClassification === 1){
         const pieChartBuilder = new CompetenciesPieChartBuilder();

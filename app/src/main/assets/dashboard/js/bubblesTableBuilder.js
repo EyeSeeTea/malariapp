@@ -1,6 +1,6 @@
 /*
 	Usage:
-		buildTablesPerProgram(
+		setDataTablesPerProgram(
 			{
 				title:"Quality of care - Last 12 months"
 				months:['jan.','feb.','mar.','apr.','may.','jun.','jul.','aug.','sep','oct.','nov.','dec.']
@@ -32,11 +32,11 @@ var inputDataTablesPerProgram=[];
 var inputDataTablesPerOrgUnit=[];
 
 //Save the table data
-function buildTablesPerProgram(tabGroupId,dataFacilities){
+function setDataTablesPerProgram(tabGroupId,dataFacilities){
 	inputDataTablesPerProgram.push(dataFacilities);
 }
 //Save the table data
-function buildTablesPerOrgUnit(tabGroupId,dataFacilities){
+function setDataTablesPerOrgUnit(tabGroupId,dataFacilities){
 	inputDataTablesPerOrgUnit.push(dataFacilities);
 }
 
@@ -90,9 +90,6 @@ function buildTableBody(tabGroupId, facilities){
 }
 
 function createRowFacilityBuilder(){
-    // Request to Android function server classification to current connected server
-    const serverClassification = Android.getServerClassification();
-
     if (serverClassification === 1){
         return new CompetenciesBubblesRowBuilder()
     } else {

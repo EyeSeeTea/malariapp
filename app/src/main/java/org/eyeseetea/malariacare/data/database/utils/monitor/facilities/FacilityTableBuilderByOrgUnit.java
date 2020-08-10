@@ -19,6 +19,8 @@
 
 package org.eyeseetea.malariacare.data.database.utils.monitor.facilities;
 
+import static org.eyeseetea.malariacare.data.database.utils.monitor.JavascriptInvokerKt.invokeSetDataTablesPerOrgUnit;
+
 import android.util.Log;
 import android.webkit.WebView;
 
@@ -34,11 +36,8 @@ import java.util.Map;
  * Created by idelcano on 23/08/2016.
  */
 public class FacilityTableBuilderByOrgUnit extends FacilityTableBuilderBase {
-    public static final String JAVASCRIPT_UPDATE_TABLE =
-            "javascript:buildTablesPerOrgUnit('%s',%s)";
     private static final String TAG = ".FacilityTableBuilderOU";
     Map<ProgramDB, FacilityTableDataByOrgUnit> facilityTableDataMap;
-    public static final String JAVASCRIPT_SHOW = "javascript:renderPieChartsByOrgUnit()";
 
     /**
      * Default constructor
@@ -83,21 +82,9 @@ public class FacilityTableBuilderByOrgUnit extends FacilityTableBuilderBase {
                 facilityTableDataMap.entrySet()) {
             ProgramDB program = tableEntry.getKey();
             FacilityTableDataByOrgUnit facilityTableData = tableEntry.getValue();
-            injectDataInChart(webView, String.valueOf(program.getUid()),
+            invokeSetDataTablesPerOrgUnit(webView, String.valueOf(program.getUid()),
                     facilityTableData.getAsJSON());
         }
 
-    }
-
-    public static void showFacilities(WebView webView) {
-        Log.d(TAG, JAVASCRIPT_SHOW);
-        webView.loadUrl(String.format(JAVASCRIPT_SHOW));
-    }
-
-    void injectDataInChart(WebView webView, String id, String json) {
-        //Inject in browser
-        String updateChartJS = String.format(JAVASCRIPT_UPDATE_TABLE, id, json);
-        Log.d(TAG, updateChartJS);
-        webView.loadUrl(updateChartJS);
     }
 }

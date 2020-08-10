@@ -23,7 +23,7 @@ var messages= {
 /**
  * Updates every entry with the map in the given messages
  */
-var initContext = function(translated){
+var initMessages = function(translated){
 
     //Update translations
     for (var key in translated) {

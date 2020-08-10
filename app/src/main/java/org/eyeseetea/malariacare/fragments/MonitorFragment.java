@@ -19,6 +19,10 @@
 
 package org.eyeseetea.malariacare.fragments;
 
+import static org.eyeseetea.malariacare.data.database.utils.monitor.JavascriptInvokerKt.invokeSetServerClassification;
+import static org.eyeseetea.malariacare.data.database.utils.monitor.JavascriptInvokerKt.invokeUpdateOrgUnitFilter;
+import static org.eyeseetea.malariacare.data.database.utils.monitor.JavascriptInvokerKt.invokeUpdateProgramFilter;
+
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -37,7 +41,6 @@ import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import org.eyeseetea.malariacare.DashboardActivity;
@@ -61,12 +64,10 @@ import org.eyeseetea.malariacare.domain.usecase.GetServerFailure;
 import org.eyeseetea.malariacare.domain.usecase.GetServerUseCase;
 import org.eyeseetea.malariacare.factories.ServerFactory;
 import org.eyeseetea.malariacare.layout.dashboard.config.MonitorFilter;
-import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.views.MonitorSurveysDialogFragment;
 import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
-import org.hisp.dhis.client.sdk.models.dashboard.Dashboard;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -126,23 +127,6 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
         return rootView;
     }
 
-    private void pushOrgUnitFilterToJavascript(String selectedOrgUnitFilter) {
-        String JAVASCRIPT_UPDATE_FILTER = "javascript:updateOrgUnitFilter('%s')";
-        String updateChartJS = String.format(JAVASCRIPT_UPDATE_FILTER, selectedOrgUnitFilter);
-        Log.d(TAG, updateChartJS);
-        if (webView != null) {
-            webView.loadUrl(updateChartJS);
-        }
-    }
-
-    private void pushProgramFilterToJavascript(String selectedProgramFilter) {
-        String JAVASCRIPT_UPDATE_FILTER = "javascript:updateProgramFilter('%s')";
-        String updateChartJS = String.format(JAVASCRIPT_UPDATE_FILTER, selectedProgramFilter);
-        Log.d(TAG, updateChartJS);
-        if (webView != null) {
-            webView.loadUrl(updateChartJS);
-        }
-    }
 
     private void saveCurrentFilters() {
         PreferencesState.getInstance().setProgramUidFilter(
@@ -155,9 +139,11 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
             DashboardActivity.dashboardActivity.openMonitorByActions();
         } else {
             if (!orgUnitProgramFilterView.getSelectedProgramFilter().equals("")) {
-                pushProgramFilterToJavascript(orgUnitProgramFilterView.getSelectedProgramFilter());
+                invokeUpdateProgramFilter(webView,
+                        orgUnitProgramFilterView.getSelectedProgramFilter());
             } else {
-                pushOrgUnitFilterToJavascript(orgUnitProgramFilterView.getSelectedOrgUnitFilter());
+                invokeUpdateOrgUnitFilter(webView,
+                        orgUnitProgramFilterView.getSelectedOrgUnitFilter());
             }
         }
     }
@@ -306,10 +292,11 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
                             }
 
                             ServerClassification serverClassification = server.getClassification();
-                            Log.d("", String.valueOf(serverClassification.getCode()));
+
+                            invokeSetServerClassification(webView,  serverClassification);
 
                             //Update hardcoded messages
-                            new MonitorMessagesBuilder().addDataInChart(view);
+                            new MonitorMessagesBuilder().initMessages(view);
 
                             if (serverClassification == ServerClassification.COMPETENCIES) {
                                 FacilityTableBuilderBase.setCompetenciesColor(view);
@@ -341,12 +328,11 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
                                     PreferencesState.getInstance().getProgramUidFilter();
                             String orgUnitUidFilter =
                                     PreferencesState.getInstance().getOrgUnitUidFilter();
+
                             if (!programUidFilter.equals("")) {
-                                pushProgramFilterToJavascript(programUidFilter);
+                                invokeUpdateProgramFilter(webView, programUidFilter);
                             } else if (!orgUnitUidFilter.equals("")) {
-                                pushOrgUnitFilterToJavascript(orgUnitUidFilter);
-                            } else {
-                                FacilityTableBuilderByProgram.showFacilities(view);
+                                invokeUpdateOrgUnitFilter(webView, orgUnitUidFilter);
                             }
                         }
 

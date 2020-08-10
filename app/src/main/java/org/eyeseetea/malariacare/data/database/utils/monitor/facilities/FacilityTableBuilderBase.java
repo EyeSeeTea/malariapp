@@ -19,6 +19,8 @@
 
 package org.eyeseetea.malariacare.data.database.utils.monitor.facilities;
 
+import static org.eyeseetea.malariacare.data.database.utils.monitor.JavascriptInvokerKt.invokeSetClassificationContext;
+
 import android.content.Context;
 import android.util.Log;
 import android.webkit.WebView;
@@ -40,40 +42,39 @@ public class FacilityTableBuilderBase {
 
     private static final String TAG = ".FacilityTableBuilder";
 
-    public static final String JAVASCRIPT_SCORING_SET_CLASSIFICATION_CONTEXT =
-            "javascript:setClassificationContext(    {\n"
-                    + "        scores : {\n"
-                    + "            high: %d,\n"
-                    + "            medium: %d,\n"
-                    + "            mediumFormatted: '%s',\n"
-                    + "            low: %d\n"
-                    + "        },\n"
-                    + "        colors: {\n"
-                    + "            a: '%s',\n"
-                    + "            b: '%s',\n"
-                    + "            c: '%s'\n"
-                    + "        }\n"
-                    + "    })";
-    public static final String JAVASCRIPT_COMPETENCIES_SET_CLASSIFICATION_CONTEXT =
-            "javascript:setClassificationContext(    {\n"
-                    + "        texts : {\n"
-                    + "            competentText: '%s',\n"
-                    + "            competentImprovementText: '%s',\n"
-                    + "            notCompetentText: '%s',\n"
-                    + "            notAvailableText: '%s',\n"
-                    + "            competentAbbreviationText: '%s',\n"
-                    + "            competentImprovementAbbreviationText: '%s',\n"
-                    + "            notCompetentAbbreviationText: '%s',\n"
-                    + "            notAvailableAbbreviationText: '%s'\n"
-                    + "        },\n"
-                    + "        colors: {\n"
-                    + "            competentColor: '%s',\n"
-                    + "            competentImprovementColor: '%s',\n"
-                    + "            notCompetentColor: '%s',\n"
-                    + "            notAvailableColor: '%s'\n"
-                    + "        }\n"
-                    + "    })";
-
+    public static final String SCORING_CLASSIFICATION_CONTEXT_JSON =
+            "{\n"
+            + "   scores : {\n"
+            + "      high: %d,\n"
+            + "      medium: %d,\n"
+            + "      mediumFormatted: '%s',\n"
+            + "      low: %d\n"
+            + "   },\n"
+            + "   colors: {\n"
+            + "      a: '%s',\n"
+            + "      b: '%s',\n"
+            + "      c: '%s'\n"
+            + "   }\n"
+            + "}";
+    public static final String COMPETENCIES_CLASSIFICATION_CONTEXT_JSON =
+            "{\n"
+            + "   texts : {\n"
+            + "      competentText: '%s',\n"
+            + "      competentImprovementText: '%s',\n"
+            + "      notCompetentText: '%s',\n"
+            + "      notAvailableText: '%s',\n"
+            + "      competentAbbreviationText: '%s',\n"
+            + "      competentImprovementAbbreviationText: '%s',\n"
+            + "      notCompetentAbbreviationText: '%s',\n"
+            + "      notAvailableAbbreviationText: '%s'\n"
+            + "    },\n"
+            + "    colors: {\n"
+            + "        competentColor: '%s',\n"
+            + "        competentImprovementColor: '%s',\n"
+            + "        notCompetentColor: '%s',\n"
+            + "        notAvailableColor: '%s'\n"
+            + "    }\n"
+            + "}";
 
     /**
      * List of sent surveys
@@ -100,7 +101,7 @@ public class FacilityTableBuilderBase {
 
 
         String injectColor = String.format(
-                JAVASCRIPT_SCORING_SET_CLASSIFICATION_CONTEXT,
+                SCORING_CLASSIFICATION_CONTEXT_JSON,
                 ScoreType.getMonitoringMinimalHigh(),
                 ScoreType.getMonitoringMaximumMedium(),
                 ScoreType.getMonitoringMediumPieFormat(),
@@ -108,8 +109,8 @@ public class FacilityTableBuilderBase {
                 getHtmlCodeColor(colorA),
                 getHtmlCodeColor(colorB),
                 getHtmlCodeColor(colorC));
-        Log.d(TAG, injectColor);
-        webView.loadUrl(injectColor);
+
+        invokeSetClassificationContext(webView, injectColor);
     }
 
     public static void setCompetenciesColor(WebView webView) {
@@ -126,7 +127,7 @@ public class FacilityTableBuilderBase {
                 R.color.competency_not_available_background_color);
 
         String injectColor = String.format(
-                JAVASCRIPT_COMPETENCIES_SET_CLASSIFICATION_CONTEXT,
+                COMPETENCIES_CLASSIFICATION_CONTEXT_JSON,
                 CompetencyUtils.getTextByCompetencyAbbreviation(
                         CompetencyScoreClassification.COMPETENT, context),
                 CompetencyUtils.getTextByCompetencyAbbreviation(
@@ -147,8 +148,8 @@ public class FacilityTableBuilderBase {
                 getHtmlCodeColor(competentImprovementColor),
                 getHtmlCodeColor(notCompetentColor),
                 getHtmlCodeColor(notAvailableColor));
-        Log.d(TAG, injectColor);
-        webView.loadUrl(injectColor);
+
+        invokeSetClassificationContext(webView, injectColor);
     }
 
     private static String getHtmlCodeColor(String color) {

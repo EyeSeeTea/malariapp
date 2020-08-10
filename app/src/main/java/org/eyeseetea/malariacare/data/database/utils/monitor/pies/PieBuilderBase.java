@@ -33,7 +33,6 @@ import java.util.List;
 public class PieBuilderBase {
 
     private static final String TAG=".PieBuilderBase";
-    public static final String JAVASCRIPT_SHOW = "javascript:rebuildTableFacilities()";
 
     /**
      * List of sent surveys
@@ -48,16 +47,4 @@ public class PieBuilderBase {
         this.surveys = surveys;
     }
 
-
-    void injectInBrowser(WebView webView, String formatter, String json) {
-        String updateChartJS=String.format(formatter, json);
-        Log.d(TAG, updateChartJS);
-        webView.loadUrl(updateChartJS);
-    }
-
-    public static void showPieTab(WebView webView){
-        //Set chart title
-        Log.d(TAG, JAVASCRIPT_SHOW);
-        webView.loadUrl(String.format(JAVASCRIPT_SHOW));
-    }
 }

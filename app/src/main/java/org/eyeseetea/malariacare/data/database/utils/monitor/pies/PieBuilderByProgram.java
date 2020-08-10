@@ -19,6 +19,8 @@
 
 package org.eyeseetea.malariacare.data.database.utils.monitor.pies;
 
+import static org.eyeseetea.malariacare.data.database.utils.monitor.JavascriptInvokerKt.invokeSetProgramPieData;
+
 import android.webkit.WebView;
 
 import org.eyeseetea.malariacare.R;
@@ -36,7 +38,6 @@ import java.util.Map;
  * Created by idelcano on 23/08/2016.
  */
 public class PieBuilderByProgram extends PieBuilderBase {
-    public static final String JAVASCRIPT_UPDATE_CHARTS = "javascript:setProgramPieData(%s)";
 
     /**
      * Map of entries per program
@@ -98,9 +99,9 @@ public class PieBuilderByProgram extends PieBuilderBase {
         //Build array JSON
         String json=buildJSONArray(entries);
 
-        //Inyect in browser
-        injectInBrowser(webView, JAVASCRIPT_UPDATE_CHARTS, json);
+        invokeSetProgramPieData(webView, json);
     }
+
     private String buildJSONArray(List<PieDataByProgram> entries){
         String arrayJSON="[";
         int i=0;
