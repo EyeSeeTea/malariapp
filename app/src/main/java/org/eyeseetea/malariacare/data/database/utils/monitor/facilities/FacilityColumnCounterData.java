@@ -24,9 +24,6 @@ import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by arrizabalaga on 13/10/15.
- */
 public class FacilityColumnCounterData {
     private List<SurveyDB> surveys;
 
@@ -34,17 +31,11 @@ public class FacilityColumnCounterData {
         surveys = new ArrayList<>();
     }
 
-    /**
-     * Adds a survey to this cell
-     */
     public void addSurvey(SurveyDB survey) {
         surveys.add(survey);
     }
 
-    /**
-     * Returns the value of the columns formatted as javascript number or null if no surveys for
-     * this cell
-     */
+
     public String getAsJSON() {
         if (!hasSurveys()) {
             return "0";

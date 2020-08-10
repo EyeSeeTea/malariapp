@@ -35,84 +35,67 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PieBuilderByOrgUnit extends PieBuilderBase {
-    /**
-     * Map of entries per program
-     */
-    private Map<OrgUnitDB,PieDataByOrgUnit> pieTabGroupDataMap;
-    /**
-     * Default constructor
-     *
-     * @param surveys
-     */
-    public PieBuilderByOrgUnit(List<SurveyDB> surveys) {
-        super(surveys);
-        pieTabGroupDataMap=new HashMap<>();
+public class PieBuilderByOrgUnit {
+    private Map<OrgUnitDB, PieDataByOrgUnit> pieTabGroupDataMap;
+    private List<SurveyDB> surveys;
+    private ServerClassification serverClassification;
+
+    public PieBuilderByOrgUnit(List<SurveyDB> surveys, ServerClassification serverClassification) {
+        this.surveys = surveys;
+        this.serverClassification = serverClassification;
+        pieTabGroupDataMap = new HashMap<>();
     }
-    /**
-     * Adds calculated entries to the given webView
-     * @param webView
-     * @param serverClassification
-     */
-    public void addDataInChart(WebView webView,
-            ServerClassification serverClassification){
+
+    public void addDataInChart(WebView webView) {
         //Build entries
-        List<PieDataByOrgUnit> entries=build(surveys, serverClassification);
-        //Inyect entries in view
-        injectDataInChart(webView, entries);
-        buildJSONArray(entries);
+        List<PieDataByOrgUnit> entries = build(surveys);
+        String json = buildJSONArray(entries);
+        invokeSetOrgUnitPieData(webView, json);
         entries.clear();
     }
 
-    private List<PieDataByOrgUnit> build(List<SurveyDB> surveys,
-            ServerClassification serverClassification) {
-        for(SurveyDB survey:surveys){
-            build(survey, serverClassification);
+    private List<PieDataByOrgUnit> build(List<SurveyDB> surveys) {
+        for (SurveyDB survey : surveys) {
+            build(survey);
         }
 
         return new ArrayList(pieTabGroupDataMap.values());
     }
 
-    private void build(SurveyDB survey,
-            ServerClassification serverClassification) {
+    private void build(SurveyDB survey) {
         //Get the program
-        OrgUnitDB orgUnit=survey.getOrgUnit();
+        OrgUnitDB orgUnit = survey.getOrgUnit();
 
         //Get the entry for that program
         PieDataByOrgUnit pieTabGroupData = pieTabGroupDataMap.get(orgUnit);
 
         //First time no entry
-        if(pieTabGroupData ==null){
-            pieTabGroupData =new PieDataByOrgUnit(orgUnit);
+        if (pieTabGroupData == null) {
+            pieTabGroupData = new PieDataByOrgUnit(orgUnit);
             pieTabGroupDataMap.put(orgUnit, pieTabGroupData);
         }
 
-        if (serverClassification == ServerClassification.COMPETENCIES){
+        if (serverClassification == ServerClassification.COMPETENCIES) {
             pieTabGroupData.incCounterByCompetency(survey.getCompetencyScoreClassification());
         } else {
             pieTabGroupData.incCounterByScoring(survey.getMainScore().getScore());
         }
     }
 
-    private void injectDataInChart(WebView webView, List<PieDataByOrgUnit> entries) {
-        //Build array JSON
-        String json=buildJSONArray(entries);
-
-        invokeSetOrgUnitPieData(webView, json);
-    }
-
-    private String buildJSONArray(List<PieDataByOrgUnit> entries){
-        String arrayJSON="[";
-        int i=0;
-        for(PieDataByOrgUnit pieTabGroupData :entries){
-            String pieJSON= pieTabGroupData.toJSON(PreferencesState.getInstance().getContext().getString(R.string.dashboard_tip_pie_chart));
-            arrayJSON+=pieJSON;
+    private String buildJSONArray(List<PieDataByOrgUnit> entries) {
+        String arrayJSON = "[";
+        int i = 0;
+        for (PieDataByOrgUnit pieTabGroupData : entries) {
+            String pieJSON = pieTabGroupData.toJSON(
+                    PreferencesState.getInstance().getContext().getString(
+                            R.string.dashboard_tip_pie_chart));
+            arrayJSON += pieJSON;
             i++;
-            if(i!=entries.size()){
-                arrayJSON+=",";
+            if (i != entries.size()) {
+                arrayJSON += ",";
             }
         }
-        arrayJSON+="]";
+        arrayJSON += "]";
         return arrayJSON;
     }
 }

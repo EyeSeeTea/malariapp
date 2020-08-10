@@ -22,26 +22,15 @@ package org.eyeseetea.malariacare.data.database.utils.monitor.facilities;
 import static org.eyeseetea.malariacare.data.database.utils.monitor.JavascriptInvokerKt.invokeSetClassificationContext;
 
 import android.content.Context;
-import android.util.Log;
 import android.webkit.WebView;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
 import org.eyeseetea.malariacare.domain.entity.ScoreType;
 import org.eyeseetea.malariacare.utils.CompetencyUtils;
 
-import java.util.List;
-
-/**
- * Builds data for table of facilities
- * Created by arrizabalaga on 13/10/15.
- */
-public class FacilityTableBuilderBase {
-
-    private static final String TAG = ".FacilityTableBuilder";
-
+public class SetClassificationContextInvoker {
     public static final String SCORING_CLASSIFICATION_CONTEXT_JSON =
             "{\n"
             + "   scores : {\n"
@@ -76,19 +65,8 @@ public class FacilityTableBuilderBase {
             + "    }\n"
             + "}";
 
-    /**
-     * List of sent surveys
-     */
-    List<SurveyDB> surveys;
 
-    /**
-     * Default constructor
-     */
-    public FacilityTableBuilderBase(List<SurveyDB> surveys) {
-        this.surveys = surveys;
-    }
-
-    public static void setScoringColor(WebView webView) {
+    public static void invokeByScoring(WebView webView) {
         Context context = PreferencesState.getInstance().getContext();
 
         //noinspection ResourceType
@@ -113,7 +91,7 @@ public class FacilityTableBuilderBase {
         invokeSetClassificationContext(webView, injectColor);
     }
 
-    public static void setCompetenciesColor(WebView webView) {
+    public static void invokeByCompetencies(WebView webView) {
         Context context = PreferencesState.getInstance().getContext();
 
         //noinspection ResourceType

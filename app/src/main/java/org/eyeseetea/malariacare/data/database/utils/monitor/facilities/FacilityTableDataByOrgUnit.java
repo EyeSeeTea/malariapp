@@ -29,9 +29,6 @@ import org.eyeseetea.malariacare.utils.AUtils;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by idelcano on 23/08/2016.
- */
 public class FacilityTableDataByOrgUnit extends FacilityTableDataBase {
 
     private static final String TAG = ".FacilityTableDataOU";

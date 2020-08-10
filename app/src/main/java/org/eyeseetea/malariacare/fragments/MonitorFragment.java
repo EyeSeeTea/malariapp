@@ -50,8 +50,8 @@ import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
-import org.eyeseetea.malariacare.data.database.utils.monitor.MonitorMessagesBuilder;
-import org.eyeseetea.malariacare.data.database.utils.monitor.facilities.FacilityTableBuilderBase;
+import org.eyeseetea.malariacare.data.database.utils.monitor.InitMessagesInvoker;
+import org.eyeseetea.malariacare.data.database.utils.monitor.facilities.SetClassificationContextInvoker;
 import org.eyeseetea.malariacare.data.database.utils.monitor.facilities.FacilityTableBuilderByOrgUnit;
 import org.eyeseetea.malariacare.data.database.utils.monitor.facilities.FacilityTableBuilderByProgram;
 import org.eyeseetea.malariacare.data.database.utils.monitor.pies.PieBuilderByOrgUnit;
@@ -296,21 +296,21 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
                             invokeSetServerClassification(webView,  serverClassification);
 
                             //Update hardcoded messages
-                            new MonitorMessagesBuilder().initMessages(view);
+                            new InitMessagesInvoker().invoke(view);
 
                             if (serverClassification == ServerClassification.COMPETENCIES) {
-                                FacilityTableBuilderBase.setCompetenciesColor(view);
+                                SetClassificationContextInvoker.invokeByCompetencies(view);
                             } else {
-                                FacilityTableBuilderBase.setScoringColor(view);
+                                SetClassificationContextInvoker.invokeByScoring(view);
                             }
 
                             if (isOrgUnitFilterActive()) {
-                                new PieBuilderByOrgUnit(surveysForGraphic).addDataInChart(view,
-                                        serverClassification);
+                                new PieBuilderByOrgUnit(surveysForGraphic, serverClassification)
+                                        .addDataInChart(view);
                             }
                             if (isProgramFilterActive()) {
-                                new PieBuilderByProgram(surveysForGraphic).addDataInChart(view,
-                                        serverClassification);
+                                new PieBuilderByProgram(surveysForGraphic, serverClassification)
+                                        .addDataInChart(view);
                             }
 
                             if (isOrgUnitFilterActive()) {

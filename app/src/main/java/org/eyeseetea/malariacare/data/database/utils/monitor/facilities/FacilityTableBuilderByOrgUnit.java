@@ -32,24 +32,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by idelcano on 23/08/2016.
- */
-public class FacilityTableBuilderByOrgUnit extends FacilityTableBuilderBase {
-    private static final String TAG = ".FacilityTableBuilderOU";
-    Map<ProgramDB, FacilityTableDataByOrgUnit> facilityTableDataMap;
+public class FacilityTableBuilderByOrgUnit {
+    private List<SurveyDB> surveys;
+    private Map<ProgramDB, FacilityTableDataByOrgUnit> facilityTableDataMap;
 
-    /**
-     * Default constructor
-     */
     public FacilityTableBuilderByOrgUnit(List<SurveyDB> surveys) {
-        super(surveys);
+        this.surveys = surveys;
         this.facilityTableDataMap = new HashMap<>();
     }
 
-    /**
-     * Build table data from surveys
-     */
     private void build(List<SurveyDB> surveys, ServerClassification serverClassification) {
         for (SurveyDB survey : surveys) {
 
@@ -70,14 +61,11 @@ public class FacilityTableBuilderByOrgUnit extends FacilityTableBuilderBase {
         }
     }
 
-    /**
-     * Adds calculated entries to the given webView
-     */
     public void addDataInChart(WebView webView,
             ServerClassification serverClassification) {
         //Build tables
         build(surveys, serverClassification);
-        //Inyect tables in view
+        //Inject tables in view
         for (Map.Entry<ProgramDB, FacilityTableDataByOrgUnit> tableEntry :
                 facilityTableDataMap.entrySet()) {
             ProgramDB program = tableEntry.getKey();

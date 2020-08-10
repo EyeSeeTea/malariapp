@@ -25,9 +25,6 @@ import org.eyeseetea.malariacare.domain.entity.ServerClassification;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by arrizabalaga on 13/10/15.
- */
 public class FacilityColumnData {
     private List<SurveyDB> surveys;
     private ServerClassification serverClassification;
@@ -37,18 +34,10 @@ public class FacilityColumnData {
         surveys=new ArrayList<>();
     }
 
-    /**
-     * Adds a survey to this cell
-     * @param survey
-     */
     public void addSurvey(SurveyDB survey){
         surveys.add(survey);
     }
 
-    /**
-     * Returns the value of the columns formatted as javascript number or null if no surveys for this cell
-     * @return
-     */
     public String getAsJSON(){
         if(!hasSurveys()){
             return "null";

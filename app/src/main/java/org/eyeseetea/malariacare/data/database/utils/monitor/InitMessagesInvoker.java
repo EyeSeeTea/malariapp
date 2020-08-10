@@ -27,13 +27,13 @@ import android.webkit.WebView;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 
-public class MonitorMessagesBuilder {
+public class InitMessagesInvoker {
 
     public static final String JSON_MAP =
             "{'assesmentUnderTaken':'%s','target': '%s','qualityOfCare': '%s','months':'%s',"
                     + "'noSurveys':'%s','multipleEventLegend': '%s' }";
 
-    public void initMessages(WebView webView){
+    public void invoke(WebView webView){
         String messagesJSON=buildJSON();
         invokeInitMessages(webView, messagesJSON);
     }

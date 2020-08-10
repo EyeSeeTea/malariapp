@@ -30,21 +30,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FacilityTableBuilderByProgram extends FacilityTableBuilderBase {
-    private static final String TAG = ".FacilityTableBuilderP";
-    Map<String, FacilityTableDataByProgram> facilityTableDataMap;
+public class FacilityTableBuilderByProgram {
+    private List<SurveyDB> surveys;
+    private Map<String, FacilityTableDataByProgram> facilityTableDataMap;
 
-    /**
-     * Default constructor
-     */
     public FacilityTableBuilderByProgram(List<SurveyDB> surveys) {
-        super(surveys);
+        this.surveys = surveys;
         this.facilityTableDataMap = new HashMap<>();
     }
 
-    /**
-     * Build table data from surveys
-     */
     private void build(List<SurveyDB> surveys,
             ServerClassification serverClassification) {
         for (SurveyDB survey : surveys) {
@@ -65,14 +59,11 @@ public class FacilityTableBuilderByProgram extends FacilityTableBuilderBase {
         }
     }
 
-    /**
-     * Adds calculated entries to the given webView
-     */
     public void addDataInChart(WebView webView,
             ServerClassification serverClassification) {
         //Build tables
         build(surveys, serverClassification);
-        //Inyect tables in view
+        //Inject tables in view
         for (Map.Entry<String, FacilityTableDataByProgram> tableEntry :
                 facilityTableDataMap.entrySet()) {
             String cadena = tableEntry.getKey();

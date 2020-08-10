@@ -19,18 +19,13 @@
 
 package org.eyeseetea.malariacare.data.database.utils.monitor.facilities;
 
-import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.domain.entity.ServerClassification;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.Locale;
 import java.util.Map;
 
-/**
- * Created by arrizabalaga on 13/10/15.
- */
 public class FacilityTableDataBase {
     private static final String MONTH_FORMAT="MMM";
 
