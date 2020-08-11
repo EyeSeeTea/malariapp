@@ -37,16 +37,22 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedItem;
 import org.eyeseetea.malariacare.data.database.utils.services.PlannedServiceBundle;
+import org.eyeseetea.malariacare.domain.common.Either;
+import org.eyeseetea.malariacare.domain.entity.Server;
+import org.eyeseetea.malariacare.domain.usecase.GetServerFailure;
+import org.eyeseetea.malariacare.domain.usecase.GetServerUseCase;
+import org.eyeseetea.malariacare.factories.ServerFactory;
 import org.eyeseetea.malariacare.layout.adapters.survey.PlannedAdapter;
 import org.eyeseetea.malariacare.services.PlannedSurveyService;
 import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 /**
  * Created by ivan.arrizabalaga on 15/12/2015.
  */
-public class PlannedFragment extends Fragment implements IModuleFragment{
+public class PlannedFragment extends Fragment implements IModuleFragment {
     public static final String TAG = ".PlannedFragment";
 
     private PlannedItemsReceiver plannedItemsReceiver;
@@ -61,7 +67,8 @@ public class PlannedFragment extends Fragment implements IModuleFragment{
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_plan, container, false);
 
         initializeRecyclerView();
@@ -85,18 +92,25 @@ public class PlannedFragment extends Fragment implements IModuleFragment{
     private void initializeRecyclerView() {
         plannedRecyclerView = rootView.findViewById(R.id.planList);
 
-        plannedAdapter = new PlannedAdapter(getActivity());
-        plannedRecyclerView.setAdapter(plannedAdapter);
+        GetServerUseCase getServerUseCase = ServerFactory.INSTANCE.provideGetServerUseCase(
+                getActivity());
+
+        getServerUseCase.execute(serverResult -> {
+            Server server = ((Either.Right<Server>) serverResult).getValue();
+
+            plannedAdapter = new PlannedAdapter(getActivity(), server.getClassification());
+            plannedRecyclerView.setAdapter(plannedAdapter);
+        });
     }
 
 
-    public void reloadFilter(){
+    public void reloadFilter() {
         String selectedProgram = orgUnitProgramFilterView.getSelectedProgramFilter();
 
         if (selectedProgram != null) {
             loadProgram(selectedProgram);
         }
-        if(plannedAdapter!=null){
+        if (plannedAdapter != null) {
             plannedAdapter.notifyDataSetChanged();
         }
     }
@@ -180,13 +194,12 @@ public class PlannedFragment extends Fragment implements IModuleFragment{
     }
 
     public void loadProgram(String programUid) {
-        Log.d(TAG,"Loading program: " + programUid);
+        Log.d(TAG, "Loading program: " + programUid);
         programUidFilter = programUid;
-        if(plannedAdapter != null) {
+        if (plannedAdapter != null) {
             plannedAdapter.applyFilter(programUidFilter);
             plannedAdapter.notifyDataSetChanged();
-        }
-        else {
+        } else {
             reloadData();
         }
     }
