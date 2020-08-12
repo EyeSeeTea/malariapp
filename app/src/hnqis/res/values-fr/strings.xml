@@ -124,7 +124,7 @@ Mensuelle"</string>
 <string name="feedback_show_only_media">"Afficher uniquement les questions contenant des vidéos / images"</string>
 <string name="feedback_show_only_one_or_show_all">"Afficher uniquement les derniers commentaires par rapport/établissement"</string>
 <string name="feedback_return">"Retour à toutes les enquêtes"</string>
-<string name="quality_of_care">"QUALITÉ DES SOINS (QoC) SCORE:"</string>
+<string name="quality_of_care">"Qualité des soins (QoC) Score"</string>
 <string name="overall_quality_of_care">"QoC"</string>
 <string name="feedback_info_passed">"Reussi"</string>
 <string name="feedback_info_failed">"Raté"</string>

@@ -21,11 +21,11 @@ package org.eyeseetea.malariacare.fragments;
 
 import static org.eyeseetea.malariacare.services.SurveyService.PREPARE_FEEDBACK_ACTION_ITEMS;
 
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
@@ -42,7 +42,12 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.feedback.Feedback;
+import org.eyeseetea.malariacare.domain.common.Either;
 import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
+import org.eyeseetea.malariacare.domain.entity.Server;
+import org.eyeseetea.malariacare.domain.entity.ServerClassification;
+import org.eyeseetea.malariacare.domain.usecase.GetServerUseCase;
+import org.eyeseetea.malariacare.factories.ServerFactory;
 import org.eyeseetea.malariacare.fragments.strategies.AFeedbackFragmentStrategy;
 import org.eyeseetea.malariacare.fragments.strategies.FeedbackFragmentStrategy;
 import org.eyeseetea.malariacare.layout.adapters.survey.FeedbackAdapter;
@@ -218,14 +223,33 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
             mFeedbackFragmentStrategy.setTotalPercentColor(item, colorId, getActivity());
         }
 
-        CustomTextView competencyTextView = llLayout.findViewById(R.id.feedback_competency);
-        CompetencyScoreClassification classification =
-                CompetencyScoreClassification.get(
-                        survey.getCompetencyScoreClassification());
+        renderHeaderByServerClassification(survey);
+    }
 
-        CompetencyUtils.setTextByCompetency(competencyTextView, classification);
-        CompetencyUtils.setBackgroundByCompetency(competencyTextView, classification);
-        CompetencyUtils.setTextColorByCompetency(competencyTextView, classification);
+    private void renderHeaderByServerClassification(
+            SurveyDB survey) {
+        GetServerUseCase getServerUseCase = ServerFactory.INSTANCE.provideGetServerUseCase(
+                getActivity());
+
+        getServerUseCase.execute(serverResult -> {
+            Server server = ((Either.Right<Server>) serverResult).getValue();
+
+            CustomTextView competencyTextView = llLayout.findViewById(R.id.feedback_competency);
+
+            if (server.getClassification() == ServerClassification.COMPETENCIES){
+                CompetencyScoreClassification classification =
+                        CompetencyScoreClassification.get(
+                                survey.getCompetencyScoreClassification());
+
+                CompetencyUtils.setTextByCompetency(competencyTextView, classification);
+                CompetencyUtils.setBackgroundByCompetency(competencyTextView, classification);
+                CompetencyUtils.setTextColorByCompetency(competencyTextView, classification);
+                competencyTextView.setTypeface(Typeface.DEFAULT_BOLD);
+            } else {
+                String text = getString(R.string.quality_of_care);
+                competencyTextView.setText(text);
+            }
+        });
     }
 
     private void loadItems(List<Feedback> items) {
