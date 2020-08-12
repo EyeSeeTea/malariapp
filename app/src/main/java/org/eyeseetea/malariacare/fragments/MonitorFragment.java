@@ -61,7 +61,7 @@ import org.eyeseetea.malariacare.domain.common.Either;
 import org.eyeseetea.malariacare.domain.entity.Server;
 import org.eyeseetea.malariacare.domain.entity.ServerClassification;
 import org.eyeseetea.malariacare.domain.usecase.GetServerFailure;
-import org.eyeseetea.malariacare.domain.usecase.GetServerUseCase;
+import org.eyeseetea.malariacare.domain.usecase.GetServerAsyncUseCase;
 import org.eyeseetea.malariacare.factories.ServerFactory;
 import org.eyeseetea.malariacare.layout.dashboard.config.MonitorFilter;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
@@ -269,10 +269,10 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
     }
 
     public void reloadMonitor() {
-        GetServerUseCase getServerUseCase = ServerFactory.INSTANCE.provideGetServerUseCase(
+        GetServerAsyncUseCase getServerAsyncUseCase = ServerFactory.INSTANCE.provideGetServerAsyncUseCase(
                 getActivity());
 
-        getServerUseCase.execute(new GetServerUseCase.Callback() {
+        getServerAsyncUseCase.execute(new GetServerAsyncUseCase.Callback() {
             @Override
             public void onSuccess(
                     @NotNull Either<? extends GetServerFailure, Server> serverResult) {

@@ -44,10 +44,9 @@ import org.eyeseetea.malariacare.domain.common.Either;
 import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
 import org.eyeseetea.malariacare.domain.entity.Server;
 import org.eyeseetea.malariacare.domain.entity.ServerClassification;
-import org.eyeseetea.malariacare.domain.usecase.GetServerUseCase;
+import org.eyeseetea.malariacare.domain.usecase.GetServerAsyncUseCase;
 import org.eyeseetea.malariacare.factories.ServerFactory;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentSentAdapter;
-import org.eyeseetea.malariacare.layout.adapters.survey.PlannedAdapter;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.views.CustomRadioButton;
 import org.eyeseetea.malariacare.views.CustomTextView;
@@ -196,10 +195,10 @@ public class DashboardSentFragment extends Fragment implements IModuleFragment {
     private void initRecyclerView() {
         recyclerView = rootView.findViewById(R.id.sentSurveyList);
 
-        GetServerUseCase getServerUseCase = ServerFactory.INSTANCE.provideGetServerUseCase(
+        GetServerAsyncUseCase getServerAsyncUseCase = ServerFactory.INSTANCE.provideGetServerAsyncUseCase(
                 getActivity());
 
-        getServerUseCase.execute(serverResult -> {
+        getServerAsyncUseCase.execute(serverResult -> {
             Server server = ((Either.Right<Server>) serverResult).getValue();
 
             TextView classificationHeader = rootView.findViewById(R.id.scoreHeader);

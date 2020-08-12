@@ -37,7 +37,7 @@ import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.domain.common.Either;
 import org.eyeseetea.malariacare.domain.entity.Server;
-import org.eyeseetea.malariacare.domain.usecase.GetServerUseCase;
+import org.eyeseetea.malariacare.domain.usecase.GetServerAsyncUseCase;
 import org.eyeseetea.malariacare.factories.ServerFactory;
 import org.eyeseetea.malariacare.fragments.IModuleFragment;
 import org.eyeseetea.malariacare.layout.dashboard.config.ModuleSettings;
@@ -70,7 +70,7 @@ public abstract class ModuleController {
     Fragment fragment;
     boolean visible;
 
-    private GetServerUseCase serverUseCase;
+    private GetServerAsyncUseCase serverUseCase;
 
     protected ModuleController() {
     }
@@ -87,7 +87,7 @@ public abstract class ModuleController {
     public void init(DashboardActivity activity) {
         this.dashboardActivity = activity;
 
-        serverUseCase = ServerFactory.INSTANCE.provideGetServerUseCase(dashboardActivity);
+        serverUseCase = ServerFactory.INSTANCE.provideGetServerAsyncUseCase(dashboardActivity);
     }
 
     public String getName() {

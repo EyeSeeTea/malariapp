@@ -39,13 +39,11 @@ import org.eyeseetea.malariacare.data.database.utils.planning.PlannedItem;
 import org.eyeseetea.malariacare.data.database.utils.services.PlannedServiceBundle;
 import org.eyeseetea.malariacare.domain.common.Either;
 import org.eyeseetea.malariacare.domain.entity.Server;
-import org.eyeseetea.malariacare.domain.usecase.GetServerFailure;
-import org.eyeseetea.malariacare.domain.usecase.GetServerUseCase;
+import org.eyeseetea.malariacare.domain.usecase.GetServerAsyncUseCase;
 import org.eyeseetea.malariacare.factories.ServerFactory;
 import org.eyeseetea.malariacare.layout.adapters.survey.PlannedAdapter;
 import org.eyeseetea.malariacare.services.PlannedSurveyService;
 import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -92,10 +90,10 @@ public class PlannedFragment extends Fragment implements IModuleFragment {
     private void initializeRecyclerView() {
         plannedRecyclerView = rootView.findViewById(R.id.planList);
 
-        GetServerUseCase getServerUseCase = ServerFactory.INSTANCE.provideGetServerUseCase(
+        GetServerAsyncUseCase getServerAsyncUseCase = ServerFactory.INSTANCE.provideGetServerAsyncUseCase(
                 getActivity());
 
-        getServerUseCase.execute(serverResult -> {
+        getServerAsyncUseCase.execute(serverResult -> {
             Server server = ((Either.Right<Server>) serverResult).getValue();
 
             plannedAdapter = new PlannedAdapter(getActivity(), server.getClassification());

@@ -47,7 +47,6 @@ import org.eyeseetea.malariacare.data.database.utils.ExportData;
 import org.eyeseetea.malariacare.data.database.utils.LanguageContextWrapper;
 import org.eyeseetea.malariacare.data.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.remote.api.ServerInfoRemoteDataSource;
 import org.eyeseetea.malariacare.data.repositories.ServerInfoRepository;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
@@ -58,7 +57,7 @@ import org.eyeseetea.malariacare.domain.common.Either;
 import org.eyeseetea.malariacare.domain.entity.Server;
 import org.eyeseetea.malariacare.domain.entity.ServerInfo;
 import org.eyeseetea.malariacare.domain.usecase.GetServerInfoUseCase;
-import org.eyeseetea.malariacare.domain.usecase.GetServerUseCase;
+import org.eyeseetea.malariacare.domain.usecase.GetServerAsyncUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.factories.ServerFactory;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
@@ -134,9 +133,9 @@ public abstract class BaseActivity extends AppCompatActivity {
      * Common styling
      */
     private void initView(Bundle savedInstanceState) {
-        GetServerUseCase getServerUseCase = ServerFactory.INSTANCE.provideGetServerUseCase(this);
+        GetServerAsyncUseCase getServerAsyncUseCase = ServerFactory.INSTANCE.provideGetServerAsyncUseCase(this);
 
-        getServerUseCase.execute(serverResult -> {
+        getServerAsyncUseCase.execute(serverResult -> {
             setTheme(R.style.EyeSeeTheme);
             android.support.v7.app.ActionBar actionBar = BaseActivity.this.getSupportActionBar();
 

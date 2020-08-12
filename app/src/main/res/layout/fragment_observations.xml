@@ -113,11 +113,12 @@
                         android:layout_marginLeft="4dp"
                         android:gravity="center_horizontal"
                         android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="@color/white"
+                        android:textColor="@color/black"
+                        android:background="@drawable/classification_label_background"
                         android:textSize="@dimen/xsmall_text_size"
                         android:padding="6dp"
                         app:tDimension="@string/font_size_level1"
-                        app:tFontName="@string/medium_font_name" />
+                        app:tFontName="@string/light_font"/>
 
 
                     <org.eyeseetea.malariacare.views.CustomTextView

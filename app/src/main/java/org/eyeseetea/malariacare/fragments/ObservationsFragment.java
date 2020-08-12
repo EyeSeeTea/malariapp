@@ -23,6 +23,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -42,11 +43,15 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
-import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
+import org.eyeseetea.malariacare.domain.common.Either;
 import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
 import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
+import org.eyeseetea.malariacare.domain.entity.Server;
+import org.eyeseetea.malariacare.domain.entity.ServerClassification;
+import org.eyeseetea.malariacare.domain.usecase.GetServerAsyncUseCase;
 import org.eyeseetea.malariacare.factories.DataFactory;
 import org.eyeseetea.malariacare.factories.MetadataFactory;
+import org.eyeseetea.malariacare.factories.ServerFactory;
 import org.eyeseetea.malariacare.layout.adapters.MissedStepsAdapter;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.presentation.executors.WrapperExecutor;
@@ -68,7 +73,6 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
 
     public static final String TAG = ".ObservationsFragment";
     private static final String SURVEY_UID = "surveyUid";
-
 
     private CustomTextView mTotalScoreTextView;
     private CustomTextView mCompetencyTextView;
@@ -196,6 +200,7 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
                 new WrapperExecutor(),
                 DataFactory.INSTANCE.provideGetObservationBySurveyUidUseCase(),
                 MetadataFactory.INSTANCE.provideServerMetadataUseCase(getActivity()),
+                ServerFactory.INSTANCE.provideGetServerUseCase(getActivity()),
                 DataFactory.INSTANCE.provideSaveObservationUseCase());
 
 
@@ -299,14 +304,11 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
 
     @Override
     public void showHeaderInfo(String orgUnitName, Float mainScore, String completionDate,
-            String nextDate,
+            String nextDate, ServerClassification serverClassification,
             CompetencyScoreClassification classification) {
 
         mOrgUnitTextView.setText(orgUnitName);
-
-        CompetencyUtils.setBackgroundByCompetency(mCompetencyTextView, classification);
-        CompetencyUtils.setTextColorByCompetency(mCompetencyTextView, classification);
-        CompetencyUtils.setTextByCompetency(mCompetencyTextView, classification);
+        renderLabelHeaderByServerClassification(serverClassification, classification);
 
         if (mainScore > 0f) {
             mTotalScoreTextView.setText(String.format("%.1f%%", mainScore));
@@ -326,13 +328,29 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
 
     }
 
+    private void renderLabelHeaderByServerClassification(
+            ServerClassification serverClassification,
+            CompetencyScoreClassification classification) {
+
+        if (serverClassification == ServerClassification.COMPETENCIES) {
+            CompetencyUtils.setBackgroundByCompetency(mCompetencyTextView, classification);
+            CompetencyUtils.setTextColorByCompetency(mCompetencyTextView, classification);
+            CompetencyUtils.setTextByCompetency(mCompetencyTextView, classification);
+            mCompetencyTextView.setTypeface(Typeface.DEFAULT_BOLD);
+        } else {
+            String text = getString(R.string.quality_of_care);
+            mCompetencyTextView.setText(text);
+        }
+
+    }
 
     @Override
     public void shareByText(ObservationViewModel observationViewModel, SurveyDB survey,
-            String formattedNextScheduleDate,
+            String formattedNextScheduleDate, ServerClassification serverClassification,
             List<MissedStepViewModel> missedCriticalStepViewModels,
             List<MissedStepViewModel> missedNonCriticalStepViewModels) {
-        String data = extractTextData(observationViewModel, survey, formattedNextScheduleDate, missedCriticalStepViewModels,
+        String data = extractTextData(observationViewModel, survey, serverClassification,
+                formattedNextScheduleDate, missedCriticalStepViewModels,
                 missedNonCriticalStepViewModels);
 
         shareData(data);
@@ -402,6 +420,7 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
     }
 
     private String extractTextData(ObservationViewModel observationViewModel, SurveyDB survey,
+            ServerClassification serverClassification,
             String formattedNextScheduleDate,
             List<MissedStepViewModel> missedCriticalStepViewModels,
             List<MissedStepViewModel> missedNonCriticalStepViewModels) {
@@ -423,13 +442,16 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
 
         String competencyText = CompetencyUtils.getTextByCompetencyName(classification,
                 getActivity());
-        data += getString(R.string.competency_title).toUpperCase() + ": "
-                + competencyText + "\n";
+
+        if (serverClassification == ServerClassification.COMPETENCIES){
+            data += getString(R.string.competency_title).toUpperCase() + ": "
+                    + competencyText + "\n";
+        }
 
         int roundedScore = Math.round(survey.getMainScoreValue());
         data += getString(R.string.quality_of_care).toUpperCase() + ": " + roundedScore + "% \n";
 
-        data += String.format(getString(R.string.plan_action_next_date),formattedNextScheduleDate);
+        data += String.format(getString(R.string.plan_action_next_date), formattedNextScheduleDate);
 
         if (observationViewModel.getProvider() != null
                 && !observationViewModel.getProvider().isEmpty()) {

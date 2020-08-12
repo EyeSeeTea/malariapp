@@ -103,7 +103,7 @@
             android:lines="1"
             android:text="@string/quality_of_care"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:background="@drawable/feedback_header_border"
+            android:background="@drawable/classification_label_background"
             android:textColor="@color/black"
             android:ellipsize="end"
             android:textSize="@dimen/planing_text_size"

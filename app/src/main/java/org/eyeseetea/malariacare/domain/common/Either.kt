@@ -11,6 +11,13 @@ sealed class Either<out L, out R> {
     fun <R> right(b: R) = Right(b)
 }
 
+fun <L, R> Either<L, R>.getOrThrow(): R {
+    return when (this) {
+        is Either.Left -> throw Exception("Return Either value is not possible because is left")
+        is Either.Right -> value
+    }
+}
+
 fun <L, R, T> Either<L, R>.fold(left: (L) -> T, right: (R) -> T): T =
     when (this) {
         is Either.Left -> left(value)

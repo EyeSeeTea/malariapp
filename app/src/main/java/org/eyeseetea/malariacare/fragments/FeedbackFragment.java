@@ -46,7 +46,7 @@ import org.eyeseetea.malariacare.domain.common.Either;
 import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
 import org.eyeseetea.malariacare.domain.entity.Server;
 import org.eyeseetea.malariacare.domain.entity.ServerClassification;
-import org.eyeseetea.malariacare.domain.usecase.GetServerUseCase;
+import org.eyeseetea.malariacare.domain.usecase.GetServerAsyncUseCase;
 import org.eyeseetea.malariacare.factories.ServerFactory;
 import org.eyeseetea.malariacare.fragments.strategies.AFeedbackFragmentStrategy;
 import org.eyeseetea.malariacare.fragments.strategies.FeedbackFragmentStrategy;
@@ -228,10 +228,10 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
 
     private void renderHeaderByServerClassification(
             SurveyDB survey) {
-        GetServerUseCase getServerUseCase = ServerFactory.INSTANCE.provideGetServerUseCase(
+        GetServerAsyncUseCase getServerAsyncUseCase = ServerFactory.INSTANCE.provideGetServerAsyncUseCase(
                 getActivity());
 
-        getServerUseCase.execute(serverResult -> {
+        getServerAsyncUseCase.execute(serverResult -> {
             Server server = ((Either.Right<Server>) serverResult).getValue();
 
             CustomTextView competencyTextView = llLayout.findViewById(R.id.feedback_competency);
