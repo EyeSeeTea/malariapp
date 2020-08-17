@@ -400,7 +400,7 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
         FragmentManager fm = getActivity().getSupportFragmentManager();
 
         MonitorSurveysDialogFragment monitorSurveysDialogFragment =
-                MonitorSurveysDialogFragment.newInstance(surveyIds);
+                MonitorSurveysDialogFragment.newInstance(surveyIds, server.getClassification());
 
         monitorSurveysDialogFragment.show(fm, "");
     }
