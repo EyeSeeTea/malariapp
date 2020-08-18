@@ -41,9 +41,9 @@ public class MonitorModuleController extends ModuleController {
         super.init(activity);
 
         monitorBySurveyActionsFragment =
-                MonitorBySurveyActionsFragment.newInstance();
+                MonitorBySurveyActionsFragment.newInstance(server.getClassification());
 
-        monitoringByCalendar = new MonitorFragment();
+        monitoringByCalendar = MonitorFragment.newInstance(server.getClassification());
         monitoringByCalendar.setFilterType(moduleSettings.getMonitorFilter());
 
 

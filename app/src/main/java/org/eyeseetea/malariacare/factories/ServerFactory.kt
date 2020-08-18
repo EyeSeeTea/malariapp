@@ -12,7 +12,6 @@ import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerRepository
 import org.eyeseetea.malariacare.domain.common.fold
-import org.eyeseetea.malariacare.domain.usecase.GetServerAsyncUseCase
 import org.eyeseetea.malariacare.domain.usecase.GetServerUseCase
 import org.eyeseetea.malariacare.domain.usecase.GetServersUseCase
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor
@@ -27,16 +26,9 @@ object ServerFactory {
         return GetServersUseCase(serverRepository)
     }
 
-    fun provideGetServerAsyncUseCase(context: Context): GetServerAsyncUseCase {
-        val serverRepository = provideServerRepository(context)
-        return GetServerAsyncUseCase(
-            serverRepository, mainExecutor, asyncExecutor
-        )
-    }
-
     fun provideGetServerUseCase(context: Context): GetServerUseCase {
         val serverRepository = provideServerRepository(context)
-        return GetServerUseCase(serverRepository)
+        return GetServerUseCase(serverRepository, mainExecutor, asyncExecutor)
     }
 
     fun provideServerRepository(context: Context): IServerRepository {

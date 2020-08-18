@@ -40,12 +40,8 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramOUSurveyDict;
 import org.eyeseetea.malariacare.data.database.utils.services.BaseServiceBundle;
-import org.eyeseetea.malariacare.domain.common.Either;
 import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
-import org.eyeseetea.malariacare.domain.entity.Server;
 import org.eyeseetea.malariacare.domain.entity.ServerClassification;
-import org.eyeseetea.malariacare.domain.usecase.GetServerAsyncUseCase;
-import org.eyeseetea.malariacare.factories.ServerFactory;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentSentAdapter;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.views.CustomRadioButton;
@@ -103,6 +99,19 @@ public class DashboardSentFragment extends Fragment implements IModuleFragment {
         return forceAllSurveys;
     }
 
+    private static String SERVER_CLASSIFICATION = "ServerClassification";
+    private ServerClassification serverClassification;
+
+    public static DashboardSentFragment newInstance(ServerClassification serverClassification) {
+        DashboardSentFragment fragment = new DashboardSentFragment();
+
+        Bundle args = new Bundle();
+        args.putInt(SERVER_CLASSIFICATION, serverClassification.getCode());
+        fragment.setArguments(args);
+
+        return fragment;
+    }
+
     public DashboardSentFragment() {
         this.surveys = new ArrayList();
         oneSurveyForOrgUnit = new ArrayList<>();
@@ -118,6 +127,9 @@ public class DashboardSentFragment extends Fragment implements IModuleFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView");
+
+        serverClassification = ServerClassification.Companion.get(
+                getArguments().getInt(SERVER_CLASSIFICATION));
 
         loadFilter();
 
@@ -195,25 +207,18 @@ public class DashboardSentFragment extends Fragment implements IModuleFragment {
     private void initRecyclerView() {
         recyclerView = rootView.findViewById(R.id.sentSurveyList);
 
-        GetServerAsyncUseCase getServerAsyncUseCase = ServerFactory.INSTANCE.provideGetServerAsyncUseCase(
-                getActivity());
+        TextView classificationHeader = rootView.findViewById(R.id.scoreHeader);
 
-        getServerAsyncUseCase.execute(serverResult -> {
-            Server server = ((Either.Right<Server>) serverResult).getValue();
+        if (serverClassification == ServerClassification.COMPETENCIES) {
+            classificationHeader.setText(getActivity().getString(R.string.competency_title));
+        } else {
+            classificationHeader.setText(
+                    getActivity().getString(R.string.dashboard_title_planned_quality_of_care));
+        }
 
-            TextView classificationHeader = rootView.findViewById(R.id.scoreHeader);
-
-            if (server.getClassification() == ServerClassification.COMPETENCIES) {
-                classificationHeader.setText(getActivity().getString(R.string.competency_title));
-            } else {
-                classificationHeader.setText(
-                        getActivity().getString(R.string.dashboard_title_planned_quality_of_care));
-            }
-
-            adapter = new AssessmentSentAdapter(server.getClassification());
-            recyclerView.setAdapter(adapter);
-            initFilterOrder();
-        });
+        adapter = new AssessmentSentAdapter(serverClassification);
+        recyclerView.setAdapter(adapter);
+        initFilterOrder();
     }
 
     public void setCompetencyOrder() {
@@ -293,7 +298,7 @@ public class DashboardSentFragment extends Fragment implements IModuleFragment {
             return;
         }
 
-        if (adapter != null){
+        if (adapter != null) {
             adapter.setSurveys(newListSurveys);
 
             if (newListSurveys.isEmpty()) {

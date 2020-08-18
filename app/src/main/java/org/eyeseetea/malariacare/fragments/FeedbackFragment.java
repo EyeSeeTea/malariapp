@@ -42,12 +42,8 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.feedback.Feedback;
-import org.eyeseetea.malariacare.domain.common.Either;
 import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
-import org.eyeseetea.malariacare.domain.entity.Server;
 import org.eyeseetea.malariacare.domain.entity.ServerClassification;
-import org.eyeseetea.malariacare.domain.usecase.GetServerAsyncUseCase;
-import org.eyeseetea.malariacare.factories.ServerFactory;
 import org.eyeseetea.malariacare.fragments.strategies.AFeedbackFragmentStrategy;
 import org.eyeseetea.malariacare.fragments.strategies.FeedbackFragmentStrategy;
 import org.eyeseetea.malariacare.layout.adapters.survey.FeedbackAdapter;
@@ -111,9 +107,25 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
 
     AFeedbackFragmentStrategy mFeedbackFragmentStrategy;
 
+    private static String SERVER_CLASSIFICATION = "ServerClassification";
+    private ServerClassification serverClassification;
+
+    public static FeedbackFragment newInstance(ServerClassification serverClassification) {
+        FeedbackFragment fragment = new FeedbackFragment();
+
+        Bundle args = new Bundle();
+        args.putInt(SERVER_CLASSIFICATION, serverClassification.getCode());
+        fragment.setArguments(args);
+
+        return fragment;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
+
+        serverClassification = ServerClassification.Companion.get(
+                getArguments().getInt(SERVER_CLASSIFICATION));
 
         // Replace LinearLayout by the type of the root element of the layout you're trying to load
         llLayout = (RelativeLayout) inflater.inflate(R.layout.feedback, container, false);
@@ -226,30 +238,22 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
         renderHeaderByServerClassification(survey);
     }
 
-    private void renderHeaderByServerClassification(
-            SurveyDB survey) {
-        GetServerAsyncUseCase getServerAsyncUseCase = ServerFactory.INSTANCE.provideGetServerAsyncUseCase(
-                getActivity());
+    private void renderHeaderByServerClassification(SurveyDB survey) {
+        CustomTextView competencyTextView = llLayout.findViewById(R.id.feedback_competency);
 
-        getServerAsyncUseCase.execute(serverResult -> {
-            Server server = ((Either.Right<Server>) serverResult).getValue();
+        if (serverClassification == ServerClassification.COMPETENCIES) {
+            CompetencyScoreClassification classification =
+                    CompetencyScoreClassification.get(
+                            survey.getCompetencyScoreClassification());
 
-            CustomTextView competencyTextView = llLayout.findViewById(R.id.feedback_competency);
-
-            if (server.getClassification() == ServerClassification.COMPETENCIES){
-                CompetencyScoreClassification classification =
-                        CompetencyScoreClassification.get(
-                                survey.getCompetencyScoreClassification());
-
-                CompetencyUtils.setTextByCompetency(competencyTextView, classification);
-                CompetencyUtils.setBackgroundByCompetency(competencyTextView, classification);
-                CompetencyUtils.setTextColorByCompetency(competencyTextView, classification);
-                competencyTextView.setTypeface(Typeface.DEFAULT_BOLD);
-            } else {
-                String text = getString(R.string.quality_of_care);
-                competencyTextView.setText(text);
-            }
-        });
+            CompetencyUtils.setTextByCompetency(competencyTextView, classification);
+            CompetencyUtils.setBackgroundByCompetency(competencyTextView, classification);
+            CompetencyUtils.setTextColorByCompetency(competencyTextView, classification);
+            competencyTextView.setTypeface(Typeface.DEFAULT_BOLD);
+        } else {
+            String text = getString(R.string.quality_of_care);
+            competencyTextView.setText(text);
+        }
     }
 
     private void loadItems(List<Feedback> items) {

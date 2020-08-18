@@ -42,14 +42,26 @@ public class MonitorBySurveyActionsFragment extends FiltersFragment implements
     private MonitorBySurveyActionsAdapter adapter;
     private MonitorBySurveyActionsPresenter presenter;
 
-    public static MonitorBySurveyActionsFragment newInstance() {
-        return new MonitorBySurveyActionsFragment();
+    private static String SERVER_CLASSIFICATION = "ServerClassification";
+    private ServerClassification serverClassification;
+
+    public static MonitorBySurveyActionsFragment newInstance(ServerClassification serverClassification) {
+        MonitorBySurveyActionsFragment fragment = new MonitorBySurveyActionsFragment();
+
+        Bundle args = new Bundle();
+        args.putInt(SERVER_CLASSIFICATION, serverClassification.getCode());
+        fragment.setArguments(args);
+
+        return fragment;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_monitor_by_survey_actions, container, false);
+
+        serverClassification = ServerClassification.Companion.get(
+                getArguments().getInt(SERVER_CLASSIFICATION));
 
         initializeRecyclerView();
         initializeProgressView();
@@ -88,7 +100,7 @@ public class MonitorBySurveyActionsFragment extends FiltersFragment implements
 
     @Override
     public void showSurveysByActions(List<SurveyViewModel> incompleteSurveys,
-            List<SurveyViewModel> completeSurveys, ServerClassification serverClassification) {
+            List<SurveyViewModel> completeSurveys) {
         adapter.setSurveys(incompleteSurveys, completeSurveys, serverClassification);
     }
 
@@ -151,8 +163,7 @@ public class MonitorBySurveyActionsFragment extends FiltersFragment implements
 
         presenter = new MonitorBySurveyActionsPresenter(asyncExecutor, mainExecutor,
                 getProgramsUseCase, getOrgUnitsUseCase, getServerMetadataUseCase,
-                getSentObservationsUseCase, getSurveysUseCase,
-                ServerFactory.INSTANCE.provideGetServerUseCase(getActivity()));
+                getSentObservationsUseCase, getSurveysUseCase);
 
         presenter.attachView(this, selectedProgramUidFilter, selectedOrgUnitUidFilter);
     }

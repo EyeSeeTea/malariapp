@@ -34,7 +34,6 @@ public class MonitorBySurveyActionsPresenter {
     private final GetServerMetadataUseCase getServerMetadataUseCase;
     private final GetSentObservationsUseCase getSentObservationsUseCase;
     private final GetSurveysUseCase getSurveysUseCase;
-    private final GetServerUseCase getServerUseCase;
     private final IAsyncExecutor asyncExecutor;
     private final IMainExecutor mainExecutor;
 
@@ -43,7 +42,6 @@ public class MonitorBySurveyActionsPresenter {
     private Map<String, Observation> observationsMap = new HashMap<>();
     private List<Survey> surveys;
     private ServerMetadata serverMetadata;
-    private Server server;
 
     private String programUid;
     private String orgUnitUid;
@@ -55,8 +53,7 @@ public class MonitorBySurveyActionsPresenter {
             GetOrgUnitsUseCase getOrgUnitsUseCase,
             GetServerMetadataUseCase getServerMetadataUseCase,
             GetSentObservationsUseCase getSentObservationsUseCase,
-            GetSurveysUseCase getSurveysUseCase,
-            GetServerUseCase getServerUseCase) {
+            GetSurveysUseCase getSurveysUseCase) {
 
         this.asyncExecutor = asyncExecutor;
         this.mainExecutor = mainExecutor;
@@ -65,7 +62,6 @@ public class MonitorBySurveyActionsPresenter {
         this.getServerMetadataUseCase = getServerMetadataUseCase;
         this.getSentObservationsUseCase = getSentObservationsUseCase;
         this.getSurveysUseCase = getSurveysUseCase;
-        this.getServerUseCase = getServerUseCase;
     }
 
     public void attachView(View view, String programUid, String orgUnitUid) {
@@ -109,8 +105,6 @@ public class MonitorBySurveyActionsPresenter {
             loadPrograms();
             loadOrgUnits();
             serverMetadata = getServerMetadataUseCase.execute();
-            Either<GetServerFailure, Server> serverResult = getServerUseCase.execute();
-            server = ((Either.Right<Server>) serverResult).getValue();
         } catch (Exception e) {
             showLoadingErrorMessage(e.getMessage());
         }
@@ -245,8 +239,7 @@ public class MonitorBySurveyActionsPresenter {
             List<SurveyViewModel> completeSurveys) {
         if (view != null) {
             mainExecutor.run(() ->
-                    view.showSurveysByActions(incompleteSurveys, completeSurveys,
-                            server.getClassification()));
+                    view.showSurveysByActions(incompleteSurveys, completeSurveys));
         }
     }
 
@@ -269,8 +262,7 @@ public class MonitorBySurveyActionsPresenter {
     public interface View {
         void showSurveysByActions(
                 List<SurveyViewModel> incompleteSurveys,
-                List<SurveyViewModel> completeSurveys,
-                ServerClassification serverClassification);
+                List<SurveyViewModel> completeSurveys);
 
         void showLoading();
 

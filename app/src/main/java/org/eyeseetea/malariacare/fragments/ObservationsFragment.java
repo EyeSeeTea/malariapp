@@ -43,15 +43,11 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
-import org.eyeseetea.malariacare.domain.common.Either;
 import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
 import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
-import org.eyeseetea.malariacare.domain.entity.Server;
 import org.eyeseetea.malariacare.domain.entity.ServerClassification;
-import org.eyeseetea.malariacare.domain.usecase.GetServerAsyncUseCase;
 import org.eyeseetea.malariacare.factories.DataFactory;
 import org.eyeseetea.malariacare.factories.MetadataFactory;
-import org.eyeseetea.malariacare.factories.ServerFactory;
 import org.eyeseetea.malariacare.layout.adapters.MissedStepsAdapter;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.presentation.executors.WrapperExecutor;
@@ -99,11 +95,17 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
     private ActionView action2View;
     private ActionView action3View;
 
-    public static ObservationsFragment newInstance(String surveyUid) {
+
+    private static String SERVER_CLASSIFICATION = "ServerClassification";
+    private ServerClassification serverClassification;
+
+    public static ObservationsFragment newInstance(String surveyUid,
+            ServerClassification serverClassification) {
         ObservationsFragment myFragment = new ObservationsFragment();
 
         Bundle args = new Bundle();
         args.putString(SURVEY_UID, surveyUid);
+        args.putInt(SERVER_CLASSIFICATION, serverClassification.getCode());
         myFragment.setArguments(args);
 
         return myFragment;
@@ -122,6 +124,8 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
                 false);
 
         String surveyUid = getArguments().getString(SURVEY_UID);
+        serverClassification = ServerClassification.Companion.get(
+                getArguments().getInt(SERVER_CLASSIFICATION));
 
         initLayoutHeaders();
         initProviderTexts();
@@ -200,7 +204,6 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
                 new WrapperExecutor(),
                 DataFactory.INSTANCE.provideGetObservationBySurveyUidUseCase(),
                 MetadataFactory.INSTANCE.provideServerMetadataUseCase(getActivity()),
-                ServerFactory.INSTANCE.provideGetServerUseCase(getActivity()),
                 DataFactory.INSTANCE.provideSaveObservationUseCase());
 
 
@@ -304,8 +307,7 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
 
     @Override
     public void showHeaderInfo(String orgUnitName, Float mainScore, String completionDate,
-            String nextDate, ServerClassification serverClassification,
-            CompetencyScoreClassification classification) {
+            String nextDate, CompetencyScoreClassification classification) {
 
         mOrgUnitTextView.setText(orgUnitName);
         renderLabelHeaderByServerClassification(serverClassification, classification);
@@ -346,7 +348,7 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
 
     @Override
     public void shareByText(ObservationViewModel observationViewModel, SurveyDB survey,
-            String formattedNextScheduleDate, ServerClassification serverClassification,
+            String formattedNextScheduleDate,
             List<MissedStepViewModel> missedCriticalStepViewModels,
             List<MissedStepViewModel> missedNonCriticalStepViewModels) {
         String data = extractTextData(observationViewModel, survey, serverClassification,

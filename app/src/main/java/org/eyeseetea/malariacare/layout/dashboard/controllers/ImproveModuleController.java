@@ -48,34 +48,35 @@ public class ImproveModuleController extends ModuleController {
 
     private boolean isSurveyFeedbackOpen;
 
-    public ImproveModuleController(ModuleSettings moduleSettings){
+    public ImproveModuleController(ModuleSettings moduleSettings) {
         super(moduleSettings);
-        this.tabLayout=R.id.tab_improve_layout;
+        this.tabLayout = R.id.tab_improve_layout;
         this.idVerticalTitle = R.id.titleCompleted;
     }
 
 
-    public static String getSimpleName(){
+    public static String getSimpleName() {
         return ImproveModuleController.class.getSimpleName();
     }
 
     @Override
     public void init(DashboardActivity activity) {
         super.init(activity);
-        fragment = new DashboardSentFragment();
+        fragment = DashboardSentFragment.newInstance(server.getClassification());
         filtersContainer = dashboardActivity.findViewById(R.id.filters_sentSurveys);
         filtersContainer.setVisibility(View.VISIBLE);
     }
 
-    public void onExitTab(){
-        if(!isFragmentActive(FeedbackFragment.class) && !isFragmentActive(ObservationsFragment.class)){
+    public void onExitTab() {
+        if (!isFragmentActive(FeedbackFragment.class) && !isFragmentActive(
+                ObservationsFragment.class)) {
             return;
         }
 
         closeFeedbackFragment();
     }
 
-    public void onTabChanged(){
+    public void onTabChanged() {
         if (!isSurveyFeedbackOpen) {
             if (fragment == null || !fragment.isAdded()) {
                 reloadFragment();
@@ -98,17 +99,17 @@ public class ImproveModuleController extends ModuleController {
         closeFeedbackFragment();
     }
 
-    public void onFeedbackSelected(String surveyUid, boolean modifyFilter){
-        SurveyDB surveyDB =  SurveyDB.getSurveyByUId(surveyUid);
+    public void onFeedbackSelected(String surveyUid, boolean modifyFilter) {
+        SurveyDB surveyDB = SurveyDB.getSurveyByUId(surveyUid);
 
-        onFeedbackSelected(surveyDB,modifyFilter);
+        onFeedbackSelected(surveyDB, modifyFilter);
     }
 
-    public void onFeedbackSelected(SurveyDB survey, boolean modifyFilter){
+    public void onFeedbackSelected(SurveyDB survey, boolean modifyFilter) {
         Session.setSurveyByModule(survey, getSimpleName());
         filtersContainer.setVisibility(View.GONE);
 
-        feedbackFragment = new FeedbackFragment();
+        feedbackFragment = FeedbackFragment.newInstance(server.getClassification());
         // Add the fragment to the activity, pushing this transaction
         // on to the back stack.
         feedbackFragment.setModuleName(getSimpleName());
@@ -116,16 +117,17 @@ public class ImproveModuleController extends ModuleController {
         LayoutUtils.setActionBarTitleForSurvey(dashboardActivity, survey);
         isSurveyFeedbackOpen = true;
 
-        if(modifyFilter) {
+        if (modifyFilter) {
             UpdateFiltersBySurvey(survey);
         }
     }
 
-    public void onPlanActionSelected(SurveyDB survey){
+    public void onPlanActionSelected(SurveyDB survey) {
         Session.setSurveyByModule(survey, getSimpleName());
         filtersContainer.setVisibility(View.GONE);
 
-        mObservationsFragment = ObservationsFragment.newInstance(survey.getEventUid());
+        mObservationsFragment = ObservationsFragment.newInstance(survey.getEventUid(),
+                server.getClassification());
 
         replaceFragment(R.id.dashboard_completed_container, mObservationsFragment);
 
@@ -140,25 +142,28 @@ public class ImproveModuleController extends ModuleController {
     }
 
     private void closeFeedbackFragment() {
-        Fragment fragment = dashboardActivity.getSupportFragmentManager ().findFragmentById(R.id.dashboard_completed_container);
-        if(fragment instanceof  FeedbackFragment) {
+        Fragment fragment = dashboardActivity.getSupportFragmentManager().findFragmentById(
+                R.id.dashboard_completed_container);
+        if (fragment instanceof FeedbackFragment) {
             feedbackFragment.unregisterReceiver();
-            if(feedbackFragment.getView()!=null){
+            if (feedbackFragment.getView() != null) {
                 feedbackFragment.getView().setVisibility(View.GONE);
             }
-        }else if(fragment instanceof ObservationsFragment){
+        } else if (fragment instanceof ObservationsFragment) {
             filtersContainer.setVisibility(View.VISIBLE);
 
-            if (feedbackFragment != null)
+            if (feedbackFragment != null) {
                 replaceFragment(R.id.dashboard_completed_container, feedbackFragment);
-            else
+            } else {
                 replaceFragment(R.id.dashboard_completed_container, super.fragment);
+            }
         }
 
         //Reload improve fragment
         if (DashboardOrientation.VERTICAL.equals(dashboardController.getOrientation())) {
             dashboardController.reloadVertical();
-        } else if (fragment instanceof FeedbackFragment || fragment instanceof ObservationsFragment) {
+        } else if (fragment instanceof FeedbackFragment
+                || fragment instanceof ObservationsFragment) {
             reloadFragment();
         }
 

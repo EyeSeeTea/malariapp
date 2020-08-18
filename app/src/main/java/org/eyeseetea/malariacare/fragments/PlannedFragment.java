@@ -37,19 +37,13 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedItem;
 import org.eyeseetea.malariacare.data.database.utils.services.PlannedServiceBundle;
-import org.eyeseetea.malariacare.domain.common.Either;
-import org.eyeseetea.malariacare.domain.entity.Server;
-import org.eyeseetea.malariacare.domain.usecase.GetServerAsyncUseCase;
-import org.eyeseetea.malariacare.factories.ServerFactory;
+import org.eyeseetea.malariacare.domain.entity.ServerClassification;
 import org.eyeseetea.malariacare.layout.adapters.survey.PlannedAdapter;
 import org.eyeseetea.malariacare.services.PlannedSurveyService;
 import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
 
 import java.util.List;
 
-/**
- * Created by ivan.arrizabalaga on 15/12/2015.
- */
 public class PlannedFragment extends Fragment implements IModuleFragment {
     public static final String TAG = ".PlannedFragment";
 
@@ -63,11 +57,26 @@ public class PlannedFragment extends Fragment implements IModuleFragment {
     private RecyclerView plannedRecyclerView;
     private PlannedAdapter plannedAdapter;
 
+    private static String SERVER_CLASSIFICATION = "ServerClassification";
+    private ServerClassification serverClassification;
+
+    public static PlannedFragment newInstance(ServerClassification serverClassification) {
+        PlannedFragment fragment = new PlannedFragment();
+
+        Bundle args = new Bundle();
+        args.putInt(SERVER_CLASSIFICATION, serverClassification.getCode());
+        fragment.setArguments(args);
+
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_plan, container, false);
+
+        serverClassification = ServerClassification.Companion.get(
+                getArguments().getInt(SERVER_CLASSIFICATION));
 
         initializeRecyclerView();
         loadFilter();
@@ -90,15 +99,8 @@ public class PlannedFragment extends Fragment implements IModuleFragment {
     private void initializeRecyclerView() {
         plannedRecyclerView = rootView.findViewById(R.id.planList);
 
-        GetServerAsyncUseCase getServerAsyncUseCase = ServerFactory.INSTANCE.provideGetServerAsyncUseCase(
-                getActivity());
-
-        getServerAsyncUseCase.execute(serverResult -> {
-            Server server = ((Either.Right<Server>) serverResult).getValue();
-
-            plannedAdapter = new PlannedAdapter(getActivity(), server.getClassification());
-            plannedRecyclerView.setAdapter(plannedAdapter);
-        });
+        plannedAdapter = new PlannedAdapter(getActivity(), serverClassification);
+        plannedRecyclerView.setAdapter(plannedAdapter);
     }
 
 

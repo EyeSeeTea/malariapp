@@ -3,20 +3,16 @@ package org.eyeseetea.malariacare.presentation.presenters.observations
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB
 import org.eyeseetea.malariacare.data.database.model.QuestionDB
 import org.eyeseetea.malariacare.data.database.model.SurveyDB
-import org.eyeseetea.malariacare.domain.common.getOrThrow
 import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification
 import org.eyeseetea.malariacare.domain.entity.NextScheduleDateConfiguration
 import org.eyeseetea.malariacare.domain.entity.Observation
 import org.eyeseetea.malariacare.domain.entity.ObservationStatus
-import org.eyeseetea.malariacare.domain.entity.Server
-import org.eyeseetea.malariacare.domain.entity.ServerClassification
 import org.eyeseetea.malariacare.domain.entity.ServerMetadata
 import org.eyeseetea.malariacare.domain.exception.InvalidServerMetadataException
 import org.eyeseetea.malariacare.domain.exception.ObservationNotFoundException
 import org.eyeseetea.malariacare.domain.service.SurveyNextScheduleDomainService
 import org.eyeseetea.malariacare.domain.usecase.GetObservationBySurveyUidUseCase
 import org.eyeseetea.malariacare.domain.usecase.GetServerMetadataUseCase
-import org.eyeseetea.malariacare.domain.usecase.GetServerUseCase
 import org.eyeseetea.malariacare.domain.usecase.SaveObservationUseCase
 import org.eyeseetea.malariacare.observables.ObservablePush
 import org.eyeseetea.malariacare.presentation.boundary.Executor
@@ -25,23 +21,20 @@ import org.eyeseetea.malariacare.presentation.mapper.observations.ObservationMap
 import org.eyeseetea.malariacare.presentation.viewmodels.observations.ActionViewModel
 import org.eyeseetea.malariacare.presentation.viewmodels.observations.MissedStepViewModel
 import org.eyeseetea.malariacare.presentation.viewmodels.observations.ObservationViewModel
-import org.eyeseetea.malariacare.utils.DateParser
 import org.eyeseetea.malariacare.utils.Constants
-
+import org.eyeseetea.malariacare.utils.DateParser
 import java.util.ArrayList
 
 class ObservationsPresenter(
     private val executor: Executor,
     private val getObservationBySurveyUidUseCase: GetObservationBySurveyUidUseCase,
     private val getServerMetadataUseCase: GetServerMetadataUseCase,
-    private val getServerUseCase: GetServerUseCase,
     private val saveObservationUseCase: SaveObservationUseCase
 ) {
     private var view: View? = null
 
     private lateinit var survey: SurveyDB
     private lateinit var serverMetadata: ServerMetadata
-    private lateinit var server: Server
     private lateinit var surveyUid: String
     private lateinit var observationViewModel: ObservationViewModel
     private var formattedNextScheduleDate: String = "NaN"
@@ -70,7 +63,6 @@ class ObservationsPresenter(
 
     private fun loadData() = executor.asyncExecute {
         try {
-            server = getServerUseCase.execute().getOrThrow()
             serverMetadata = getServerMetadataUseCase.execute()
             loadObservation()
         } catch (e: InvalidServerMetadataException) {
@@ -299,7 +291,6 @@ class ObservationsPresenter(
                     observationViewModel,
                     survey,
                     formattedNextScheduleDate,
-                    server.classification,
                     missedCriticalSteps,
                     missedNonCriticalSteps
                 )
@@ -314,7 +305,7 @@ class ObservationsPresenter(
     ) = executor.uiExecute {
         view?.showHeaderInfo(
             survey.orgUnit!!.name, survey.mainScoreValue,
-            formattedCompletionDate, formattedNextDate, server.classification, classification
+            formattedCompletionDate, formattedNextDate, classification
         )
     }
 
@@ -352,7 +343,6 @@ class ObservationsPresenter(
             mainScore: Float?,
             completionDate: String,
             nextDate: String?,
-            serverClassification: ServerClassification,
             classification: CompetencyScoreClassification
         )
 
@@ -373,7 +363,6 @@ class ObservationsPresenter(
             observationViewModel: ObservationViewModel?,
             survey: SurveyDB,
             formattedNextScheduleDate: String,
-            serverClassification: ServerClassification,
             missedCriticalStepViewModels: List<@JvmSuppressWildcards MissedStepViewModel>?,
             missedNonCriticalStepViewModels: List<@JvmSuppressWildcards MissedStepViewModel>?
         )
