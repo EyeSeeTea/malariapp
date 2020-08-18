@@ -12,6 +12,7 @@ import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
+import org.eyeseetea.malariacare.domain.entity.ServerClassification;
 import org.eyeseetea.malariacare.domain.usecase.GetOrgUnitsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.GetProgramsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.GetSentObservationsUseCase;
@@ -19,6 +20,7 @@ import org.eyeseetea.malariacare.domain.usecase.GetServerMetadataUseCase;
 import org.eyeseetea.malariacare.domain.usecase.GetSurveysUseCase;
 import org.eyeseetea.malariacare.factories.DataFactory;
 import org.eyeseetea.malariacare.factories.MetadataFactory;
+import org.eyeseetea.malariacare.factories.ServerFactory;
 import org.eyeseetea.malariacare.layout.adapters.monitor.MonitorBySurveyActionsAdapter;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
@@ -86,8 +88,8 @@ public class MonitorBySurveyActionsFragment extends FiltersFragment implements
 
     @Override
     public void showSurveysByActions(List<SurveyViewModel> incompleteSurveys,
-            List<SurveyViewModel> completeSurveys) {
-        adapter.setSurveys(incompleteSurveys, completeSurveys);
+            List<SurveyViewModel> completeSurveys, ServerClassification serverClassification) {
+        adapter.setSurveys(incompleteSurveys, completeSurveys, serverClassification);
     }
 
     @Override
@@ -149,7 +151,8 @@ public class MonitorBySurveyActionsFragment extends FiltersFragment implements
 
         presenter = new MonitorBySurveyActionsPresenter(asyncExecutor, mainExecutor,
                 getProgramsUseCase, getOrgUnitsUseCase, getServerMetadataUseCase,
-                getSentObservationsUseCase, getSurveysUseCase);
+                getSentObservationsUseCase, getSurveysUseCase,
+                ServerFactory.INSTANCE.provideGetServerUseCase(getActivity()));
 
         presenter.attachView(this, selectedProgramUidFilter, selectedOrgUnitUidFilter);
     }

@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.domain.entity.ServerClassification;
 import org.eyeseetea.malariacare.layout.adapters.sectionDetail.SectionDetailAdapter;
 import org.eyeseetea.malariacare.presentation.viewmodels.SectionViewModel;
 import org.eyeseetea.malariacare.presentation.viewmodels.SurveyViewModel;
@@ -23,7 +24,7 @@ import java.util.Map;
 
 public class MonitorBySurveyActionsAdapter extends SectionDetailAdapter {
 
-    public interface OnItemMenuClickListener{
+    public interface OnItemMenuClickListener {
         void itemMenuClick(SurveyViewModel surveyViewModel);
     }
 
@@ -36,6 +37,7 @@ public class MonitorBySurveyActionsAdapter extends SectionDetailAdapter {
     private Context context;
 
     private int numSections = 0;
+    private ServerClassification serverClassification;
 
     public MonitorBySurveyActionsAdapter(Context context) {
         this.context = context;
@@ -43,7 +45,8 @@ public class MonitorBySurveyActionsAdapter extends SectionDetailAdapter {
 
     public void setSurveys(
             List<SurveyViewModel> incompleteSurveys,
-            List<SurveyViewModel> completedSurveys) {
+            List<SurveyViewModel> completedSurveys,
+            ServerClassification serverClassification) {
 
         surveysMap = new HashMap<>();
 
@@ -61,13 +64,14 @@ public class MonitorBySurveyActionsAdapter extends SectionDetailAdapter {
 
         surveysMap.put(incompleteSection, incompleteSurveys);
         surveysMap.put(completeSection, completedSurveys);
+        this.serverClassification = serverClassification;
 
         numSections = 2;
 
         super.refreshData();
     }
 
-    public void setOnItemMenuClickListener(OnItemMenuClickListener listener){
+    public void setOnItemMenuClickListener(OnItemMenuClickListener listener) {
         this.onItemMenuClickListener = listener;
     }
 
@@ -86,7 +90,7 @@ public class MonitorBySurveyActionsAdapter extends SectionDetailAdapter {
             surveysBySection = surveysMap.get(completeSection);
         }
 
-        if (surveysBySection != null){
+        if (surveysBySection != null) {
             return surveysBySection.size();
         } else {
             return 0;
@@ -137,10 +141,10 @@ public class MonitorBySurveyActionsAdapter extends SectionDetailAdapter {
             int rowPositionInSection) {
         if (sectionPosition == 0) {
             ((SurveyDetailViewHolder) holder).bindView(surveysMap.get(incompleteSection),
-                    rowPositionInSection);
+                    rowPositionInSection, serverClassification);
         } else {
             ((SurveyDetailViewHolder) holder).bindView(surveysMap.get(completeSection),
-                    rowPositionInSection);
+                    rowPositionInSection, serverClassification);
         }
     }
 
@@ -175,7 +179,8 @@ public class MonitorBySurveyActionsAdapter extends SectionDetailAdapter {
 
         private TextView orgUnitTextView;
         private TextView programTextView;
-        private TextView competencyView;
+        private TextView classificationLabelView;
+        private TextView classificationView;
         private TextView scheduledDateTextView;
         private ImageView dotsMenu;
 
@@ -184,24 +189,28 @@ public class MonitorBySurveyActionsAdapter extends SectionDetailAdapter {
 
             orgUnitTextView = itemView.findViewById(R.id.survey_org_unit_name);
             programTextView = itemView.findViewById(R.id.survey_program_name);
-            competencyView = itemView.findViewById(R.id.survey_competency_view);
+
+            classificationLabelView = itemView.findViewById(R.id.survey_classification_label_view);
+            classificationView = itemView.findViewById(R.id.survey_classification_view);
+
             scheduledDateTextView = itemView.findViewById(R.id.survey_schedule_date_view);
             dotsMenu = itemView.findViewById(R.id.menu_dots);
         }
 
-        void bindView(List<SurveyViewModel> surveys, int position) {
+        void bindView(List<SurveyViewModel> surveys, int position,
+                ServerClassification serverClassification) {
             SurveyViewModel survey = surveys.get(position);
             itemOrder = position;
 
             orgUnitTextView.setText(survey.getOrgUnit());
             programTextView.setText(survey.getProgram());
 
-            CompetencyUtils.setTextByCompetencyAbbreviation(competencyView, survey.getCompetency());
+            assignClassificationValue(survey, serverClassification);
 
             scheduledDateTextView.setText(DateParser.getEuropeanFormattedDate(survey.getDate()));
 
             dotsMenu.setOnClickListener(view -> {
-                if (onItemMenuClickListener != null){
+                if (onItemMenuClickListener != null) {
                     onItemMenuClickListener.itemMenuClick(survey);
                 }
             });
@@ -217,6 +226,20 @@ public class MonitorBySurveyActionsAdapter extends SectionDetailAdapter {
             } else {
                 itemView.setVisibility(View.GONE);
                 itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
+            }
+        }
+
+        private void assignClassificationValue(SurveyViewModel survey,
+                ServerClassification serverClassification) {
+            if (serverClassification == ServerClassification.COMPETENCIES) {
+                classificationLabelView.setText(itemView.getContext().getText(
+                        R.string.competency_title));
+                CompetencyUtils.setTextByCompetencyAbbreviation(classificationView,
+                        survey.getCompetency());
+            } else {
+                classificationLabelView.setText(itemView.getContext().getText(
+                        R.string.dashboard_title_planned_quality_of_care));
+                classificationView.setText(survey.getQualityOfCare());
             }
         }
 
