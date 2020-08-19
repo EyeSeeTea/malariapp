@@ -22,10 +22,12 @@ package org.eyeseetea.malariacare.data.database.utils.planning;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitProgramRelationDB;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
+import org.eyeseetea.malariacare.data.database.model.ServerDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
 import org.eyeseetea.malariacare.domain.entity.NextScheduleDateConfiguration;
+import org.eyeseetea.malariacare.domain.entity.ServerClassification;
 import org.eyeseetea.malariacare.domain.service.SurveyNextScheduleDomainService;
 import org.eyeseetea.malariacare.utils.Constants;
 
@@ -188,11 +190,15 @@ public class SurveyPlanner {
         SurveyNextScheduleDomainService surveyNextScheduleDomainService = new
                 SurveyNextScheduleDomainService();
 
+        ServerDB serverDB = ServerDB.getConnectedServerFromDB();
+
         Date nextScheduleDate = surveyNextScheduleDomainService.calculate(
                 nextScheduleDateConfiguration,
                 eventDate,
                 competencyScoreClassification,
-                survey.isLowProductivity());
+                survey.isLowProductivity(),
+                survey.getMainScoreValue(),
+                ServerClassification.Companion.get(serverDB.getClassification()));
 
         return nextScheduleDate;
     }

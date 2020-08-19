@@ -49,15 +49,15 @@ public class NextScheduleDateConfigurationShould {
         NextScheduleDateConfiguration nextScheduleDateConfiguration =
                 new NextScheduleDateConfiguration("6,5;4,3;2,1");
 
-        assertEquals(6, nextScheduleDateConfiguration.getCompetentLowProductivityMonths());
-        assertEquals(5, nextScheduleDateConfiguration.getCompetentHighProductivityMonths());
+        assertEquals(6, nextScheduleDateConfiguration.getCompetentOrALowProductivityMonths());
+        assertEquals(5, nextScheduleDateConfiguration.getCompetentOrAHighProductivityMonths());
 
         assertEquals(4,
-                nextScheduleDateConfiguration.getCompetentNeedsImprovementLowProductivityMonths());
+                nextScheduleDateConfiguration.getCompetentNeedsImprovementOrBLowProductivityMonths());
         assertEquals(3,
-                nextScheduleDateConfiguration.getCompetentNeedsImprovementHighProductivityMonths());
+                nextScheduleDateConfiguration.getCompetentNeedsImprovementOrBHighProductivityMonths());
 
-        assertEquals(2, nextScheduleDateConfiguration.getNotCompetentLowProductivityMonths());
-        assertEquals(1, nextScheduleDateConfiguration.getNotCompetentHighProductivityMonths());
+        assertEquals(2, nextScheduleDateConfiguration.getNotCompetentOrCLowProductivityMonths());
+        assertEquals(1, nextScheduleDateConfiguration.getNotCompetentOrCHighProductivityMonths());
     }
 }

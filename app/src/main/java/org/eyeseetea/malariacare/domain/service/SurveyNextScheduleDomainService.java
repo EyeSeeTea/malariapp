@@ -3,18 +3,20 @@ package org.eyeseetea.malariacare.domain.service;
 import org.eyeseetea.malariacare.domain.common.RequiredChecker;
 import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
 import org.eyeseetea.malariacare.domain.entity.NextScheduleDateConfiguration;
+import org.eyeseetea.malariacare.domain.entity.ScoreType;
+import org.eyeseetea.malariacare.domain.entity.ServerClassification;
 
 import java.util.Calendar;
 import java.util.Date;
 
 public class SurveyNextScheduleDomainService {
-    private RequiredChecker RequiredChecker;
-
     public Date calculate(
             NextScheduleDateConfiguration nextScheduleDateConfiguration,
             Date previousSurveyDate,
             CompetencyScoreClassification previousSurveyCompetency,
-            boolean previousSurveyIsLowProductivity) {
+            boolean previousSurveyIsLowProductivity,
+            float previousSurveyScore,
+            ServerClassification serverClassification) {
 
         RequiredChecker.required(nextScheduleDateConfiguration,
                 "nextScheduleDateConfiguration is required");
@@ -22,47 +24,62 @@ public class SurveyNextScheduleDomainService {
                 "previousSurveyDate is required");
         RequiredChecker.required(previousSurveyCompetency,
                 "previousSurveyCompetency is required");
+        RequiredChecker.required(serverClassification,
+                "serverClassification is required");
 
         Date nextScheduleDate;
 
-        if (previousSurveyCompetency == CompetencyScoreClassification.COMPETENT) {
+        ScoreType scoreType = new ScoreType(previousSurveyScore);
+
+        if (isCompetentOrScoreAType(previousSurveyCompetency, scoreType, serverClassification)) {
             if (previousSurveyIsLowProductivity) {
                 nextScheduleDate = getInXMonths(previousSurveyDate,
-                        nextScheduleDateConfiguration.getCompetentLowProductivityMonths());
+                        nextScheduleDateConfiguration.getCompetentOrALowProductivityMonths());
             } else {
                 nextScheduleDate = getInXMonths(previousSurveyDate,
-                        nextScheduleDateConfiguration.getCompetentHighProductivityMonths());
+                        nextScheduleDateConfiguration.getCompetentOrAHighProductivityMonths());
             }
-        } else if (previousSurveyCompetency
-                == CompetencyScoreClassification.COMPETENT_NEEDS_IMPROVEMENT) {
+        } else if (isCompetentNeedImprovementOrScoreBType(previousSurveyCompetency, scoreType, serverClassification)) {
             if (previousSurveyIsLowProductivity) {
                 nextScheduleDate = getInXMonths(previousSurveyDate,
-                        nextScheduleDateConfiguration.getCompetentNeedsImprovementLowProductivityMonths());
+                        nextScheduleDateConfiguration.getCompetentNeedsImprovementOrBLowProductivityMonths());
             } else {
                 nextScheduleDate = getInXMonths(previousSurveyDate,
-                        nextScheduleDateConfiguration.getCompetentNeedsImprovementHighProductivityMonths());
-            }
-        } else if (previousSurveyCompetency
-                == CompetencyScoreClassification.NOT_COMPETENT) {
-            if (previousSurveyIsLowProductivity) {
-                nextScheduleDate = getInXMonths(previousSurveyDate,
-                        nextScheduleDateConfiguration.getNotCompetentLowProductivityMonths());
-            } else {
-                nextScheduleDate = getInXMonths(previousSurveyDate,
-                        nextScheduleDateConfiguration.getNotCompetentHighProductivityMonths());
+                        nextScheduleDateConfiguration.getCompetentNeedsImprovementOrBHighProductivityMonths());
             }
         } else {
-            // NA
+            // Competencies NA or NOT Competent | Scoring Type C
             if (previousSurveyIsLowProductivity) {
                 nextScheduleDate = getInXMonths(previousSurveyDate,
-                        nextScheduleDateConfiguration.getNotCompetentLowProductivityMonths());
+                        nextScheduleDateConfiguration.getNotCompetentOrCLowProductivityMonths());
             } else {
                 nextScheduleDate = getInXMonths(previousSurveyDate,
-                        nextScheduleDateConfiguration.getNotCompetentHighProductivityMonths());
+                        nextScheduleDateConfiguration.getNotCompetentOrCHighProductivityMonths());
             }
         }
 
         return nextScheduleDate;
+    }
+
+    private boolean isCompetentOrScoreAType(
+            CompetencyScoreClassification previousSurveyCompetency,
+            ScoreType previousSurveyScoreType,
+            ServerClassification serverClassification) {
+        return (serverClassification == ServerClassification.COMPETENCIES &&
+                previousSurveyCompetency == CompetencyScoreClassification.COMPETENT) ||
+                (serverClassification == ServerClassification.SCORING
+                        && previousSurveyScoreType.isTypeA());
+    }
+
+    private boolean isCompetentNeedImprovementOrScoreBType(
+            CompetencyScoreClassification previousSurveyCompetency,
+            ScoreType previousSurveyScoreType,
+            ServerClassification serverClassification) {
+        return (serverClassification == ServerClassification.COMPETENCIES &&
+                previousSurveyCompetency
+                        == CompetencyScoreClassification.COMPETENT_NEEDS_IMPROVEMENT) ||
+                (serverClassification == ServerClassification.SCORING
+                        && previousSurveyScoreType.isTypeB());
     }
 
     private Date getInXMonths(Date date, int numMonths) {
