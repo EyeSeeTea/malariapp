@@ -225,7 +225,10 @@ public class LoginActivity extends Activity implements LoginPresenter.View {
 
     @Override
     protected void onDestroy() {
-        loginPresenter.detachView();
+        if (loginPresenter != null){
+            loginPresenter.detachView();
+        }
+
         super.onDestroy();
     }
 
