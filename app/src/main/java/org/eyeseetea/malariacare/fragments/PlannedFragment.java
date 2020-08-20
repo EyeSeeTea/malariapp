@@ -107,7 +107,7 @@ public class PlannedFragment extends Fragment implements IModuleFragment {
     public void reloadFilter() {
         String selectedProgram = orgUnitProgramFilterView.getSelectedProgramFilter();
 
-        if (selectedProgram != null) {
+        if (selectedProgram != "") {
             loadProgram(selectedProgram);
         }
         if (plannedAdapter != null) {
