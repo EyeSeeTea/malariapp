@@ -1,6 +1,7 @@
 package org.eyeseetea.malariacare.fragments;
 
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -20,9 +21,18 @@ public abstract class FiltersFragment extends Fragment implements IModuleFragmen
     private OrgUnitProgramFilterView orgUnitProgramFilterView;
 
     protected abstract void onFiltersChanged();
+    protected abstract OrgUnitProgramFilterView.FilterType getFilterType();
 
-    protected String selectedProgramUidFilter;
-    protected String selectedOrgUnitUidFilter;
+    @IdRes
+    protected abstract int getOrgUnitProgramFilterViewId();
+
+    protected String getSelectedProgramUidFilter(){
+        return orgUnitProgramFilterView.getSelectedProgramFilter();
+    }
+
+    protected String getSelectedOrgUnitUidFilter(){
+        return orgUnitProgramFilterView.getSelectedOrgUnitFilter();
+    }
 
     @Nullable
     @Override
@@ -42,8 +52,8 @@ public abstract class FiltersFragment extends Fragment implements IModuleFragmen
         if (orgUnitProgramFilterView == null) {
             initializeFilters();
         }
-        selectedProgramUidFilter = PreferencesState.getInstance().getProgramUidFilter();
-        selectedOrgUnitUidFilter = PreferencesState.getInstance().getOrgUnitUidFilter();
+        String selectedProgramUidFilter = PreferencesState.getInstance().getProgramUidFilter();
+        String selectedOrgUnitUidFilter = PreferencesState.getInstance().getOrgUnitUidFilter();
 
         orgUnitProgramFilterView.changeSelectedFilters(
                 selectedProgramUidFilter,
@@ -53,18 +63,15 @@ public abstract class FiltersFragment extends Fragment implements IModuleFragmen
     private void initializeFilters() {
         if (orgUnitProgramFilterView == null) {
             orgUnitProgramFilterView = DashboardActivity.dashboardActivity
-                    .findViewById(R.id.monitor_org_unit_program_filter_view);
+                    .findViewById(getOrgUnitProgramFilterViewId());
 
-            orgUnitProgramFilterView.setFilterType(
-                    OrgUnitProgramFilterView.FilterType.NON_EXCLUSIVE);
+            orgUnitProgramFilterView.setFilterType(getFilterType());
         }
 
         orgUnitProgramFilterView.setFilterChangedListener(
                 new OrgUnitProgramFilterView.FilterChangedListener() {
                     @Override
                     public void onProgramFilterChanged(String selectedProgramFilter) {
-                        selectedProgramUidFilter = selectedProgramFilter;
-
                         saveCurrentFilters();
                         onFiltersChanged();
 
@@ -72,7 +79,6 @@ public abstract class FiltersFragment extends Fragment implements IModuleFragmen
 
                     @Override
                     public void onOrgUnitFilterChanged(String selectedOrgUnitFilter) {
-                        selectedOrgUnitUidFilter = selectedOrgUnitFilter;
                         saveCurrentFilters();
                         onFiltersChanged();
                     }
@@ -80,7 +86,7 @@ public abstract class FiltersFragment extends Fragment implements IModuleFragmen
     }
 
     private void saveCurrentFilters() {
-        PreferencesState.getInstance().setProgramUidFilter(selectedProgramUidFilter);
-        PreferencesState.getInstance().setOrgUnitUidFilter(selectedOrgUnitUidFilter);
+        PreferencesState.getInstance().setProgramUidFilter(getSelectedProgramUidFilter());
+        PreferencesState.getInstance().setOrgUnitUidFilter(getSelectedOrgUnitUidFilter());
     }
 }
