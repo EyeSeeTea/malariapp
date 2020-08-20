@@ -67,7 +67,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class MonitorFragment extends Fragment implements IModuleFragment {
+public class MonitorFragment extends FiltersFragment  implements IModuleFragment {
     List<SurveyDB> surveysForGraphic;
     public static final String TAG = ".MonitorFragment";
     private SurveyReceiver surveyReceiver;
@@ -77,8 +77,6 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
     private WebView webView;
     public MonitorFilter filterType;
     private WebViewInterceptor mWebViewInterceptor;
-
-    private OrgUnitProgramFilterView orgUnitProgramFilterView;
 
     private View rootView;
 
@@ -107,6 +105,29 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
     }
 
     @Override
+    protected void onFiltersChanged() {
+        if (getSelectedProgramUidFilter().isEmpty() && getSelectedOrgUnitUidFilter().isEmpty()) {
+            DashboardActivity.dashboardActivity.openMonitorByActions();
+        } else {
+            if (!getSelectedProgramUidFilter().isEmpty()) {
+                invokeUpdateProgramFilter(webView,getSelectedProgramUidFilter());
+            } else {
+                invokeUpdateOrgUnitFilter(webView,getSelectedOrgUnitUidFilter());
+            }
+        }
+    }
+
+    @Override
+    protected OrgUnitProgramFilterView.FilterType getFilterType() {
+        return OrgUnitProgramFilterView.FilterType.EXCLUSIVE;
+    }
+
+    @Override
+    protected int getOrgUnitProgramFilterViewId() {
+        return R.id.monitor_org_unit_program_filter_view;
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 
@@ -117,44 +138,7 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
 
         webView =  rootView.findViewById(R.id.dashboard_monitor);
 
-        loadFilter();
-
-        orgUnitProgramFilterView.setFilterType(OrgUnitProgramFilterView.FilterType.EXCLUSIVE);
-
-        orgUnitProgramFilterView.setFilterChangedListener(
-                new OrgUnitProgramFilterView.FilterChangedListener() {
-                    @Override
-                    public void onProgramFilterChanged(String selectedProgramFilter) {
-                        saveCurrentFilters();
-                    }
-
-                    @Override
-                    public void onOrgUnitFilterChanged(String selectedOrgUnitFilter) {
-                        saveCurrentFilters();
-                    }
-                });
-
         return rootView;
-    }
-
-    private void saveCurrentFilters() {
-        PreferencesState.getInstance().setProgramUidFilter(
-                orgUnitProgramFilterView.getSelectedProgramFilter());
-        PreferencesState.getInstance().setOrgUnitUidFilter(
-                orgUnitProgramFilterView.getSelectedOrgUnitFilter());
-
-        if (orgUnitProgramFilterView.getSelectedProgramFilter().equals("") &&
-                orgUnitProgramFilterView.getSelectedOrgUnitFilter().equals("")) {
-            DashboardActivity.dashboardActivity.openMonitorByActions();
-        } else {
-            if (!orgUnitProgramFilterView.getSelectedProgramFilter().equals("")) {
-                invokeUpdateProgramFilter(webView,
-                        orgUnitProgramFilterView.getSelectedProgramFilter());
-            } else {
-                invokeUpdateOrgUnitFilter(webView,
-                        orgUnitProgramFilterView.getSelectedOrgUnitFilter());
-            }
-        }
     }
 
     @Override
@@ -185,21 +169,6 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
         unregisterSurveysReceiver();
 
         super.onPause();
-    }
-
-    private void updateSelectedFilters() {
-        if (orgUnitProgramFilterView == null) {
-            loadFilter();
-        }
-        String programUidFilter = PreferencesState.getInstance().getProgramUidFilter();
-        String orgUnitUidFilter = PreferencesState.getInstance().getOrgUnitUidFilter();
-        orgUnitProgramFilterView.changeSelectedFilters(programUidFilter, orgUnitUidFilter);
-    }
-
-    private void loadFilter() {
-        orgUnitProgramFilterView =
-                (OrgUnitProgramFilterView) DashboardActivity.dashboardActivity
-                        .findViewById(R.id.monitor_org_unit_program_filter_view);
     }
 
     public void setFilterType(MonitorFilter monitorFilter) {
@@ -413,7 +382,7 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
      */
     @Override
     public void reloadData() {
-        updateSelectedFilters();
+        super.reloadData();
 
         //Reload data using service
         Intent surveysIntent = new Intent(
