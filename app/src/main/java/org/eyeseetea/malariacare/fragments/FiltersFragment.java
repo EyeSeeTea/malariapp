@@ -34,17 +34,15 @@ public abstract class FiltersFragment extends Fragment implements IModuleFragmen
         return orgUnitProgramFilterView.getSelectedOrgUnitFilter();
     }
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-            @Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
         initializeFilters();
-        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
     public void reloadData() {
-        initializeFilters();
         updateSelectedFilters();
     }
 
@@ -52,6 +50,7 @@ public abstract class FiltersFragment extends Fragment implements IModuleFragmen
         if (orgUnitProgramFilterView == null) {
             initializeFilters();
         }
+
         String selectedProgramUidFilter = PreferencesState.getInstance().getProgramUidFilter();
         String selectedOrgUnitUidFilter = PreferencesState.getInstance().getOrgUnitUidFilter();
 
