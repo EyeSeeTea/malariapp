@@ -33,6 +33,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
@@ -45,11 +46,12 @@ import org.eyeseetea.malariacare.data.database.utils.services.PlannedServiceBund
 import org.eyeseetea.malariacare.layout.adapters.dashboard.PlanningPerOrgUnitAdapter;
 import org.eyeseetea.malariacare.services.PlannedSurveyService;
 import org.eyeseetea.malariacare.views.CustomCheckBox;
+import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlannedPerOrgUnitFragment extends Fragment {
+public class PlannedPerOrgUnitFragment extends FiltersFragment implements IModuleFragment {
     public static final String TAG = ".PlannedOrgUnitsF";
 
     public interface Callback {
@@ -61,7 +63,6 @@ public class PlannedPerOrgUnitFragment extends Fragment {
     private List<PlannedSurveyByOrgUnit> plannedSurveys = new ArrayList<>();
     private ImageButton scheduleButton;
     private CustomCheckBox selectAllCheckbox;
-    private String filterOrgUnitUid;
 
     private View rootView;
     private RecyclerView recyclerView;
@@ -87,6 +88,25 @@ public class PlannedPerOrgUnitFragment extends Fragment {
         initRecyclerView();
 
         return rootView;
+    }
+
+    @Override
+    protected void onFiltersChanged() {
+        if (!getSelectedProgramUidFilter().isEmpty() || getSelectedOrgUnitUidFilter().isEmpty()) {
+            DashboardActivity.dashboardActivity.onProgramSelected(getSelectedProgramUidFilter());
+        } else {
+            reloadData();
+        }
+    }
+
+    @Override
+    protected OrgUnitProgramFilterView.FilterType getFilterType() {
+        return OrgUnitProgramFilterView.FilterType.EXCLUSIVE;
+    }
+
+    @Override
+    protected int getOrgUnitProgramFilterViewId() {
+        return R.id.plan_org_unit_program_filter_view;
     }
 
     private void refreshItems(List<PlannedSurveyByOrgUnit> plannedItems) {
@@ -263,7 +283,10 @@ public class PlannedPerOrgUnitFragment extends Fragment {
         }
     }
 
+    @Override
     public void reloadData() {
+        super.reloadData();
+
         //Reload data using service
         Intent surveysIntent = new Intent(
                 PreferencesState.getInstance().getContext().getApplicationContext(),
@@ -282,10 +305,6 @@ public class PlannedPerOrgUnitFragment extends Fragment {
             }
         }
         disableScheduleButton();
-    }
-
-    public void setOrgUnitFilter(String uid) {
-        filterOrgUnitUid = uid;
     }
 
     /**
@@ -318,7 +337,7 @@ public class PlannedPerOrgUnitFragment extends Fragment {
 
         private boolean isNotFiltered(PlannedItem item) {
             return ((PlannedSurvey) item).getSurvey().getOrgUnit().getUid().equals(
-                    filterOrgUnitUid);
+                    getSelectedOrgUnitUidFilter());
         }
     }
 }
