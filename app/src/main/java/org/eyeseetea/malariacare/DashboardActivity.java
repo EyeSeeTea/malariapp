@@ -80,7 +80,8 @@ public class DashboardActivity extends BaseActivity {
 
         handler = new Handler(Looper.getMainLooper());
         dashboardActivity = this;
-        if (getIntent().getBooleanExtra(getString(R.string.show_announcement_key), true) && !Session.getCredentials().isDemoCredentials()) {
+        if (getIntent().getBooleanExtra(getString(R.string.show_announcement_key), true)
+                && !Session.getCredentials().isDemoCredentials()) {
             new AsyncAnnouncement().execute();
         }
 
@@ -103,6 +104,7 @@ public class DashboardActivity extends BaseActivity {
             DriveRestController.getInstance().init(this);
         }
         reloadDashboard();
+
     }
 
 
@@ -218,21 +220,22 @@ public class DashboardActivity extends BaseActivity {
     }
 
     private void showInvalidServerDialogIfIsRequired() {
-        IServerInfoRepository serverStatusRepository = new ServerInfoRepository(new ServerInfoLocalDataSource(getApplicationContext()),
+        IServerInfoRepository serverStatusRepository = new ServerInfoRepository(
+                new ServerInfoLocalDataSource(getApplicationContext()),
                 new ServerInfoRemoteDataSource(this));
         GetServerInfoUseCase serverStatusUseCase = new GetServerInfoUseCase(serverStatusRepository,
                 new UIThreadExecutor(), new AsyncExecutor());
         serverStatusUseCase.execute(new GetServerInfoUseCase.Callback() {
             @Override
             public void onComplete(ServerInfo serverInfo) {
-                if(!serverInfo.isServerSupported() && !isInvalidServerDialogShowed){
+                if (!serverInfo.isServerSupported() && !isInvalidServerDialogShowed) {
                     showInvalidServerDialog();
                 }
             }
         });
     }
 
-    public void setIsInvalidServerDialogShowed(boolean value){
+    public void setIsInvalidServerDialogShowed(boolean value) {
         isInvalidServerDialogShowed = value;
     }
 
@@ -322,7 +325,6 @@ public class DashboardActivity extends BaseActivity {
     }
 
 
-
     public void onPlanPerOrgUnitMenuClicked(SurveyDB survey) {
         dashboardController.onPlanPerOrgUnitMenuClicked(survey);
     }
@@ -399,7 +401,9 @@ public class DashboardActivity extends BaseActivity {
                                 .setNeutralButton(android.R.string.ok, null)
                                 .create();
                         alertDialog.show();
-                        ((TextView)alertDialog.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
+                        ((TextView) alertDialog.findViewById(
+                                android.R.id.message)).setMovementMethod(
+                                LinkMovementMethod.getInstance());
                     }
                 });
             }
@@ -415,7 +419,9 @@ public class DashboardActivity extends BaseActivity {
     }
 
     public void openActionPlan(SurveyDB survey) {
-        ImproveModuleController improveModuleController = (ImproveModuleController) dashboardController.getModuleByName(ImproveModuleController.getSimpleName());
+        ImproveModuleController improveModuleController =
+                (ImproveModuleController) dashboardController.getModuleByName(
+                        ImproveModuleController.getSimpleName());
         improveModuleController.onPlanActionSelected(survey);
     }
 
@@ -452,9 +458,11 @@ public class DashboardActivity extends BaseActivity {
     }
 
     public void showInvalidServerDialog() {
-        String message = DashboardActivity.dashboardActivity.getString(R.string.recommend_upgrade) + "\n" +
+        String message = DashboardActivity.dashboardActivity.getString(R.string.recommend_upgrade)
+                + "\n" +
                 DashboardActivity.dashboardActivity.getString(R.string.google_play_url);
-        showException(DashboardActivity.dashboardActivity.getString(R.string.server_version_error), message);
+        showException(DashboardActivity.dashboardActivity.getString(R.string.server_version_error),
+                message);
         setIsInvalidServerDialogShowed(true);
     }
 

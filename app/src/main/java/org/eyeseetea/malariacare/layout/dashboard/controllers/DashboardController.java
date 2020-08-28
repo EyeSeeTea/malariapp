@@ -20,9 +20,9 @@
 package org.eyeseetea.malariacare.layout.dashboard.controllers;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -34,17 +34,21 @@ import android.widget.TextView;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
-import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyScheduleDB;
 import org.eyeseetea.malariacare.data.database.utils.planning.ScheduleListener;
+import org.eyeseetea.malariacare.domain.common.Either;
 import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
+import org.eyeseetea.malariacare.domain.entity.Server;
+import org.eyeseetea.malariacare.domain.usecase.GetServerUseCase;
+import org.eyeseetea.malariacare.domain.usecase.GetServerFailure;
+import org.eyeseetea.malariacare.factories.ServerFactory;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardSettings;
 import org.eyeseetea.malariacare.utils.CompetencyUtils;
 import org.eyeseetea.malariacare.utils.DateParser;
 import org.eyeseetea.malariacare.views.CustomTextView;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -163,27 +167,45 @@ public class DashboardController {
     public void onCreate(DashboardActivity dashboardActivity, Bundle savedInstanceState) {
         this.dashboardActivity = dashboardActivity;
 
-        if (DashboardOrientation.VERTICAL.equals(getOrientation())) {
-            onCreateVertical();
-        } else {
-            onCreateHorizontal(savedInstanceState);
-        }
-        //First module sets the dashboard actionBar
-        getFirstVisibleModule().setActionBarDashboard();
+        GetServerUseCase getServerUseCase =
+                ServerFactory.INSTANCE.provideGetServerUseCase(dashboardActivity);
+
+        getServerUseCase.execute(new GetServerUseCase.Callback() {
+            @Override
+            public void onSuccess(
+                    @NotNull Either<? extends GetServerFailure, Server> serverResult) {
+                if (serverResult.isLeft()) {
+                    Log.e(this.getClass().getSimpleName(),
+                            "An error has occurred loading the connected server from the database");
+                } else {
+                    Server server = ((Either.Right<Server>) serverResult).getValue();
+
+                    if (DashboardOrientation.VERTICAL.equals(getOrientation())) {
+                        onCreateVertical(server);
+                    } else {
+                        onCreateHorizontal(savedInstanceState,server);
+                    }
+
+                    reloadActiveModule();
+                    //First module sets the dashboard actionBar
+                    getFirstVisibleModule().setActionBarDashboard();
+                }
+            }
+        });
     }
 
-    public void onCreateVertical() {
+    public void onCreateVertical(Server server) {
         for (ModuleController module : this.getModules()) {
-            module.onCreate(dashboardActivity);
+            module.onCreate(dashboardActivity, server);
             //XXX Really needed?
             module.reloadData();
         }
         currentTab = getFirstVisibleModule().getName();
     }
 
-    private void onCreateHorizontal(Bundle savedInstanceState) {
+    private void onCreateHorizontal(Bundle savedInstanceState, Server server) {
         for (ModuleController module : this.getModules()) {
-            module.onCreate(dashboardActivity);
+            module.onCreate(dashboardActivity, server);
         }
         onCreateTabHost(savedInstanceState);
     }
@@ -726,6 +748,9 @@ public class DashboardController {
 
     public void reloadActiveModule() {
         ModuleController currentModuleController = getCurrentModule();
-        currentModuleController.onTabChanged();
+
+        if (currentModuleController != null){
+            currentModuleController.onTabChanged();
+        }
     }
 }

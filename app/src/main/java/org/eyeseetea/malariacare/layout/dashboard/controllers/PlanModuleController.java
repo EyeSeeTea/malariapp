@@ -54,7 +54,7 @@ public class PlanModuleController extends ModuleController {
         createFilters();
         orgUnitVisibility(View.GONE);
         programVisibility(View.VISIBLE);
-        fragment = new PlannedFragment();
+        fragment = PlannedFragment.newInstance(server.getClassification());
     }
 
     private void createFilters() {
@@ -136,7 +136,7 @@ public class PlanModuleController extends ModuleController {
 
 
             if (fragment == null) {
-                fragment = new PlannedFragment();
+                fragment = PlannedFragment.newInstance(server.getClassification());
             }
 
             FragmentTransaction ft = getFragmentTransaction();

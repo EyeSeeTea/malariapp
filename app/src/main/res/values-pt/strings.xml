@@ -123,7 +123,7 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="feedback_show_only_failed">"Mostrar só falhou perguntas"</string>
 <string name="feedback_show_only_media">"Mostrar apenas perguntas contendo vídeo / imagem"</string>
 <string name="feedback_return">"Voltar para todas as avaliações"</string>
-<string name="quality_of_care">"Qualidade da Assistência (QoC) Pontuação:"</string>
+<string name="quality_of_care">"Qualidade da Assistência (QoC) Pontuação"</string>
 <string name="overall_quality_of_care">"Pontuação Global Quality of Care (QoC):"</string>
 <string name="feedback_info_passed">"Aprovado"</string>
 <string name="feedback_info_failed">"Suspenso"</string>

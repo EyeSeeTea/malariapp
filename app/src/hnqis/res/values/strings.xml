@@ -127,7 +127,7 @@ evaluation"</string>
 <string name="feedback_show_only_media">"Show only questions containing video/image"</string>
 <string name="feedback_show_only_one_or_show_all">"Show only last feedback"</string>
 <string name="feedback_return">"Return to all surveys"</string>
-<string name="quality_of_care">"QUALITY OF CARE (QoC) SCORE:"</string>
+<string name="quality_of_care">"Quality of Care (QoC) Score"</string>
 <string name="overall_quality_of_care">"QoC"</string>
 <string name="feedback_info_passed">"Pass"</string>
 <string name="feedback_info_failed">"Fail"</string>

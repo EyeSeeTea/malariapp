@@ -10,11 +10,6 @@ public class WebViewInterceptor {
     }
 
     BubbleClickListener mBubbleClickListener;
-    private ServerClassification serverClassification;
-
-    public WebViewInterceptor(ServerClassification serverClassification) {
-        this.serverClassification = serverClassification;
-    }
 
     @android.webkit.JavascriptInterface
     public void clickLog() {

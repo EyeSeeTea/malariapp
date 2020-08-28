@@ -41,6 +41,7 @@ import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramOUSurveyDict;
 import org.eyeseetea.malariacare.data.database.utils.services.BaseServiceBundle;
 import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
+import org.eyeseetea.malariacare.domain.entity.ServerClassification;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentSentAdapter;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.views.CustomRadioButton;
@@ -98,6 +99,19 @@ public class DashboardSentFragment extends Fragment implements IModuleFragment {
         return forceAllSurveys;
     }
 
+    private static String SERVER_CLASSIFICATION = "ServerClassification";
+    private ServerClassification serverClassification;
+
+    public static DashboardSentFragment newInstance(ServerClassification serverClassification) {
+        DashboardSentFragment fragment = new DashboardSentFragment();
+
+        Bundle args = new Bundle();
+        args.putInt(SERVER_CLASSIFICATION, serverClassification.getCode());
+        fragment.setArguments(args);
+
+        return fragment;
+    }
+
     public DashboardSentFragment() {
         this.surveys = new ArrayList();
         oneSurveyForOrgUnit = new ArrayList<>();
@@ -113,6 +127,9 @@ public class DashboardSentFragment extends Fragment implements IModuleFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView");
+
+        serverClassification = ServerClassification.Companion.get(
+                getArguments().getInt(SERVER_CLASSIFICATION));
 
         loadFilter();
 
@@ -138,7 +155,6 @@ public class DashboardSentFragment extends Fragment implements IModuleFragment {
 
         initComponents();
         initRecyclerView();
-        refreshSurveys();
 
         return rootView;
     }
@@ -180,10 +196,6 @@ public class DashboardSentFragment extends Fragment implements IModuleFragment {
         );
     }
 
-    public void refreshSurveys() {
-        adapter.setSurveys(oneSurveyForOrgUnit);
-    }
-
     @Override
     public void onResume() {
         Log.d(TAG, "onResume");
@@ -195,7 +207,16 @@ public class DashboardSentFragment extends Fragment implements IModuleFragment {
     private void initRecyclerView() {
         recyclerView = rootView.findViewById(R.id.sentSurveyList);
 
-        adapter = new AssessmentSentAdapter();
+        TextView classificationHeader = rootView.findViewById(R.id.scoreHeader);
+
+        if (serverClassification == ServerClassification.COMPETENCIES) {
+            classificationHeader.setText(getActivity().getString(R.string.competency_title));
+        } else {
+            classificationHeader.setText(
+                    getActivity().getString(R.string.dashboard_title_planned_quality_of_care));
+        }
+
+        adapter = new AssessmentSentAdapter(serverClassification);
         recyclerView.setAdapter(adapter);
         initFilterOrder();
     }
@@ -273,16 +294,20 @@ public class DashboardSentFragment extends Fragment implements IModuleFragment {
     public void refreshScreen(List<SurveyDB> newListSurveys) {
         Log.d(TAG, "refreshScreen (Thread: " + Thread.currentThread().getId() + "): "
                 + newListSurveys.size());
-        adapter.setSurveys(newListSurveys);
         if (!this.isAdded()) {
             return;
         }
-        if (newListSurveys.isEmpty()) {
-            noSurveysText.setVisibility(View.VISIBLE);
-            recyclerView.setVisibility(View.GONE);
-        } else {
-            recyclerView.setVisibility(View.VISIBLE);
-            noSurveysText.setVisibility(View.GONE);
+
+        if (adapter != null) {
+            adapter.setSurveys(newListSurveys);
+
+            if (newListSurveys.isEmpty()) {
+                noSurveysText.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.GONE);
+            } else {
+                recyclerView.setVisibility(View.VISIBLE);
+                noSurveysText.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -371,7 +396,8 @@ public class DashboardSentFragment extends Fragment implements IModuleFragment {
                                     CompetencyScoreClassification.get(
                                             survey2.getCompetencyScoreClassification());
 
-                            compare = classification1.toString().compareTo(classification2.toString());
+                            compare = classification1.toString().compareTo(
+                                    classification2.toString());
                             break;
                         default:
                             //By Date
@@ -413,13 +439,13 @@ public class DashboardSentFragment extends Fragment implements IModuleFragment {
         return programOUSurveyDict;
     }
 
-    private boolean isNotFilteredByOU(SurveyDB survey){
+    private boolean isNotFilteredByOU(SurveyDB survey) {
         String orgUnitFilter = orgUnitProgramFilterView.getSelectedOrgUnitFilter();
 
         return (orgUnitFilter.equals("") || survey.getOrgUnit().getUid().equals(orgUnitFilter));
     }
 
-    private boolean isNotFilteredByProgram(SurveyDB survey){
+    private boolean isNotFilteredByProgram(SurveyDB survey) {
         String programFilter = orgUnitProgramFilterView.getSelectedProgramFilter();
 
         return (programFilter.equals("") || survey.getProgram().getUid().equals(programFilter));

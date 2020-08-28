@@ -39,6 +39,7 @@ import org.eyeseetea.malariacare.data.database.utils.planning.PlannedItem;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedSurvey;
 import org.eyeseetea.malariacare.data.database.utils.planning.ScheduleListener;
 import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
+import org.eyeseetea.malariacare.domain.entity.ServerClassification;
 import org.eyeseetea.malariacare.utils.CompetencyUtils;
 import org.eyeseetea.malariacare.utils.DateParser;
 
@@ -66,10 +67,14 @@ public class PlannedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
      */
     PlannedHeader currentHeader;
 
+    private ServerClassification classification;
+
     int numShown;
 
-    public PlannedAdapter(Context context) {
+    public PlannedAdapter(Context context,
+            ServerClassification classification) {
         this.context = context;
+        this.classification = classification;
     }
 
     @Override
@@ -94,7 +99,7 @@ public class PlannedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             default: // PLAN_ITEM_TYPE
                 itemView = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.planning_survey_row, parent, false);
-                return new PlanItemViewHolder(itemView);
+                return new PlanItemViewHolder(itemView, classification);
         }
     }
 
@@ -224,16 +229,21 @@ public class PlannedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         private TextView orgUnitTextView;
         private TextView programTextView;
         private TextView productivityTextView;
-        private TextView competencyTextView;
+        private TextView classificationTextView;
+        private TextView classificationLabelTextView;
         private TextView scheduledDateTextView;
+        private ServerClassification serverClassification;
 
-        public PlanItemViewHolder(View itemView) {
+        public PlanItemViewHolder(View itemView, ServerClassification serverClassification) {
             super(itemView);
 
+            this.serverClassification = serverClassification;
             orgUnitTextView = itemView.findViewById(R.id.planning_org_unit);
             programTextView = itemView.findViewById(R.id.planning_program);
             productivityTextView = itemView.findViewById(R.id.planning_survey_prod);
-            competencyTextView = itemView.findViewById(R.id.planning_survey_competency);
+            classificationTextView = itemView.findViewById(R.id.planning_survey_classification);
+            classificationLabelTextView = itemView.findViewById(
+                    R.id.planning_survey_classification_label);
             scheduledDateTextView = itemView.findViewById(R.id.planning_survey_schedule_date);
         }
 
@@ -245,11 +255,7 @@ public class PlannedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             programTextView.setText(String.format("%s", plannedSurvey.getProgram()));
             productivityTextView.setText(plannedSurvey.getProductivity());
 
-        CompetencyScoreClassification classification =
-                CompetencyScoreClassification.get(
-                        plannedSurvey.getSurvey().getCompetencyScoreClassification());
-
-        CompetencyUtils.setTextByCompetencyAbbreviation(competencyTextView , classification);
+            assignClassificationValue(plannedSurvey);
 
             DateParser dateParser = new DateParser();
             scheduledDateTextView.setText(
@@ -265,6 +271,25 @@ public class PlannedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
             assignBackgroundColor();
             setUpActionButton(plannedSurvey);
+        }
+
+        private void assignClassificationValue(
+                PlannedSurvey plannedSurvey) {
+            if (serverClassification == ServerClassification.COMPETENCIES) {
+                CompetencyScoreClassification classification =
+                        CompetencyScoreClassification.get(
+                                plannedSurvey.getSurvey().getCompetencyScoreClassification());
+
+                CompetencyUtils.setTextByCompetencyAbbreviation(classificationTextView,
+                        classification);
+
+                classificationLabelTextView.setText(itemView.getContext().getText(
+                        R.string.competency_title));
+            } else {
+                classificationTextView.setText(plannedSurvey.getQualityOfCare());
+                classificationLabelTextView.setText(itemView.getContext().getText(
+                        R.string.dashboard_title_planned_quality_of_care));
+            }
         }
 
         private void setUpActionButton(PlannedSurvey plannedSurvey) {

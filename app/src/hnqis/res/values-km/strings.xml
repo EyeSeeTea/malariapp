@@ -142,7 +142,7 @@
 <string name="feedback_show_only_media">"បង្ហាញតែសំណួរដែលមានវីដេអូ / រូបភាព"</string>
 <string name="feedback_show_only_one_or_show_all">"បង្ហាញតែមតិយោបល់ចុងក្រោយក្នុងមួយកម្មវិធី / PUll"</string>
 <string name="feedback_return">"ត្រឡប់ទៅការស្ទង់មតិទាំងអស់"</string>
-<string name="quality_of_care">"គុណភាពនៃការថែរក្សា (QoC) ពិន្ទុ:"</string>
+<string name="quality_of_care">"គុណភាពនៃការថែរក្សា (QoC) ពិន្ទុ"</string>
 <string name="overall_quality_of_care">QoC"</string>
 <string name="feedback_info_passed">"ហុច"</string>
 <string name="feedback_info_failed">"មិនជោគជ័យ"</string>

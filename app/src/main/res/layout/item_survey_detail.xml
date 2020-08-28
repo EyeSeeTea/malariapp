@@ -69,6 +69,7 @@
                 app:tFontName="@string/medium_font_name"/>
 
             <org.eyeseetea.malariacare.views.CustomTextView
+                android:id="@+id/survey_classification_label_view"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.3"
@@ -121,18 +122,18 @@
                 app:tFontName="@string/light_font"/>
 
             <org.eyeseetea.malariacare.views.CustomTextView
+                android:id="@+id/survey_classification_view"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:id="@+id/survey_competency_view"
-                android:typeface="sans"
-                android:gravity="center"
+                android:layout_height="32dp"
                 android:layout_gravity="center_vertical"
+                android:layout_weight="0.3"
                 android:ellipsize="end"
+                android:gravity="center"
                 android:lines="1"
                 android:text="Comp. Imprv."
+                android:typeface="sans"
                 app:tDimension="@string/font_size_level2"
-                app:tFontName="@string/light_font"/>
+                app:tFontName="@string/light_font" />
 
         </LinearLayout>
     </LinearLayout>

@@ -111,18 +111,18 @@ public class SurveyPlanner {
         plannedSurvey.setUser(Session.getUser());
         plannedSurvey.setProgram(survey.getProgram());
 
-        if (survey.hasMainScore()){
-            plannedSurvey.setMainScore(survey.getId_survey(), survey.getMainScore().getUid(), survey.getMainScore().getScore());
-            //Save last main score
-            plannedSurvey.saveMainScore();
-        }
-
         //Set as creationDate the completion date of the last survey
         plannedSurvey.setCreationDate(survey.getCompletionDate());
 
         plannedSurvey.setCompetencyScoreClassification(survey.getCompetencyScoreClassification());
         plannedSurvey.setScheduledDate(findScheduledDateBySurvey(survey));
         plannedSurvey.save();
+
+        if (survey.hasMainScore()){
+            plannedSurvey.setMainScore(plannedSurvey.getId_survey(), survey.getMainScore().getUid(), survey.getMainScore().getScore());
+            //Save last main score
+            plannedSurvey.saveMainScore();
+        }
 
         return plannedSurvey;
     }

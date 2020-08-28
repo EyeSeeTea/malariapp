@@ -89,6 +89,7 @@
                 app:tFontName="@string/medium_font_name"/>
 
             <org.eyeseetea.malariacare.views.CustomTextView
+                android:id="@+id/planning_survey_classification_label"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight=".35"
@@ -158,7 +159,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight=".35"
-                android:id="@+id/planning_survey_competency"
+                android:id="@+id/planning_survey_classification"
                 android:typeface="sans"
                 android:gravity="center"
                 android:ellipsize="end"

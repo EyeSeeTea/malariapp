@@ -12,6 +12,7 @@ import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
+import org.eyeseetea.malariacare.domain.entity.ServerClassification;
 import org.eyeseetea.malariacare.domain.usecase.GetOrgUnitsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.GetProgramsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.GetSentObservationsUseCase;
@@ -19,6 +20,7 @@ import org.eyeseetea.malariacare.domain.usecase.GetServerMetadataUseCase;
 import org.eyeseetea.malariacare.domain.usecase.GetSurveysUseCase;
 import org.eyeseetea.malariacare.factories.DataFactory;
 import org.eyeseetea.malariacare.factories.MetadataFactory;
+import org.eyeseetea.malariacare.factories.ServerFactory;
 import org.eyeseetea.malariacare.layout.adapters.monitor.MonitorBySurveyActionsAdapter;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
@@ -40,14 +42,26 @@ public class MonitorBySurveyActionsFragment extends FiltersFragment implements
     private MonitorBySurveyActionsAdapter adapter;
     private MonitorBySurveyActionsPresenter presenter;
 
-    public static MonitorBySurveyActionsFragment newInstance() {
-        return new MonitorBySurveyActionsFragment();
+    private static String SERVER_CLASSIFICATION = "ServerClassification";
+    private ServerClassification serverClassification;
+
+    public static MonitorBySurveyActionsFragment newInstance(ServerClassification serverClassification) {
+        MonitorBySurveyActionsFragment fragment = new MonitorBySurveyActionsFragment();
+
+        Bundle args = new Bundle();
+        args.putInt(SERVER_CLASSIFICATION, serverClassification.getCode());
+        fragment.setArguments(args);
+
+        return fragment;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_monitor_by_survey_actions, container, false);
+
+        serverClassification = ServerClassification.Companion.get(
+                getArguments().getInt(SERVER_CLASSIFICATION));
 
         initializeRecyclerView();
         initializeProgressView();
@@ -87,7 +101,7 @@ public class MonitorBySurveyActionsFragment extends FiltersFragment implements
     @Override
     public void showSurveysByActions(List<SurveyViewModel> incompleteSurveys,
             List<SurveyViewModel> completeSurveys) {
-        adapter.setSurveys(incompleteSurveys, completeSurveys);
+        adapter.setSurveys(incompleteSurveys, completeSurveys, serverClassification);
     }
 
     @Override
