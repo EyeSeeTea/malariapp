@@ -11,7 +11,11 @@ sealed class PoEditorApiClientFailure {
     object NetworkConnectionFailure : PoEditorApiClientFailure()
 }
 
-class PoEditorApiClient(private val projectID: String, private val apiToken: String) {
+class PoEditorApiClient(
+    private val projectID: String,
+    private val apiToken: String,
+    baseUrl: String = "https://api.poeditor.com/"
+) {
     private lateinit var poEditorApi: PoEditorApi
 
     fun getTerms(language: String?): Either<PoEditorApiClientFailure, List<Term>> {
@@ -35,7 +39,7 @@ class PoEditorApiClient(private val projectID: String, private val apiToken: Str
         val retrofit: Retrofit = Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
             .client(OkHttpClient.Builder().build())
-            .baseUrl("https://api.poeditor.com/")
+            .baseUrl(baseUrl)
             .build()
         poEditorApi = retrofit.create(PoEditorApi::class.java)
     }

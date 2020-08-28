@@ -22,6 +22,7 @@ package org.eyeseetea.malariacare.domain.usecase;
 import android.support.test.InstrumentationRegistry;
 
 import org.eyeseetea.malariacare.data.database.datasources.ServerInfoLocalDataSource;
+import org.eyeseetea.malariacare.data.file.AssetsFileReader;
 import org.eyeseetea.malariacare.data.remote.api.ServerInfoRemoteDataSource;
 import org.eyeseetea.malariacare.data.repositories.ServerInfoRepository;
 import org.eyeseetea.malariacare.data.repositories.ServerRepository;
@@ -50,7 +51,7 @@ public class LoginUseCaseShould {
     @Rule
     public MockitoRule rule = MockitoJUnit.rule();
     @Rule
-    public MockWebServerRule mockWebServerRule = new MockWebServerRule();
+    public MockWebServerRule mockWebServerRule = new MockWebServerRule(new AssetsFileReader());
     @Mock
     ServerRepository serverRepository;
     @Mock

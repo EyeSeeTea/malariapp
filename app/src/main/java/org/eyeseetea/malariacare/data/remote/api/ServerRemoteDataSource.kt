@@ -8,6 +8,7 @@ import org.eyeseetea.malariacare.data.remote.poeditor.PoEditorApiClient
 import org.eyeseetea.malariacare.data.remote.poeditor.Term
 import org.eyeseetea.malariacare.domain.common.Either
 import org.eyeseetea.malariacare.domain.entity.Server
+import org.eyeseetea.malariacare.domain.entity.ServerClassification
 import java.net.HttpURLConnection
 import java.net.MalformedURLException
 import java.net.URL
@@ -19,7 +20,17 @@ class ServerRemoteDataSource(private val poEditorApiClient: PoEditorApiClient) :
         return when (val result = poEditorApiClient.getTerms("en")) {
             is Either.Left -> listOf()
             is Either.Right -> {
-                findServerUrls(result.value).map { url -> Server(url) }
+                findServerUrls(result.value).map { serverInfo ->
+                    val serverInfoArray = serverInfo.split(SERVER_TERM_SEPARATOR)
+
+                    if (serverInfoArray.size == 1) {
+                        Server(url = serverInfoArray[0])
+                    } else {
+                        val classification =
+                            ServerClassification.valueOf(serverInfoArray[1].toUpperCase())
+                        Server(url = serverInfoArray[0], classification = classification)
+                    }
+                }
             }
         }
     }
@@ -93,5 +104,6 @@ class ServerRemoteDataSource(private val poEditorApiClient: PoEditorApiClient) :
         private const val TAG = ".ServerRemoteDataSource"
         private const val SERVERS_TERM = "server_list"
         private const val SERVERS_TERM_SEPARATOR = "\n"
+        private const val SERVER_TERM_SEPARATOR = "|"
     }
 }

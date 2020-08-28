@@ -31,7 +31,7 @@ import com.raizlabs.android.dbflow.sql.language.NameAlias;
 
 public class AppDatabase {
     public static final String NAME = "EyeSeeTeaDB";
-    public static final int VERSION = 20;
+    public static final int VERSION = 21;
 
     // Aliases used for EyeSeeTea DB queries
     public static final String obsActionPlanName = "oap";
