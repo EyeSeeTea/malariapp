@@ -19,33 +19,23 @@
 
 package org.eyeseetea.malariacare.data.database.utils.monitor;
 
+import static org.eyeseetea.malariacare.data.database.utils.monitor.JavascriptInvokerKt.invokeInitMessages;
+
 import android.util.Log;
 import android.webkit.WebView;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 
-/**
- * Created by arrizabalaga on 26/07/16.
- */
-public class MonitorMessagesBuilder {
+public class InitMessagesInvoker {
 
-    private static final String TAG="MonitorMessagesBuilder";
     public static final String JSON_MAP =
             "{'assesmentUnderTaken':'%s','target': '%s','qualityOfCare': '%s','months':'%s',"
                     + "'noSurveys':'%s','multipleEventLegend': '%s' }";
 
-    public static final String JAVASCRIPT_UPDATE_TABLE = "javascript:initContext(%s)";
-
-    /**
-     * Adds calculated entries to the given webView
-     * @param webView
-     */
-    public void addDataInChart(WebView webView){
+    public void invoke(WebView webView){
         String messagesJSON=buildJSON();
-        String jsFunction= String.format(JAVASCRIPT_UPDATE_TABLE,messagesJSON);
-        Log.d(TAG, jsFunction);
-        webView.loadUrl(jsFunction);
+        invokeInitMessages(webView, messagesJSON);
     }
 
     private String buildJSON() {

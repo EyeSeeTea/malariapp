@@ -21,14 +21,9 @@ var messages= {
 };
 
 /**
- * Object that holds line chart with num surveys
- */
-var surveyXMonthChart=null;
-
-/**
  * Updates every entry with the map in the given messages
  */
-var initContext = function(translated){
+var initMessages = function(translated){
 
     //Update translations
     for (var key in translated) {
@@ -36,9 +31,6 @@ var initContext = function(translated){
             messages[key] = translated[key];
         }
     }
-
-    //Init SurveyXMonthChart
-    surveyXMonthChart = SentXMonthChart();
 
     updateChartTitle("multipleEventLegend",messages["multipleEventLegend"]);
 }

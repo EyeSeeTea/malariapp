@@ -19,50 +19,40 @@
 
 package org.eyeseetea.malariacare.data.database.utils.monitor.facilities;
 
-import android.content.Context;
+import static org.eyeseetea.malariacare.data.database.utils.monitor.JavascriptInvokerKt.invokeSetDataTablesPerOrgUnit;
+
 import android.util.Log;
 import android.webkit.WebView;
 
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.domain.entity.ServerClassification;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by idelcano on 23/08/2016.
- */
-public class FacilityTableBuilderByOrgUnit extends  FacilityTableBuilderBase {
-    public static final String JAVASCRIPT_UPDATE_TABLE = "javascript:buildTablesPerOrgUnit('%s',%s)";
-    private static final String TAG=".FacilityTableBuilderOU";
-    Map<ProgramDB,FacilityTableDataByOrgUnit> facilityTableDataMap;
-    public static final String JAVASCRIPT_SHOW = "javascript:renderPieChartsByOrgUnit()";
-    /**
-     * Default constructor
-     *
-     * @param surveys
-     */
+public class FacilityTableBuilderByOrgUnit {
+    private List<SurveyDB> surveys;
+    private Map<ProgramDB, FacilityTableDataByOrgUnit> facilityTableDataMap;
+
     public FacilityTableBuilderByOrgUnit(List<SurveyDB> surveys) {
-        super(surveys);
+        this.surveys = surveys;
         this.facilityTableDataMap = new HashMap<>();
     }
 
-    /**
-     * Build table data from surveys
-     * @param surveys
-     * @return
-     */
-    private void build(List<SurveyDB> surveys){
-        for(SurveyDB survey:surveys){
+    private void build(List<SurveyDB> surveys, ServerClassification serverClassification) {
+        for (SurveyDB survey : surveys) {
 
             //Get right table
-            FacilityTableDataByOrgUnit facilityTableDataByOrgUnit= facilityTableDataMap.get(survey.getProgram());
+            FacilityTableDataByOrgUnit facilityTableDataByOrgUnit = facilityTableDataMap.get(
+                    survey.getProgram());
 
             //Init entry first time of a program
-            if(facilityTableDataByOrgUnit==null){
-                facilityTableDataByOrgUnit=new FacilityTableDataByOrgUnit(survey.getProgram(), survey.getOrgUnit());
-                facilityTableDataMap.put(survey.getProgram(),facilityTableDataByOrgUnit);
+            if (facilityTableDataByOrgUnit == null) {
+                facilityTableDataByOrgUnit = new FacilityTableDataByOrgUnit(survey.getProgram(),
+                        survey.getOrgUnit(), serverClassification);
+                facilityTableDataMap.put(survey.getProgram(), facilityTableDataByOrgUnit);
             }
 
 
@@ -71,31 +61,18 @@ public class FacilityTableBuilderByOrgUnit extends  FacilityTableBuilderBase {
         }
     }
 
-    /**
-     * Adds calculated entries to the given webView
-     * @param webView
-     */
-    public void addDataInChart(WebView webView){
+    public void addDataInChart(WebView webView,
+            ServerClassification serverClassification) {
         //Build tables
-        build(surveys);
-        //Inyect tables in view
-        for(Map.Entry<ProgramDB,FacilityTableDataByOrgUnit> tableEntry: facilityTableDataMap.entrySet()){
-            ProgramDB program=tableEntry.getKey();
-            FacilityTableDataByOrgUnit facilityTableData=tableEntry.getValue();
-            inyectDataInChart(webView, String.valueOf(program.getUid()), facilityTableData.getAsJSON());
+        build(surveys, serverClassification);
+        //Inject tables in view
+        for (Map.Entry<ProgramDB, FacilityTableDataByOrgUnit> tableEntry :
+                facilityTableDataMap.entrySet()) {
+            ProgramDB program = tableEntry.getKey();
+            FacilityTableDataByOrgUnit facilityTableData = tableEntry.getValue();
+            invokeSetDataTablesPerOrgUnit(webView, String.valueOf(program.getUid()),
+                    facilityTableData.getAsJSON());
         }
 
-    }
-
-    public static void showFacilities(WebView webView) {
-        Log.d(TAG, JAVASCRIPT_SHOW);
-        webView.loadUrl(String.format(JAVASCRIPT_SHOW));
-    }
-
-    void inyectDataInChart(WebView webView, String id, String json) {
-        //Inyect in browser
-        String updateChartJS=String.format(JAVASCRIPT_UPDATE_TABLE,id,json);
-        Log.d(TAG, updateChartJS);
-        webView.loadUrl(updateChartJS);
     }
 }

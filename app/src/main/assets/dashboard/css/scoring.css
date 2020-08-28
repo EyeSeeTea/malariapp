@@ -1,0 +1,28 @@
+  td.greencircle > div {
+      margin: auto;
+      border-radius: 50%;
+      height: 100%;
+      color: white;
+      font-weight: bold;
+      margin-top: 5px;
+      padding: 3px;
+      margin-bottom: 5px;
+  }
+
+  td.ambercircle > div {
+      margin: auto;
+      border-radius: 50%;
+      height: 100%;
+      margin-top: 5px;
+      padding: 3px;
+      margin-bottom: 5px;
+  }
+
+  td.redcircle > div {
+      margin: auto;
+      border-radius: 50%;
+      height: 100%;
+      margin-top: 5px;
+      padding: 3px;
+      margin-bottom: 5px;
+  }

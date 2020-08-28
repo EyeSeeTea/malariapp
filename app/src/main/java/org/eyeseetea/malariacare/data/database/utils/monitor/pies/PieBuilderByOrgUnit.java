@@ -19,93 +19,83 @@
 
 package org.eyeseetea.malariacare.data.database.utils.monitor.pies;
 
+import static org.eyeseetea.malariacare.data.database.utils.monitor.JavascriptInvokerKt.invokeSetOrgUnitPieData;
+import static org.eyeseetea.malariacare.data.database.utils.monitor.JavascriptInvokerKt.invokeSetProgramPieData;
+
 import android.webkit.WebView;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.domain.entity.ServerClassification;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by idelcano on 23/08/2016.
- */
-public class PieBuilderByOrgUnit extends PieBuilderBase {
-    public static final String JAVASCRIPT_UPDATE_CHARTS = "javascript:setOrgUnitPieData(%s)";
+public class PieBuilderByOrgUnit {
+    private Map<OrgUnitDB, PieDataByOrgUnit> pieTabGroupDataMap;
+    private List<SurveyDB> surveys;
+    private ServerClassification serverClassification;
 
-    /**
-     * Map of entries per program
-     */
-    private Map<OrgUnitDB,PieDataByOrgUnit> pieTabGroupDataMap;
-    /**
-     * Default constructor
-     *
-     * @param surveys
-     */
-    public PieBuilderByOrgUnit(List<SurveyDB> surveys) {
-        super(surveys);
-        pieTabGroupDataMap=new HashMap<>();
+    public PieBuilderByOrgUnit(List<SurveyDB> surveys, ServerClassification serverClassification) {
+        this.surveys = surveys;
+        this.serverClassification = serverClassification;
+        pieTabGroupDataMap = new HashMap<>();
     }
-    /**
-     * Adds calculated entries to the given webView
-     * @param webView
-     */
-    public void addDataInChart(WebView webView){
+
+    public void addDataInChart(WebView webView) {
         //Build entries
-        List<PieDataByOrgUnit> entries=build(surveys);
-        //Inyect entries in view
-        injectDataInChart(webView, entries);
-        buildJSONArray(entries);
+        List<PieDataByOrgUnit> entries = build(surveys);
+        String json = buildJSONArray(entries);
+        invokeSetOrgUnitPieData(webView, json);
         entries.clear();
     }
-    private void build(SurveyDB survey) {
-        //Get the program
-        OrgUnitDB orgUnit=survey.getOrgUnit();
-
-        //Get the entry for that program
-        PieDataByOrgUnit pieTabGroupData = pieTabGroupDataMap.get(orgUnit);
-
-        //First time no entry
-        if(pieTabGroupData ==null){
-            pieTabGroupData =new PieDataByOrgUnit(orgUnit);
-            pieTabGroupDataMap.put(orgUnit, pieTabGroupData);
-        }
-        //Increment surveys for that month
-        pieTabGroupData.incCounter(survey.getCompetencyScoreClassification());
-    }
-
 
     private List<PieDataByOrgUnit> build(List<SurveyDB> surveys) {
-        for(SurveyDB survey:surveys){
+        for (SurveyDB survey : surveys) {
             build(survey);
         }
 
         return new ArrayList(pieTabGroupDataMap.values());
     }
-    private void injectDataInChart(WebView webView, List<PieDataByOrgUnit> entries) {
-        //Build array JSON
-        String json=buildJSONArray(entries);
 
-        //Inyect in browser
-        inyectInBrowser(webView, JAVASCRIPT_UPDATE_CHARTS, json);
+    private void build(SurveyDB survey) {
+        //Get the program
+        OrgUnitDB orgUnit = survey.getOrgUnit();
+
+        //Get the entry for that program
+        PieDataByOrgUnit pieTabGroupData = pieTabGroupDataMap.get(orgUnit);
+
+        //First time no entry
+        if (pieTabGroupData == null) {
+            pieTabGroupData = new PieDataByOrgUnit(orgUnit);
+            pieTabGroupDataMap.put(orgUnit, pieTabGroupData);
+        }
+
+        if (serverClassification == ServerClassification.COMPETENCIES) {
+            pieTabGroupData.incCounterByCompetency(survey.getCompetencyScoreClassification());
+        } else {
+            pieTabGroupData.incCounterByScoring(survey.getMainScore().getScore());
+        }
     }
 
-    private String buildJSONArray(List<PieDataByOrgUnit> entries){
-        String arrayJSON="[";
-        int i=0;
-        for(PieDataByOrgUnit pieTabGroupData :entries){
-            String pieJSON= pieTabGroupData.toJSON(PreferencesState.getInstance().getContext().getString(R.string.dashboard_tip_pie_chart));
-            arrayJSON+=pieJSON;
+    private String buildJSONArray(List<PieDataByOrgUnit> entries) {
+        String arrayJSON = "[";
+        int i = 0;
+        for (PieDataByOrgUnit pieTabGroupData : entries) {
+            String pieJSON = pieTabGroupData.toJSON(
+                    PreferencesState.getInstance().getContext().getString(
+                            R.string.dashboard_tip_pie_chart));
+            arrayJSON += pieJSON;
             i++;
-            if(i!=entries.size()){
-                arrayJSON+=",";
+            if (i != entries.size()) {
+                arrayJSON += ",";
             }
         }
-        arrayJSON+="]";
+        arrayJSON += "]";
         return arrayJSON;
     }
 }

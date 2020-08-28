@@ -20,6 +20,7 @@
 package org.eyeseetea.malariacare.data.database.utils.monitor.facilities;
 
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.domain.entity.ServerClassification;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -39,15 +40,15 @@ public class FacilityRowDataBase {
     private SimpleDateFormat KEY_MONTH_FORMATTER=new SimpleDateFormat("yyyyMM");
     String name;
 
-    public FacilityRowDataBase(String name) {
+    public FacilityRowDataBase(String name, ServerClassification serverClassification) {
         this.name= name;
-        init();
+        init(serverClassification);
     }
-    public void init(){
+    public void init(ServerClassification serverClassification){
         //Init empty months
         columnData=new ArrayList<>();
         for(int i=0;i<NUM_MONTHS;i++){
-            columnData.add(new FacilityColumnData());
+            columnData.add(new FacilityColumnData(serverClassification));
         }
         counterData=new ArrayList<>();
         for(int i=0;i<NUM_MONTHS;i++){

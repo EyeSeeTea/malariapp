@@ -21,40 +21,43 @@ package org.eyeseetea.malariacare.data.database.utils.monitor.facilities;
 
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.domain.entity.ServerClassification;
 import org.eyeseetea.malariacare.utils.AUtils;
 
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by idelcano on 23/08/2016.
- */
-public class FacilityTableDataByProgram extends  FacilityTableDataBase {
+public class FacilityTableDataByProgram extends FacilityTableDataBase {
 
-    private static final String TAG=".FacilityTableDataP";
-    Map<String,FacilityRowDataBase> rowData;
+    private static final String TAG = ".FacilityTableDataP";
+    Map<String, FacilityRowDataBase> rowData;
 
-    public FacilityTableDataByProgram(OrgUnitDB orgUnit){
-        this.title=AUtils.escapeQuotes(orgUnit.getName());
-        this.uid=orgUnit.getUid();
-        this.id=String.valueOf(orgUnit.getId_org_unit());
-        rowData=new HashMap<>();
+    public FacilityTableDataByProgram(OrgUnitDB orgUnit,
+            ServerClassification serverClassification) {
+        super(serverClassification);
+        this.title = AUtils.escapeQuotes(orgUnit.getName());
+        this.uid = orgUnit.getUid();
+        this.id = String.valueOf(orgUnit.getId_org_unit());
+        rowData = new HashMap<>();
     }
 
-    public void addSurvey(SurveyDB survey){
-        OrgUnitDB orgUnit=survey.getOrgUnit();
+    public void addSurvey(SurveyDB survey) {
+        OrgUnitDB orgUnit = survey.getOrgUnit();
         //Get facility row
-        FacilityRowDataBase facilityRow = rowData.get(orgUnit.toString()+survey.getProgram().getUid());
+        FacilityRowDataBase facilityRow = rowData.get(
+                orgUnit.toString() + survey.getProgram().getUid());
         //First time facility
-        if(facilityRow==null){
-            facilityRow=new FacilityRowDataBase(AUtils.escapeQuotes(survey.getProgram().getName()));
-            rowData.put(orgUnit.toString()+survey.getProgram().getUid(),facilityRow);
+        if (facilityRow == null) {
+            facilityRow = new FacilityRowDataBase(
+                    AUtils.escapeQuotes(survey.getProgram().getName()), this.serverClassification);
+            rowData.put(orgUnit.toString() + survey.getProgram().getUid(), facilityRow);
         }
         //Add survey
         facilityRow.addSurvey(survey);
     }
 
-    public String getAsJSON(){
-        return String.format("{title:'%s',months:%s,tables:%s,tableuid:'%s',id:'%s'}",title,getMonthsAsJSONArray(),getFacilitiesAsJSONArray(rowData),uid,id);
+    public String getAsJSON() {
+        return String.format("{title:'%s',months:%s,tables:%s,tableuid:'%s',id:'%s'}", title,
+                getMonthsAsJSONArray(), getFacilitiesAsJSONArray(rowData), uid, id);
     }
 }
