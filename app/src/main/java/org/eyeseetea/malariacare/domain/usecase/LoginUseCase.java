@@ -82,9 +82,9 @@ public class LoginUseCase implements UseCase{
         mUserAccountRepository.login(credentials, new IRepositoryCallback<UserAccount>() {
             @Override
             public void onSuccess(UserAccount userAccount) {
+                updateLoggedServer();
                 getServerVersion();
                 notifyOnLoginSuccess();
-                updateLoggedServer();
             }
 
             @Override
@@ -129,8 +129,7 @@ public class LoginUseCase implements UseCase{
                 }
 
                 if (connectedServer != null){
-                    connectedServer.changeToConnected();
-                    mServerRepository.save(connectedServer);
+                    mServerRepository.save(connectedServer.changeToConnected());
                     mServerRepository.getLoggedServer();
                 }
             } catch (Exception e) {

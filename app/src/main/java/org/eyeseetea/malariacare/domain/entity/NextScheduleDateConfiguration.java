@@ -4,30 +4,33 @@ import static java.lang.Integer.*;
 
 public class NextScheduleDateConfiguration {
     private final String nextScheduleDeltaMatrix;
-    private int competentHighProductivityMonths;
-    private int competentLowProductivityMonths;
+    private int competentOrAHighProductivityMonths;
+    private int competentOrALowProductivityMonths;
 
-    private int competentNeedsImprovementHighProductivityMonths;
-    private int competentNeedsImprovementLowProductivityMonths;
+    private int competentNeedsImprovementOrBHighProductivityMonths;
+    private int competentNeedsImprovementOrBLowProductivityMonths;
 
-    private int notCompetentHighProductivityMonths;
-    private int notCompetentLowProductivityMonths;
+    private int notCompetentOrCHighProductivityMonths;
+    private int notCompetentOrCLowProductivityMonths;
 
-    /**
-     *
-     * @param nextScheduleDeltaMatrix provide next schedule Date by competency and productivity
-     * Example: 4,4;3,3;3,1
-     *
-     *  |      Program A          | Low Productivity  | High Productivity |
-     *  |-------------------------|-------------------|-------------------|
-     *  |Competency A (Competent) |         4         |        4          |
-     *  |-------------------------|-------------------|-------------------|
-     *  |Competency B (Competent  |                   |                   |
-     *  |needs improvement)       |         3         |        3          |
-     *  |-------------------------|-------------------|-------------------|
-     *  |Competency A (Competent) |         3         |        1          |
-     *  |-------------------------|-------------------|-------------------|
-     */
+        /**
+         *
+         * @param nextScheduleDeltaMatrix provide next schedule Date by competency or score and productivity
+         * Example: 4,4;3,3;3,1
+         *
+         *  |      Program A          | Low Productivity  | High Productivity |
+         *  |-------------------------|-------------------|-------------------|
+         *  |     A (Competent        |                   |                   |
+         *  |    or high score)       |         4         |        4          |
+         *  |-------------------------|-------------------|-------------------|
+         *  |     B (Competent needs  |                   |                   |
+         *  |     improvement or      |         3         |        3          |
+         *  |     medium score)       |                   |                   |
+         *  |-------------------------|-------------------|-------------------|
+         *  |     C (Not Competent    |                   |                   |
+         *  |      or low score)      |         3         |        1          |
+         *  |-------------------------|-------------------|-------------------|
+         */
 
     public NextScheduleDateConfiguration(String nextScheduleDeltaMatrix) {
         if (nextScheduleDeltaMatrix == null){
@@ -52,55 +55,55 @@ public class NextScheduleDateConfiguration {
             }
 
             if (index == 0){
-                extractCompetentNextSchedule(nextSchedulesProductivity);
+                extractCompetentOrANextSchedule(nextSchedulesProductivity);
             } else if(index == 1){
-                extractCompetentNeedsImprovementNextSchedule(nextSchedulesProductivity);
+                extractCompetentNeedsImprovementOrBNextSchedule(nextSchedulesProductivity);
             } else if(index == 2){
-                extractNotCompetentNextSchedule(nextSchedulesProductivity);
+                extractNotCompetentOrCNextSchedule(nextSchedulesProductivity);
             }
         }
     }
 
-    private void extractCompetentNextSchedule(String[] nextSchedulesProductivity) {
-        competentLowProductivityMonths = parseInt(nextSchedulesProductivity[0]);
-        competentHighProductivityMonths = parseInt(nextSchedulesProductivity[1]);
+    private void extractCompetentOrANextSchedule(String[] nextSchedulesProductivity) {
+        competentOrALowProductivityMonths = parseInt(nextSchedulesProductivity[0]);
+        competentOrAHighProductivityMonths = parseInt(nextSchedulesProductivity[1]);
     }
 
-    private void extractCompetentNeedsImprovementNextSchedule(String[] nextSchedulesProductivity) {
-        competentNeedsImprovementLowProductivityMonths = parseInt(nextSchedulesProductivity[0]);
-        competentNeedsImprovementHighProductivityMonths = parseInt(nextSchedulesProductivity[1]);
+    private void extractCompetentNeedsImprovementOrBNextSchedule(String[] nextSchedulesProductivity) {
+        competentNeedsImprovementOrBLowProductivityMonths = parseInt(nextSchedulesProductivity[0]);
+        competentNeedsImprovementOrBHighProductivityMonths = parseInt(nextSchedulesProductivity[1]);
     }
 
-    private void extractNotCompetentNextSchedule(String[] nextSchedulesProductivity) {
-        notCompetentLowProductivityMonths = parseInt(nextSchedulesProductivity[0]);
-        notCompetentHighProductivityMonths = parseInt(nextSchedulesProductivity[1]);
+    private void extractNotCompetentOrCNextSchedule(String[] nextSchedulesProductivity) {
+        notCompetentOrCLowProductivityMonths = parseInt(nextSchedulesProductivity[0]);
+        notCompetentOrCHighProductivityMonths = parseInt(nextSchedulesProductivity[1]);
     }
 
     public String getNextScheduleDeltaMatrix() {
         return nextScheduleDeltaMatrix;
     }
 
-    public int getCompetentHighProductivityMonths() {
-        return competentHighProductivityMonths;
+    public int getCompetentOrAHighProductivityMonths() {
+        return competentOrAHighProductivityMonths;
     }
 
-    public int getCompetentLowProductivityMonths() {
-        return competentLowProductivityMonths;
+    public int getCompetentOrALowProductivityMonths() {
+        return competentOrALowProductivityMonths;
     }
 
-    public int getCompetentNeedsImprovementHighProductivityMonths() {
-        return competentNeedsImprovementHighProductivityMonths;
+    public int getCompetentNeedsImprovementOrBHighProductivityMonths() {
+        return competentNeedsImprovementOrBHighProductivityMonths;
     }
 
-    public int getCompetentNeedsImprovementLowProductivityMonths() {
-        return competentNeedsImprovementLowProductivityMonths;
+    public int getCompetentNeedsImprovementOrBLowProductivityMonths() {
+        return competentNeedsImprovementOrBLowProductivityMonths;
     }
 
-    public int getNotCompetentHighProductivityMonths() {
-        return notCompetentHighProductivityMonths;
+    public int getNotCompetentOrCHighProductivityMonths() {
+        return notCompetentOrCHighProductivityMonths;
     }
 
-    public int getNotCompetentLowProductivityMonths() {
-        return notCompetentLowProductivityMonths;
+    public int getNotCompetentOrCLowProductivityMonths() {
+        return notCompetentOrCLowProductivityMonths;
     }
 }

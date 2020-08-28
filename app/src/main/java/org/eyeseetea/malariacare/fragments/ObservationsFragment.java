@@ -204,8 +204,8 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
                 new WrapperExecutor(),
                 DataFactory.INSTANCE.provideGetObservationBySurveyUidUseCase(),
                 MetadataFactory.INSTANCE.provideServerMetadataUseCase(getActivity()),
-                DataFactory.INSTANCE.provideSaveObservationUseCase());
-
+                DataFactory.INSTANCE.provideSaveObservationUseCase(),
+                serverClassification);
 
         presenter.attachView(this, surveyUid);
     }
