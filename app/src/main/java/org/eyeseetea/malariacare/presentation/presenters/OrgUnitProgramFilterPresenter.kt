@@ -43,7 +43,7 @@ class OrgUnitProgramFilterPresenter(
         if (selectedProgramName != programName) {
             changeSelectedProgram(programName)
 
-            if (exclusiveFilter) {
+            if (exclusiveFilter && programName != allProgramsText) {
                 unSelectOrgUnit()
             }
 
@@ -55,7 +55,7 @@ class OrgUnitProgramFilterPresenter(
         if (selectedOrgUnitName != orgUnitName) {
             changeSelectedOrgUnit(orgUnitName)
 
-            if (exclusiveFilter) {
+            if (exclusiveFilter && orgUnitName != allOrgUnitText) {
                 unSelectProgram()
             }
 
@@ -79,7 +79,7 @@ class OrgUnitProgramFilterPresenter(
 
         onProgramSelected(programNameToSelect)
 
-        if (exclusiveFilter) {
+        if (exclusiveFilter && programNameToSelect != allProgramsText) {
             unSelectOrgUnit()
             notifyOrgUnitFilterChange()
         } else {

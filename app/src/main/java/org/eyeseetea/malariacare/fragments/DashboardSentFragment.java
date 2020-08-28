@@ -54,9 +54,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
-public class DashboardSentFragment extends Fragment implements IModuleFragment {
-
-
+public class DashboardSentFragment extends FiltersFragment implements IModuleFragment {
     public static final String TAG = ".SentFragment";
     private final static int WITHOUT_ORDER = 0;
     private final static int FACILITY_ORDER = 1;
@@ -84,12 +82,6 @@ public class DashboardSentFragment extends Fragment implements IModuleFragment {
 
     private RecyclerView recyclerView;
     private View rootView;
-
-    /**
-     * Toggles the state of the flag that determines if only shown one or all the surveys
-     */
-
-    OrgUnitProgramFilterView orgUnitProgramFilterView;
 
     public void toggleForceAllSurveys() {
         this.forceAllSurveys = !this.forceAllSurveys;
@@ -124,31 +116,27 @@ public class DashboardSentFragment extends Fragment implements IModuleFragment {
     }
 
     @Override
+    protected void onFiltersChanged() {
+        reloadSentSurveys(surveys);
+    }
+
+    @Override
+    protected OrgUnitProgramFilterView.FilterType getFilterType() {
+        return OrgUnitProgramFilterView.FilterType.NON_EXCLUSIVE;
+    }
+
+    @Override
+    protected int getOrgUnitProgramFilterViewId() {
+        return R.id.improve_org_unit_program_filter_view;
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView");
 
         serverClassification = ServerClassification.Companion.get(
                 getArguments().getInt(SERVER_CLASSIFICATION));
-
-        loadFilter();
-
-        orgUnitProgramFilterView.setFilterType(OrgUnitProgramFilterView.FilterType.NON_EXCLUSIVE);
-
-        orgUnitProgramFilterView.setFilterChangedListener(
-                new OrgUnitProgramFilterView.FilterChangedListener() {
-                    @Override
-                    public void onProgramFilterChanged(String selectedProgramFilter) {
-                        reloadSentSurveys(surveys);
-                        saveCurrentFilters();
-                    }
-
-                    @Override
-                    public void onOrgUnitFilterChanged(String selectedOrgUnitFilter) {
-                        reloadSentSurveys(surveys);
-                        saveCurrentFilters();
-                    }
-                });
 
         rootView = inflater.inflate(R.layout.improve_listview, null);
         noSurveysText = rootView.findViewById(R.id.no_surveys_improve);
@@ -157,28 +145,6 @@ public class DashboardSentFragment extends Fragment implements IModuleFragment {
         initRecyclerView();
 
         return rootView;
-    }
-
-    private void saveCurrentFilters() {
-        PreferencesState.getInstance().setProgramUidFilter(
-                orgUnitProgramFilterView.getSelectedProgramFilter());
-        PreferencesState.getInstance().setOrgUnitUidFilter(
-                orgUnitProgramFilterView.getSelectedOrgUnitFilter());
-    }
-
-    private void updateSelectedFilters() {
-        if (orgUnitProgramFilterView == null) {
-            loadFilter();
-        }
-        String programUidFilter = PreferencesState.getInstance().getProgramUidFilter();
-        String orgUnitUidFilter = PreferencesState.getInstance().getOrgUnitUidFilter();
-        orgUnitProgramFilterView.changeSelectedFilters(programUidFilter, orgUnitUidFilter);
-    }
-
-    private void loadFilter() {
-        orgUnitProgramFilterView =
-                (OrgUnitProgramFilterView) DashboardActivity.dashboardActivity
-                        .findViewById(R.id.improve_org_unit_program_filter_view);
     }
 
     private void initComponents() {
@@ -313,7 +279,7 @@ public class DashboardSentFragment extends Fragment implements IModuleFragment {
 
     @Override
     public void reloadData() {
-        updateSelectedFilters();
+        super.reloadData();
 
         //Reload data using service
         Intent surveysIntent = new Intent(
@@ -440,13 +406,13 @@ public class DashboardSentFragment extends Fragment implements IModuleFragment {
     }
 
     private boolean isNotFilteredByOU(SurveyDB survey) {
-        String orgUnitFilter = orgUnitProgramFilterView.getSelectedOrgUnitFilter();
+        String orgUnitFilter = getSelectedOrgUnitUidFilter();
 
         return (orgUnitFilter.equals("") || survey.getOrgUnit().getUid().equals(orgUnitFilter));
     }
 
     private boolean isNotFilteredByProgram(SurveyDB survey) {
-        String programFilter = orgUnitProgramFilterView.getSelectedProgramFilter();
+        String programFilter =getSelectedProgramUidFilter();
 
         return (programFilter.equals("") || survey.getProgram().getUid().equals(programFilter));
     }

@@ -27,6 +27,7 @@ import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.presentation.presenters.monitoring.MonitorBySurveyActionsPresenter;
 import org.eyeseetea.malariacare.presentation.viewmodels.SurveyViewModel;
 import org.eyeseetea.malariacare.presentation.views.MonitorActionsDialogFragment;
+import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
 
 import java.util.List;
 
@@ -83,8 +84,18 @@ public class MonitorBySurveyActionsFragment extends FiltersFragment implements
         }
     }
 
+    @Override
+    protected OrgUnitProgramFilterView.FilterType getFilterType() {
+        return OrgUnitProgramFilterView.FilterType.EXCLUSIVE;
+    }
+
+    @Override
+    protected int getOrgUnitProgramFilterViewId() {
+        return R.id.monitor_org_unit_program_filter_view;
+    }
+
     private boolean existFilter() {
-        return !selectedProgramUidFilter.isEmpty() || !selectedOrgUnitUidFilter.isEmpty();
+        return !getSelectedProgramUidFilter().isEmpty() || !getSelectedOrgUnitUidFilter().isEmpty();
     }
 
 
@@ -93,7 +104,7 @@ public class MonitorBySurveyActionsFragment extends FiltersFragment implements
         super.reloadData();
 
         if (presenter != null && !existFilter()) {
-            presenter.refresh(selectedProgramUidFilter, selectedOrgUnitUidFilter);
+            presenter.refresh(getSelectedProgramUidFilter(), getSelectedOrgUnitUidFilter());
         }
     }
 
@@ -136,7 +147,7 @@ public class MonitorBySurveyActionsFragment extends FiltersFragment implements
                 MonitorActionsDialogFragment.newInstance(surveyViewModel.getSurveyUid());
 
         monitorActionsDialogFragment.setOnActionsSaved(() -> {
-            presenter.refresh(selectedProgramUidFilter, selectedOrgUnitUidFilter);
+            presenter.refresh(getSelectedProgramUidFilter(), getSelectedOrgUnitUidFilter());
             return Unit.INSTANCE;
         });
 
@@ -165,6 +176,6 @@ public class MonitorBySurveyActionsFragment extends FiltersFragment implements
                 getProgramsUseCase, getOrgUnitsUseCase, getServerMetadataUseCase,
                 getSentObservationsUseCase, getSurveysUseCase);
 
-        presenter.attachView(this, selectedProgramUidFilter, selectedOrgUnitUidFilter);
+        presenter.attachView(this, getSelectedProgramUidFilter(), getSelectedOrgUnitUidFilter());
     }
 }

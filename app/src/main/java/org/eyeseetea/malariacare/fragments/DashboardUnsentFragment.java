@@ -49,19 +49,33 @@ import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DashboardUnsentFragment extends Fragment implements IModuleFragment {
+public class DashboardUnsentFragment extends FiltersFragment{
 
     public static final String TAG = ".UnsentFragment";
     private SurveyReceiver surveyReceiver;
 
     private AssessmentUnsentAdapter adapter;
 
-    private OrgUnitProgramFilterView orgUnitProgramFilterView;
     private FloatingActionButton startButton;
     private TextView noSurveysText;
 
     private RecyclerView recyclerView;
     private View rootView;
+
+    @Override
+    protected void onFiltersChanged() {
+        reloadInProgressSurveys();
+    }
+
+    @Override
+    protected OrgUnitProgramFilterView.FilterType getFilterType() {
+        return OrgUnitProgramFilterView.FilterType.NON_EXCLUSIVE;
+    }
+
+    @Override
+    protected int getOrgUnitProgramFilterViewId() {
+        return R.id.assess_org_unit_program_filter_view;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -74,24 +88,6 @@ public class DashboardUnsentFragment extends Fragment implements IModuleFragment
             Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView");
 
-        loadFilter();
-
-        orgUnitProgramFilterView.setFilterType(OrgUnitProgramFilterView.FilterType.NON_EXCLUSIVE);
-
-        orgUnitProgramFilterView.setFilterChangedListener(
-                new OrgUnitProgramFilterView.FilterChangedListener() {
-                    @Override
-                    public void onProgramFilterChanged(String selectedProgramFilter) {
-                        reloadInProgressSurveys();
-                        saveCurrentFilters();
-                    }
-
-                    @Override
-                    public void onOrgUnitFilterChanged(String selectedOrgUnitFilter) {
-                        reloadInProgressSurveys();
-                        saveCurrentFilters();
-                    }
-                });
         rootView =  inflater.inflate(R.layout.assess_listview, null);
 
         noSurveysText = rootView.findViewById(R.id.no_surveys);
@@ -102,14 +98,6 @@ public class DashboardUnsentFragment extends Fragment implements IModuleFragment
         return rootView;
     }
 
-    private void saveCurrentFilters() {
-        PreferencesState.getInstance().setProgramUidFilter(
-                orgUnitProgramFilterView.getSelectedProgramFilter());
-        PreferencesState.getInstance().setOrgUnitUidFilter(
-                orgUnitProgramFilterView.getSelectedOrgUnitFilter());
-    }
-
-
     @Override
     public void onResume() {
         Log.d(TAG, "onResume");
@@ -118,25 +106,9 @@ public class DashboardUnsentFragment extends Fragment implements IModuleFragment
         super.onResume();
     }
 
-    private void updateSelectedFilters() {
-        if (orgUnitProgramFilterView == null) {
-            loadFilter();
-        }
-        String programUidFilter = PreferencesState.getInstance().getProgramUidFilter();
-        String orgUnitUidFilter = PreferencesState.getInstance().getOrgUnitUidFilter();
-        orgUnitProgramFilterView.changeSelectedFilters(programUidFilter, orgUnitUidFilter);
-    }
-
-    private void loadFilter() {
-        orgUnitProgramFilterView =
-                (OrgUnitProgramFilterView) DashboardActivity.dashboardActivity
-                        .findViewById(R.id.assess_org_unit_program_filter_view);
-    }
-
     private void showOrHiddenButton(SurveyDB survey) {
-        String orgUnitFilter = orgUnitProgramFilterView.getSelectedOrgUnitFilter();
-        String programFilter = orgUnitProgramFilterView.getSelectedProgramFilter();
-
+        String orgUnitFilter = getSelectedOrgUnitUidFilter();
+        String programFilter = getSelectedProgramUidFilter();
 
         if(orgUnitFilter == "" || programFilter == ""){
             startButton.setVisibility(View.VISIBLE);
@@ -151,7 +123,6 @@ public class DashboardUnsentFragment extends Fragment implements IModuleFragment
         }
     }
 
-
     private void initRecyclerView() {
         recyclerView = rootView.findViewById(R.id.unsentSurveyList);
 
@@ -161,7 +132,7 @@ public class DashboardUnsentFragment extends Fragment implements IModuleFragment
 
     @Override
     public void reloadData() {
-        updateSelectedFilters();
+        super.reloadData();
 
         //Reload data using service
         Intent surveysIntent = new Intent(
@@ -190,21 +161,6 @@ public class DashboardUnsentFragment extends Fragment implements IModuleFragment
         super.onPause();
     }
 
-/*    *//**
-     * Initializes the listview component, adding a listener for swiping right
-     *//*
-    private void initListView() {
-        if (PreferencesState.getInstance().isVerticalDashboard()) {
-            CustomTextView title = (CustomTextView) getActivity().findViewById(
-                    R.id.titleInProgress);
-            title.setText(adapter.getTitle());
-        }
-
-    }*/
-
-    /**
-     * Register a survey receiver to load surveys into the listadapter
-     */
     private void registerSurveysReceiver() {
         Log.d(TAG, "registerSurveysReceiver");
 
@@ -215,10 +171,6 @@ public class DashboardUnsentFragment extends Fragment implements IModuleFragment
         }
     }
 
-    /**
-     * Unregisters the survey receiver.
-     * It really important to do this, otherwise each receiver will invoke its code.
-     */
     public void unregisterSurveysReceiver() {
         Log.d(TAG, "unregisterSurveysReceiver");
         if (surveyReceiver != null) {
@@ -250,13 +202,13 @@ public class DashboardUnsentFragment extends Fragment implements IModuleFragment
     }
 
     private boolean surveyHasOrgUnitFilter(SurveyDB survey){
-        String orgUnitFilter = orgUnitProgramFilterView.getSelectedOrgUnitFilter();
+        String orgUnitFilter = getSelectedOrgUnitUidFilter();
 
         return (orgUnitFilter.equals("") || survey.getOrgUnit().getUid().equals(orgUnitFilter));
     }
 
     private boolean surveyHasProgramFilter(SurveyDB survey){
-        String programFilter = orgUnitProgramFilterView.getSelectedProgramFilter();
+        String programFilter = getSelectedProgramUidFilter();
 
         return (programFilter.equals("") || survey.getProgram().getUid().equals(programFilter));
     }
