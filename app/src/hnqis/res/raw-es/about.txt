@@ -22,14 +22,14 @@ El Ministro de Comercio Exterior y Cooperación para el Desarrollo (Países Bajo
 
 <p> <a href="http://www.psi.org"> www.psi.org </a> </p>
 
-<p> <b> <i> EyeSeeTea LTD </i> </b> </p>
+<p> <b> <i> EyeSeeTea SL </i> </b> </p>
 
 <p> <i> desarrollo de Android </i> </p>
 
-<p> EyeSeeTea LTD es una empresa con sede en Londres dedicada a: <br/>
-- <br/> ONG de desarrollo de software
-- Desarrollo de las TIC y el despliegue <br/>
-- Análisis de los datos y la representación <br/> </p>
+<p> EyeSeeTea SL es una empresa española dedicada a: <br/>
+- Desarrollo software para ONG <br/>
+- Desarrollo y despliegue de TIC <br/>
+- Análisis y representación de datos<br/> </p>
 
 <p> <a href="http://www.eyeseetea.com"> www.eyeseetea.com </a> </p>
 
