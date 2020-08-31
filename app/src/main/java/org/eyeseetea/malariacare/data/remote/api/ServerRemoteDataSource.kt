@@ -26,12 +26,20 @@ class ServerRemoteDataSource(private val poEditorApiClient: PoEditorApiClient) :
                     if (serverInfoArray.size == 1) {
                         Server(url = serverInfoArray[0])
                     } else {
-                        val classification =
-                            ServerClassification.valueOf(serverInfoArray[1].toUpperCase())
+                        val classification = parseCompetencies(serverInfoArray[1].toUpperCase())
+
                         Server(url = serverInfoArray[0], classification = classification)
                     }
                 }
             }
+        }
+    }
+
+    private fun parseCompetencies(competenciesText: String): ServerClassification {
+        return try {
+            ServerClassification.valueOf(competenciesText)
+        } catch (ex: Exception) {
+            ServerClassification.COMPETENCIES
         }
     }
 
