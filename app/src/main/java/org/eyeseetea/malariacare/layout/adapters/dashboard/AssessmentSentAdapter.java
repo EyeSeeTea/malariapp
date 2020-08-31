@@ -131,7 +131,7 @@ public class AssessmentSentAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     CompetencyUtils.setTextByCompetencyAbbreviation(classificationTextView, classification);
                 } else {
                     if (survey.hasMainScore()){
-                        String value = survey.getMainScore().getScore() + " %";
+                        String value = Math.round(survey.getMainScoreValue()) + " %";
                         classificationTextView.setText(value);
                     } else {
                         classificationTextView.setText("-");
