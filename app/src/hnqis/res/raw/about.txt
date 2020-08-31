@@ -22,11 +22,11 @@ The Minister for Foreign Trade and Development Cooperation (The Netherlands)</p>
 
 <p><a href="http://www.psi.org">www.psi.org</a></p>
 
-<p><b><i>EyeSeeTea LTD</i></b></p>
+<p><b><i>EyeSeeTea SL</i></b></p>
 
 <p><i>Android development</i></p>
 
-<p>EyeSeeTea LTD is a London-based company dedicated to:<br/>
+<p>EyeSeeTea SL is a spanish company dedicated to:<br/>
 - NGO software development<br/>
 - ICT development & deployment<br/>
 - Data analysis and representation<br/></p>
