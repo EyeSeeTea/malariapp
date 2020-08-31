@@ -20,7 +20,7 @@ class ServerRemoteDataSourceShould {
     var mockWebServerRule = MockWebServerRule(ResourcesFileReader())
 
     @Test
-    fun `return server list with competencies classification by server if classification is empty`() {
+    fun `return server list with competencies classification by server if classification does not exist`() {
         val dataSource = ServerRemoteDataSource(
             PoEditorApiClient(
                 "AnyId",
@@ -82,6 +82,27 @@ class ServerRemoteDataSourceShould {
         }
     }
 
+    @Test
+    fun `return server list with competencies classification by server if classification is empty`() {
+        val dataSource = ServerRemoteDataSource(
+            PoEditorApiClient(
+                "AnyId",
+                "AnyToken",
+                mockWebServerRule.mockServer.baseEndpoint
+            )
+        )
+
+        mockWebServerRule.mockServer.enqueueMockResponse(
+            WITH_EMPTY_CLASSIFICATION_SERVER_LIST_PO_EDITOR_RESPONSE
+        )
+
+        val serversResult = dataSource.getAll()
+
+        serversResult.forEach {
+            Assert.assertEquals(it.classification, ServerClassification.COMPETENCIES)
+        }
+    }
+
     companion object {
         private const val WITHOUT_CLASSIFICATION_SERVER_LIST_PO_EDITOR_RESPONSE =
             "without_classification_server_list_po_editor_response.json"
@@ -89,5 +110,7 @@ class ServerRemoteDataSourceShould {
             "with_competencies_classification_server_list_po_editor_response.json"
         private const val WITH_SCORING_CLASSIFICATION_SERVER_LIST_PO_EDITOR_RESPONSE =
             "with_scoring_classification_server_list_po_editor_response.json"
+        private const val WITH_EMPTY_CLASSIFICATION_SERVER_LIST_PO_EDITOR_RESPONSE =
+            "with_empty_classification_server_list_po_editor_response.json"
     }
 }
