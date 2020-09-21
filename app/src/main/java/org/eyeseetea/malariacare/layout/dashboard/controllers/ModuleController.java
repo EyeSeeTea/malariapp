@@ -223,7 +223,7 @@ public abstract class ModuleController {
 
         FragmentTransaction ft = getFragmentTransaction();
         ft.replace(layout, fragment);
-        ft.commit();
+        ft.commitAllowingStateLoss();
     }
 
     public FragmentTransaction getFragmentTransaction() {
