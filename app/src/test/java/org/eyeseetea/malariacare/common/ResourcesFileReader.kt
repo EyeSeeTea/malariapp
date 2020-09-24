@@ -25,7 +25,7 @@ class ResourcesFileReader : IFileReader {
     companion object {
         private fun getFile(clazz: Class<*>, filename: String): File {
             val classLoader = clazz.classLoader
-            val resource = classLoader.getResource(filename)
+            val resource = classLoader!!.getResource(filename)
             return File(resource.path)
         }
     }
