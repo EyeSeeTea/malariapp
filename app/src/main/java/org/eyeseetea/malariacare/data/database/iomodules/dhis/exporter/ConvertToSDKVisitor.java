@@ -22,6 +22,7 @@ package org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.location.Location;
+import android.os.Build;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.R;
@@ -39,6 +40,7 @@ import org.eyeseetea.malariacare.data.database.model.ValueDB;
 import org.eyeseetea.malariacare.data.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.data.database.utils.metadata.PhoneMetaData;
 import org.eyeseetea.malariacare.data.sync.IData;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
@@ -463,7 +465,10 @@ public class ConvertToSDKVisitor implements
         }
 
         //Push Device
-        if (controlDataElementExistsInServer(pushDeviceCode)) {
+        //Only It's possible until API 28
+        //https://source.android.com/devices/tech/config/device-identifiers
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q &&
+                controlDataElementExistsInServer(pushDeviceCode)) {
             addOrUpdateDataValue(pushDeviceCode,
                     Session.getPhoneMetaData().getPhone_metaData() + "###" + AUtils.getCommitHash(
                             context));
