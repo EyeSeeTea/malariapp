@@ -60,7 +60,7 @@ public abstract class FiltersFragment extends Fragment implements IModuleFragmen
     }
 
     private void initializeFilters() {
-        if (orgUnitProgramFilterView == null) {
+        if (orgUnitProgramFilterView == null && DashboardActivity.dashboardActivity != null) {
             orgUnitProgramFilterView = DashboardActivity.dashboardActivity
                     .findViewById(getOrgUnitProgramFilterViewId());
 
