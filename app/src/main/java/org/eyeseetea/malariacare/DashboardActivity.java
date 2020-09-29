@@ -25,6 +25,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -124,10 +125,13 @@ public class DashboardActivity extends BaseActivity {
         return phoneMetaData;
     }
 
-
     public void loadPhoneMetadata() {
-        PhoneMetaData phoneMetaData = getPhoneMetadata();
-        Session.setPhoneMetaData(phoneMetaData);
+        //Only It's possible until API 28
+        //https://source.android.com/devices/tech/config/device-identifiers
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            PhoneMetaData phoneMetaData = getPhoneMetadata();
+            Session.setPhoneMetaData(phoneMetaData);
+        }
     }
 
     /**
