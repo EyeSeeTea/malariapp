@@ -121,7 +121,7 @@ android {
         }
         hnqis {
             applicationId "org.eyeseetea.malariacare.hnqis_ng_dev"
-            versionName "1.6.0"
+            versionName "1.6.1"
             buildConfigField "boolean", "translations", "true"
             buildConfigField "String", "defaultLocale", "\"en\""
             resValue "string", "authority", applicationId+versionName+"_DHIS2_DEFAULT_AUTHORITY"
