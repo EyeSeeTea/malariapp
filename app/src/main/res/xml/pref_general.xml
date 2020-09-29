@@ -93,18 +93,6 @@
         android:maxLength="4"
         app:iconSpaceReserved="false"/>
 
-    <android.support.v7.preference.EditTextPreference
-        android:key="@string/monitoring_target"
-        android:title="@string/settings_monitoring_target"
-        android:defaultValue="@string/default_monitoring_target"
-        android:selectAllOnFocus="true"
-        android:inputType="number"
-        android:numeric="integer"
-        android:singleLine="true"
-        android:maxLines="1"
-        android:maxLength="4"
-        app:iconSpaceReserved="false"/>
-
     <android.support.v7.preference.CheckBoxPreference
         android:key="@string/hide_planning_tab_key"
         android:title="@string/hide_planning_tab_title"
