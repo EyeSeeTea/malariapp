@@ -1,6 +1,7 @@
 package org.eyeseetea.malariacare.presentation.views
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.view.LayoutInflater
@@ -9,14 +10,15 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.Toast
 import kotlinx.android.synthetic.main.dialog_actions_monitoring.view.*
+import org.eyeseetea.malariacare.DashboardActivity
 import org.eyeseetea.malariacare.R
 import org.eyeseetea.malariacare.factories.DataFactory
 import org.eyeseetea.malariacare.factories.MetadataFactory
 import org.eyeseetea.malariacare.presentation.executors.WrapperExecutor
 import org.eyeseetea.malariacare.presentation.presenters.monitoring.MonitorActionsDialogPresenter
 import org.eyeseetea.malariacare.presentation.viewmodels.observations.ActionViewModel
-import android.app.AlertDialog
-import org.eyeseetea.malariacare.DashboardActivity
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class MonitorActionsDialogFragment : DialogFragment(), MonitorActionsDialogPresenter.View {
     private lateinit var rootView: View
@@ -119,7 +121,7 @@ class MonitorActionsDialogFragment : DialogFragment(), MonitorActionsDialogPrese
     ) {
         if (!action1.description.isBlank()) {
             rootView.action1_container.visibility = View.VISIBLE
-            rootView.action1_view.text = action1.description
+            rootView.action1_view.text = getTextToShowInAction(action1)
             rootView.action1_conducted_view.isChecked = action1.isCompleted
         } else {
             rootView.action1_container.visibility = View.GONE
@@ -127,7 +129,7 @@ class MonitorActionsDialogFragment : DialogFragment(), MonitorActionsDialogPrese
 
         if (!action2.description.isBlank()) {
             rootView.action2_container.visibility = View.VISIBLE
-            rootView.action2_view.text = action2.description
+            rootView.action2_view.text = getTextToShowInAction(action2)
             rootView.action2_conducted_view.isChecked = action2.isCompleted
         } else {
             rootView.action2_container.visibility = View.GONE
@@ -135,7 +137,7 @@ class MonitorActionsDialogFragment : DialogFragment(), MonitorActionsDialogPrese
 
         if (!action3.description.isBlank()) {
             rootView.action3_container.visibility = View.VISIBLE
-            rootView.action3_view.text = action3.description
+            rootView.action3_view.text = getTextToShowInAction(action3)
             rootView.action3_conducted_view.isChecked = action3.isCompleted
         } else {
             rootView.action3_container.visibility = View.GONE
@@ -185,6 +187,22 @@ class MonitorActionsDialogFragment : DialogFragment(), MonitorActionsDialogPrese
         )
 
         presenter.attachView(this, surveyId)
+    }
+
+    private fun getTextToShowInAction(action: ActionViewModel): String {
+        val responsibleLabel =
+            activity?.resources?.getString(R.string.observation_action_responsible)
+        val dueDateLabel = activity?.resources?.getString(R.string.observation_action_due_date)
+
+        val dateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
+        val date = dateFormatter.format(action.dueDate)
+        val maxLength = 75
+        val description =
+            if (action.description.length > maxLength)
+                "${action.description.substring(0, maxLength)} ..."
+            else action.description
+
+        return "$description \n$responsibleLabel ${action.responsible} \n$dueDateLabel $date"
     }
 
     companion object {

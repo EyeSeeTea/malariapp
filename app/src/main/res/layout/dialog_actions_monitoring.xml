@@ -11,27 +11,27 @@
         android:id="@+id/header_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dialog_layout_margins"
         android:layout_alignParentTop="true"
+        android:layout_margin="@dimen/dialog_layout_margins"
         android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_weight="0.7"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="0.7"
             android:orientation="vertical">
 
             <org.eyeseetea.sdk.presentation.views.CustomTextView
-                style="@style/EyeSeeTheme.Dialog.OrgUnitText"
                 android:id="@+id/org_unit_view"
+                style="@style/EyeSeeTheme.Dialog.OrgUnitText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 tools:text="ORG UNIT " />
 
             <org.eyeseetea.sdk.presentation.views.CustomTextView
-                style="@style/EyeSeeTheme.Dialog.ProgramText"
                 android:id="@+id/program_view"
+                style="@style/EyeSeeTheme.Dialog.ProgramText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:text="KE HNQIS Family " />
@@ -39,10 +39,10 @@
 
         <org.eyeseetea.sdk.presentation.views.CustomButton
             android:id="@+id/feedback_button"
-            android:layout_weight="0.3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|right"
+            android:layout_weight="0.3"
             android:background="@drawable/action_plan_button_background"
             android:text="@string/dashboard_info_feedback"
             android:textColor="@android:color/white"
@@ -55,9 +55,9 @@
         android:id="@+id/body_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_below="@id/header_container"
-        android:minHeight="150dp">
+        android:minHeight="150dp"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -70,9 +70,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="0.65"
-                android:maxLines="3"
                 android:ellipsize="end"
                 android:gravity="center"
+                android:maxLines="3"
                 android:padding="10dp"
                 android:text="@string/action_monitor_activity_title"
                 android:textColor="@color/white"
@@ -114,17 +114,18 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.65"
                 app:font_name="@string/font_name_medium"
-                app:tDimension="@string/font_size_level4"/>
+                app:tDimension="@string/font_size_level4" />
 
             <LinearLayout
-                android:layout_weight="0.35"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_weight="0.35"
                 android:gravity="center">
+
                 <CheckBox
                     android:id="@+id/action1_conducted_view"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent" />
             </LinearLayout>
 
         </LinearLayout>
@@ -144,13 +145,14 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.65"
                 app:font_name="@string/font_name_medium"
-                app:tDimension="@string/font_size_level4"/>
+                app:tDimension="@string/font_size_level4" />
 
             <LinearLayout
-                android:layout_weight="0.35"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_weight="0.35"
                 android:gravity="center">
+
                 <CheckBox
                     android:id="@+id/action2_conducted_view"
                     android:layout_width="wrap_content"
@@ -173,13 +175,14 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.65"
                 app:font_name="@string/font_name_medium"
-                app:tDimension="@string/font_size_level4"/>
+                app:tDimension="@string/font_size_level4" />
 
             <LinearLayout
-                android:layout_weight="0.35"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_weight="0.35"
                 android:gravity="center">
+
                 <CheckBox
                     android:id="@+id/action3_conducted_view"
                     android:layout_width="wrap_content"
@@ -187,32 +190,35 @@
             </LinearLayout>
         </LinearLayout>
 
+
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/footer_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@id/body_container">
+        android:layout_below="@id/body_container"
+        android:orientation="horizontal">
+
         <org.eyeseetea.sdk.presentation.views.CustomButton
             android:id="@+id/ok_button"
             style="@style/EyeSeeTheme.Dialog.Button"
-            android:layout_weight="0.5"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:layout_weight="0.5"
+            android:text="@string/ok"
             app:font_name="@string/font_name_medium"
-            app:tDimension="@string/font_size_level4"
-            android:text="@string/ok"/>
+            app:tDimension="@string/font_size_level4" />
+
         <org.eyeseetea.sdk.presentation.views.CustomButton
             android:id="@+id/cancel_button"
             style="@style/EyeSeeTheme.Dialog.Button"
-            android:layout_weight="0.5"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:text="@string/cancel"/>
+            android:layout_weight="0.5"
+            android:text="@string/cancel" />
     </LinearLayout>
 
     <ProgressBar
