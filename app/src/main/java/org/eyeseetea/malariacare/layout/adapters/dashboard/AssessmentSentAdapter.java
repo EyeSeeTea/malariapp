@@ -31,6 +31,7 @@ import android.widget.ImageView;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
+import org.eyeseetea.malariacare.domain.entity.ServerClassification;
 import org.eyeseetea.malariacare.utils.CompetencyUtils;
 import org.eyeseetea.malariacare.utils.DateParser;
 import org.eyeseetea.malariacare.views.CustomTextView;
@@ -44,6 +45,11 @@ public class AssessmentSentAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public static final String SCORE_FORMAT = "%.1f %%";
 
     List<SurveyDB> surveys = new ArrayList<>();
+    ServerClassification classification;
+
+    public AssessmentSentAdapter(ServerClassification classification) {
+        this.classification = classification;
+    }
 
     public void setSurveys(List<SurveyDB> surveys){
         this.surveys = surveys;
@@ -55,7 +61,7 @@ public class AssessmentSentAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(
                 R.layout.assessment_sent_record, viewGroup, false);
-        return new AssessmentSentAdapter.ViewHolder(itemView);
+        return new AssessmentSentAdapter.ViewHolder(itemView, classification);
     }
 
     @Override
@@ -75,16 +81,19 @@ public class AssessmentSentAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         private ImageView menuDots;
         private CustomTextView facilityName;
         private CustomTextView surveyType;
-        private CustomTextView competencyTextView;
+        private CustomTextView classificationTextView;
+        private ServerClassification serverClassification;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(View itemView,
+                ServerClassification serverClassification) {
             super(itemView);
 
+            this.serverClassification = serverClassification;
             menuDots = itemView.findViewById(R.id.menu_dots);
             facilityName = itemView.findViewById(R.id.facility);
             surveyType = itemView.findViewById(R.id.survey_type);
             menuDots.setOnClickListener(view -> dashboardActivity.onFeedbackSelected(survey));
-            competencyTextView = itemView.findViewById(R.id.score);
+            classificationTextView = itemView.findViewById(R.id.score);
         }
 
         void bindView(int position) {
@@ -112,13 +121,22 @@ public class AssessmentSentAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             if (survey.hasConflict()) {
                 competencyText = (itemView.getContext().getResources().getString(
                         R.string.feedback_info_conflict)).toUpperCase();
-                competencyTextView.setText(competencyText);
+                classificationTextView.setText(competencyText);
             } else {
-                CompetencyScoreClassification classification =
-                        CompetencyScoreClassification.get(
-                                survey.getCompetencyScoreClassification());
+                if (serverClassification == ServerClassification.COMPETENCIES){
+                    CompetencyScoreClassification classification =
+                            CompetencyScoreClassification.get(
+                                    survey.getCompetencyScoreClassification());
 
-                CompetencyUtils.setTextByCompetencyAbbreviation(competencyTextView, classification);
+                    CompetencyUtils.setTextByCompetencyAbbreviation(classificationTextView, classification);
+                } else {
+                    if (survey.hasMainScore()){
+                        String value = Math.round(survey.getMainScoreValue()) + " %";
+                        classificationTextView.setText(value);
+                    } else {
+                        classificationTextView.setText("-");
+                    }
+                }
             }
     }
 

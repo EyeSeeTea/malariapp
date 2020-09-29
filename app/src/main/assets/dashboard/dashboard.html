@@ -17,228 +17,45 @@
   ~  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <html xmlns="http://www.w3.org/1999/html">
+
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <script type="text/javascript" src="Chart.min.js"></script>
-    <style>
-        select{
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            font-size: 20px;
-            padding: 0 0 0 20px;
-            width: 102%;
-            background: url(img/select.png) no-repeat right #3e3e3f;
-            color: white;
-            margin-left: -9px;
-        }
-        @font-face {
-            font-family: 'Roboto-Condensed';
-            src: url('../fonts/Roboto-Condensed.ttf');
-            font-weight:    bold;
-        }
-        body{
-            background-color:#e5e5e5;
-            font-family: 'Roboto-Condensed';
-            margin-top:20px;
-            margin-left:0px;
-            margin-right:0px
-        }
 
-        #graphicCanvas>div>span.line-title{
-            margin: 10px;
-        }
-        #graphicCanvas>div>hr{
-            width: 93%!important;
-            margin-right: 10px;
-        }
+    <link rel="stylesheet" type="text/css" href="css/dashboard.css">
+    <link rel="stylesheet" type="text/css" href="css/scoring.css">
+    <link rel="stylesheet" type="text/css" href="css/competencies.css">
 
-        .line-title{
-            float: left;
-            font-size: 20px;
-            padding: 10px;
-            padding-left: 0px;
-        }
-
-        .tip{
-            float:right;
-        }
-
-        canvas, table{
-            margin: 0px;
-        }
-        #tableCanvas{
-            padding: 12px;
-        }
-
-        .chart-legend li span{
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            margin-right: 5px;
-        }
-
-        .chart-legend ul{
-            list-style-type: none;
-        }
-
-        .horizontal{
-            text-align:center;
-            clear:both;
-        }
-
-        .horizontal li{
-            display:inline;
-            padding-right:5px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        table, td, th {
-            border: 0px solid black;
-            text-align: center;
-        }
-        td.green{
-            background-color: #81980d;
-        }
-
-        td.amber{
-            background-color: #00b4e3;
-        }
-
-        td.red{
-            background-color: #fa8900;
-        }
-
-        th{
-            width:16.6%;
-        }
-        .circlerow{
-            margin: auto;
-            line-height: 24px;
-            text-align: center;
-            width: 24px!important;
-            height: 24px!important;
-        }
-        td.red{
-            background-color: #fa8900;
-        }
-        .centerspan{
-            margin: auto;
-            text-align: center;
-            align-content: center;
-        }
-        td.competent-circle>div{
-            margin: auto;
-            border-radius: 50%;
-            height: 100%;
-            color: black;
-            font-weight: bold;
-            margin-top: 5px;
-            padding: 3px;
-            margin-bottom: 5px;
-            border: 1px solid white;
-        }
-        td.competent_improvement-circle>div{
-            margin: auto;
-            border-radius: 50%;
-            height: 100%;
-            color: white;
-            font-weight: bold;
-            margin-top: 5px;
-            padding: 3px;
-            margin-bottom: 5px;
-            border: 1px solid white;
-        }
-        td.not-competent-circle>div{
-            margin: auto;
-            border-radius: 50%;
-            height: 100%;
-            color: white;
-            font-weight: bold;
-            margin-top: 5px;
-            padding: 3px;
-            margin-bottom: 5px;
-            border: 1px solid white;
-        }
-        td.not_available-circle>div{
-            margin: auto;
-            border-radius: 50%;
-            height: 100%;
-            color: white;
-            font-weight: bold;
-            margin-top: 5px;
-            padding: 3px;
-            margin-bottom: 5px;
-            border: 1px solid white;
-        }
-
-        .hide {
-            display:none;
-        }
-        .show {
-            display:block;
-        }
-
-        .hidden{
-            display:none!important;
-        }
-        .oneFilter{
-            left: 0%!important;
-            width: 98.5%!important;
-            font-size: 40px!important;
-        }
-
-    </style>
+    <script type="text/javascript" src="js/Chart.min.js" async></script>
+    <script type="text/javascript" src="js/translated.messages.js" async></script>
+    <script type="text/javascript" src="js/html.nodes.modifications.js" async></script>
+    <script type="text/javascript" src="js/controller.js" async></script>
+    <script type="text/javascript" src="js/bubblesTableBuilder.js" async></script>
+    <script type="text/javascript" src="js/competencies/CompetenciesBubblesRowBuilder.js" async></script>
+    <script type="text/javascript" src="js/scoring/ScoringBubblesRowBuilder.js" async></script>
+    <script type="text/javascript" src="js/competencies/CompetenciesPieChartBuilder.js" async></script>
+    <script type="text/javascript" src="js/scoring/ScoringPieChartBuilder.js" async></script>
 </head>
+
 <body>
-<!--Sent surveys x month-->
-<div id="tableCanvas" class="show">
-    <!--title of the chart-->
-    <span class="line-title" id="titleSent"></span>
-    <br/>
-    <br/>
-    <div id="sentLegend" class="chart-legend horizontal"></div>
-    <!--Multiline chart holder-->
-    <canvas id="surveyXMonthCanvas" style="width: 100%; height: auto;"></canvas>
-</div>
+
 <div id="pieChartContent"></div>
-<!--Pie charts will be added right here-->
-
-<!--Table 12 months-->
-
-<script type="text/javascript" src="translated.messages.js"></script>
-
-<script type="text/javascript" src="html.nodes.modifications.js"></script>
-
-<script type="text/javascript" src="controller.js"></script>
-
-<script type="text/javascript" src="sent.month.js"></script>
-
-<script type="text/javascript" src="pie.tabgroup.js"></script>
-
-<script type="text/javascript" src="table.facilities.js"></script>
 
 <!-- pie template with table-->
 <script type="text/html" id="pieTemplate">
     <div id="graphicCanvas">
         <div style="display:inline;">
-            <canvas id="tabgroupCanvas###"
+            <canvas id="tabgroupCanvas"
                     style="width: 60%; height: auto; left:0px; display:block;"></canvas>
-            <div id="tabgroupLegend###" class="chart-legend"
+            <div id="tabgroupLegend" class="chart-legend"
                  style="display:block;right: 0px;position: absolute;top: 10%; padding-right:20%;">
-                <span id="tabgroupTip###" class="tip" style="display:none;"></span>
+                <span id="tabgroupTip" class="tip" style="display:none;"></span>
             </div>
         </div>
-
         <div>
             <span class="line-title" id="titleFacilities"></span>
             <hr style="background-color:#81980d;
-			width:100%;
-            height: 2px;"/>
+              width:100%;
+              height: 2px;"/>
             <div>
                 <table>
                     <thead id="facilitiesHead">
@@ -254,4 +71,3 @@
 
 <span class="line-no-surveys" id="noSurveysText"></span>
 </body>
-</html>

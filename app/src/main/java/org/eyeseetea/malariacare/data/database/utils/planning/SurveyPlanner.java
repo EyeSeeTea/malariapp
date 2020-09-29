@@ -22,10 +22,12 @@ package org.eyeseetea.malariacare.data.database.utils.planning;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitProgramRelationDB;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
+import org.eyeseetea.malariacare.data.database.model.ServerDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
 import org.eyeseetea.malariacare.domain.entity.NextScheduleDateConfiguration;
+import org.eyeseetea.malariacare.domain.entity.ServerClassification;
 import org.eyeseetea.malariacare.domain.service.SurveyNextScheduleDomainService;
 import org.eyeseetea.malariacare.utils.Constants;
 
@@ -111,18 +113,18 @@ public class SurveyPlanner {
         plannedSurvey.setUser(Session.getUser());
         plannedSurvey.setProgram(survey.getProgram());
 
-        if (survey.hasMainScore()){
-            plannedSurvey.setMainScore(survey.getId_survey(), survey.getMainScore().getUid(), survey.getMainScore().getScore());
-            //Save last main score
-            plannedSurvey.saveMainScore();
-        }
-
         //Set as creationDate the completion date of the last survey
         plannedSurvey.setCreationDate(survey.getCompletionDate());
 
         plannedSurvey.setCompetencyScoreClassification(survey.getCompetencyScoreClassification());
         plannedSurvey.setScheduledDate(findScheduledDateBySurvey(survey));
         plannedSurvey.save();
+
+        if (survey.hasMainScore()){
+            plannedSurvey.setMainScore(plannedSurvey.getId_survey(), survey.getMainScore().getUid(), survey.getMainScore().getScore());
+            //Save last main score
+            plannedSurvey.saveMainScore();
+        }
 
         return plannedSurvey;
     }
@@ -188,11 +190,15 @@ public class SurveyPlanner {
         SurveyNextScheduleDomainService surveyNextScheduleDomainService = new
                 SurveyNextScheduleDomainService();
 
+        ServerDB serverDB = ServerDB.getConnectedServerFromDB();
+
         Date nextScheduleDate = surveyNextScheduleDomainService.calculate(
                 nextScheduleDateConfiguration,
                 eventDate,
                 competencyScoreClassification,
-                survey.isLowProductivity());
+                survey.isLowProductivity(),
+                survey.getMainScoreValue(),
+                ServerClassification.Companion.get(serverDB.getClassification()));
 
         return nextScheduleDate;
     }

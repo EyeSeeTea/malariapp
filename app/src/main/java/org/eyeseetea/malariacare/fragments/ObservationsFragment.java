@@ -23,6 +23,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -42,9 +43,9 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
-import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
 import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
+import org.eyeseetea.malariacare.domain.entity.ServerClassification;
 import org.eyeseetea.malariacare.factories.DataFactory;
 import org.eyeseetea.malariacare.factories.MetadataFactory;
 import org.eyeseetea.malariacare.layout.adapters.MissedStepsAdapter;
@@ -68,7 +69,6 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
 
     public static final String TAG = ".ObservationsFragment";
     private static final String SURVEY_UID = "surveyUid";
-
 
     private CustomTextView mTotalScoreTextView;
     private CustomTextView mCompetencyTextView;
@@ -95,11 +95,17 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
     private ActionView action2View;
     private ActionView action3View;
 
-    public static ObservationsFragment newInstance(String surveyUid) {
+
+    private static String SERVER_CLASSIFICATION = "ServerClassification";
+    private ServerClassification serverClassification;
+
+    public static ObservationsFragment newInstance(String surveyUid,
+            ServerClassification serverClassification) {
         ObservationsFragment myFragment = new ObservationsFragment();
 
         Bundle args = new Bundle();
         args.putString(SURVEY_UID, surveyUid);
+        args.putInt(SERVER_CLASSIFICATION, serverClassification.getCode());
         myFragment.setArguments(args);
 
         return myFragment;
@@ -118,6 +124,8 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
                 false);
 
         String surveyUid = getArguments().getString(SURVEY_UID);
+        serverClassification = ServerClassification.Companion.get(
+                getArguments().getInt(SERVER_CLASSIFICATION));
 
         initLayoutHeaders();
         initProviderTexts();
@@ -196,8 +204,8 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
                 new WrapperExecutor(),
                 DataFactory.INSTANCE.provideGetObservationBySurveyUidUseCase(),
                 MetadataFactory.INSTANCE.provideServerMetadataUseCase(getActivity()),
-                DataFactory.INSTANCE.provideSaveObservationUseCase());
-
+                DataFactory.INSTANCE.provideSaveObservationUseCase(),
+                serverClassification);
 
         presenter.attachView(this, surveyUid);
     }
@@ -299,14 +307,10 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
 
     @Override
     public void showHeaderInfo(String orgUnitName, Float mainScore, String completionDate,
-            String nextDate,
-            CompetencyScoreClassification classification) {
+            String nextDate, CompetencyScoreClassification classification) {
 
         mOrgUnitTextView.setText(orgUnitName);
-
-        CompetencyUtils.setBackgroundByCompetency(mCompetencyTextView, classification);
-        CompetencyUtils.setTextColorByCompetency(mCompetencyTextView, classification);
-        CompetencyUtils.setTextByCompetency(mCompetencyTextView, classification);
+        renderLabelHeaderByServerClassification(serverClassification, classification);
 
         if (mainScore > 0f) {
             mTotalScoreTextView.setText(String.format("%.1f%%", mainScore));
@@ -326,13 +330,29 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
 
     }
 
+    private void renderLabelHeaderByServerClassification(
+            ServerClassification serverClassification,
+            CompetencyScoreClassification classification) {
+
+        if (serverClassification == ServerClassification.COMPETENCIES) {
+            CompetencyUtils.setBackgroundByCompetency(mCompetencyTextView, classification);
+            CompetencyUtils.setTextColorByCompetency(mCompetencyTextView, classification);
+            CompetencyUtils.setTextByCompetency(mCompetencyTextView, classification);
+            mCompetencyTextView.setTypeface(Typeface.DEFAULT_BOLD);
+        } else {
+            String text = getString(R.string.quality_of_care);
+            mCompetencyTextView.setText(text);
+        }
+
+    }
 
     @Override
     public void shareByText(ObservationViewModel observationViewModel, SurveyDB survey,
             String formattedNextScheduleDate,
             List<MissedStepViewModel> missedCriticalStepViewModels,
             List<MissedStepViewModel> missedNonCriticalStepViewModels) {
-        String data = extractTextData(observationViewModel, survey, formattedNextScheduleDate, missedCriticalStepViewModels,
+        String data = extractTextData(observationViewModel, survey, serverClassification,
+                formattedNextScheduleDate, missedCriticalStepViewModels,
                 missedNonCriticalStepViewModels);
 
         shareData(data);
@@ -402,6 +422,7 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
     }
 
     private String extractTextData(ObservationViewModel observationViewModel, SurveyDB survey,
+            ServerClassification serverClassification,
             String formattedNextScheduleDate,
             List<MissedStepViewModel> missedCriticalStepViewModels,
             List<MissedStepViewModel> missedNonCriticalStepViewModels) {
@@ -423,13 +444,16 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
 
         String competencyText = CompetencyUtils.getTextByCompetencyName(classification,
                 getActivity());
-        data += getString(R.string.competency_title).toUpperCase() + ": "
-                + competencyText + "\n";
+
+        if (serverClassification == ServerClassification.COMPETENCIES){
+            data += getString(R.string.competency_title).toUpperCase() + ": "
+                    + competencyText + "\n";
+        }
 
         int roundedScore = Math.round(survey.getMainScoreValue());
-        data += getString(R.string.quality_of_care) + " " + roundedScore + "% \n";
+        data += getString(R.string.quality_of_care).toUpperCase() + ": " + roundedScore + "% \n";
 
-        data += String.format(getString(R.string.plan_action_next_date),formattedNextScheduleDate);
+        data += String.format(getString(R.string.plan_action_next_date), formattedNextScheduleDate);
 
         if (observationViewModel.getProvider() != null
                 && !observationViewModel.getProvider().isEmpty()) {

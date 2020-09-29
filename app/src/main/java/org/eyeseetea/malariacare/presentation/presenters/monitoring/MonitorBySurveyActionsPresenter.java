@@ -2,18 +2,24 @@ package org.eyeseetea.malariacare.presentation.presenters.monitoring;
 
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
+import org.eyeseetea.malariacare.domain.common.Either;
 import org.eyeseetea.malariacare.domain.entity.Observation;
 import org.eyeseetea.malariacare.domain.entity.ObservationValue;
 import org.eyeseetea.malariacare.domain.entity.OrgUnit;
 import org.eyeseetea.malariacare.domain.entity.Program;
+import org.eyeseetea.malariacare.domain.entity.Server;
+import org.eyeseetea.malariacare.domain.entity.ServerClassification;
 import org.eyeseetea.malariacare.domain.entity.ServerMetadata;
 import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.usecase.GetSentObservationsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.GetOrgUnitsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.GetProgramsUseCase;
+import org.eyeseetea.malariacare.domain.usecase.GetServerFailure;
 import org.eyeseetea.malariacare.domain.usecase.GetServerMetadataUseCase;
+import org.eyeseetea.malariacare.domain.usecase.GetServerUseCase;
 import org.eyeseetea.malariacare.domain.usecase.GetSurveysUseCase;
 import org.eyeseetea.malariacare.presentation.viewmodels.SurveyViewModel;
+import org.eyeseetea.malariacare.utils.AUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -144,8 +150,14 @@ public class MonitorBySurveyActionsPresenter {
             orgUnitName = orgUnit.getName();
         }
 
+        String qualityOfCare = "-";
+
+        if (survey.getScore() != null) {
+            qualityOfCare = AUtils.round(survey.getScore().getScore()) + " %";
+        }
+
         return new SurveyViewModel(survey.getSurveyUid(), programName, orgUnitName,
-                survey.getCompletionDate(), survey.getCompetency());
+                survey.getCompletionDate(), survey.getCompetency(), qualityOfCare);
     }
 
     private boolean hasAllObservationActionsCompleted(Survey survey) {

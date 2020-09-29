@@ -10,7 +10,8 @@ sealed class GetServerFailure {
     object ServerNotFoundFailure : GetServerFailure()
 }
 
-// TODO: this use case should not use executors, the executors
+// TODO: this use case should not use executors, we must use sync version
+// because presenters should execute use case using executors
 class GetServerUseCase(
     private val serverRepository: IServerRepository,
     private val mainExecutor: IMainExecutor,

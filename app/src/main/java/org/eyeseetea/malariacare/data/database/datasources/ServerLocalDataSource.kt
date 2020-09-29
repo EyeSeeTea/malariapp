@@ -9,6 +9,7 @@ import org.eyeseetea.malariacare.data.WritableServerDataSource
 import org.eyeseetea.malariacare.data.database.model.ServerDB
 import org.eyeseetea.malariacare.domain.common.Either
 import org.eyeseetea.malariacare.domain.entity.Server
+import org.eyeseetea.malariacare.domain.entity.ServerClassification
 
 class ServerLocalDataSource : ReadableServerDataSource, WritableServerDataSource {
     override fun get(): Either<ServerDataSourceFailure, Server> {
@@ -34,7 +35,12 @@ class ServerLocalDataSource : ReadableServerDataSource, WritableServerDataSource
 
         if (serverDB == null) {
             serverDB = ServerDB()
+
+            // server classification is assigned only first time when is saving all servers from
+            // poeditor response
+            serverDB.classification = server.classification.code
         }
+
         serverDB.url = server.url
         serverDB.name = server.name
         serverDB.isConnected = server.isConnected
@@ -42,6 +48,7 @@ class ServerLocalDataSource : ReadableServerDataSource, WritableServerDataSource
         if (server.logo != null) {
             serverDB.logo = Blob(server.logo)
         }
+
         serverDB.save()
     }
 
@@ -55,7 +62,8 @@ class ServerLocalDataSource : ReadableServerDataSource, WritableServerDataSource
             serverDB.url,
             serverDB.name,
             serverDB.logo?.blob,
-            serverDB.isConnected
+            serverDB.isConnected,
+            ServerClassification[serverDB.classification] ?: ServerClassification.COMPETENCIES
         )
     }
 }

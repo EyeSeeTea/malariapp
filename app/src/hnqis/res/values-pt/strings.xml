@@ -126,7 +126,7 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="feedback_show_only_failed">"Mostrar só falhou perguntas"</string>
 <string name="feedback_show_only_media">"Mostrar apenas perguntas contendo vídeo / imagem"</string>
 <string name="feedback_return">"Qualidade de atendimento (com base na última pesquisa)"</string>
-<string name="quality_of_care">"QUALIDADE DA ASSISTÊNCIA (QoC) PONTUAÇÃO:"</string>
+<string name="quality_of_care">"Qualidade da Assistência (QoC) Pontuação"</string>
 <string name="overall_quality_of_care">"QoC"</string>
 <string name="feedback_info_passed">"Aprovado"</string>
 <string name="feedback_info_failed">"Suspenso"</string>
@@ -143,7 +143,6 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="server_url">"Servidor DHIS2"</string>
 <string name="settings_text_dhis_password">"Senha DHIS"</string>
 <string name="settings_text_dhis_max_items">"DHIS max carregado inquéritos"</string>
-<string name="settings_monitoring_target">"Alvo de monitoramento"</string>
 <string name="dialog_error_push_uids">"UIDs incorretas encontradas no impulso"</string>
 <string name="dialog_error_push_no_location_and_required">"Nenhum local disponível e é um campo obrigatório"</string>
 <string name="dialog_error_attribute_null">"Atributo com id %s é nulo, por favor contacte o seu administrador do servidor."</string>

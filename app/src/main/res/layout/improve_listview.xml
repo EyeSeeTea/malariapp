@@ -91,6 +91,7 @@
             android:textColor="@color/planning_header_text"
             android:textSize="@dimen/header_light_text_size"
             app:tDimension="@string/font_size_level2"
+            android:textAlignment="center"
             app:tFontName="@string/medium_font_name"  />
     </LinearLayout>
 

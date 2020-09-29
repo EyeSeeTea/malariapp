@@ -41,6 +41,7 @@ import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramOUSurveyDict;
 import org.eyeseetea.malariacare.data.database.utils.services.BaseServiceBundle;
 import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
+import org.eyeseetea.malariacare.domain.entity.ServerClassification;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentSentAdapter;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.views.CustomRadioButton;
@@ -53,9 +54,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
-public class DashboardSentFragment extends Fragment implements IModuleFragment {
-
-
+public class DashboardSentFragment extends FiltersFragment implements IModuleFragment {
     public static final String TAG = ".SentFragment";
     private final static int WITHOUT_ORDER = 0;
     private final static int FACILITY_ORDER = 1;
@@ -84,18 +83,25 @@ public class DashboardSentFragment extends Fragment implements IModuleFragment {
     private RecyclerView recyclerView;
     private View rootView;
 
-    /**
-     * Toggles the state of the flag that determines if only shown one or all the surveys
-     */
-
-    OrgUnitProgramFilterView orgUnitProgramFilterView;
-
     public void toggleForceAllSurveys() {
         this.forceAllSurveys = !this.forceAllSurveys;
     }
 
     public boolean isForceAllSurveys() {
         return forceAllSurveys;
+    }
+
+    private static String SERVER_CLASSIFICATION = "ServerClassification";
+    private ServerClassification serverClassification;
+
+    public static DashboardSentFragment newInstance(ServerClassification serverClassification) {
+        DashboardSentFragment fragment = new DashboardSentFragment();
+
+        Bundle args = new Bundle();
+        args.putInt(SERVER_CLASSIFICATION, serverClassification.getCode());
+        fragment.setArguments(args);
+
+        return fragment;
     }
 
     public DashboardSentFragment() {
@@ -110,59 +116,35 @@ public class DashboardSentFragment extends Fragment implements IModuleFragment {
     }
 
     @Override
+    protected void onFiltersChanged() {
+        reloadSentSurveys(surveys);
+    }
+
+    @Override
+    protected OrgUnitProgramFilterView.FilterType getFilterType() {
+        return OrgUnitProgramFilterView.FilterType.NON_EXCLUSIVE;
+    }
+
+    @Override
+    protected int getOrgUnitProgramFilterViewId() {
+        return R.id.improve_org_unit_program_filter_view;
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView");
 
-        loadFilter();
-
-        orgUnitProgramFilterView.setFilterType(OrgUnitProgramFilterView.FilterType.NON_EXCLUSIVE);
-
-        orgUnitProgramFilterView.setFilterChangedListener(
-                new OrgUnitProgramFilterView.FilterChangedListener() {
-                    @Override
-                    public void onProgramFilterChanged(String selectedProgramFilter) {
-                        reloadSentSurveys(surveys);
-                        saveCurrentFilters();
-                    }
-
-                    @Override
-                    public void onOrgUnitFilterChanged(String selectedOrgUnitFilter) {
-                        reloadSentSurveys(surveys);
-                        saveCurrentFilters();
-                    }
-                });
+        serverClassification = ServerClassification.Companion.get(
+                getArguments().getInt(SERVER_CLASSIFICATION));
 
         rootView = inflater.inflate(R.layout.improve_listview, null);
         noSurveysText = rootView.findViewById(R.id.no_surveys_improve);
 
         initComponents();
         initRecyclerView();
-        refreshSurveys();
 
         return rootView;
-    }
-
-    private void saveCurrentFilters() {
-        PreferencesState.getInstance().setProgramUidFilter(
-                orgUnitProgramFilterView.getSelectedProgramFilter());
-        PreferencesState.getInstance().setOrgUnitUidFilter(
-                orgUnitProgramFilterView.getSelectedOrgUnitFilter());
-    }
-
-    private void updateSelectedFilters() {
-        if (orgUnitProgramFilterView == null) {
-            loadFilter();
-        }
-        String programUidFilter = PreferencesState.getInstance().getProgramUidFilter();
-        String orgUnitUidFilter = PreferencesState.getInstance().getOrgUnitUidFilter();
-        orgUnitProgramFilterView.changeSelectedFilters(programUidFilter, orgUnitUidFilter);
-    }
-
-    private void loadFilter() {
-        orgUnitProgramFilterView =
-                (OrgUnitProgramFilterView) DashboardActivity.dashboardActivity
-                        .findViewById(R.id.improve_org_unit_program_filter_view);
     }
 
     private void initComponents() {
@@ -180,10 +162,6 @@ public class DashboardSentFragment extends Fragment implements IModuleFragment {
         );
     }
 
-    public void refreshSurveys() {
-        adapter.setSurveys(oneSurveyForOrgUnit);
-    }
-
     @Override
     public void onResume() {
         Log.d(TAG, "onResume");
@@ -195,7 +173,16 @@ public class DashboardSentFragment extends Fragment implements IModuleFragment {
     private void initRecyclerView() {
         recyclerView = rootView.findViewById(R.id.sentSurveyList);
 
-        adapter = new AssessmentSentAdapter();
+        TextView classificationHeader = rootView.findViewById(R.id.scoreHeader);
+
+        if (serverClassification == ServerClassification.COMPETENCIES) {
+            classificationHeader.setText(getActivity().getString(R.string.competency_title));
+        } else {
+            classificationHeader.setText(
+                    getActivity().getString(R.string.dashboard_title_planned_quality_of_care));
+        }
+
+        adapter = new AssessmentSentAdapter(serverClassification);
         recyclerView.setAdapter(adapter);
         initFilterOrder();
     }
@@ -273,22 +260,26 @@ public class DashboardSentFragment extends Fragment implements IModuleFragment {
     public void refreshScreen(List<SurveyDB> newListSurveys) {
         Log.d(TAG, "refreshScreen (Thread: " + Thread.currentThread().getId() + "): "
                 + newListSurveys.size());
-        adapter.setSurveys(newListSurveys);
         if (!this.isAdded()) {
             return;
         }
-        if (newListSurveys.isEmpty()) {
-            noSurveysText.setVisibility(View.VISIBLE);
-            recyclerView.setVisibility(View.GONE);
-        } else {
-            recyclerView.setVisibility(View.VISIBLE);
-            noSurveysText.setVisibility(View.GONE);
+
+        if (adapter != null) {
+            adapter.setSurveys(newListSurveys);
+
+            if (newListSurveys.isEmpty()) {
+                noSurveysText.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.GONE);
+            } else {
+                recyclerView.setVisibility(View.VISIBLE);
+                noSurveysText.setVisibility(View.GONE);
+            }
         }
     }
 
     @Override
     public void reloadData() {
-        updateSelectedFilters();
+        super.reloadData();
 
         //Reload data using service
         Intent surveysIntent = new Intent(
@@ -371,7 +362,8 @@ public class DashboardSentFragment extends Fragment implements IModuleFragment {
                                     CompetencyScoreClassification.get(
                                             survey2.getCompetencyScoreClassification());
 
-                            compare = classification1.toString().compareTo(classification2.toString());
+                            compare = classification1.toString().compareTo(
+                                    classification2.toString());
                             break;
                         default:
                             //By Date
@@ -413,14 +405,14 @@ public class DashboardSentFragment extends Fragment implements IModuleFragment {
         return programOUSurveyDict;
     }
 
-    private boolean isNotFilteredByOU(SurveyDB survey){
-        String orgUnitFilter = orgUnitProgramFilterView.getSelectedOrgUnitFilter();
+    private boolean isNotFilteredByOU(SurveyDB survey) {
+        String orgUnitFilter = getSelectedOrgUnitUidFilter();
 
         return (orgUnitFilter.equals("") || survey.getOrgUnit().getUid().equals(orgUnitFilter));
     }
 
-    private boolean isNotFilteredByProgram(SurveyDB survey){
-        String programFilter = orgUnitProgramFilterView.getSelectedProgramFilter();
+    private boolean isNotFilteredByProgram(SurveyDB survey) {
+        String programFilter =getSelectedProgramUidFilter();
 
         return (programFilter.equals("") || survey.getProgram().getUid().equals(programFilter));
     }

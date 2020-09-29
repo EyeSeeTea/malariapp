@@ -27,7 +27,6 @@ public class ServerShould {
     @Test
     public void throw_exception_when_url_is_null() {
         thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("url is required");
         new Server(null);
     }
 }

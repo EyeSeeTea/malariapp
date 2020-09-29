@@ -1,5 +1,7 @@
 package org.eyeseetea.malariacare.fragments;
 
+import org.eyeseetea.malariacare.domain.entity.ServerClassification;
+
 public class WebViewInterceptor {
 
     public interface BubbleClickListener{
@@ -8,9 +10,6 @@ public class WebViewInterceptor {
     }
 
     BubbleClickListener mBubbleClickListener;
-
-    public WebViewInterceptor() {
-    }
 
     @android.webkit.JavascriptInterface
     public void clickLog() {
@@ -30,7 +29,6 @@ public class WebViewInterceptor {
             mBubbleClickListener.onClickSingleSurvey(uidList);
         }
     }
-
 
     public void setBubbleClickListener(
             BubbleClickListener bubbleClickListener) {

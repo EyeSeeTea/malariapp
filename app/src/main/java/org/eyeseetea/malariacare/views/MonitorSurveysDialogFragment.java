@@ -14,6 +14,8 @@ import android.widget.TextView;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.domain.entity.Server;
+import org.eyeseetea.malariacare.domain.entity.ServerClassification;
 import org.eyeseetea.malariacare.layout.adapters.monitor.SurveysMonitorAdapter;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 
@@ -23,17 +25,21 @@ import java.util.List;
 public class MonitorSurveysDialogFragment extends DialogFragment {
 
     private static String SURVEY_IDS = "SurveyIds";
+    private static String SERVER_CLASSIFICATION = "ServerClassification";
 
     private List<SurveyDB> surveys = new ArrayList<>();
 
     private LayoutInflater inflater;
     private View rootView;
+    private ServerClassification serverClassification;
 
-    public static MonitorSurveysDialogFragment newInstance(String surveyIds) {
+    public static MonitorSurveysDialogFragment newInstance(String surveyIds,
+            ServerClassification serverClassification) {
         MonitorSurveysDialogFragment fragment = new MonitorSurveysDialogFragment();
 
         Bundle args = new Bundle();
         args.putString(SURVEY_IDS, surveyIds);
+        args.putInt(SERVER_CLASSIFICATION, serverClassification.getCode());
         fragment.setArguments(args);
 
         return fragment;
@@ -53,6 +59,8 @@ public class MonitorSurveysDialogFragment extends DialogFragment {
             Bundle savedInstanceState) {
 
         String surveyIds = getArguments().getString(SURVEY_IDS);
+        serverClassification = ServerClassification.Companion.get(
+                getArguments().getInt(SERVER_CLASSIFICATION));
 
         if (surveyIds != null && !surveyIds.isEmpty()) {
             String surveyIdsArray[] = surveyIds.split(";");
@@ -63,7 +71,7 @@ public class MonitorSurveysDialogFragment extends DialogFragment {
 
         this.inflater = inflater;
 
-        rootView =  inflater.inflate(R.layout.dialog_survey_list_monitoring, container);
+        rootView = inflater.inflate(R.layout.dialog_survey_list_monitoring, container);
 
         return rootView;
     }
@@ -78,8 +86,16 @@ public class MonitorSurveysDialogFragment extends DialogFragment {
     }
 
     private void initializeRecyclerView() {
+        TextView surveyCompetencyHeaderView = rootView.findViewById(R.id.survey_competency_header_view);
+
+        if (serverClassification == ServerClassification.COMPETENCIES){
+            surveyCompetencyHeaderView.setVisibility(View.VISIBLE);
+        } else {
+            surveyCompetencyHeaderView.setVisibility(View.GONE);
+        }
+
         RecyclerView recyclerView = rootView.findViewById(R.id.monitor_surveys_list);
-        SurveysMonitorAdapter adapter = new SurveysMonitorAdapter();
+        SurveysMonitorAdapter adapter = new SurveysMonitorAdapter(serverClassification);
         recyclerView.setAdapter(adapter);
 
         adapter.setOnSurveyClickListener(survey -> {

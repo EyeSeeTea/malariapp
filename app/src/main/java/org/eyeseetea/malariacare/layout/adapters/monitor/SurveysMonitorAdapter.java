@@ -12,6 +12,7 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
 import org.eyeseetea.malariacare.domain.entity.ScoreType;
+import org.eyeseetea.malariacare.domain.entity.ServerClassification;
 import org.eyeseetea.malariacare.utils.CompetencyUtils;
 import org.eyeseetea.malariacare.utils.DateParser;
 
@@ -19,6 +20,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SurveysMonitorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private ServerClassification serverClassification;
+
+    public SurveysMonitorAdapter(ServerClassification serverClassification) {
+        this.serverClassification = serverClassification;
+    }
+
     public interface OnSurveyClickListener {
         void onSurveyClick(SurveyDB survey);
     }
@@ -49,7 +56,7 @@ public class SurveysMonitorAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
         SurveyDB survey = surveys.get(position);
 
-        ((ViewHolder) viewHolder).bindView(survey);
+        ((ViewHolder) viewHolder).bindView(survey, serverClassification);
 
         viewHolder.itemView.setOnClickListener(view -> {
             if (onSurveyClickListener != null){
@@ -76,7 +83,8 @@ public class SurveysMonitorAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             scoreView = itemView.findViewById(R.id.survey_score_item_view);
         }
 
-        void bindView(SurveyDB survey) {
+        void bindView(SurveyDB survey,
+                ServerClassification serverClassification) {
 
             DateParser dateParser = new DateParser();
             completionDateView.setText(
@@ -93,13 +101,18 @@ public class SurveysMonitorAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 scoreView.setBackgroundColor(resources.getColor(R.color.low_score_color));
             }
 
-            CompetencyScoreClassification classification =
-                    CompetencyScoreClassification.get(
-                            survey.getCompetencyScoreClassification());
+            if (serverClassification == ServerClassification.COMPETENCIES){
+                competencyView.setVisibility(View.VISIBLE);
+                CompetencyScoreClassification classification =
+                        CompetencyScoreClassification.get(
+                                survey.getCompetencyScoreClassification());
 
-            CompetencyUtils.setBackgroundByCompetency(competencyView, classification);
-            CompetencyUtils.setTextByCompetencyAbbreviation(competencyView, classification);
-            CompetencyUtils.setTextColorByCompetency(competencyView, classification);
+                CompetencyUtils.setBackgroundByCompetency(competencyView, classification);
+                CompetencyUtils.setTextByCompetencyAbbreviation(competencyView, classification);
+                CompetencyUtils.setTextColorByCompetency(competencyView, classification);
+            } else {
+                competencyView.setVisibility(View.GONE);
+            }
         }
     }
 

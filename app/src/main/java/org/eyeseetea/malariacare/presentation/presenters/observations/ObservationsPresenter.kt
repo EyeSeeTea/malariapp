@@ -7,6 +7,7 @@ import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification
 import org.eyeseetea.malariacare.domain.entity.NextScheduleDateConfiguration
 import org.eyeseetea.malariacare.domain.entity.Observation
 import org.eyeseetea.malariacare.domain.entity.ObservationStatus
+import org.eyeseetea.malariacare.domain.entity.ServerClassification
 import org.eyeseetea.malariacare.domain.entity.ServerMetadata
 import org.eyeseetea.malariacare.domain.exception.InvalidServerMetadataException
 import org.eyeseetea.malariacare.domain.exception.ObservationNotFoundException
@@ -21,16 +22,16 @@ import org.eyeseetea.malariacare.presentation.mapper.observations.ObservationMap
 import org.eyeseetea.malariacare.presentation.viewmodels.observations.ActionViewModel
 import org.eyeseetea.malariacare.presentation.viewmodels.observations.MissedStepViewModel
 import org.eyeseetea.malariacare.presentation.viewmodels.observations.ObservationViewModel
-import org.eyeseetea.malariacare.utils.DateParser
 import org.eyeseetea.malariacare.utils.Constants
-
+import org.eyeseetea.malariacare.utils.DateParser
 import java.util.ArrayList
 
 class ObservationsPresenter(
     private val executor: Executor,
     private val getObservationBySurveyUidUseCase: GetObservationBySurveyUidUseCase,
     private val getServerMetadataUseCase: GetServerMetadataUseCase,
-    private val saveObservationUseCase: SaveObservationUseCase
+    private val saveObservationUseCase: SaveObservationUseCase,
+    private val serverClassification: ServerClassification
 ) {
     private var view: View? = null
 
@@ -74,7 +75,7 @@ class ObservationsPresenter(
             )
         } catch (e: Exception) {
             println(
-                "An error has occur retrieving server metadata: " + e.message
+                "An error has occur retrieving the data: " + e.message
             )
         }
     }
@@ -131,7 +132,9 @@ class ObservationsPresenter(
                 nextScheduleDateConfiguration,
                 eventDate,
                 competencyScoreClassification,
-                survey.isLowProductivity
+                survey.isLowProductivity,
+                survey.mainScoreValue,
+                serverClassification
             )
 
             formattedNextScheduleDate = dateParser.format(

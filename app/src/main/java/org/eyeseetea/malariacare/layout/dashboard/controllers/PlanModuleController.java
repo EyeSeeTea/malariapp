@@ -37,8 +37,6 @@ public class PlanModuleController extends ModuleController {
     private static final String TAG = ".PlanModuleCOntroller";
     PlannedPerOrgUnitFragment plannedOrgUnitsFragment;
 
-    OrgUnitProgramFilterView orgUnitProgramFilterView;
-
     public PlanModuleController(ModuleSettings moduleSettings) {
         super(moduleSettings);
         this.tabLayout = R.id.tab_plan_layout;
@@ -51,53 +49,8 @@ public class PlanModuleController extends ModuleController {
     @Override
     public void init(DashboardActivity activity) {
         super.init(activity);
-        createFilters();
-        orgUnitVisibility(View.GONE);
-        programVisibility(View.VISIBLE);
-        fragment = new PlannedFragment();
-    }
 
-    private void createFilters() {
-
-        orgUnitProgramFilterView =
-                (OrgUnitProgramFilterView) DashboardActivity.dashboardActivity
-                        .findViewById(R.id.plan_org_unit_program_filter_view);
-
-        orgUnitProgramFilterView.setFilterType(OrgUnitProgramFilterView.FilterType.EXCLUSIVE);
-
-        orgUnitProgramFilterView.setFilterChangedListener(
-                        new OrgUnitProgramFilterView.FilterChangedListener() {
-                            @Override
-                            public void onProgramFilterChanged(String programFilter) {
-                                saveCurrentFilters();
-
-                                DashboardActivity.dashboardActivity.onProgramSelected(programFilter);
-
-                            }
-
-                            @Override
-                            public void onOrgUnitFilterChanged(String orgUnitFilter) {
-                                saveCurrentFilters();
-
-                                if (orgUnitFilter == ""){
-                                    DashboardActivity.dashboardActivity.onProgramSelected(
-                                            orgUnitProgramFilterView.getSelectedProgramFilter()
-                                    );
-                                }else {
-                                    DashboardActivity.dashboardActivity.onOrgUnitSelected(
-                                            orgUnitFilter);
-                                }
-
-
-                            }
-                        });
-    }
-
-    private void saveCurrentFilters() {
-        PreferencesState.getInstance().setProgramUidFilter(
-                orgUnitProgramFilterView.getSelectedProgramFilter());
-        PreferencesState.getInstance().setOrgUnitUidFilter(
-                orgUnitProgramFilterView.getSelectedOrgUnitFilter());
+        fragment = PlannedFragment.newInstance(server.getClassification());
     }
 
     public boolean isVisible() {
@@ -108,56 +61,30 @@ public class PlanModuleController extends ModuleController {
         return !PreferencesState.getInstance().isHidePlanningTab();
     }
 
-
     public void onOrgUnitSelected(String orgUnitUid) {
         Log.d(TAG, "onOrgUnitSelected");
-        //hide plannedFragment layout and show plannedOrgUnitsFragment
-        programVisibility(View.GONE);
-        orgUnitVisibility(View.VISIBLE);
 
         if (plannedOrgUnitsFragment == null) {
             plannedOrgUnitsFragment = new PlannedPerOrgUnitFragment();
         }
-        plannedOrgUnitsFragment.setOrgUnitFilter(orgUnitUid);
         FragmentTransaction ft = getFragmentTransaction();
-        ft.replace(R.id.dashboard_planning_orgunit, plannedOrgUnitsFragment);
+        ft.replace(R.id.dashboard_planning_init, plannedOrgUnitsFragment);
         ft.commit();
         plannedOrgUnitsFragment.reloadData();
     }
 
-
     public void onProgramSelected(String programUid) {
         Log.d(TAG, "onProgramSelected");
-        if (DashboardActivity.dashboardActivity.findViewById(
-                R.id.dashboard_planning_orgunit).getVisibility() == View.VISIBLE) {
-            //hide plannedFragment layout and show plannedOrgUnitsFragment
-            orgUnitVisibility(View.GONE);
-            programVisibility(View.VISIBLE);
 
-
-            if (fragment == null) {
-                fragment = new PlannedFragment();
-            }
-
-            FragmentTransaction ft = getFragmentTransaction();
-            ft.replace(R.id.dashboard_planning_init, fragment);
-            ft.commit();
-            if (programUid != null) {
-                ((PlannedFragment) fragment).reloadFilter();
-            }
-        } else {
-            ((PlannedFragment) fragment).reloadFilter();
+        if (fragment == null) {
+            fragment = PlannedFragment.newInstance(server.getClassification());
         }
 
-    }
-
-    private void programVisibility(int visibility) {
-        DashboardActivity.dashboardActivity.findViewById(
-                R.id.dashboard_planning_init).setVisibility(visibility);
-    }
-
-    private void orgUnitVisibility(int visibility) {
-        DashboardActivity.dashboardActivity.findViewById(
-                R.id.dashboard_planning_orgunit).setVisibility(visibility);
+        FragmentTransaction ft = getFragmentTransaction();
+        ft.replace(R.id.dashboard_planning_init, fragment);
+        ft.commit();
+        if (programUid != null) {
+            ((PlannedFragment) fragment).reloadData();
+        }
     }
 }

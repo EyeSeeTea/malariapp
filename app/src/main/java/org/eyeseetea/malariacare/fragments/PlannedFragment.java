@@ -32,26 +32,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedItem;
 import org.eyeseetea.malariacare.data.database.utils.services.PlannedServiceBundle;
+import org.eyeseetea.malariacare.domain.entity.ServerClassification;
 import org.eyeseetea.malariacare.layout.adapters.survey.PlannedAdapter;
 import org.eyeseetea.malariacare.services.PlannedSurveyService;
 import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
 
 import java.util.List;
 
-/**
- * Created by ivan.arrizabalaga on 15/12/2015.
- */
-public class PlannedFragment extends Fragment implements IModuleFragment{
+public class PlannedFragment extends FiltersFragment implements IModuleFragment {
     public static final String TAG = ".PlannedFragment";
 
     private PlannedItemsReceiver plannedItemsReceiver;
-
-    OrgUnitProgramFilterView orgUnitProgramFilterView;
 
     private String programUidFilter;
 
@@ -59,13 +56,28 @@ public class PlannedFragment extends Fragment implements IModuleFragment{
     private RecyclerView plannedRecyclerView;
     private PlannedAdapter plannedAdapter;
 
+    private static String SERVER_CLASSIFICATION = "ServerClassification";
+    private ServerClassification serverClassification;
+
+    public static PlannedFragment newInstance(ServerClassification serverClassification) {
+        PlannedFragment fragment = new PlannedFragment();
+
+        Bundle args = new Bundle();
+        args.putInt(SERVER_CLASSIFICATION, serverClassification.getCode());
+        fragment.setArguments(args);
+
+        return fragment;
+    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_plan, container, false);
 
+        serverClassification = ServerClassification.Companion.get(
+                getArguments().getInt(SERVER_CLASSIFICATION));
+
         initializeRecyclerView();
-        loadFilter();
 
         return rootView;
     }
@@ -85,18 +97,15 @@ public class PlannedFragment extends Fragment implements IModuleFragment{
     private void initializeRecyclerView() {
         plannedRecyclerView = rootView.findViewById(R.id.planList);
 
-        plannedAdapter = new PlannedAdapter(getActivity());
+        plannedAdapter = new PlannedAdapter(getActivity(), serverClassification);
         plannedRecyclerView.setAdapter(plannedAdapter);
     }
 
 
-    public void reloadFilter(){
-        String selectedProgram = orgUnitProgramFilterView.getSelectedProgramFilter();
+    private void reloadFilter() {
+        loadProgram(getSelectedProgramUidFilter());
 
-        if (selectedProgram != null) {
-            loadProgram(selectedProgram);
-        }
-        if(plannedAdapter!=null){
+        if (plannedAdapter != null) {
             plannedAdapter.notifyDataSetChanged();
         }
     }
@@ -122,21 +131,6 @@ public class PlannedFragment extends Fragment implements IModuleFragment{
         unregisterPlannedItemsReceiver();
 
         super.onPause();
-    }
-
-    private void updateSelectedFilters() {
-        if (orgUnitProgramFilterView == null) {
-            loadFilter();
-        }
-        String programUidFilter = PreferencesState.getInstance().getProgramUidFilter();
-        String orgUnitUidFilter = PreferencesState.getInstance().getOrgUnitUidFilter();
-        orgUnitProgramFilterView.changeSelectedFilters(programUidFilter, orgUnitUidFilter);
-    }
-
-    private void loadFilter() {
-        orgUnitProgramFilterView =
-                (OrgUnitProgramFilterView) org.eyeseetea.malariacare.DashboardActivity.dashboardActivity
-                        .findViewById(R.id.plan_org_unit_program_filter_view);
     }
 
     /**
@@ -166,8 +160,27 @@ public class PlannedFragment extends Fragment implements IModuleFragment{
     }
 
     @Override
+    protected void onFiltersChanged() {
+        if (!getSelectedOrgUnitUidFilter().isEmpty()) {
+            DashboardActivity.dashboardActivity.onOrgUnitSelected(getSelectedOrgUnitUidFilter());
+        } else {
+            reloadFilter();
+        }
+    }
+
+    @Override
+    protected OrgUnitProgramFilterView.FilterType getFilterType() {
+        return OrgUnitProgramFilterView.FilterType.EXCLUSIVE;
+    }
+
+    @Override
+    protected int getOrgUnitProgramFilterViewId() {
+        return R.id.plan_org_unit_program_filter_view;
+    }
+
+    @Override
     public void reloadData() {
-        updateSelectedFilters();
+        super.reloadData();
 
         //Reload data using service
         Intent surveysIntent = new Intent(
@@ -180,13 +193,12 @@ public class PlannedFragment extends Fragment implements IModuleFragment{
     }
 
     public void loadProgram(String programUid) {
-        Log.d(TAG,"Loading program: " + programUid);
+        Log.d(TAG, "Loading program: " + programUid);
         programUidFilter = programUid;
-        if(plannedAdapter != null) {
+        if (plannedAdapter != null) {
             plannedAdapter.applyFilter(programUidFilter);
             plannedAdapter.notifyDataSetChanged();
-        }
-        else {
+        } else {
             reloadData();
         }
     }
@@ -208,8 +220,6 @@ public class PlannedFragment extends Fragment implements IModuleFragment{
                                 PlannedSurveyService.PLANNED_SURVEYS_ACTION);
 
                 refreshPlannedItems(plannedServiceBundle.getPlannedItems());
-
-                updateSelectedFilters();
             }
         }
     }

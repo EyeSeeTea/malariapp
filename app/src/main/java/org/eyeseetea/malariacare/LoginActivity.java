@@ -124,13 +124,13 @@ public class LoginActivity extends Activity implements LoginPresenter.View {
                 && sharedPreferences.getBoolean(
                 getApplicationContext().getResources().getString(R.string.pull_metadata), false)) {
             launchActivity(LoginActivity.this, DashboardActivity.class);
+        } else {
+            ProgressActivity.PULL_CANCEL = false;
+
+            initViews();
+            initPresenter();
+            initServerAdapter();
         }
-
-        ProgressActivity.PULL_CANCEL = false;
-
-        initViews();
-        initPresenter();
-        initServerAdapter();
     }
 
     private void initViews() {
@@ -225,7 +225,10 @@ public class LoginActivity extends Activity implements LoginPresenter.View {
 
     @Override
     protected void onDestroy() {
-        loginPresenter.detachView();
+        if (loginPresenter != null){
+            loginPresenter.detachView();
+        }
+
         super.onDestroy();
     }
 

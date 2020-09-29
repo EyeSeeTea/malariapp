@@ -1,0 +1,26 @@
+{
+  "response": {
+    "status": "success",
+    "code": "200",
+    "message": "OK"
+  },
+  "result": {
+    "terms": [
+      {
+        "term": "server_list",
+        "context": "",
+        "plural": "",
+        "created": "2019-12-13T10:40:23+0000",
+        "updated": "",
+        "translation": {
+          "content": "https://data.psi-mis.org/|\nhttps://ao-dev.hnqis.org/|\nhttps://imdatahub.org/|\nhttps://myanmar.psi-mis.org/|\nhttps://sfhza.psi-mis.org/|\nhttps://sm-dev.hnqis.org/|\nhttps://zw.hnqis.org/|",
+          "fuzzy": 0,
+          "updated": "2020-01-15T03:48:32+0000"
+        },
+        "reference": "",
+        "tags": [],
+        "comment": ""
+      }
+    ]
+  }
+}

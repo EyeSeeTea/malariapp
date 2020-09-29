@@ -31,6 +31,7 @@ import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 import org.eyeseetea.malariacare.data.database.model.ObservationDB;
 import org.eyeseetea.malariacare.data.database.model.ObservationValueDB;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitProgramRelationDB;
+import org.eyeseetea.malariacare.data.database.model.ServerDB;
 import org.eyeseetea.malariacare.data.database.model.ServerMetadataDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
@@ -43,6 +44,7 @@ import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
 import org.eyeseetea.malariacare.domain.entity.NextScheduleDateConfiguration;
 import org.eyeseetea.malariacare.domain.entity.ScoreType;
+import org.eyeseetea.malariacare.domain.entity.ServerClassification;
 import org.eyeseetea.malariacare.domain.entity.pushsummary.PushConflict;
 import org.eyeseetea.malariacare.domain.entity.pushsummary.PushReport;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
@@ -546,11 +548,15 @@ public class ConvertToSDKVisitor implements
         SurveyNextScheduleDomainService surveyNextScheduleDomainService = new
                 SurveyNextScheduleDomainService();
 
+        ServerDB serverDB = ServerDB.getConnectedServerFromDB();
+
         Date nextScheduleDate = surveyNextScheduleDomainService.calculate(
                 nextScheduleDateConfiguration,
                 eventDate,
                 competencyScoreClassification,
-                survey.isLowProductivity());
+                survey.isLowProductivity(),
+                survey.getMainScoreValue(),
+                ServerClassification.Companion.get(serverDB.getClassification()));
 
         return nextScheduleDate;
     }

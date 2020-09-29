@@ -50,7 +50,7 @@ class ServerRepository(
         return localServerResult.fold(
             { getServerFromRemote(localServerResult) },
             { server ->
-                if (server.isDataCompleted) {
+                if (server.isDataCompleted()) {
                     Either.Right(server)
                 } else {
                     getServerFromRemote(localServerResult)

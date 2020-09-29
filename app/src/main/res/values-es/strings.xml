@@ -123,7 +123,7 @@ clínica"</string>
 <string name="feedback_show_only_media">"Mostrar sólo las preguntas que contienen vídeo / imagen"</string>
 <string name="feedback_show_only_one_or_show_all">"Mostrar sólo la última respuesta por programa/unidad organizativa"</string>
 <string name="feedback_return">"Regresar a todas las evaluaciones"</string>
-<string name="quality_of_care">"Calidad de la Asistencia (QoC) Puntuación:"</string>
+<string name="quality_of_care">"Calidad de la Asistencia (QoC) Puntuación"</string>
 <string name="overall_quality_of_care">"Puntuación general de calidad de atención (QoC):"</string>
 <string name="feedback_info_passed">"Aprobado"</string>
 <string name="feedback_info_failed">"Suspenso"</string>
@@ -140,7 +140,6 @@ clínica"</string>
 <string name="server_url">"Servidor DHIS2"</string>
 <string name="settings_text_dhis_password">"Contraseña DHIS"</string>
 <string name="settings_text_dhis_max_items">"DHIS max encuestas descargadas"</string>
-<string name="settings_monitoring_target">"Objetivo de monitorización"</string>
 <string name="dialog_error_push_uids">"UIDs incorrectos encontrados en el envio"</string>
 <string name="dialog_error_push_no_location_and_required">"Localización no disponible y es un campo obligatorio"</string>
 <string name="dialog_error_attribute_null">"El atributo con id %s es null, por favor, póngase en contacto con el administrador del servidor."</string>
