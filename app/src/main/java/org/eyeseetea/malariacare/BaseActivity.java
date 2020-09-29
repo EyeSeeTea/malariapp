@@ -387,9 +387,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     protected void goSettings() {
-        Intent intentSettings = new Intent(this, SettingsActivity.class);
-        intentSettings.putExtra(SETTINGS_CALLER_ACTIVITY, this.getClass());
-        startActivity(new Intent(this, SettingsActivity.class));
+        Intent intent = new Intent(this, SettingsActivity.class);
+        ActivityCompat.startActivity(this, intent, null);
     }
 
     /**

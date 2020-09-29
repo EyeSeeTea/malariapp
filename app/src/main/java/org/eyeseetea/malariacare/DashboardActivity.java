@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -28,6 +29,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
@@ -196,7 +198,9 @@ public class DashboardActivity extends BaseActivity {
             return;
         }
         PreferencesState.getInstance().clearOrgUnitPreference();
-        finishAndGo(ProgressActivity.class);
+
+        Intent intent = new Intent(this, ProgressActivity.class);
+        ActivityCompat.startActivity(this, intent, null);
     }
 
     @Override

@@ -40,11 +40,13 @@ import org.eyeseetea.malariacare.data.database.utils.planning.ScheduleListener;
 import org.eyeseetea.malariacare.domain.common.Either;
 import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
 import org.eyeseetea.malariacare.domain.entity.Server;
+import org.eyeseetea.malariacare.domain.entity.ServerClassification;
 import org.eyeseetea.malariacare.domain.usecase.GetServerUseCase;
 import org.eyeseetea.malariacare.domain.usecase.GetServerFailure;
 import org.eyeseetea.malariacare.factories.ServerFactory;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardSettings;
+import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.CompetencyUtils;
 import org.eyeseetea.malariacare.utils.DateParser;
 import org.eyeseetea.malariacare.views.CustomTextView;
@@ -93,6 +95,7 @@ public class DashboardController {
      */
     boolean navigatingBackwards;
 
+    private Server server;
 
     public DashboardController(DashboardSettings dashboardSettings) {
         this.dashboardSettings = dashboardSettings;
@@ -178,12 +181,12 @@ public class DashboardController {
                     Log.e(this.getClass().getSimpleName(),
                             "An error has occurred loading the connected server from the database");
                 } else {
-                    Server server = ((Either.Right<Server>) serverResult).getValue();
+                    server = ((Either.Right<Server>) serverResult).getValue();
 
                     if (DashboardOrientation.VERTICAL.equals(getOrientation())) {
                         onCreateVertical(server);
                     } else {
-                        onCreateHorizontal(savedInstanceState,server);
+                        onCreateHorizontal(savedInstanceState, server);
                     }
 
                     reloadActiveModule();
@@ -492,7 +495,7 @@ public class DashboardController {
         alertDialog.show();
     }
 
-    public void openFeedback(String surveyUid, boolean modifyFilter){
+    public void openFeedback(String surveyUid, boolean modifyFilter) {
         activeImproveTab();
 
         ImproveModuleController improveModuleController = (ImproveModuleController) getModuleByName(
@@ -532,7 +535,7 @@ public class DashboardController {
         }
     }
 
-    public void openMonitoringByCalendar(){
+    public void openMonitoringByCalendar() {
         MonitorModuleController monitorModuleController = (MonitorModuleController) getModuleByName(
                 MonitorModuleController.class.getSimpleName());
 
@@ -542,7 +545,7 @@ public class DashboardController {
         monitorModuleController.openMonitoringByCalendar();
     }
 
-    public void openMonitorByActions(){
+    public void openMonitorByActions() {
         MonitorModuleController monitorModuleController = (MonitorModuleController) getModuleByName(
                 MonitorModuleController.class.getSimpleName());
 
@@ -579,7 +582,7 @@ public class DashboardController {
 
         String productivityText;
 
-        if (survey.isLowProductivity()){
+        if (survey.isLowProductivity()) {
             productivityText = dashboardActivity.getString(R.string.productivity_low_name);
         } else {
             productivityText = dashboardActivity.getString(R.string.productivity_high_name);
@@ -599,11 +602,25 @@ public class DashboardController {
 
         CustomTextView competencyTextView = v.findViewById(R.id.planned_competency);
 
-        CompetencyScoreClassification classification =
-                CompetencyScoreClassification.get(survey.getCompetencyScoreClassification());
+        if (server.getClassification() == ServerClassification.COMPETENCIES) {
+            CompetencyScoreClassification classification =
+                    CompetencyScoreClassification.get(survey.getCompetencyScoreClassification());
 
-        competencyTextView.setText(dashboardActivity.getString(R.string.competency_title) + ": " +
-                CompetencyUtils.getTextByCompetencyDescription(classification, dashboardActivity));
+            competencyTextView.setText(
+                    dashboardActivity.getString(R.string.competency_title) + ": " +
+                            CompetencyUtils.getTextByCompetencyDescription(classification,
+                                    dashboardActivity));
+        } else {
+            String qoC = dashboardActivity.getString(R.string.overall_quality_of_care) + ": ";
+
+            if (survey.hasMainScore()) {
+                qoC = qoC + AUtils.round(survey.getMainScore().getScore()) + " %";
+            } else {
+                qoC = qoC + "-";
+            }
+
+            competencyTextView.setText(qoC);
+        }
 
         if (survey.isInProgress()) {
             add.setText(R.string.option_edit);
@@ -749,7 +766,7 @@ public class DashboardController {
     public void reloadActiveModule() {
         ModuleController currentModuleController = getCurrentModule();
 
-        if (currentModuleController != null){
+        if (currentModuleController != null) {
             currentModuleController.onTabChanged();
         }
     }

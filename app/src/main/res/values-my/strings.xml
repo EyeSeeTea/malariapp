@@ -151,7 +151,6 @@
 <string name="server_url"></string>
 <string name="settings_text_dhis_password"></string>
 <string name="settings_text_dhis_max_items"></string>
-<string name="settings_monitoring_target"></string>
 <string name="dialog_error_push_uids"></string>
 <string name="dialog_error_push_no_location_and_required"></string>
 <string name="dialog_error_attribute_null"></string>
