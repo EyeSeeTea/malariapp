@@ -37,7 +37,7 @@ import java.net.MalformedURLException;
 import java.net.UnknownHostException;
 import java.util.List;
 
-public class LoginUseCase implements UseCase{
+public class LoginUseCase implements UseCase {
 
     public interface Callback {
         void onLoginSuccess();
@@ -96,7 +96,7 @@ public class LoginUseCase implements UseCase{
                     notifyOnInvalidCredentials();
                 } else if (throwable instanceof NetworkException) {
                     notifyOnNetworkError();
-                } else if (throwable instanceof UnsupportedServerVersionException){
+                } else if (throwable instanceof UnsupportedServerVersionException) {
                     notifyOnServerVersionError();
                 }
             }
@@ -104,7 +104,7 @@ public class LoginUseCase implements UseCase{
     }
 
     private void getServerVersion() {
-        if(!credentials.isDemoCredentials()) {
+        if (!credentials.isDemoCredentials()) {
             try {
                 mServerInfoRepository.getServerInfo(ReadPolicy.NETWORK_FIRST);
             } catch (Exception e) {
@@ -116,22 +116,24 @@ public class LoginUseCase implements UseCase{
     }
 
     private void updateLoggedServer() {
-        if(!credentials.isDemoCredentials()) {
+        if (!credentials.isDemoCredentials()) {
             try {
                 List<Server> servers = mServerRepository.getAll(ReadPolicy.CACHE);
 
                 Server connectedServer = null;
 
-                for (Server server:servers) {
-                    if (server.getUrl().equals(this.credentials.getServerURL())){
+                for (Server server : servers) {
+                    if (server.getUrl().equals(this.credentials.getServerURL())) {
                         connectedServer = server;
                     }
                 }
 
-                if (connectedServer != null){
-                    mServerRepository.save(connectedServer.changeToConnected());
-                    mServerRepository.getLoggedServer();
+                if (connectedServer == null) {
+                    connectedServer = new Server(this.credentials.getServerURL());
                 }
+
+                mServerRepository.save(connectedServer.changeToConnected());
+                mServerRepository.getLoggedServer();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -155,6 +157,7 @@ public class LoginUseCase implements UseCase{
             }
         });
     }
+
     private void notifyOnInvalidCredentials() {
         mMainExecutor.run(new Runnable() {
             @Override
@@ -163,6 +166,7 @@ public class LoginUseCase implements UseCase{
             }
         });
     }
+
     private void notifyOnNetworkError() {
         mMainExecutor.run(new Runnable() {
             @Override
@@ -171,6 +175,7 @@ public class LoginUseCase implements UseCase{
             }
         });
     }
+
     private void notifyOnServerVersionError() {
         mMainExecutor.run(new Runnable() {
             @Override
