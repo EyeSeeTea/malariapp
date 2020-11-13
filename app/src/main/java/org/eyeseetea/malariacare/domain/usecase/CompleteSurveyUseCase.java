@@ -60,7 +60,7 @@ public class CompleteSurveyUseCase implements UseCase {
                             "nonCriticalStepsScore");
 
             List<QuestionDB> nonCriticalAnsweredQuestions =
-                    QuestionDB.getAnsweredQuestions(surveyDB.getId_survey(), false);
+                    QuestionDB.getNonCriticalAnsweredQuestions(surveyDB.getId_survey());
 
             CompetencyScoreClassification competencyScoreClassification =
                     competencyScoreCalculationDomainService.calculateClassification(

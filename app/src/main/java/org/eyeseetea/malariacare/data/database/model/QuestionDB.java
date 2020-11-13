@@ -931,7 +931,8 @@ public class QuestionDB extends BaseModel {
                 .queryList();
     }
 
-    public static List<QuestionDB> getAnsweredQuestions(long idSurvey, boolean critical) {
+    public static List<QuestionDB> getNonCriticalAnsweredQuestions(long idSurvey) {
+        // returns non critical answered with numerator and denominator
         return SQLite.select()
                 .from(QuestionDB.class).as(questionName)
                 .join(ValueDB.class, Join.JoinType.LEFT_OUTER).as(valueName)
@@ -941,7 +942,9 @@ public class QuestionDB extends BaseModel {
                 .on(OptionDB_Table.id_answer_fk.withTable(optionFlowAlias)
                         .eq(QuestionDB_Table.id_answer_fk.withTable(questionAlias)))
                 .where(ValueDB_Table.id_survey_fk.eq(idSurvey))
-                .and(QuestionDB_Table.compulsory.is(critical))
+                .and(QuestionDB_Table.compulsory.is(false))
+                .and(QuestionDB_Table.numerator_w.isNot(0.0f))
+                .and(QuestionDB_Table.denominator_w.isNot(0.0f))
                 .and(ValueDB_Table.value.withTable(valueAlias).is(OptionDB_Table.name.withTable(optionFlowAlias)))
                 .queryList();
     }
