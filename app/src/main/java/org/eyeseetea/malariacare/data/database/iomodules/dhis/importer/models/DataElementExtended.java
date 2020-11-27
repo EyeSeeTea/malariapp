@@ -368,12 +368,14 @@ public class DataElementExtended implements VisitableFromSDK {
 
         for (ProgramStageDataElementFlow programStageDataElementFlow :
                 programStageDataElementFlows) {
-            ProgramStageSectionFlow programStageSection =
-                    programStageDataElementFlow.getProgramStageSection();
-            if (SdkQueries.getProgramStage(
-                    programStageSection.getProgramStage()).getProgram().getUId().equals(
-                    programUid)) {
-                return programStageSection.getUId();
+            if (programStageDataElementFlow.getProgramStageSection() != null) {
+                ProgramStageSectionFlow programStageSection =
+                        programStageDataElementFlow.getProgramStageSection();
+                if (SdkQueries.getProgramStage(
+                        programStageSection.getProgramStage()).getProgram().getUId().equals(
+                        programUid)) {
+                    return programStageSection.getUId();
+                }
             }
         }
         return null;
