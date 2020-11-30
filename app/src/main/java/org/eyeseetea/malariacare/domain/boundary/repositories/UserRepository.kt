@@ -11,4 +11,3 @@ sealed class UserFailure {
 interface UserRepository {
     fun getCurrent(): Either<UserFailure, User>
 }
-

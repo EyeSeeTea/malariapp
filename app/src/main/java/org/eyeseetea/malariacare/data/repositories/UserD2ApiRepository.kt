@@ -13,7 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class UserD2ApiRepository() : UserRepository {
 
-    private val userD2Api: UserD2Api;
+    private val userD2Api: UserD2Api
 
     init {
         val credentials = PreferencesState.getInstance().creedentials

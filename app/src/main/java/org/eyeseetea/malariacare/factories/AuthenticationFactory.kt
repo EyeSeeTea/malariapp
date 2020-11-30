@@ -35,7 +35,7 @@ object AuthenticationFactory {
             serverLocalDataSource,
             serverRemoteDataSource
         )
-        val userRepository = UserD2ApiRepository();
+        val userRepository = UserD2ApiRepository()
 
         val serverRepository: IServerRepository = ServerFactory.provideServerRepository(context)
 
