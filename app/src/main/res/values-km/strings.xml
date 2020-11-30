@@ -292,4 +292,5 @@ evaluation"</string>
 
 
 <string name="network_error">"មានបញ្ហាជាមួយបណ្តាញសូមព្យាយាមម្តងទៀតនៅពេលក្រោយ។"</string>
+<string name="required_authority_error">"អ្នកមិនមានការអនុញ្ញាតដែលត្រូវការសូមទាក់ទងអ្នកគ្រប់គ្រងរបស់អ្នក."</string>
 </resources>
