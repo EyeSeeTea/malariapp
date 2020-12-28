@@ -19,6 +19,8 @@
 
 package org.eyeseetea.malariacare.domain.usecase;
 
+import static org.eyeseetea.malariacare.domain.entity.UserKt.REQUIRED_AUTHORITY;
+
 import org.eyeseetea.malariacare.domain.boundary.IRepositoryCallback;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
@@ -66,8 +68,6 @@ public class LoginUseCase implements UseCase {
     private UserRepository userRepository;
     private Credentials credentials;
     private Callback callback;
-
-    private String REQUIRED_AUTHORITY = "F_IGNORE_TRACKER_REQUIRED_VALUE_VALIDATION";
 
     public LoginUseCase(IUserAccountRepository userAccountRepository,
             IServerRepository serverRepository,

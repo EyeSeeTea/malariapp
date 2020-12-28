@@ -11,41 +11,50 @@ import org.eyeseetea.malariacare.domain.entity.User
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class UserD2ApiRepository() : UserRepository {
+class UserD2ApiRepository : UserRepository {
 
-    private val userD2Api: UserD2Api
+    private var userD2Api: UserD2Api? = null
 
     init {
-        val credentials = PreferencesState.getInstance().creedentials
-
-        val authInterceptor = BasicAuthInterceptor(credentials.username, credentials.password)
-
-        val retrofit: Retrofit = Retrofit.Builder()
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(
-                OkHttpClient.Builder()
-                    .addInterceptor(authInterceptor).build()
-            )
-            .baseUrl(credentials.serverURL)
-            .build()
-
-        userD2Api = retrofit.create(UserD2Api::class.java)
+        initializeApi()
     }
 
     override fun getCurrent(): Either<UserFailure, User> {
         return try {
-            val userResponse = userD2Api.getMe().execute()
+            if (userD2Api == null) {
+                initializeApi()
+            }
+
+            val userResponse = userD2Api?.getMe()?.execute()
 
             if (userResponse!!.isSuccessful && userResponse.body() != null) {
                 val user = userResponse.body()
 
                 Either.Right(user!!)
             } else {
-                val error = userResponse.errorBody()!!.string()
                 Either.Left(UserFailure.UnexpectedError)
             }
         } catch (e: Exception) {
             Either.Left(UserFailure.NetworkFailure)
+        }
+    }
+
+    private fun initializeApi() {
+        val credentials = PreferencesState.getInstance().creedentials
+
+        if (credentials != null) {
+            val authInterceptor = BasicAuthInterceptor(credentials.username, credentials.password)
+
+            val retrofit: Retrofit = Retrofit.Builder()
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(
+                    OkHttpClient.Builder()
+                        .addInterceptor(authInterceptor).build()
+                )
+                .baseUrl(credentials.serverURL)
+                .build()
+
+            userD2Api = retrofit.create(UserD2Api::class.java)
         }
     }
 }

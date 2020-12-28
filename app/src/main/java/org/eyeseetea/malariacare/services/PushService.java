@@ -30,9 +30,11 @@ import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushDataC
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.remote.api.ServerInfoRemoteDataSource;
 import org.eyeseetea.malariacare.data.repositories.ServerInfoRepository;
+import org.eyeseetea.malariacare.data.repositories.UserD2ApiRepository;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
+import org.eyeseetea.malariacare.domain.boundary.repositories.UserRepository;
 import org.eyeseetea.malariacare.domain.usecase.PushUseCase;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
@@ -81,9 +83,13 @@ public class PushService extends JobIntentService {
 
         IMainExecutor mainExecutor = new UIThreadExecutor();
         IAsyncExecutor asyncExecutor = new AsyncExecutor();
-        ServerInfoRemoteDataSource serverInfoRemoteDataSource = new ServerInfoRemoteDataSource(this);
+        ServerInfoRemoteDataSource serverInfoRemoteDataSource = new ServerInfoRemoteDataSource(
+                this);
         ServerInfoLocalDataSource serverInfoLocalDataSource = new ServerInfoLocalDataSource(this);
-        pushUseCase = new PushUseCase(pushController, mainExecutor, asyncExecutor, new ServerInfoRepository(serverInfoLocalDataSource, serverInfoRemoteDataSource));
+        UserRepository userRepository = new UserD2ApiRepository();
+        pushUseCase = new PushUseCase(pushController, mainExecutor, asyncExecutor,
+                new ServerInfoRepository(serverInfoLocalDataSource, serverInfoRemoteDataSource),
+                userRepository);
     }
 
     public void onPushFinished() {

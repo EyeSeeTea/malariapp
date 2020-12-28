@@ -29,9 +29,13 @@ import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerInfoRepository;
+import org.eyeseetea.malariacare.domain.boundary.repositories.UserFailure;
+import org.eyeseetea.malariacare.domain.boundary.repositories.UserRepository;
+import org.eyeseetea.malariacare.domain.common.Either;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.ServerInfo;
 import org.eyeseetea.malariacare.domain.common.ReadPolicy;
+import org.eyeseetea.malariacare.domain.entity.User;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -75,7 +79,14 @@ public class PushUseCaseTest {
             }
         };
 
-        PushUseCase pushUseCase = new PushUseCase(mPushController, mainExecutor, asyncExecutor, serverInfoRepository);
+        UserRepository userRepository = new UserRepository() {
+            @Override
+            public Either<UserFailure, User> getCurrent() {
+                return null;
+            }
+        };
+
+        PushUseCase pushUseCase = new PushUseCase(mPushController, mainExecutor, asyncExecutor, serverInfoRepository,userRepository);
 
         pushUseCase.execute(credentials, new PushUseCase.Callback() {
 
@@ -116,6 +127,11 @@ public class PushUseCaseTest {
 
             @Override
             public void onServerVersionError() {
+                callbackInvoked(false);
+            }
+
+            @Override
+            public void onRequiredAuthorityError(String authority) {
                 callbackInvoked(false);
             }
         });
