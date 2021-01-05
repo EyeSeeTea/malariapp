@@ -367,6 +367,12 @@ public class LoginActivity extends Activity implements LoginPresenter.View {
                     }
 
                     @Override
+                    public void onRequiredAuthorityError(String authority) {
+                        showError(PreferencesState.getInstance().getContext().getString(
+                                R.string.required_authority_error));
+                    }
+
+                    @Override
                     public void onUnsupportedServerVersion() {
                         showError(PreferencesState.getInstance().getContext().getString(
                                 R.string.login_error_unsupported_server_version));

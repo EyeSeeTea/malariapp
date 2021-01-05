@@ -19,14 +19,21 @@
 
 package org.eyeseetea.malariacare.domain.usecase;
 
+import static org.eyeseetea.malariacare.domain.entity.UserKt.REQUIRED_AUTHORITY;
+
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushDataController;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerInfoRepository;
+import org.eyeseetea.malariacare.domain.boundary.repositories.UserFailure;
+import org.eyeseetea.malariacare.domain.boundary.repositories.UserRepository;
+import org.eyeseetea.malariacare.domain.common.Either;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.ServerInfo;
 import org.eyeseetea.malariacare.domain.common.ReadPolicy;
+import org.eyeseetea.malariacare.domain.entity.User;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
 import org.eyeseetea.malariacare.domain.exception.DataToPushNotFoundException;
@@ -42,15 +49,19 @@ public class PushUseCase implements UseCase {
     private IMainExecutor mMainExecutor;
     private IAsyncExecutor mAsyncExecutor;
     private Callback callback;
+    private UserRepository userRepository;
+
 
     public PushUseCase(IPushController pushController,
-                       IMainExecutor mainExecutor,
-                       IAsyncExecutor asyncExecutor,
-                       IServerInfoRepository serverInfoRepository) {
+            IMainExecutor mainExecutor,
+            IAsyncExecutor asyncExecutor,
+            IServerInfoRepository serverInfoRepository,
+            UserRepository userRepository) {
         mMainExecutor = mainExecutor;
         mAsyncExecutor = asyncExecutor;
         mPushController = pushController;
         mServerInfoRepository = serverInfoRepository;
+        this.userRepository = userRepository;
     }
 
     public void execute(Credentials credentials, final Callback callback) {
@@ -66,7 +77,7 @@ public class PushUseCase implements UseCase {
             return;
         }
         try {
-            if(!isValidServerVersion()){
+            if (!isValidServerVersion()) {
                 notifyOnServerVersionError();
                 return;
             }
@@ -74,52 +85,79 @@ public class PushUseCase implements UseCase {
             e.printStackTrace();
             notifyOnNetworkError();
         }
-        mPushController.changePushInProgress(true);
 
-        SurveyChecker.launchQuarantineChecker();
+        Boolean containsRequiredAuthority = verifyRequiredAuthority();
 
-        mPushController.push(new IPushController.IPushControllerCallback() {
-            @Override
-            public void onComplete(PushDataController.Kind kind) {
-                System.out.println("PushUseCase Complete");
+        if (containsRequiredAuthority) {
+            mPushController.changePushInProgress(true);
 
-                mPushController.changePushInProgress(false);
+            SurveyChecker.launchQuarantineChecker();
 
-                notifyOnComplete(kind);
-            }
+            mPushController.push(new IPushController.IPushControllerCallback() {
+                @Override
+                public void onComplete(PushDataController.Kind kind) {
+                    System.out.println("PushUseCase Complete");
 
-            @Override
-            public void onError(Throwable throwable) {
-                System.out.println("PushUseCase error");
-
-                if (throwable instanceof NetworkException) {
                     mPushController.changePushInProgress(false);
-                    notifyOnNetworkError();
-                } else if (throwable instanceof ConversionException) {
-                    mPushController.changePushInProgress(false);
-                    notifyOnConversionError();
-                } else if (throwable instanceof DataToPushNotFoundException) {
-                    mPushController.changePushInProgress(false);
-                    notifyOnSurveysNotFoundError();
-                } else if (throwable instanceof PushReportException){
-                    mPushController.changePushInProgress(false);
-                    notifyOnPushError();
-                } else {
-                    mPushController.changePushInProgress(false);
-                    notifyOnPushError();
+
+                    notifyOnComplete(kind);
                 }
-            }
 
-            @Override
-            public void onInformativeError(Throwable throwable) {
-                notifyOnInformativeError(throwable);
-            }
-        });
+                @Override
+                public void onError(Throwable throwable) {
+                    System.out.println("PushUseCase error");
 
+                    if (throwable instanceof NetworkException) {
+                        mPushController.changePushInProgress(false);
+                        notifyOnNetworkError();
+                    } else if (throwable instanceof ConversionException) {
+                        mPushController.changePushInProgress(false);
+                        notifyOnConversionError();
+                    } else if (throwable instanceof DataToPushNotFoundException) {
+                        mPushController.changePushInProgress(false);
+                        notifyOnSurveysNotFoundError();
+                    } else if (throwable instanceof PushReportException) {
+                        mPushController.changePushInProgress(false);
+                        notifyOnPushError();
+                    } else {
+                        mPushController.changePushInProgress(false);
+                        notifyOnPushError();
+                    }
+                }
+
+                @Override
+                public void onInformativeError(Throwable throwable) {
+                    notifyOnInformativeError(throwable);
+                }
+            });
+        }
     }
 
+    private Boolean verifyRequiredAuthority() {
+        if (!PreferencesState.getInstance().getCreedentials().isDemoCredentials()) {
+            Either<UserFailure, User> userResponse = userRepository.getCurrent();
+
+            if (userResponse.isLeft()) {
+                notifyOnNetworkError();
+                return false;
+            } else {
+                User user = ((Either.Right<User>) userResponse).getValue();
+
+                if (user.getAuthorities().contains(REQUIRED_AUTHORITY)) {
+                    return true;
+                } else {
+                    notifyRequiredAuthorityError(REQUIRED_AUTHORITY);
+                    return false;
+                }
+            }
+        } else {
+            return true;
+        }
+    }
+
+
     private boolean isValidServerVersion() throws Exception {
-        if(credentials.isDemoCredentials()) {
+        if (credentials.isDemoCredentials()) {
             return true;
         }
         ServerInfo localServerInfo = mServerInfoRepository.getServerInfo(ReadPolicy.CACHE);
@@ -134,6 +172,10 @@ public class PushUseCase implements UseCase {
             mServerInfoRepository.save(remoteServerInfo);
             return false;
         }
+    }
+
+    private void notifyRequiredAuthorityError(String RequiredAuthority) {
+        mMainExecutor.run(() -> callback.onRequiredAuthorityError(RequiredAuthority));
     }
 
     private void notifyOnComplete(final PushDataController.Kind kind) {
@@ -215,5 +257,7 @@ public class PushUseCase implements UseCase {
         void onNetworkError();
 
         void onServerVersionError();
+
+        void onRequiredAuthorityError(String authority);
     }
 }

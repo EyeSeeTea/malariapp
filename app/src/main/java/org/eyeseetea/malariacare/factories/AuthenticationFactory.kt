@@ -5,6 +5,7 @@ import org.eyeseetea.malariacare.data.database.datasources.ServerInfoLocalDataSo
 import org.eyeseetea.malariacare.data.remote.api.ServerInfoRemoteDataSource
 import org.eyeseetea.malariacare.data.repositories.ServerInfoRepository
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository
+import org.eyeseetea.malariacare.data.repositories.UserD2ApiRepository
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerRepository
 import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase
@@ -34,6 +35,7 @@ object AuthenticationFactory {
             serverLocalDataSource,
             serverRemoteDataSource
         )
+        val userRepository = UserD2ApiRepository()
 
         val serverRepository: IServerRepository = ServerFactory.provideServerRepository(context)
 
@@ -41,6 +43,7 @@ object AuthenticationFactory {
             userAccountRepository,
             serverRepository,
             serverInfoRepository,
+            userRepository,
             mainExecutor,
             asyncExecutor
         )

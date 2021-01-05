@@ -19,18 +19,25 @@
 
 package org.eyeseetea.malariacare.domain.usecase;
 
+import static org.eyeseetea.malariacare.domain.entity.UserKt.REQUIRED_AUTHORITY;
+
 import org.eyeseetea.malariacare.domain.boundary.IRepositoryCallback;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerInfoRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
+import org.eyeseetea.malariacare.domain.boundary.repositories.UserFailure;
+import org.eyeseetea.malariacare.domain.boundary.repositories.UserRepository;
+import org.eyeseetea.malariacare.domain.common.Either;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.Server;
+import org.eyeseetea.malariacare.domain.entity.User;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
 import org.eyeseetea.malariacare.domain.common.ReadPolicy;
 import org.eyeseetea.malariacare.domain.exception.InvalidCredentialsException;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
+import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.hisp.dhis.client.sdk.models.common.UnsupportedServerVersionException;
 
 import java.net.MalformedURLException;
@@ -48,6 +55,8 @@ public class LoginUseCase implements UseCase {
 
         void onNetworkError();
 
+        void onRequiredAuthorityError(String authority);
+
         void onUnsupportedServerVersion();
     }
 
@@ -56,12 +65,14 @@ public class LoginUseCase implements UseCase {
     private IUserAccountRepository mUserAccountRepository;
     private IServerRepository mServerRepository;
     private IServerInfoRepository mServerInfoRepository;
+    private UserRepository userRepository;
     private Credentials credentials;
     private Callback callback;
 
     public LoginUseCase(IUserAccountRepository userAccountRepository,
             IServerRepository serverRepository,
             IServerInfoRepository serverInfoRepository,
+            UserRepository userRepository,
             IMainExecutor mainExecutor,
             IAsyncExecutor asyncExecutor) {
         mMainExecutor = mainExecutor;
@@ -69,6 +80,7 @@ public class LoginUseCase implements UseCase {
         mServerRepository = serverRepository;
         mUserAccountRepository = userAccountRepository;
         mServerInfoRepository = serverInfoRepository;
+        this.userRepository = userRepository;
     }
 
     public void execute(Credentials credentials, final Callback callback) {
@@ -82,9 +94,13 @@ public class LoginUseCase implements UseCase {
         mUserAccountRepository.login(credentials, new IRepositoryCallback<UserAccount>() {
             @Override
             public void onSuccess(UserAccount userAccount) {
-                updateLoggedServer();
-                getServerVersion();
-                notifyOnLoginSuccess();
+                Boolean containsRequiredAuthority = verifyRequiredAuthority();
+
+                if (containsRequiredAuthority) {
+                    updateLoggedServer();
+                    getServerVersion();
+                    notifyOnLoginSuccess();
+                }
             }
 
             @Override
@@ -112,6 +128,28 @@ public class LoginUseCase implements UseCase {
                 notifyOnNetworkError();
                 return;
             }
+        }
+    }
+
+    private Boolean verifyRequiredAuthority() {
+        if (!credentials.isDemoCredentials()) {
+            Either<UserFailure, User> userResponse = userRepository.getCurrent();
+
+            if (userResponse.isLeft()) {
+                notifyOnNetworkError();
+                return false;
+            } else {
+                User user = ((Either.Right<User>) userResponse).getValue();
+
+                if (user.getAuthorities().contains(REQUIRED_AUTHORITY)) {
+                    return true;
+                } else {
+                    notifyRequiredAuthorityError(REQUIRED_AUTHORITY);
+                    return false;
+                }
+            }
+        } else {
+            return true;
         }
     }
 
@@ -172,6 +210,15 @@ public class LoginUseCase implements UseCase {
             @Override
             public void run() {
                 callback.onNetworkError();
+            }
+        });
+    }
+
+    private void notifyRequiredAuthorityError(String RequiredAuthority) {
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                callback.onRequiredAuthorityError(RequiredAuthority);
             }
         });
     }
