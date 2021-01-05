@@ -100,6 +100,11 @@ public class LoginActivityStrategy {
                             }
 
                             @Override
+                            public void onRequiredAuthorityError(String authority) {
+                                Log.e(this.getClass().getSimpleName(), "Required Authority Error");
+                            }
+
+                            @Override
                             public void onUnsupportedServerVersion() {
                                 Log.e(this.getClass().getSimpleName(),
                                         "Unsupported Server Version");

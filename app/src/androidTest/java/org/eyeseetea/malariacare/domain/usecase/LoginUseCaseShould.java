@@ -21,7 +21,9 @@ package org.eyeseetea.malariacare.domain.usecase;
 
 import android.support.test.InstrumentationRegistry;
 
+import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.datasources.ServerInfoLocalDataSource;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.file.AssetsFileReader;
 import org.eyeseetea.malariacare.data.remote.api.ServerInfoRemoteDataSource;
 import org.eyeseetea.malariacare.data.repositories.ServerInfoRepository;
@@ -29,8 +31,12 @@ import org.eyeseetea.malariacare.data.repositories.ServerRepository;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
+import org.eyeseetea.malariacare.domain.boundary.repositories.UserFailure;
+import org.eyeseetea.malariacare.domain.boundary.repositories.UserRepository;
+import org.eyeseetea.malariacare.domain.common.Either;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.ServerInfo;
+import org.eyeseetea.malariacare.domain.entity.User;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.rules.MockWebServerRule;
 import org.junit.Assert;
@@ -43,6 +49,8 @@ import org.mockito.junit.MockitoRule;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+
 public class LoginUseCaseShould {
 
     private static final String SYSTEM_INFO_VERSION_30 = "system_info_30.json";
@@ -54,6 +62,8 @@ public class LoginUseCaseShould {
     public MockWebServerRule mockWebServerRule = new MockWebServerRule(new AssetsFileReader());
     @Mock
     ServerRepository serverRepository;
+    @Mock
+    UserRepository mUserRepository;
     @Mock
     ServerInfoLocalDataSource mServerLocalDataSource;
     @Test
@@ -82,6 +92,11 @@ public class LoginUseCaseShould {
             @Override
             public void onNetworkError() {
                 fail("onNetworkError");
+            }
+
+            @Override
+            public void onRequiredAuthorityError(String authority) {
+                fail("onRequiredAuthorityError");
             }
 
             @Override
@@ -117,6 +132,10 @@ public class LoginUseCaseShould {
             }
 
             @Override
+            public void onRequiredAuthorityError(String authority) {
+                fail("onRequiredAuthorityError");
+            }
+            @Override
             public void onNetworkError() {
                 fail("onNetworkError");
             }
@@ -137,6 +156,8 @@ public class LoginUseCaseShould {
             }
         };
         when(mServerLocalDataSource.get()).thenReturn(new ServerInfo(serverVersion));
+
+        when(mUserRepository.getCurrent()).thenReturn(new Either.Right(new User("id","name",new ArrayList<>())));
         ServerInfoRemoteDataSource mServerRemoteDataSource = new ServerInfoRemoteDataSource(InstrumentationRegistry.getTargetContext());
         ServerInfoRepository serverInfoRepository = new ServerInfoRepository(mServerLocalDataSource, mServerRemoteDataSource);
         return new LoginUseCase(

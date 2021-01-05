@@ -277,4 +277,5 @@ Mensuelle"</string>
 <string name="error_not_found">Serveur introuvable.</string>
 
 <string name="network_error">"Il y a un problème avec le réseau, veuillez réessayer plus tard."</string>
+<string name="required_authority_error">"Vous ne disposez pas d'une autorisation requise, veuillez contacter votre administrateur."</string>
 </resources>

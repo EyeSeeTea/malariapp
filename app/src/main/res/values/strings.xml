@@ -291,4 +291,5 @@ evaluation"</string>
 <string name="error_not_found">Server not found.</string>
 
 <string name="network_error">"There is a problem with the network, please try again later."</string>
+<string name="required_authority_error">"You don't have a required authority, please contact your administrator."</string>
 </resources>

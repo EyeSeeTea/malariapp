@@ -249,4 +249,5 @@
 <string name="title_error_unexpected"></string>
 <string name="error_not_found"></string>
 <string name="network_error"></string>
+<string name="required_authority_error"></string>
 </resources>

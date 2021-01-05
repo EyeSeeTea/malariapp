@@ -24,6 +24,7 @@ import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushDataC
 import org.eyeseetea.malariacare.data.file.AssetsFileReader;
 import org.eyeseetea.malariacare.data.remote.api.ServerInfoRemoteDataSource;
 import org.eyeseetea.malariacare.data.repositories.ServerInfoRepository;
+import org.eyeseetea.malariacare.data.repositories.UserD2ApiRepository;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
@@ -65,53 +66,9 @@ public class PushUseCaseShould {
         loginUseCase.execute(credentials, new PushUseCase.Callback() {
 
             @Override
-            public void onComplete(PushDataController.Kind kind) { Assert.assertTrue(true); }
-
-            @Override
-            public void onPushError() {
-                fail("onLoginSuccess");
-            }
-
-            @Override
-            public void onPushInProgressError() { fail("onLoginSuccess"); }
-
-            @Override
-            public void onSurveysNotFoundError() { fail("onSurveysNotFoundError"); }
-
-            @Override
-            public void onInformativeError(String message) {
-                fail("onLoginSuccess");
-            }
-
-            @Override
-            public void onConversionError() {
-                fail("onLoginSuccess");
-            }
-
-            @Override
-            public void onNetworkError() {
-                fail("onNetworkError");
-            }
-
-            @Override
-            public void onServerVersionError() {
-                fail("onLoginSuccess");
-            }
-        });
-    }
-
-    @Test
-    public void return_on_complete_when_server_version_is_equals_to_persisted_version() throws Exception {
-        Credentials credentials = new Credentials(mockWebServerRule.getMockServer().getBaseEndpoint(), "user", "password");
-        int actualVersion = 30;
-        PushUseCase loginUseCase = givenPushUseCase(credentials, actualVersion);
-
-        mockWebServerRule.getMockServer().enqueueMockResponseFileName(200, SYSTEM_INFO_VERSION_30);
-        loginUseCase.execute(credentials, new PushUseCase.Callback() {
-
-            @Override
             public void onComplete(PushDataController.Kind kind) {
-                Assert.assertTrue(true); }
+                Assert.assertTrue(true);
+            }
 
             @Override
             public void onPushError() {
@@ -124,7 +81,9 @@ public class PushUseCaseShould {
             }
 
             @Override
-            public void onSurveysNotFoundError() { fail("onSurveysNotFoundError"); }
+            public void onSurveysNotFoundError() {
+                fail("onSurveysNotFoundError");
+            }
 
             @Override
             public void onInformativeError(String message) {
@@ -145,12 +104,76 @@ public class PushUseCaseShould {
             public void onServerVersionError() {
                 fail("onLoginSuccess");
             }
+            @Override
+            public void onRequiredAuthorityError(String authority) {
+                fail("onRequiredAuthorityError");
+            }
         });
     }
 
     @Test
-    public void return_on_server_version_error_when_server_version_is_greater_than_saved_version() throws Exception {
-        Credentials credentials = new Credentials(mockWebServerRule.getMockServer().getBaseEndpoint(), "user", "password");
+    public void return_on_complete_when_server_version_is_equals_to_persisted_version()
+            throws Exception {
+        Credentials credentials = new Credentials(
+                mockWebServerRule.getMockServer().getBaseEndpoint(), "user", "password");
+        int actualVersion = 30;
+        PushUseCase loginUseCase = givenPushUseCase(credentials, actualVersion);
+
+        mockWebServerRule.getMockServer().enqueueMockResponseFileName(200, SYSTEM_INFO_VERSION_30);
+        loginUseCase.execute(credentials, new PushUseCase.Callback() {
+
+            @Override
+            public void onComplete(PushDataController.Kind kind) {
+                Assert.assertTrue(true);
+            }
+
+            @Override
+            public void onPushError() {
+                fail("onLoginSuccess");
+            }
+
+            @Override
+            public void onPushInProgressError() {
+                fail("onLoginSuccess");
+            }
+
+            @Override
+            public void onSurveysNotFoundError() {
+                fail("onSurveysNotFoundError");
+            }
+
+            @Override
+            public void onInformativeError(String message) {
+                fail("onLoginSuccess");
+            }
+
+            @Override
+            public void onConversionError() {
+                fail("onLoginSuccess");
+            }
+
+            @Override
+            public void onNetworkError() {
+                fail("onNetworkError");
+            }
+
+            @Override
+            public void onServerVersionError() {
+                fail("onLoginSuccess");
+            }
+
+            @Override
+            public void onRequiredAuthorityError(String authority) {
+                fail("onRequiredAuthorityError");
+            }
+        });
+    }
+
+    @Test
+    public void return_on_server_version_error_when_server_version_is_greater_than_saved_version()
+            throws Exception {
+        Credentials credentials = new Credentials(
+                mockWebServerRule.getMockServer().getBaseEndpoint(), "user", "password");
         int actualVersion = 30;
         PushUseCase loginUseCase = givenPushUseCase(credentials, actualVersion);
 
@@ -196,12 +219,19 @@ public class PushUseCaseShould {
             public void onServerVersionError() {
                 Assert.assertTrue(true);
             }
+
+            @Override
+            public void onRequiredAuthorityError(String authority) {
+                fail("onRequiredAuthorityError");
+            }
         });
     }
 
     @Test
-    public void return_on_server_version_error_when_server_version_is_lower_than_saved_version() throws Exception {
-        Credentials credentials = new Credentials(mockWebServerRule.getMockServer().getBaseEndpoint(), "user", "password");
+    public void return_on_server_version_error_when_server_version_is_lower_than_saved_version()
+            throws Exception {
+        Credentials credentials = new Credentials(
+                mockWebServerRule.getMockServer().getBaseEndpoint(), "user", "password");
         int actualVersion = 31;
         PushUseCase loginUseCase = givenPushUseCase(credentials, actualVersion);
 
@@ -247,12 +277,18 @@ public class PushUseCaseShould {
             public void onServerVersionError() {
                 Assert.assertTrue(true);
             }
+
+            @Override
+            public void onRequiredAuthorityError(String authority) {
+                fail("onRequiredAuthorityError");
+            }
         });
     }
 
     @Test
     public void return_on_complete_when_server_version_is_not_persisted_on_push() throws Exception {
-        Credentials credentials = new Credentials(mockWebServerRule.getMockServer().getBaseEndpoint(), "user", "password");
+        Credentials credentials = new Credentials(
+                mockWebServerRule.getMockServer().getBaseEndpoint(), "user", "password");
         int actualVersion = -1;
         PushUseCase loginUseCase = givenPushUseCase(credentials, actualVersion);
 
@@ -299,8 +335,14 @@ public class PushUseCaseShould {
             public void onServerVersionError() {
                 fail("onServerVersionError");
             }
+
+            @Override
+            public void onRequiredAuthorityError(String authority) {
+                fail("onRequiredAuthorityError");
+            }
         });
     }
+
     private PushUseCase givenPushUseCase(Credentials credentials, int serverVersion) {
         IMainExecutor mainExecutor = new UIThreadExecutor();
         IAsyncExecutor asyncExecutor = new IAsyncExecutor() {
@@ -328,6 +370,8 @@ public class PushUseCaseShould {
         when(mServerLocalDataSource.get()).thenReturn(new ServerInfo(serverVersion));
         ServerInfoRemoteDataSource serverInfoRemoteDataSource = new ServerInfoRemoteDataSource(
                 InstrumentationRegistry.getTargetContext());
-        return new PushUseCase(pushController, mainExecutor, asyncExecutor, new ServerInfoRepository(mServerLocalDataSource, serverInfoRemoteDataSource));
+        return new PushUseCase(pushController, mainExecutor, asyncExecutor,
+                new ServerInfoRepository(mServerLocalDataSource, serverInfoRemoteDataSource),
+                new UserD2ApiRepository());
     }
 }
