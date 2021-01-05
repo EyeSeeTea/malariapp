@@ -19,6 +19,8 @@
 
 package org.eyeseetea.malariacare.data.database.migrations;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.raizlabs.android.dbflow.config.FlowManager;
@@ -40,8 +42,10 @@ public class MigrationUtils {
 
     public static void addColumn(DatabaseWrapper database, Class model, String columnName, String type){
         ModelAdapter myAdapter = FlowManager.getModelAdapter(model);
-        database.execSQL(String.format(ALTER_TABLE_ADD_COLUMN, myAdapter.getTableName(), columnName, type));
 
+        if (!isColumnExists(database, myAdapter.getTableName(), columnName)) {
+            database.execSQL(String.format(ALTER_TABLE_ADD_COLUMN, myAdapter.getTableName(), columnName, type));
+        }
     }
 
     public static void updateColumn(DatabaseWrapper database, Class model, String columnName,String value){
@@ -55,6 +59,35 @@ public class MigrationUtils {
             ModelAdapter myAdapter = FlowManager.getModelAdapter(tables[i]);
             database.execSQL(DROP_TABLE_IF_EXISTS + myAdapter.getTableName());
             database.execSQL(myAdapter.getCreationQuery());
+        }
+    }
+
+    public static boolean isColumnExists(DatabaseWrapper database,
+            String tableName,
+            String columnToFind) {
+        Cursor cursor = null;
+
+        try {
+            cursor = database.rawQuery(
+                    "PRAGMA table_info(" + tableName + ")",
+                    null
+            );
+
+            int nameColumnIndex = cursor.getColumnIndexOrThrow("name");
+
+            while (cursor.moveToNext()) {
+                String name = cursor.getString(nameColumnIndex);
+
+                if (name.equals(columnToFind)) {
+                    return true;
+                }
+            }
+
+            return false;
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
         }
     }
 }
