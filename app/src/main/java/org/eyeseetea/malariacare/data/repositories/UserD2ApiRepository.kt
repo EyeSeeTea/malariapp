@@ -14,7 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class UserD2ApiRepository : UserRepository {
 
     private lateinit var userD2Api: UserD2Api
-    private var lastServerURL:String? = null
+    private var lastServerURL: String? = null
 
     init {
         initializeApi()
