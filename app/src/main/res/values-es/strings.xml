@@ -284,5 +284,5 @@ clínica"</string>
 <string name="error_not_found">Servidor no encontrado.</string>
 
 <string name="network_error">"Hay un problema con la red. Por favor vuelve a intentarlo más tarde."</string>
-<string name="required_authority_error">"No tiene la autoridad requerida, comuníquese con su administrador."</string>
+<string name="required_authority_error">"El rol de usuario de HQIS no está habilitado. Por favor contacte a su administrador."</string>
 </resources>
