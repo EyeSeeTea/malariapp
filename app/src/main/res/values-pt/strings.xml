@@ -270,5 +270,5 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="error_not_found">Servidor não encontrado.</string>
 
 <string name="network_error">"Há um problema com a rede, tente novamente mais tarde."</string>
-<string name="required_authority_error">"Você não tem uma autorização necessária, entre em contato com o seu administrador."</string>
+<string name="required_authority_error">"Função de usuário HNQIS não habilitada. Entre em contato com o seu administrador."</string>
 </resources>

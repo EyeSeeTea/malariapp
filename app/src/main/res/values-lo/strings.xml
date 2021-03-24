@@ -290,5 +290,5 @@
 <string name="error_not_found">ບໍ່ພົບເຄື່ອງແມ່ຂ່າຍ.</string>
 
 <string name="network_error">"ມີປັນຫາກັບເຄືອຂ່າຍ, ກະລຸນາລອງ ໃໝ່ ໃນພາຍຫຼັງ."</string>
-<string name="required_authority_error">"ທ່ານບໍ່ມີໃບອະນຸຍາດທີ່ຕ້ອງການ, ກະລຸນາຕິດຕໍ່ຜູ້ເບິ່ງແຍງລະບົບຂອງທ່ານr."</string>
+<string name="required_authority_error">"ບົດບາດຂອງຜູ້ໃຊ້ HNQIS ບໍ່ຖືກເປີດໃຊ້ງານ. ກະລຸນາຕິດຕໍ່ຜູ້ເບິ່ງແຍງລະບົບຂອງທ່ານ."</string>
 </resources>
