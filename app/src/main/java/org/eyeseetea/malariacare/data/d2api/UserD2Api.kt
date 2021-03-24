@@ -5,6 +5,6 @@ import retrofit2.Call
 import retrofit2.http.GET
 
 interface UserD2Api {
-    @GET("api/me?fields=id,name,authorities")
+    @GET("api/30/me?fields=id,name,authorities")
     fun getMe(): Call<User>
 }
