@@ -13,7 +13,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class UserD2ApiRepository : UserRepository {
 
-    private var userD2Api: UserD2Api? = null
+    private lateinit var userD2Api: UserD2Api
+    private var lastServerURL: String? = null
 
     init {
         initializeApi()
@@ -21,11 +22,9 @@ class UserD2ApiRepository : UserRepository {
 
     override fun getCurrent(): Either<UserFailure, User> {
         return try {
-            if (userD2Api == null) {
-                initializeApi()
-            }
+            initializeApi()
 
-            val userResponse = userD2Api?.getMe()?.execute()
+            val userResponse = userD2Api.getMe().execute()
 
             if (userResponse!!.isSuccessful && userResponse.body() != null) {
                 val user = userResponse.body()
@@ -40,12 +39,13 @@ class UserD2ApiRepository : UserRepository {
     }
 
     private fun initializeApi() {
+
         val credentials = PreferencesState.getInstance().creedentials
 
-        if (credentials != null) {
+        if (credentials != null && credentials.serverURL != lastServerURL) {
             val authInterceptor = BasicAuthInterceptor(credentials.username, credentials.password)
 
-            val retrofit: Retrofit = Retrofit.Builder()
+            val retrofit = Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(
                     OkHttpClient.Builder()
@@ -55,6 +55,7 @@ class UserD2ApiRepository : UserRepository {
                 .build()
 
             userD2Api = retrofit.create(UserD2Api::class.java)
+            lastServerURL = credentials.serverURL
         }
     }
 }
