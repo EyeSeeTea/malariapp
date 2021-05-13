@@ -162,15 +162,16 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     apply plugin: 'com.github.dcendents.android-maven'
 
-    //Android support
+    //Android x
     implementation "androidx.legacy:legacy-support-v4:${libs.androidXLegacyVersion}"
     implementation "androidx.appcompat:appcompat:${libs.appcompatVersion}"
+    implementation "androidx.core:core-ktx:1.3.2"
     implementation "androidx.annotation:annotation:${libs.annotationVersion}"
     implementation "androidx.multidex:multidex:${libs.multidex}"
     //3rd party dependencies
     implementation "com.opencsv:opencsv:${libs.opencsvVersion}"
     implementation "com.google.guava:guava:${libs.guavaVersion}"
-    implementation "com.squareup.okhttp3:okhttp:${libs.okhttpVersion}"
+
     implementation "com.googlecode.libphonenumber:libphonenumber:${libs.libphonenumberVersion}"
     implementation "com.github.PhilJay:MPAndroidChart:v${libs.MPAndroidChartVersion}"
 
