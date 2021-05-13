@@ -22,11 +22,4 @@ public class ServerShould {
 
         assertThat(server.getUrl(), is(DEFAULT_URL));
     }
-
-
-    @Test
-    public void throw_exception_when_url_is_null() {
-        thrown.expect(IllegalArgumentException.class);
-        new Server(null);
-    }
 }
