@@ -109,6 +109,8 @@ public class MonitorFragment extends FiltersFragment  implements IModuleFragment
         if (getSelectedProgramUidFilter().isEmpty() && getSelectedOrgUnitUidFilter().isEmpty()) {
             DashboardActivity.dashboardActivity.openMonitorByActions();
         } else {
+            if (webView == null) return;
+
             if (!getSelectedProgramUidFilter().isEmpty()) {
                 invokeUpdateProgramFilter(webView,getSelectedProgramUidFilter());
             } else {
