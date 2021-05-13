@@ -3,7 +3,7 @@ package org.eyeseetea.malariacare.presentation.views
 import android.app.Activity
 import android.app.AlertDialog
 import android.os.Bundle
-import android.support.v4.app.DialogFragment
+import androidx.fragment.app.DialogFragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,7 +28,7 @@ class MonitorActionsDialogFragment : DialogFragment(), MonitorActionsDialogPrese
     var onActionsSaved: (() -> Unit)? = null
 
     override fun onStart() {
-        dialog.window!!.setLayout(
+        dialog?.window?.setLayout(
             WindowManager.LayoutParams.MATCH_PARENT,
             WindowManager.LayoutParams.WRAP_CONTENT
         )

@@ -19,7 +19,7 @@
 
 package org.eyeseetea.malariacare.data.database.iomodules.dhis.importer;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.DataElementExtended;

@@ -1,10 +1,8 @@
 package org.eyeseetea.malariacare.data.file;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.test.InstrumentationRegistry;
-
-import org.eyeseetea.malariacare.data.file.IFileReader;
+import androidx.annotation.NonNull;
+import androidx.test.platform.app.InstrumentationRegistry;
 
 import java.io.BufferedReader;
 import java.io.File;

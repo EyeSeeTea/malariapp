@@ -10,7 +10,7 @@ import org.eyeseetea.malariacare.domain.common.fold
 import org.eyeseetea.malariacare.domain.entity.Server
 import org.eyeseetea.malariacare.domain.usecase.GetServerFailure
 
-class ServerRepository(
+open class ServerRepository(
     private val writableServerLocalDataSource: WritableServerDataSource,
     private val readableServerLocalDataSource: ReadableServerDataSource,
     private val readableServerRemoteDataSource: ReadableServerDataSource,

@@ -1,6 +1,6 @@
 package org.eyeseetea.malariacare.common;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import org.eyeseetea.malariacare.data.file.IFileReader;
 

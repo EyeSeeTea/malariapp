@@ -21,13 +21,12 @@ package org.eyeseetea.malariacare.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.Spinner;
 
 /**
  * Created by idelcano on 20/09/2016.
  */
 
-public class CustomSpinner extends android.support.v7.widget.AppCompatSpinner {
+public class CustomSpinner extends androidx.appcompat.widget.AppCompatSpinner {
     public CustomSpinner(Context context) {
         super(context);
     }

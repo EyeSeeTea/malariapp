@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.domain.usecase;
 
+import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.datasources.ServerInfoLocalDataSource;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushDataController;
 import org.eyeseetea.malariacare.data.file.AssetsFileReader;
@@ -42,11 +43,15 @@ import org.mockito.junit.MockitoRule;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
 
-import android.support.test.InstrumentationRegistry;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
+import androidx.test.platform.app.InstrumentationRegistry;
 
 public class PushUseCaseShould {
 
-    private static final String SYSTEM_INFO_VERSION_30 = "system_info_30.json";
+    private static final String SYSTEM_INFO_VERSION_33 = "system_info_33.json";
     private static final String SYSTEM_INFO_VERSION_31 = "system_info_31.json";
 
     @Rule
@@ -72,12 +77,12 @@ public class PushUseCaseShould {
 
             @Override
             public void onPushError() {
-                fail("onLoginSuccess");
+                fail("onPushError");
             }
 
             @Override
             public void onPushInProgressError() {
-                fail("onLoginSuccess");
+                fail("onPushInProgressError");
             }
 
             @Override
@@ -87,12 +92,12 @@ public class PushUseCaseShould {
 
             @Override
             public void onInformativeError(String message) {
-                fail("onLoginSuccess");
+                fail("onInformativeError");
             }
 
             @Override
             public void onConversionError() {
-                fail("onLoginSuccess");
+                fail("onConversionError");
             }
 
             @Override
@@ -102,8 +107,9 @@ public class PushUseCaseShould {
 
             @Override
             public void onServerVersionError() {
-                fail("onLoginSuccess");
+                fail("onServerVersionError");
             }
+
             @Override
             public void onRequiredAuthorityError(String authority) {
                 fail("onRequiredAuthorityError");
@@ -116,11 +122,11 @@ public class PushUseCaseShould {
             throws Exception {
         Credentials credentials = new Credentials(
                 mockWebServerRule.getMockServer().getBaseEndpoint(), "user", "password");
-        int actualVersion = 30;
-        PushUseCase loginUseCase = givenPushUseCase(credentials, actualVersion);
+        int actualVersion = 33;
+        PushUseCase pushUseCase = givenPushUseCase(credentials, actualVersion);
 
-        mockWebServerRule.getMockServer().enqueueMockResponseFileName(200, SYSTEM_INFO_VERSION_30);
-        loginUseCase.execute(credentials, new PushUseCase.Callback() {
+        mockWebServerRule.getMockServer().enqueueMockResponseFileName(200, SYSTEM_INFO_VERSION_33);
+        pushUseCase.execute(credentials, new PushUseCase.Callback() {
 
             @Override
             public void onComplete(PushDataController.Kind kind) {
@@ -129,12 +135,12 @@ public class PushUseCaseShould {
 
             @Override
             public void onPushError() {
-                fail("onLoginSuccess");
+                fail("onPushError");
             }
 
             @Override
             public void onPushInProgressError() {
-                fail("onLoginSuccess");
+                fail("onPushInProgressError");
             }
 
             @Override
@@ -144,12 +150,12 @@ public class PushUseCaseShould {
 
             @Override
             public void onInformativeError(String message) {
-                fail("onLoginSuccess");
+                fail("onInformativeError");
             }
 
             @Override
             public void onConversionError() {
-                fail("onLoginSuccess");
+                fail("onConversionError");
             }
 
             @Override
@@ -159,7 +165,7 @@ public class PushUseCaseShould {
 
             @Override
             public void onServerVersionError() {
-                fail("onLoginSuccess");
+                fail("onServerVersionError");
             }
 
             @Override
@@ -177,7 +183,7 @@ public class PushUseCaseShould {
         int actualVersion = 30;
         PushUseCase loginUseCase = givenPushUseCase(credentials, actualVersion);
 
-        mockWebServerRule.getMockServer().enqueueMockResponseFileName(200, SYSTEM_INFO_VERSION_31);
+        mockWebServerRule.getMockServer().enqueueMockResponseFileName(200, SYSTEM_INFO_VERSION_33);
         loginUseCase.execute(credentials, new PushUseCase.Callback() {
 
             @Override
@@ -235,7 +241,7 @@ public class PushUseCaseShould {
         int actualVersion = 31;
         PushUseCase loginUseCase = givenPushUseCase(credentials, actualVersion);
 
-        mockWebServerRule.getMockServer().enqueueMockResponseFileName(200, SYSTEM_INFO_VERSION_30);
+        mockWebServerRule.getMockServer().enqueueMockResponseFileName(200, SYSTEM_INFO_VERSION_33);
         loginUseCase.execute(credentials, new PushUseCase.Callback() {
 
             @Override
@@ -292,8 +298,8 @@ public class PushUseCaseShould {
         int actualVersion = -1;
         PushUseCase loginUseCase = givenPushUseCase(credentials, actualVersion);
 
-        mockWebServerRule.getMockServer().enqueueMockResponseFileName(200, SYSTEM_INFO_VERSION_30);
-        mockWebServerRule.getMockServer().enqueueMockResponseFileName(200, SYSTEM_INFO_VERSION_30);
+        mockWebServerRule.getMockServer().enqueueMockResponseFileName(200, SYSTEM_INFO_VERSION_33);
+        mockWebServerRule.getMockServer().enqueueMockResponseFileName(200, SYSTEM_INFO_VERSION_33);
         loginUseCase.execute(credentials, new PushUseCase.Callback() {
 
             @Override
@@ -345,12 +351,7 @@ public class PushUseCaseShould {
 
     private PushUseCase givenPushUseCase(Credentials credentials, int serverVersion) {
         IMainExecutor mainExecutor = new UIThreadExecutor();
-        IAsyncExecutor asyncExecutor = new IAsyncExecutor() {
-            @Override
-            public void run(Runnable runnable) {
-                runnable.run();
-            }
-        };
+        IAsyncExecutor asyncExecutor = runnable -> runnable.run();
         IPushController pushController = new IPushController() {
             @Override
             public void push(IPushControllerCallback callback) {
@@ -367,9 +368,10 @@ public class PushUseCaseShould {
 
             }
         };
+
         when(mServerLocalDataSource.get()).thenReturn(new ServerInfo(serverVersion));
         ServerInfoRemoteDataSource serverInfoRemoteDataSource = new ServerInfoRemoteDataSource(
-                InstrumentationRegistry.getTargetContext());
+                InstrumentationRegistry.getInstrumentation().getTargetContext());
         return new PushUseCase(pushController, mainExecutor, asyncExecutor,
                 new ServerInfoRepository(mServerLocalDataSource, serverInfoRemoteDataSource),
                 new UserD2ApiRepository());

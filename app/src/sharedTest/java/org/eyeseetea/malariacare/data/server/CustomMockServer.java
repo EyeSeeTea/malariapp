@@ -2,7 +2,7 @@ package org.eyeseetea.malariacare.data.server;
 
 import static okhttp3.internal.Util.UTC;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import org.eyeseetea.malariacare.data.HeaderUtils;
 import org.eyeseetea.malariacare.data.file.IFileReader;

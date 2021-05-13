@@ -44,7 +44,7 @@
         android:alpha="0.8"
         android:background="@color/textFieldColor">
 
-        <android.support.v7.widget.AppCompatSpinner
+        <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/answer"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

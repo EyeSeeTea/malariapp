@@ -1,6 +1,6 @@
 package org.eyeseetea.malariacare.data.database.mapper;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.data.database.model.OptionDB;

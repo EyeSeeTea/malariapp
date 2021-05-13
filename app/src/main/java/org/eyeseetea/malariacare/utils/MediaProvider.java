@@ -19,7 +19,7 @@
 
 package org.eyeseetea.malariacare.utils;
 
-import android.support.v4.content.FileProvider;
+import androidx.core.content.FileProvider;
 
 public class MediaProvider extends FileProvider {
     public MediaProvider(){
