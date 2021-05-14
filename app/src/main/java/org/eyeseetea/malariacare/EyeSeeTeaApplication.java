@@ -24,6 +24,8 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
+
 import androidx.multidex.MultiDex;
 import androidx.appcompat.app.AppCompatDelegate;
 
@@ -43,6 +45,7 @@ import org.eyeseetea.malariacare.data.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.utils.AutoTabLayoutUtils;
+import org.eyeseetea.malariacare.presentation.bugs.BugReportKt;
 import org.eyeseetea.malariacare.utils.Permissions;
 import org.eyeseetea.malariacare.views.TypefaceCache;
 import org.hisp.dhis.client.sdk.android.api.D2;
@@ -59,7 +62,11 @@ public class EyeSeeTeaApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
         FirebaseApp.initializeApp(this);
+        
+        BugReportKt.addGitHash(this);
+
         AppSettingsBuilder.getInstance().init(getApplicationContext());
         PreferencesState.getInstance().init(getApplicationContext());
         LocationMemory.getInstance().init(getApplicationContext());
