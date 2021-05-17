@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "573304362036",
-    "project_id": "hnqis-app",
-    "storage_bucket": "hnqis-app.appspot.com"
+    "project_number": "903594734739",
+    "project_id": "hnqis-android",
+    "storage_bucket": "hnqis-android.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:573304362036:android:cabcf99a5825632f082661",
+        "mobilesdk_app_id": "1:903594734739:android:6d801426bc11b2267a8966",
         "android_client_info": {
-          "package_name": "org.eyeseetea.malariacare.hnqis_ng_dev"
+          "package_name": "org.eyeseetea.malariacare.hnqis_ng"
         }
       },
       "oauth_client": [
         {
-          "client_id": "573304362036-55c02aivfad3ue9ikl93ulo338sshm8n.apps.googleusercontent.com",
+          "client_id": "903594734739-89f7vl6a7dog2e6v0s48a2rf4hckm3j6.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDoDDTJVVapb8Gos4WkBTx4kdnhVVbCyaY"
+          "current_key": "AIzaSyDQYquD7sjWXYWIloU-L0xixMZ3jYZJUnA"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "573304362036-55c02aivfad3ue9ikl93ulo338sshm8n.apps.googleusercontent.com",
+              "client_id": "903594734739-89f7vl6a7dog2e6v0s48a2rf4hckm3j6.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
