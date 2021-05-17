@@ -21,13 +21,6 @@
 <resources>
 
     <!-- # general -->
-    <string name="app_name" translatable="false">HNQIS</string>
+    <string name="app_name" translatable="false">HNQIS (dev)</string>
 
-    <!-- default server url -->
-    <string name="login_info_dhis_default_server_url" translatable="false">https://data.psi-mis.org/</string>
-    <string name="assessment_no_schedule_date" translatable="false">"-"</string>
-
-    <!-- pull control codes -->
-    <string name="pull_program_code" translatable="false">HNQIS</string>
-    <string name="feedback_url" translatable="false">https://apps.psi-mis.org/hnqis/feedback?eventId=%s&amp;server=%s</string>
 </resources>
