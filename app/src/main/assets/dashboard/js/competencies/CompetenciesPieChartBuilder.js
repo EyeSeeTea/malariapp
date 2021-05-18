@@ -31,19 +31,19 @@ class CompetenciesPieChartBuilder{
             [{
                 value: data.valueA,
                 color: classificationContext.colors.competentColor,
-                label: "A (" + classificationContext.texts.competentText + ")"
+                label: classificationContext.texts.competentText
             }, {
                 value: data.valueB,
                 color: classificationContext.colors.competentImprovementColor,
-                label: "B (" + classificationContext.texts.competentImprovementText + ")"
+                label: classificationContext.texts.competentImprovementText
             }, {
                 value: data.valueC,
                 color: classificationContext.colors.notCompetentColor,
-                label: "C (" + classificationContext.texts.notCompetentText + ")"
+                label: classificationContext.texts.notCompetentText
             }, {
                 value: data.valueNA,
                 color: classificationContext.colors.notAvailableColor,
-                label: "" + classificationContext.texts.notAvailableText + ""
+                label: classificationContext.texts.notAvailableText
             }],
             {
                 tooltipTemplate: "<%= value %>",
