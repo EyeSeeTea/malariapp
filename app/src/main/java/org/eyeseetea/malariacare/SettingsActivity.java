@@ -78,10 +78,6 @@ public class SettingsActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         PreferencesState.getInstance().initalizateActivityDependencies();
-
-        if (new Date().getHours() == 11){
-            throw new RuntimeException("Test Crash"); // Force a crash
-        }
     }
 
 
