@@ -24,7 +24,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -446,7 +446,7 @@ public class AssessModuleController extends ModuleController {
         new AlertDialog.Builder(dashboardActivity)
                 .setMessage(
                         dashboardActivity.getString(R.string.dialog_incompleted_compulsory_survey))
-                .setPositiveButton(dashboardActivity.getString(R.string.accept), null)
+                .setPositiveButton(dashboardActivity.getString(R.string.ok), null)
                 .create().show();
     }
 

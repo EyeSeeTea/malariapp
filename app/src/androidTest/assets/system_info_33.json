@@ -7,7 +7,7 @@
   "lastAnalyticsTableSuccess": "2019-01-11T10:00:03.085",
   "intervalSinceLastAnalyticsTableSuccess": "1 h, 8 m, 51 s",
   "lastAnalyticsTableRuntime": "29 m, 8 s",
-  "version": "2.30",
+  "version": "2.33",
   "revision": "15d8f564a",
   "buildTime": "2018-11-20T06:28:17.000",
   "jasperReportsVersion": "6.3.1",

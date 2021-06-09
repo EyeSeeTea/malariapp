@@ -21,7 +21,7 @@
 <resources>
 
     <!-- # general -->
-    <string name="app_name" translatable="false">HNQIS (dev)</string>
+    <string name="app_name" translatable="false">HNQIS</string>
 
     <!-- default server url -->
     <string name="login_info_dhis_default_server_url" translatable="false">https://data.psi-mis.org/</string>

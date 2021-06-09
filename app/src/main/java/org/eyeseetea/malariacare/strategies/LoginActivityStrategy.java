@@ -37,6 +37,7 @@ import org.eyeseetea.malariacare.domain.usecase.pull.PullFilters;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullUseCase;
 import org.eyeseetea.malariacare.factories.AuthenticationFactory;
+import org.eyeseetea.malariacare.presentation.bugs.BugReportKt;
 import org.eyeseetea.malariacare.views.CustomButton;
 
 public class LoginActivityStrategy {
@@ -82,6 +83,7 @@ public class LoginActivityStrategy {
                             @Override
                             public void onLoginSuccess() {
                                 executeDemo();
+                                BugReportKt.addServerAndUser(demoCredentials.getServerURL(), demoCredentials.getUsername());
                             }
 
                             @Override

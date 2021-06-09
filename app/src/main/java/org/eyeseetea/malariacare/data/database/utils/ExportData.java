@@ -1,18 +1,11 @@
 package org.eyeseetea.malariacare.data.database.utils;
 
-import android.Manifest;
 import android.app.Activity;
-import android.app.DownloadManager;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Environment;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ShareCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
+
+import androidx.core.app.ShareCompat;
+import androidx.core.content.FileProvider;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.BuildConfig;

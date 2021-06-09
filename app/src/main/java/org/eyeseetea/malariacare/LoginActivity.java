@@ -30,9 +30,11 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.CardView;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.cardview.widget.CardView;
+
 import android.text.Editable;
 import android.text.Html;
 import android.text.SpannableString;
@@ -61,12 +63,17 @@ import org.eyeseetea.malariacare.data.database.utils.LanguageContextWrapper;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.remote.api.PullDhisApiDataSource;
+import org.eyeseetea.malariacare.domain.common.Either;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.Server;
+import org.eyeseetea.malariacare.domain.usecase.GetServerUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.factories.AuthenticationFactory;
+import org.eyeseetea.malariacare.factories.ServerFactory;
 import org.eyeseetea.malariacare.layout.adapters.general.ServerArrayAdapter;
+import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.presentation.bugs.BugReportKt;
 import org.eyeseetea.malariacare.presentation.presenters.LoginPresenter;
 import org.eyeseetea.malariacare.strategies.LoginActivityStrategy;
 import org.eyeseetea.malariacare.utils.AUtils;
@@ -120,12 +127,24 @@ public class LoginActivity extends Activity implements LoginPresenter.View {
         PreferencesState.getInstance().initalizateActivityDependencies();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mLoginActivityStrategy.onCreate();
-        if (UserDB.getLoggedUser() != null && !ProgressActivity.PULL_CANCEL
+
+        UserDB loggedUser = UserDB.getLoggedUser();
+
+        if (loggedUser != null && !ProgressActivity.PULL_CANCEL
                 && sharedPreferences.getBoolean(
                 getApplicationContext().getResources().getString(R.string.pull_metadata), false)) {
-            launchActivity(LoginActivity.this, DashboardActivity.class);
+
+            GetServerUseCase getServerUseCase = ServerFactory.INSTANCE.provideGetServerUseCase(this);
+
+            getServerUseCase.execute(serverResult -> {
+                Server server = ((Either.Right<Server>) serverResult).getValue();
+
+                BugReportKt.addServerAndUser(server.getUrl(),loggedUser.getUsername());
+                launchActivity(LoginActivity.this, DashboardActivity.class);
+            });
         } else {
             ProgressActivity.PULL_CANCEL = false;
+            BugReportKt.removeServerAndUser();
 
             initViews();
             initPresenter();
@@ -153,7 +172,6 @@ public class LoginActivity extends Activity implements LoginPresenter.View {
                 enableOrDisableLoginButton();
             }
         };
-
 
 
         mServerUrl = findViewById(R.id.edittext_server_url);
@@ -209,7 +227,7 @@ public class LoginActivity extends Activity implements LoginPresenter.View {
         hideProgress();
     }
 
-    private void  enableOrDisableLoginButton() {
+    private void enableOrDisableLoginButton() {
         String url = mServerUrl.getText().toString();
         String username = mUsername.getText().toString();
         String password = mPassword.getText().toString();
@@ -225,7 +243,7 @@ public class LoginActivity extends Activity implements LoginPresenter.View {
 
     @Override
     protected void onDestroy() {
-        if (loginPresenter != null){
+        if (loginPresenter != null) {
             loginPresenter.detachView();
         }
 
@@ -346,6 +364,8 @@ public class LoginActivity extends Activity implements LoginPresenter.View {
                         AsyncPullAnnouncement
                                 asyncPullAnnouncement = new AsyncPullAnnouncement();
                         asyncPullAnnouncement.execute(mLoginActivity);
+
+                        BugReportKt.addServerAndUser(serverUrl, username);
                     }
 
                     @Override

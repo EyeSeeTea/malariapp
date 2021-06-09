@@ -22,12 +22,11 @@ package org.eyeseetea.malariacare.services;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v4.app.JobIntentService;
+import androidx.annotation.NonNull;
+import androidx.core.app.JobIntentService;
 
 import org.eyeseetea.malariacare.data.database.datasources.ServerInfoLocalDataSource;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushDataController;
-import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.remote.api.ServerInfoRemoteDataSource;
 import org.eyeseetea.malariacare.data.repositories.ServerInfoRepository;
 import org.eyeseetea.malariacare.data.repositories.UserD2ApiRepository;

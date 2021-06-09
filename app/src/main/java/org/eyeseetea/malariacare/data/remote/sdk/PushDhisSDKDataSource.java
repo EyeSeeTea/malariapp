@@ -19,7 +19,7 @@
 
 package org.eyeseetea.malariacare.data.remote.sdk;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 
 import com.raizlabs.android.dbflow.sql.language.Delete;

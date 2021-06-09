@@ -1,6 +1,5 @@
 buildscript {
     repositories {
-        maven { url 'https://maven.fabric.io/public' }
         mavenCentral()
         mavenLocal()
         google()
@@ -8,20 +7,17 @@ buildscript {
     }
 
     dependencies {
-        classpath 'io.fabric.tools:gradle:1.+'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4'
     }
 }
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
-apply plugin: 'io.fabric'
+apply plugin: 'kotlin-android-extensions'
 
 def cfg = rootProject.ext.configuration
 def libs = rootProject.ext.libraries
 
 repositories {
-    maven { url 'https://maven.fabric.io/public' }
     mavenCentral()
 }
 
@@ -71,7 +67,7 @@ android {
         dexOptions {
             javaMaxHeapSize "6g"
         }
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         signingConfig signingConfigs.config
         useLibrary  'org.apache.http.legacy'
         vectorDrawables.useSupportLibrary = true
@@ -88,6 +84,7 @@ android {
         }
         debug {
             debuggable true
+            applicationIdSuffix = ".debug"
         }
     }
     //TODO This config is related to a known issue: http://stackoverflow.com/questions/20827885/android-studio-0-4-duplicate-files-copied-in-apk-meta-inf-license-txt
@@ -110,7 +107,7 @@ android {
 
     productFlavors {
         eds {
-            applicationId "org.eyeseetea.malariacare.eds_dev"
+            applicationId "org.eyeseetea.malariacare.eds"
             versionName "2.0.5"
             buildConfigField "boolean", "translations", "false"
             buildConfigField "String", "defaultLocale", "\"en\""
@@ -120,7 +117,7 @@ android {
             buildConfigField "String", "GIT_HUB_BOT_TOKEN", "\"$gitHubBotToken\""
         }
         hnqis {
-            applicationId "org.eyeseetea.malariacare.hnqis_ng_dev"
+            applicationId "org.eyeseetea.malariacare.hnqis_ng"
             versionName "1.6.5"
             buildConfigField "boolean", "translations", "true"
             buildConfigField "String", "defaultLocale", "\"en\""
@@ -130,7 +127,7 @@ android {
             buildConfigField "String", "GIT_HUB_BOT_TOKEN", "\"$gitHubBotToken\""
         }
         eyeseetea {
-            applicationId "org.eyeseetea.malariacare.questmark_dev"
+            applicationId "org.eyeseetea.malariacare.questmark"
             versionName "0.1.0"
             buildConfigField "boolean", "translations", "true"
             buildConfigField "String", "defaultLocale", "\"en\""
@@ -166,21 +163,21 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     apply plugin: 'com.github.dcendents.android-maven'
 
-    //Android support
-    implementation "com.android.support:support-v4:${libs.supportVersion}"
-    implementation "com.android.support:appcompat-v7:${libs.supportVersion}"
-    implementation "com.android.support:support-annotations:${libs.supportVersion}"
-    implementation "com.android.support:multidex:${libs.multidex}"
+    //Android x
+    implementation "androidx.legacy:legacy-support-v4:${libs.androidXLegacyVersion}"
+    implementation "androidx.appcompat:appcompat:${libs.appcompatVersion}"
+    implementation "androidx.core:core-ktx:1.3.2"
+    implementation "androidx.annotation:annotation:${libs.annotationVersion}"
+    implementation "androidx.multidex:multidex:${libs.multidex}"
     //3rd party dependencies
     implementation "com.opencsv:opencsv:${libs.opencsvVersion}"
-    implementation "com.google.android.gms:play-services:${libs.gmsPlayVersion}"
     implementation "com.google.guava:guava:${libs.guavaVersion}"
-    implementation "com.squareup.okhttp3:okhttp:${libs.okhttpVersion}"
+
     implementation "com.googlecode.libphonenumber:libphonenumber:${libs.libphonenumberVersion}"
     implementation "com.github.PhilJay:MPAndroidChart:v${libs.MPAndroidChartVersion}"
 
     //Drive dependencies
-    implementation "com.google.android.gms:play-services-identity:${libs.gmsPlayVersion}"
+    implementation "com.google.android.gms:play-services-location:${libs.gmsPlayVersion}"
     implementation("com.google.api-client:google-api-client-android:${libs.googleApiClientAndroidVersion}") {
         exclude group: 'org.apache.httpcomponents'
         exclude group: 'com.google.code.findbugs'
@@ -212,21 +209,17 @@ dependencies {
     // Instrumented tests dependencies
     // Android Testing Support Library's runner and rules
 
-    androidTestImplementation "com.android.support.test:runner:${libs.runnerVersion}"
-    androidTestImplementation "com.android.support.test:rules:${libs.runnerVersion}"
+    androidTestImplementation "androidx.test.ext:junit:${libs.androidXTest}"
+    androidTestImplementation "androidx.test:rules:${libs.androidXTest}"
 
     // Espresso UI Testing dependencies.
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:${libs.espressoVersion}"
-    androidTestImplementation "com.android.support.test.espresso:espresso-intents:${libs.espressoVersion}"
+    androidTestImplementation "androidx.test.espresso:espresso-core:${libs.espressoVersion}"
+    androidTestImplementation "androidx.test.espresso:espresso-intents:${libs.espressoVersion}"
     // Espresso-idling-resource for synchronization with background jobs
-    androidTestImplementation "com.android.support.test.espresso:espresso-idling-resource:${libs.espressoVersion}"
+    androidTestImplementation "androidx.test.espresso:espresso-idling-resource:${libs.espressoVersion}"
     // Espresso-web for WebView support
-    androidTestImplementation "com.android.support.test.espresso:espresso-web:${libs.espressoVersion}"
+    androidTestImplementation "androidx.test.espresso:espresso-web:${libs.espressoVersion}"
 
-    //Tracking crashes
-    implementation("com.crashlytics.sdk.android:crashlytics:${libs.crashlyticsVersion}") {
-        transitive = true
-    }
 
     // JavaPoet (sucessor to JavaWriter)
     implementation "com.squareup:javapoet:${libs.javapoetVersion}"
@@ -244,8 +237,21 @@ dependencies {
         exclude group: "com.google.android.gms"
     }
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    //Firebase
+    // Import the BoM for the Firebase platform
+    implementation platform("com.google.firebase:firebase-bom:${libs.firebaseBoom}")
+
+    // Declare the dependencies for the Crashlytics and Analytics libraries
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation 'com.google.firebase:firebase-crashlytics'
+    implementation 'com.google.firebase:firebase-analytics'
+
 }
 
 check.dependsOn ktlint
+
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
 
 

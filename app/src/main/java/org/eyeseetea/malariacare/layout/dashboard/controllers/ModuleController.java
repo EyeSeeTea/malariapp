@@ -25,9 +25,9 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.ListFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.fragment.app.ListFragment;
 import android.view.View;
 
 import org.eyeseetea.malariacare.DashboardActivity;

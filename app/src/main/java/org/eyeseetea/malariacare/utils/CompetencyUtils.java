@@ -1,7 +1,7 @@
 package org.eyeseetea.malariacare.utils;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.widget.TextView;
 
 import org.eyeseetea.malariacare.R;

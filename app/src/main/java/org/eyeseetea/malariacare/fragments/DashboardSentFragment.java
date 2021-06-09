@@ -24,16 +24,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;

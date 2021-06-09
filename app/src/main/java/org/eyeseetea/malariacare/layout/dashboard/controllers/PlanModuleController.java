@@ -19,19 +19,16 @@
 
 package org.eyeseetea.malariacare.layout.dashboard.controllers;
 
-import android.support.v4.app.FragmentTransaction;
+import androidx.fragment.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
-import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.fragments.PlannedFragment;
 import org.eyeseetea.malariacare.fragments.PlannedPerOrgUnitFragment;
 import org.eyeseetea.malariacare.layout.dashboard.config.ModuleSettings;
-import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
 
 public class PlanModuleController extends ModuleController {
     private static final String TAG = ".PlanModuleCOntroller";

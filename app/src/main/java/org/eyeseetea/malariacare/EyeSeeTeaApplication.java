@@ -23,15 +23,17 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.preference.PreferenceManager;
-import android.support.multidex.MultiDex;
-import android.support.v7.app.AppCompatDelegate;
+import android.util.Log;
 
-import com.crashlytics.android.Crashlytics;
+import androidx.multidex.MultiDex;
+import androidx.appcompat.app.AppCompatDelegate;
+
+
 import com.github.stkent.bugshaker.BugShaker;
 import com.github.stkent.bugshaker.flow.dialog.AlertDialogType;
 import com.github.stkent.bugshaker.github.GitHubConfiguration;
+import com.google.firebase.FirebaseApp;
 import com.raizlabs.android.dbflow.config.EyeSeeTeaGeneratedDatabaseHolder;
 import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
@@ -43,11 +45,11 @@ import org.eyeseetea.malariacare.data.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.utils.AutoTabLayoutUtils;
+import org.eyeseetea.malariacare.presentation.bugs.BugReportKt;
 import org.eyeseetea.malariacare.utils.Permissions;
 import org.eyeseetea.malariacare.views.TypefaceCache;
 import org.hisp.dhis.client.sdk.android.api.D2;
 
-import io.fabric.sdk.android.Fabric;
 
 public class EyeSeeTeaApplication extends Application {
 
@@ -60,7 +62,11 @@ public class EyeSeeTeaApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Fabric.with(this, new Crashlytics());
+
+        FirebaseApp.initializeApp(this);
+        
+        BugReportKt.addGitHash(this);
+
         AppSettingsBuilder.getInstance().init(getApplicationContext());
         PreferencesState.getInstance().init(getApplicationContext());
         LocationMemory.getInstance().init(getApplicationContext());

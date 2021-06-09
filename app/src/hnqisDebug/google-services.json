@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "573304362036",
+    "project_id": "hnqis-app",
+    "storage_bucket": "hnqis-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:573304362036:android:2b9931253c14b59b082661",
+        "android_client_info": {
+          "package_name": "org.eyeseetea.malariacare.hnqis_ng.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "573304362036-55c02aivfad3ue9ikl93ulo338sshm8n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDoDDTJVVapb8Gos4WkBTx4kdnhVVbCyaY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "573304362036-55c02aivfad3ue9ikl93ulo338sshm8n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

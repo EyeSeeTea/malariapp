@@ -74,7 +74,7 @@
 
         </FrameLayout>
 
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             android:id="@+id/layout_login_views"
             android:layout_width="384dp"
             android:layout_height="384dp"
@@ -121,7 +121,7 @@
 
                 </LinearLayout>
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/edittext_server_url_container"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
@@ -137,9 +137,9 @@
                         android:inputType="textUri"
                         android:singleLine="true"
                         app:font="@string/font_name_regular"/>
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginBottom="8dp">
@@ -154,9 +154,9 @@
                         android:singleLine="true"
                         app:font="@string/font_name_regular"/>
 
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginBottom="16dp">
@@ -170,7 +170,7 @@
                         android:inputType="textPassword"
                         android:singleLine="true"
                         app:font="@string/font_name_regular"/>
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <org.eyeseetea.malariacare.views.CustomButton
                     android:id="@+id/button_log_in"
@@ -200,7 +200,7 @@
 
             </LinearLayout>
 
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
     </RelativeLayout>
 

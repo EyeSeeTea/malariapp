@@ -1,6 +1,6 @@
 package org.eyeseetea.malariacare.data.database.datasources;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.raizlabs.android.dbflow.sql.language.Select;
 

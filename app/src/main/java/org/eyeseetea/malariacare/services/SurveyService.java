@@ -21,7 +21,7 @@ package org.eyeseetea.malariacare.services;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.support.v4.content.LocalBroadcastManager;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;

@@ -26,8 +26,8 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import android.text.Html;
 import android.text.Spanned;
 import android.view.View;
@@ -129,7 +129,7 @@ public class LayoutUtils {
     }
 
     public static void setActionBarBackButton(AppCompatActivity activity) {
-        android.support.v7.app.ActionBar actionBar = activity.getSupportActionBar();
+        androidx.appcompat.app.ActionBar actionBar = activity.getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(false);
     }
 
@@ -175,7 +175,7 @@ public class LayoutUtils {
 
     private static void setActionbarVerticalSurvey(DashboardActivity dashboardActivity, String title,
             String subtitle) {
-        android.support.v7.app.ActionBar actionBar = dashboardActivity.getSupportActionBar();
+        androidx.appcompat.app.ActionBar actionBar = dashboardActivity.getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(false);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setCustomView(R.layout.abc_action_bar_title_item);
@@ -185,7 +185,7 @@ public class LayoutUtils {
 
     private static void setActionbarTitle(AppCompatActivity activity, Spanned title,
             String subtitle) {
-        android.support.v7.app.ActionBar actionBar = activity.getSupportActionBar();
+        androidx.appcompat.app.ActionBar actionBar = activity.getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(false);
         if(PreferencesState.getInstance().isDevelopOptionActive()) {
@@ -201,7 +201,7 @@ public class LayoutUtils {
 
     private static void setSurveyActionbarTitle(AppCompatActivity activity, Spanned title,
             String subtitle, long surveyId, SurveyAnsweredRatio surveyAnsweredRatio) {
-        android.support.v7.app.ActionBar actionBar = activity.getSupportActionBar();
+        androidx.appcompat.app.ActionBar actionBar = activity.getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(false);
         if(PreferencesState.getInstance().isDevelopOptionActive()) {
@@ -220,7 +220,7 @@ public class LayoutUtils {
 
 
     private static void setActionbarAppName(AppCompatActivity activity) {
-        android.support.v7.app.ActionBar actionBar = activity.getSupportActionBar();
+        androidx.appcompat.app.ActionBar actionBar = activity.getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(false);
         actionBar.setCustomView(R.layout.abc_action_bar_title_item);

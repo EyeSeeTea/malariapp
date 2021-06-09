@@ -17,12 +17,12 @@
   ~  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<android.support.v7.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <!-- A 'parent' preference, which enables/disables child preferences (below)
          when checked/unchecked. -->
-    <android.support.v7.preference.CheckBoxPreference
+    <androidx.preference.CheckBoxPreference
         android:key="@string/customize_fonts"
         android:title="@string/settings_checkbox_customize_fonts"
         android:defaultValue="false"
@@ -31,7 +31,7 @@
     <!-- Allows the user to choose a ringtone in the 'notification' category. -->
     <!-- NOTE: This preference will be enabled only when the checkbox above is checked. -->
     <!-- NOTE: RingtonePreference's summary should be set to its value by the activity code. -->
-    <android.support.v7.preference.ListPreference
+    <androidx.preference.ListPreference
         android:key="@string/font_sizes"
         android:dependency="@string/customize_fonts"
         android:title="@string/settings_list_font_sizes"
@@ -42,7 +42,7 @@
         android:positiveButtonText="@null"
         app:iconSpaceReserved="false"/>
 
-    <android.support.v7.preference.ListPreference
+    <androidx.preference.ListPreference
         android:defaultValue=""
         android:key="@string/language_code"
         android:negativeButtonText="@null"
@@ -81,7 +81,7 @@
         android:maxLines="1"
         app:iconSpaceReserved="false"/>
 
-    <android.support.v7.preference.EditTextPreference
+    <androidx.preference.EditTextPreference
         android:key="@string/dhis_max_items"
         android:title="@string/settings_text_dhis_max_items"
         android:defaultValue="@string/dhis_default_max_items"
@@ -93,17 +93,17 @@
         android:maxLength="4"
         app:iconSpaceReserved="false"/>
 
-    <android.support.v7.preference.CheckBoxPreference
+    <androidx.preference.CheckBoxPreference
         android:key="@string/hide_planning_tab_key"
         android:title="@string/hide_planning_tab_title"
         android:summary="@string/hide_planning_tab_summary"
         android:defaultValue="false"
         app:iconSpaceReserved="false"/>
     
-    <android.support.v7.preference.CheckBoxPreference
+    <androidx.preference.CheckBoxPreference
         android:key="@string/developer_option"
         android:title="@string/developer_option_title"
         android:summary="@string/developer_option_summary"
         android:defaultValue="false"
         app:iconSpaceReserved="false"/>
-</android.support.v7.preference.PreferenceScreen>
+</androidx.preference.PreferenceScreen>

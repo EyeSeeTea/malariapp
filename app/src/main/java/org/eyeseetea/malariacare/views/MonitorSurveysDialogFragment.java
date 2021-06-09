@@ -1,9 +1,9 @@
 package org.eyeseetea.malariacare.views;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +14,6 @@ import android.widget.TextView;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
-import org.eyeseetea.malariacare.domain.entity.Server;
 import org.eyeseetea.malariacare.domain.entity.ServerClassification;
 import org.eyeseetea.malariacare.layout.adapters.monitor.SurveysMonitorAdapter;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;

@@ -5,11 +5,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.ShareCompat;
-import android.support.v4.content.FileProvider;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.PopupMenu;
-import android.support.v7.widget.RecyclerView;
+import androidx.core.app.ShareCompat;
+import androidx.core.content.FileProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.appcompat.widget.PopupMenu;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.MimeTypeMap;
@@ -127,7 +127,7 @@ public class DownloadedMediaActivity extends BaseActivity {
     }
 
     private void setActivityActionBar() {
-        android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
+        androidx.appcompat.app.ActionBar actionBar = this.getSupportActionBar();
         LayoutUtils.setActionBarLogo(actionBar);
         LayoutUtils.setActionBarDashboard(this, this.getString(R.string.downloaded_media_menu));
     }
