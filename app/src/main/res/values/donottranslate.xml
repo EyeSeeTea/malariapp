@@ -172,7 +172,7 @@
     <string name="server_version_preference" translatable="false">server_version_preference</string>
     <string name="is_server_version_supported" translatable="false">is_server_version_supported</string>
     <string name="google_play_url" translatable="false">"https://play.google.com/store/apps/details?id=org.eyeseetea.malariacare.hnqis_ng"</string>
-    <string name="learning_center_url">https://psiorg.sharepoint.com/sites/us_gbs_comms/SitePages/HNQIS-Learning-Center.aspx</string>
+    <string name="learning_center_url">https://psiorg.sharepoint.com/sites/DigitalHealth/SitePages/HNQIS-Learning-Center.aspx</string>
     <string name="submit_ticket_url">https://helppsi.freshdesk.com/en/support/tickets/new</string>
 
 </resources>
