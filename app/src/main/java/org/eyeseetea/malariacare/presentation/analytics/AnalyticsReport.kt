@@ -7,7 +7,6 @@ import com.google.firebase.analytics.FirebaseAnalytics
 private const val serverKey: String = "server"
 private const val logPrefix: String = "AnalyticsReport"
 
-
 fun addServer(context: Context, server: String) {
     FirebaseAnalytics.getInstance(context).setUserProperty(serverKey, server)
     Log.d("$logPrefix.$serverKey", server)
