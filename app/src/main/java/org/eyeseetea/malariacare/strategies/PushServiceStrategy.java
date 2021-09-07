@@ -131,7 +131,7 @@ public class PushServiceStrategy {
     }
 
     public boolean showInDialog(String title, String message) {
-        if (DashboardActivity.dashboardActivity.isVisible()) {
+        if (DashboardActivity.dashboardActivity != null && DashboardActivity.dashboardActivity.isVisible()) {
             DashboardActivity.dashboardActivity.showException(title, message);
             return true;
         }
