@@ -35,6 +35,7 @@ import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.boundary.repositories.UserRepository;
 import org.eyeseetea.malariacare.domain.usecase.PushUseCase;
+import org.eyeseetea.malariacare.factories.AuthenticationFactory;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.strategies.PushServiceStrategy;
@@ -85,7 +86,7 @@ public class PushService extends JobIntentService {
         ServerInfoRemoteDataSource serverInfoRemoteDataSource = new ServerInfoRemoteDataSource(
                 this);
         ServerInfoLocalDataSource serverInfoLocalDataSource = new ServerInfoLocalDataSource(this);
-        UserRepository userRepository = new UserD2ApiRepository();
+        UserRepository userRepository = AuthenticationFactory.INSTANCE.provideUserRepository();
         pushUseCase = new PushUseCase(pushController, mainExecutor, asyncExecutor,
                 new ServerInfoRepository(serverInfoLocalDataSource, serverInfoRemoteDataSource),
                 userRepository);
