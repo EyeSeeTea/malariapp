@@ -50,7 +50,7 @@ class ServerRemoteDataSource(private val poEditorApiClient: PoEditorApiClient) :
 
             val response = OkHttpClientDataSource.executeCall(
                 BasicAuthenticator(credentials),
-                credentials.serverURL, SERVER_VERSION_CALL
+                credentials!!.serverURL, SERVER_VERSION_CALL
             )
             val jsonNode = OkHttpClientDataSource.parseResponse(response.body()!!.string())
             val keyFlag = jsonNode[KEY_FLAG_FIELD].asText()

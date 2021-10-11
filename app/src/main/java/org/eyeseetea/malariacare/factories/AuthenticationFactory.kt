@@ -59,10 +59,12 @@ object AuthenticationFactory {
     }
 
     fun provideUserRepository(): UserRepository {
-        return if (!PreferencesState.getInstance().creedentials.isDemoCredentials)
-            UserD2ApiRepository()
-        else
+        return if (PreferencesState.getInstance().creedentials != null &&
+            PreferencesState.getInstance().creedentials!!.isDemoCredentials)
             UserDemoRepository()
+        else
+            UserD2ApiRepository()
+
     }
 
     private fun provideUserAccountRepository(context: Context) =
