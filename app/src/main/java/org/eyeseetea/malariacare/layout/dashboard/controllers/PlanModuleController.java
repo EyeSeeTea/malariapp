@@ -26,13 +26,13 @@ import android.view.View;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.fragments.IModuleFragment;
 import org.eyeseetea.malariacare.fragments.PlannedFragment;
 import org.eyeseetea.malariacare.fragments.PlannedPerOrgUnitFragment;
 import org.eyeseetea.malariacare.layout.dashboard.config.ModuleSettings;
 
 public class PlanModuleController extends ModuleController {
     private static final String TAG = ".PlanModuleCOntroller";
-    PlannedPerOrgUnitFragment plannedOrgUnitsFragment;
 
     public PlanModuleController(ModuleSettings moduleSettings) {
         super(moduleSettings);
@@ -61,27 +61,28 @@ public class PlanModuleController extends ModuleController {
     public void onOrgUnitSelected(String orgUnitUid) {
         Log.d(TAG, "onOrgUnitSelected");
 
-        if (plannedOrgUnitsFragment == null) {
-            plannedOrgUnitsFragment = new PlannedPerOrgUnitFragment();
-        }
+        fragment = new PlannedPerOrgUnitFragment();
+
         FragmentTransaction ft = getFragmentTransaction();
-        ft.replace(R.id.dashboard_planning_init, plannedOrgUnitsFragment);
-        ft.commit();
-        plannedOrgUnitsFragment.reloadData();
+        ft.replace(R.id.dashboard_planning_init, fragment);
+        ft.commitAllowingStateLoss();
+
+        if (orgUnitUid != null) {
+            ((IModuleFragment) fragment).reloadData();
+        }
+
     }
 
     public void onProgramSelected(String programUid) {
         Log.d(TAG, "onProgramSelected");
 
-        if (fragment == null) {
             fragment = PlannedFragment.newInstance(server.getClassification());
-        }
 
         FragmentTransaction ft = getFragmentTransaction();
         ft.replace(R.id.dashboard_planning_init, fragment);
-        ft.commit();
+        ft.commitAllowingStateLoss();
         if (programUid != null) {
-            ((PlannedFragment) fragment).reloadData();
+            ((IModuleFragment) fragment).reloadData();
         }
     }
 }
