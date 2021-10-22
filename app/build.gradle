@@ -37,7 +37,12 @@ android {
     }
 
     signingConfigs {
-        config {}
+        config {
+            storeFile file('/home/nacho/EyeSeeTea/utils/eyeseekey.jks')
+            storePassword '3y3533T34'
+            keyAlias 'eyeseekey'
+            keyPassword '3y3533T34'
+        }
     }
     sourceSets {
         String sharedTestDir = 'src/sharedTest/java'
@@ -118,7 +123,7 @@ android {
         }
         hnqis {
             applicationId "org.eyeseetea.malariacare.hnqis_ng"
-            versionName "1.6.6"
+            versionName "1.6.7"
             buildConfigField "boolean", "translations", "true"
             buildConfigField "String", "defaultLocale", "\"en\""
             resValue "string", "authority", applicationId+versionName+"_DHIS2_DEFAULT_AUTHORITY"
