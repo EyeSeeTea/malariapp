@@ -25,9 +25,12 @@ import android.location.Location;
 import android.os.Build;
 import android.util.Log;
 
+import com.raizlabs.android.dbflow.sql.language.Select;
+
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.DataValueExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.ProgramStageExtended;
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 import org.eyeseetea.malariacare.data.database.model.ObservationDB;
 import org.eyeseetea.malariacare.data.database.model.ObservationValueDB;
@@ -57,6 +60,8 @@ import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.DateParser;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow_Table;
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
@@ -370,7 +375,10 @@ public class ConvertToSDKVisitor implements
         currentEvent.setStatus(EventExtended.STATUS_COMPLETED);
         currentEvent.setOrganisationUnitId(currentSurvey.getOrgUnit().getUid());
         currentEvent.setProgramId(currentSurvey.getProgram().getUid());
-        currentEvent.setProgramStageId(currentSurvey.getProgram().getUid());
+
+        currentEvent.setProgramStageId(
+                ProgramStageExtended.getProgramStageUid(currentSurvey.getProgram().getUid()));
+
         updateEventLocation();
         Log.d(TAG, "Saving event " + currentEvent.getUid());
         return currentEvent;
@@ -384,7 +392,8 @@ public class ConvertToSDKVisitor implements
         currentEvent.setStatus(EventExtended.STATUS_COMPLETED);
         currentEvent.setOrganisationUnitId(currentSurvey.getOrgUnit().getUid());
         currentEvent.setProgramId(currentSurvey.getProgram().getUid());
-        currentEvent.setProgramStageId(currentSurvey.getProgram().getUid());
+        currentEvent.setProgramStageId(
+                ProgramStageExtended.getProgramStageUid(currentSurvey.getProgram().getUid()));
         Log.d(TAG, "Saving event " + currentEvent.getUid());
         return currentEvent;
     }
