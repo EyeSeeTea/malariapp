@@ -423,6 +423,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         mLogoutUseCase.execute(new LogoutUseCase.Callback() {
             @Override
             public void onLogoutSuccess() {
+                AlarmPushReceiver.cancelPushAlarm(BaseActivity.this);
                 finishAndGo(LoginActivity.class);
             }
 

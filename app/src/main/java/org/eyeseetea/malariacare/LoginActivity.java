@@ -140,7 +140,10 @@ public class LoginActivity extends Activity implements LoginPresenter.View {
             getServerUseCase.execute(serverResult -> {
                 Server server = ((Either.Right<Server>) serverResult).getValue();
 
-                BugReportKt.addServerAndUser(server.getUrl(),loggedUser.getUsername());
+                if (server.getUrl() != null && loggedUser.getUsername() != null){
+                    BugReportKt.addServerAndUser(server.getUrl(),loggedUser.getUsername());
+                }
+
                 AnalyticsReportKt.addServer(this,server.getUrl());
                 launchActivity(LoginActivity.this, DashboardActivity.class);
             });
