@@ -44,6 +44,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import androidx.annotation.Nullable;
+
 public class PreferencesState {
 
     static Context context;
@@ -533,6 +535,7 @@ public class PreferencesState {
         return locale.getLanguage().substring(0, 2);
     }
 
+    @Nullable
     public Credentials getCreedentials() {
         return creedentials;
     }

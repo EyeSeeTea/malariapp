@@ -2,12 +2,15 @@ package org.eyeseetea.malariacare.factories
 
 import android.content.Context
 import org.eyeseetea.malariacare.data.database.datasources.ServerInfoLocalDataSource
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState
 import org.eyeseetea.malariacare.data.remote.api.ServerInfoRemoteDataSource
 import org.eyeseetea.malariacare.data.repositories.ServerInfoRepository
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository
 import org.eyeseetea.malariacare.data.repositories.UserD2ApiRepository
+import org.eyeseetea.malariacare.data.repositories.UserDemoRepository
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerRepository
 import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository
+import org.eyeseetea.malariacare.domain.boundary.repositories.UserRepository
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor
@@ -35,7 +38,7 @@ object AuthenticationFactory {
             serverLocalDataSource,
             serverRemoteDataSource
         )
-        val userRepository = UserD2ApiRepository()
+        val userRepository = provideUserRepository()
 
         val serverRepository: IServerRepository = ServerFactory.provideServerRepository(context)
 
@@ -55,6 +58,18 @@ object AuthenticationFactory {
         return LogoutUseCase(mUserAccountRepository)
     }
 
+    fun provideUserRepository(): UserRepository {
+        return if (PreferencesState.getInstance().creedentials != null &&
+            PreferencesState.getInstance().creedentials!!.isDemoCredentials)
+            UserDemoRepository()
+        else
+            UserD2ApiRepository()
+
+    }
+
     private fun provideUserAccountRepository(context: Context) =
         UserAccountRepository(context)
+
+
 }
+

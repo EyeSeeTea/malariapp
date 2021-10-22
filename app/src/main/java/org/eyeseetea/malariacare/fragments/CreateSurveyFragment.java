@@ -610,7 +610,10 @@ public class CreateSurveyFragment extends Fragment {
             for (OrgUnitDB orgUnit : selectedHierarchy) {
                 orgUnitList += orgUnit.getUid() + TOKEN;
             }
-            orgUnitList=orgUnitList.substring(0,orgUnitList.lastIndexOf(TOKEN));
+
+            if (orgUnitList.lastIndexOf(TOKEN) != -1){
+                orgUnitList=orgUnitList.substring(0,orgUnitList.lastIndexOf(TOKEN));
+            }
 
             saveOrgUnitList(orgUnitList);
             return orgUnitList;
