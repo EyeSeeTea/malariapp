@@ -104,4 +104,13 @@ public class ProgramStageExtended implements VisitableFromSDK {
         }
         return extendedsList;
     }
+
+    public static String getProgramStageUid(String programUid) {
+        ProgramStageFlow programStage =  new Select()
+                .from(ProgramStageFlow.class)
+                .where(ProgramStageFlow_Table.program.eq(programUid))
+                .querySingle();
+
+        return programStage.getUId();
+    }
 }
