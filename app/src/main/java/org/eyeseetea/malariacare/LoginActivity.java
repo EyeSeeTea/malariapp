@@ -73,6 +73,7 @@ import org.eyeseetea.malariacare.factories.AuthenticationFactory;
 import org.eyeseetea.malariacare.factories.ServerFactory;
 import org.eyeseetea.malariacare.layout.adapters.general.ServerArrayAdapter;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.presentation.analytics.AnalyticsReportKt;
 import org.eyeseetea.malariacare.presentation.bugs.BugReportKt;
 import org.eyeseetea.malariacare.presentation.presenters.LoginPresenter;
 import org.eyeseetea.malariacare.strategies.LoginActivityStrategy;
@@ -140,11 +141,13 @@ public class LoginActivity extends Activity implements LoginPresenter.View {
                 Server server = ((Either.Right<Server>) serverResult).getValue();
 
                 BugReportKt.addServerAndUser(server.getUrl(),loggedUser.getUsername());
+                AnalyticsReportKt.addServer(this,server.getUrl());
                 launchActivity(LoginActivity.this, DashboardActivity.class);
             });
         } else {
             ProgressActivity.PULL_CANCEL = false;
             BugReportKt.removeServerAndUser();
+            AnalyticsReportKt.removeServer(this);
 
             initViews();
             initPresenter();
