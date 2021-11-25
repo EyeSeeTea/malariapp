@@ -74,7 +74,7 @@ class ServerRemoteDataSource(private val poEditorApiClient: PoEditorApiClient) :
             val logoUrl = URL(baseUrl.protocol, baseUrl.host, baseUrl.port, logoEndpoint)
             getLogoFromURL(logoUrl)
         } catch (e: MalformedURLException) {
-            Log.e(TAG, e.message)
+            Log.e(TAG, e.message.toString())
             e.printStackTrace()
             null
         }
@@ -88,7 +88,7 @@ class ServerRemoteDataSource(private val poEditorApiClient: PoEditorApiClient) :
             val inputStream = httpURLConnection.inputStream
             inputStream.readBytes()
         } catch (e: Exception) {
-            Log.e(this.javaClass.simpleName, e.message)
+            Log.e(this.javaClass.simpleName, e.message.toString())
             e.printStackTrace()
             null
         }
