@@ -127,7 +127,9 @@ public class ExportData {
             FileWriter fw = new FileWriter(customInformation.getAbsoluteFile(), true);
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write("Flavour: " + BuildConfig.FLAVOR + "\n");
-            bw.write(Session.getPhoneMetaData().getPhone_metaData() + "\n");
+            if (Session.getPhoneMetaData() != null){
+                bw.write(Session.getPhoneMetaData().getPhone_metaData() + "\n");
+            }
             bw.write("Version code: " + BuildConfig.VERSION_CODE + "\n");
             bw.write("Version name: " + BuildConfig.VERSION_NAME + "\n");
             bw.write("Aplication Id: " + BuildConfig.APPLICATION_ID + "\n");
