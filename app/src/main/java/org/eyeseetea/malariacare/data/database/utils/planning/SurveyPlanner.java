@@ -93,9 +93,13 @@ public class SurveyPlanner {
             } else {
                 newSurvey.resetMainScore();
             }
+
+            //Set as creationDate the completion date of the last survey
+            newSurvey.setCreationDate(lastSurveyScore.getCompletionDate());
+        } else {
+            //Set as creationDate the completion date of the last survey
+            newSurvey.setCreationDate(new Date());
         }
-        //Set as creationDate the completion date of the last survey
-        newSurvey.setCreationDate(lastSurveyScore.getCompletionDate());
 
         newSurvey.save();
         return newSurvey;
