@@ -13,11 +13,11 @@ class OrgUnitProgramFilterPresenter(
 ) {
     internal var view: View? = null
 
-    private lateinit var programs: List<Program>
-    private lateinit var orgUnits: List<OrgUnit>
+    private var programs: List<Program> = listOf()
+    private var orgUnits: List<OrgUnit> = listOf()
 
-    private lateinit var programsNames: MutableList<String>
-    private lateinit var orgUnitsNames: MutableList<String>
+    private var programsNames: MutableList<String> = mutableListOf()
+    private var orgUnitsNames: MutableList<String> = mutableListOf()
 
     private var exclusiveFilter: Boolean = false
 
