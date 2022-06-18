@@ -26,6 +26,7 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushDataController;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.usecase.MockedPushSurveysUseCase;
 import org.eyeseetea.malariacare.domain.usecase.PushUseCase;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
@@ -45,12 +46,18 @@ public class PushServiceStrategy {
     public void push(PushUseCase pushUseCase) {
         this.pushUseCase = pushUseCase;
 
-        if (Session.getCredentials().isDemoCredentials()) {
-            Log.d(TAG, "execute mocked push");
-            executeMockedPush();
+        final Credentials credentials = Session.getCredentials();
+
+        if (credentials != null){
+            if (credentials.isDemoCredentials()) {
+                Log.d(TAG, "execute mocked push");
+                executeMockedPush();
+            } else {
+                Log.d(TAG, "execute push");
+                executePush();
+            }
         } else {
-            Log.d(TAG, "execute push");
-            executePush();
+            Log.d(TAG, "Not execute push because credentials is null");
         }
     }
 

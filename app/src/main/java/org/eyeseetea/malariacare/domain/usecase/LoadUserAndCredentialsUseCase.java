@@ -54,8 +54,12 @@ public class LoadUserAndCredentialsUseCase {
         String password = sharedPreferences.getString(mContext.getString(R.string.dhis_password),
                 "");
 
-        Credentials credentials = new Credentials(serverURL, username, password);
+        if (!serverURL.isEmpty() && !username.isEmpty() && !password.isEmpty()){
+            Credentials credentials = new Credentials(serverURL, username, password);
 
-        Session.setCredentials(credentials);
+            Session.setCredentials(credentials);
+        } else {
+            Session.setCredentials(null);
+        }
     }
 }
