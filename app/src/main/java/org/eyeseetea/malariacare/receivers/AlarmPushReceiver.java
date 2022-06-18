@@ -57,14 +57,16 @@ public class AlarmPushReceiver extends BroadcastReceiver {
         Log.i(TAG, "isDoneSuccess");
         setFail(false);
 
-        DashboardController dashboardController =
-                DashboardActivity.dashboardActivity.dashboardController;
+        if (DashboardActivity.dashboardActivity != null){
+            DashboardController dashboardController =
+                    DashboardActivity.dashboardActivity.dashboardController;
 
-        if (kind.equals(PushDataController.Kind.EVENTS) &&
-                dashboardController.getCurrentModule() instanceof ImproveModuleController) {
-            DashboardActivity.dashboardActivity.reloadActiveTab();
-        } else {
-            ObservablePush.getInstance().pushFinish();
+            if (kind.equals(PushDataController.Kind.EVENTS) &&
+                    dashboardController.getCurrentModule() instanceof ImproveModuleController) {
+                DashboardActivity.dashboardActivity.reloadActiveTab();
+            } else {
+                ObservablePush.getInstance().pushFinish();
+            }
         }
     }
 
