@@ -22,10 +22,14 @@ public abstract class FiltersFragment extends Fragment implements IModuleFragmen
     protected abstract int getOrgUnitProgramFilterViewId();
 
     protected String getSelectedProgramUidFilter(){
+        if (orgUnitProgramFilterView == null) return "";
+
         return orgUnitProgramFilterView.getSelectedProgramFilter();
     }
 
     protected String getSelectedOrgUnitUidFilter(){
+        if (orgUnitProgramFilterView == null) return "";
+
         return orgUnitProgramFilterView.getSelectedOrgUnitFilter();
     }
 
