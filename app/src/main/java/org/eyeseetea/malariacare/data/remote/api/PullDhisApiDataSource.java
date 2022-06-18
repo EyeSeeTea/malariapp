@@ -48,29 +48,32 @@ public class PullDhisApiDataSource {
     }
 
     public static UserDB pullUserAttributes(UserDB appUser) {
-        String lastMessage = appUser.getAnnouncement();
+        if (appUser != null) {
+            String lastMessage = appUser.getAnnouncement();
 
-        String data = USER + String.format(QUERY_USER_ATTRIBUTES, appUser.getUid());
-        Log.d(TAG, String.format("getUserAttributesApiCall(%s) -> %s", USER, data));
-        try {
-            Response response = executeCall(DHIS_PULL_API+data);
-            JsonNode jsonNode = parseResponse(response.body().string());
-            JsonNode jsonNodeArray = jsonNode.get(ATTRIBUTEVALUES);
-            String newMessage = "";
-            String closeDate = "";
-            for (int i = 0; i < jsonNodeArray.size(); i++) {
-                newMessage =
-                        getUserAnnouncement(jsonNodeArray, newMessage, i,
-                                UserDB.ATTRIBUTE_USER_ANNOUNCEMENT);
-                closeDate = getUserCloseDate(jsonNodeArray, closeDate, i);
+            String data = USER + String.format(QUERY_USER_ATTRIBUTES, appUser.getUid());
+            Log.d(TAG, String.format("getUserAttributesApiCall(%s) -> %s", USER, data));
+            try {
+                Response response = executeCall(DHIS_PULL_API + data);
+                JsonNode jsonNode = parseResponse(response.body().string());
+                JsonNode jsonNodeArray = jsonNode.get(ATTRIBUTEVALUES);
+                String newMessage = "";
+                String closeDate = "";
+                for (int i = 0; i < jsonNodeArray.size(); i++) {
+                    newMessage =
+                            getUserAnnouncement(jsonNodeArray, newMessage, i,
+                                    UserDB.ATTRIBUTE_USER_ANNOUNCEMENT);
+                    closeDate = getUserCloseDate(jsonNodeArray, closeDate, i);
+                }
+                saveNewAnnoucement(appUser, lastMessage, newMessage);
+                saveClosedDate(appUser, closeDate);
+
+            } catch (Exception ex) {
+                Log.e(TAG, "Cannot read user last updated from server with");
+                ex.printStackTrace();
             }
-            saveNewAnnoucement(appUser, lastMessage, newMessage);
-            saveClosedDate(appUser, closeDate);
-
-        } catch (Exception ex) {
-            Log.e(TAG, "Cannot read user last updated from server with");
-            ex.printStackTrace();
         }
+
         return appUser;
     }
 
