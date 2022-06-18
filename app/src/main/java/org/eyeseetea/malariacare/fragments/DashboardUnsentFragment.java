@@ -212,7 +212,7 @@ public class DashboardUnsentFragment extends FiltersFragment{
 
 
     public void reloadSurveys(List<SurveyDB> newListSurveys) {
-        if (newListSurveys != null) {
+        if (newListSurveys != null && this.adapter != null) {
             Log.d(TAG, "refreshScreen (Thread: " + Thread.currentThread().getId() + "): "
                     + newListSurveys.size());
             this.adapter.setSurveys(newListSurveys);
