@@ -35,6 +35,8 @@ class OrgUnitProgramFilterPresenter(
 
         this.allOrgUnitText = allOrgUnitText
         this.allProgramsText = allProgramsText
+        this.selectedProgramName = allProgramsText
+        this.selectedOrgUnitName = allOrgUnitText
 
         loadMetadata()
     }
