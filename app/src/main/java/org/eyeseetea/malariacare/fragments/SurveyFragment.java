@@ -616,7 +616,7 @@ public class AsyncChangeTab extends AsyncTask<Void, Integer, View> {
         int viewId = IDS_SCORES_IN_GENERAL_TAB[tab.getOrder_pos()];
         if (viewId != 0) {
             CustomTextView customTextView = ((CustomTextView) llLayout.findViewById(viewId));
-            customTextView.setText(AUtils.round(score));
+            customTextView.setText(AUtils.round(score,2));
             LayoutUtils.trafficLight(customTextView, score, null);
         }
     }
@@ -674,7 +674,7 @@ public class AsyncChangeTab extends AsyncTask<Void, Integer, View> {
     }
 
     private void updateAvgInGeneralScores(int viewId, Float score) {
-        ((CustomTextView) llLayout.findViewById(viewId)).setText(AUtils.round(score));
+        ((CustomTextView) llLayout.findViewById(viewId)).setText(AUtils.round(score,2));
         LayoutUtils.trafficLight(llLayout.findViewById(viewId), score, null);
     }
 
