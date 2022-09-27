@@ -116,7 +116,7 @@ class OrgUnitProgramFilterView(context: Context, attributeSet: AttributeSet) :
 
                 override fun onItemSelected(
                     parent: AdapterView<*>,
-                    view: View,
+                    view: View?,
                     position: Int,
                     id: Long
                 ) {
