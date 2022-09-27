@@ -138,13 +138,16 @@ public class LoginActivity extends Activity implements LoginPresenter.View {
             GetServerUseCase getServerUseCase = ServerFactory.INSTANCE.provideGetServerUseCase(this);
 
             getServerUseCase.execute(serverResult -> {
-                Server server = ((Either.Right<Server>) serverResult).getValue();
+                if (serverResult.isRight()) {
+                    Server server = ((Either.Right<Server>) serverResult).getValue();
 
-                if (server.getUrl() != null && loggedUser.getUsername() != null){
-                    BugReportKt.addServerAndUser(server.getUrl(),loggedUser.getUsername());
+                    if (server.getUrl() != null && loggedUser.getUsername() != null) {
+                        BugReportKt.addServerAndUser(server.getUrl(), loggedUser.getUsername());
+                    }
+
+                    AnalyticsReportKt.addServer(this, server.getUrl());
                 }
 
-                AnalyticsReportKt.addServer(this,server.getUrl());
                 launchActivity(LoginActivity.this, DashboardActivity.class);
             });
         } else {
