@@ -102,8 +102,6 @@ public class ProgressActivity extends Activity {
     static Intent intent;
     public PullUseCase mPullUseCase;
     private Handler handler;
-    private ProgressActivity mProgressActivity;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,7 +121,6 @@ public class ProgressActivity extends Activity {
         });
         intent = getIntent();
         handler = new Handler();
-        mProgressActivity = this;
     }
 
     private void initializeDependencies() {
@@ -208,7 +205,7 @@ public class ProgressActivity extends Activity {
     /**
      * Shows a dialog with the given message y move to login after showing error
      */
-    public void showException(final String msg) {
+    private void showException(final String msg) {
         Log.d(TAG, msg + " ");
 
         PULL_ERROR = true;
@@ -221,7 +218,7 @@ public class ProgressActivity extends Activity {
                 handler.post(new Runnable() { // This thread runs in the UI
                     @Override
                     public void run() {
-                        new AlertDialog.Builder(mProgressActivity)
+                        new AlertDialog.Builder(ProgressActivity.this)
                                 .setCancelable(false)
                                 .setTitle(dialogTitle)
                                 .setMessage(dialogMessage)
@@ -288,7 +285,7 @@ public class ProgressActivity extends Activity {
                 handler.post(new Runnable() { // This thread runs in the UI
                     @Override
                     public void run() {
-                        AlertDialog alertDialog = new AlertDialog.Builder(mProgressActivity)
+                        AlertDialog alertDialog = new AlertDialog.Builder(ProgressActivity.this)
                                 .setCancelable(false)
                                 .setTitle(title)
                                 .setMessage(msg)
