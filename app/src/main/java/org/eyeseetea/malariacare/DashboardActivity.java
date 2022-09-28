@@ -486,8 +486,11 @@ public class DashboardActivity extends BaseActivity {
             if (isUpdated) {
                 pullClient.pullUserAttributes(loggedUser);
             }*/
-            loggedUser = PullDhisApiDataSource.pullUserAttributes(loggedUser);
-            loggedUser.save();//save the lastUpdated info and attributes
+            if (loggedUser != null) {
+                loggedUser = PullDhisApiDataSource.pullUserAttributes(loggedUser);
+                loggedUser.save();//save the lastUpdated info and attributes
+            }
+
             return null;
         }
 
