@@ -30,9 +30,11 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -139,7 +141,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             setTheme(R.style.EyeSeeTheme);
             androidx.appcompat.app.ActionBar actionBar = BaseActivity.this.getSupportActionBar();
 
-            if (serverResult.isLeft()){
+            if (serverResult.isLeft()) {
                 LayoutUtils.setActionBarLogo(actionBar);
             } else {
                 Server server = ((Either.Right<Server>) serverResult).getValue();
@@ -277,7 +279,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
-            String permissions[], int[] grantResults) {
+                                           String permissions[], int[] grantResults) {
         switch (requestCode) {
             case MY_WRITE_EXTERNAL_STORAGE: {
                 // If request is cancelled, the result arrays are empty.
@@ -443,11 +445,17 @@ public abstract class BaseActivity extends AppCompatActivity {
         LocationManager locationManager =
                 (LocationManager) LocationMemory.getContext().getSystemService(
                         Context.LOCATION_SERVICE);
+
+        int locationPermissionCheck = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION);
+
+        int networkPermissionCheck = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_NETWORK_STATE);
+
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             debugMessage("requestLocationUpdates via GPS");
-            int permissionCheck = ContextCompat.checkSelfPermission(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION);
-            if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
+
+            if (locationPermissionCheck == PackageManager.PERMISSION_GRANTED) {
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0,
                         locationListener);
             }
@@ -455,9 +463,9 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
             debugMessage("requestLocationUpdates via NETWORK");
-            int permissionCheck = ContextCompat.checkSelfPermission(this,
-                    Manifest.permission.ACCESS_NETWORK_STATE);
-            if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
+
+            if (locationPermissionCheck == PackageManager.PERMISSION_GRANTED &&
+                    networkPermissionCheck == PackageManager.PERMISSION_GRANTED) {
                 locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0,
                         locationListener);
             }
