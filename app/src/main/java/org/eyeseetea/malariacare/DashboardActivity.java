@@ -52,6 +52,7 @@ import org.eyeseetea.malariacare.data.remote.api.PullDhisApiDataSource;
 import org.eyeseetea.malariacare.data.remote.api.ServerInfoRemoteDataSource;
 import org.eyeseetea.malariacare.data.repositories.ServerInfoRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerInfoRepository;
+import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.ServerInfo;
 import org.eyeseetea.malariacare.domain.usecase.GetServerInfoUseCase;
 import org.eyeseetea.malariacare.drive.DriveRestController;
@@ -84,8 +85,11 @@ public class DashboardActivity extends BaseActivity {
 
         handler = new Handler(Looper.getMainLooper());
         dashboardActivity = this;
-        if (getIntent().getBooleanExtra(getString(R.string.show_announcement_key), true)
-                && !Session.getCredentials().isDemoCredentials()) {
+
+        Credentials credentials = Session.getCredentials();
+
+        if (getIntent().getBooleanExtra(getString(R.string.show_announcement_key), true) &&
+            credentials != null && !credentials.isDemoCredentials()) {
             new AsyncAnnouncement().execute();
         }
 
@@ -486,8 +490,11 @@ public class DashboardActivity extends BaseActivity {
             if (isUpdated) {
                 pullClient.pullUserAttributes(loggedUser);
             }*/
-            loggedUser = PullDhisApiDataSource.pullUserAttributes(loggedUser);
-            loggedUser.save();//save the lastUpdated info and attributes
+            if (loggedUser != null) {
+                loggedUser = PullDhisApiDataSource.pullUserAttributes(loggedUser);
+                loggedUser.save();//save the lastUpdated info and attributes
+            }
+
             return null;
         }
 
