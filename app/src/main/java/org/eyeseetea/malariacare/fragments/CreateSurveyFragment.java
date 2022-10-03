@@ -182,7 +182,11 @@ public class CreateSurveyFragment extends Fragment {
         orgUnitListFirstLevel.add(0, orgUnitDefaultOption);
         viewHolder.component = llLayout.findViewById(R.id.org_unit);
         orgUnitView = (Spinner) viewHolder.component;
-        orgUnitView.setTag(orgUnitListFirstLevel.get(1).getOrgUnitLevel());
+
+        if (orgUnitListFirstLevel.size() > 1){
+            orgUnitView.setTag(orgUnitListFirstLevel.get(1).getOrgUnitLevel());
+        }
+
         orgUnitView.setAdapter(new OrgUnitArrayAdapter( getActivity(), orgUnitListFirstLevel));
         orgUnitView.setOnItemSelectedListener(new OrgUnitSpinnerListener(viewHolder));
 
