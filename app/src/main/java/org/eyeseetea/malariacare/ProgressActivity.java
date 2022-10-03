@@ -128,7 +128,7 @@ public class ProgressActivity extends Activity {
 
     private void initializeDependencies() {
         IPullController pullController;
-        if (Session.getCredentials().isDemoCredentials()) {
+        if (Session.getCredentials() == null || Session.getCredentials().isDemoCredentials()) {
             pullController = new LocalPullController(this);
         } else {
             pullController = new PullController(new ServerMetadataRepository(this));
