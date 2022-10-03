@@ -21,14 +21,14 @@ class OrgUnitProgramFilterPresenter(
 
     private var exclusiveFilter: Boolean = false
 
-    private lateinit var allOrgUnitText: String
-    private lateinit var allProgramsText: String
+    private var allOrgUnitText: String = ""
+    private var allProgramsText: String = ""
 
-    private lateinit var selectedProgramName: String
-    private lateinit var selectedOrgUnitName: String
+    private var selectedProgramName: String = ""
+    private var selectedOrgUnitName: String = ""
 
-    lateinit var selectedUidProgram: String
-    lateinit var selectedUidOrgUnit: String
+    var selectedUidProgram: String = ""
+    var selectedUidOrgUnit: String = ""
 
     fun attachView(view: View, allOrgUnitText: String, allProgramsText: String) {
         this.view = view

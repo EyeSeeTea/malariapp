@@ -26,86 +26,106 @@ public class Migration17AddObservationValueTable extends BaseMigration {
 
     @Override
     public void migrate(DatabaseWrapper database) {
-        Cursor obsActionPlanDBCursor = database.rawQuery(
-                "Select id_obs_action_plan, id_survey_obs_action_fk, provider, gaps, "
-                        + "action_plan, action1, action2, status from ObsActionPlan", null);
+        Cursor obsActionPlanDBCursor = null;
 
-        if (obsActionPlanDBCursor.moveToFirst()) {
+        try {
 
-            Context context = FlowManager.getContext();
 
-            String providerUid = findControlDataElementByCode(database,
-                    context.getString(R.string.providerCode)).getUid();
+            obsActionPlanDBCursor = database.rawQuery(
+                    "Select id_obs_action_plan, id_survey_obs_action_fk, provider, gaps, "
+                            + "action_plan, action1, action2, status from ObsActionPlan", null);
 
-            String gapsUid = findControlDataElementByCode(database,
-                    context.getString(R.string.gaps_code)).getUid();
+            if (obsActionPlanDBCursor.moveToFirst()) {
 
-            String actionPlanUid = findControlDataElementByCode(database,
-                    context.getString(R.string.action_plan_code)).getUid();
+                Context context = FlowManager.getContext();
 
-            String action1Uid = findControlDataElementByCode(database,
-                    context.getString(R.string.action1_code)).getUid();
+                String providerUid = findControlDataElementByCode(database,
+                        context.getString(R.string.providerCode)).getUid();
 
-            String action2Uid = findControlDataElementByCode(database,
-                    context.getString(R.string.action2_code)).getUid();
+                String gapsUid = findControlDataElementByCode(database,
+                        context.getString(R.string.gaps_code)).getUid();
 
-            List<String> sqlDataMigrations = new ArrayList();
+                String actionPlanUid = findControlDataElementByCode(database,
+                        context.getString(R.string.action_plan_code)).getUid();
 
-            do {
+                String action1Uid = findControlDataElementByCode(database,
+                        context.getString(R.string.action1_code)).getUid();
 
-                long surveyId = obsActionPlanDBCursor.getLong(1);
-                String provider = obsActionPlanDBCursor.getString(2);
-                String gaps = obsActionPlanDBCursor.getString(3);
-                String actionPlan = obsActionPlanDBCursor.getString(4);
-                String action1 = obsActionPlanDBCursor.getString(5);
-                String action2 = obsActionPlanDBCursor.getString(6);
-                int status = obsActionPlanDBCursor.getInt(7);
+                String action2Uid = findControlDataElementByCode(database,
+                        context.getString(R.string.action2_code)).getUid();
 
-                database.execSQL(
-                        String.format(
-                                "INSERT INTO Observation(id_survey_observation_fk,"
-                                        + "status_observation)"
-                                        + " values(%d, %d)", surveyId, status));
+                List<String> sqlDataMigrations = new ArrayList();
 
-                Cursor lastIdCursor = database.rawQuery("SELECT last_insert_rowid()", null);
+                do {
+                    Cursor lastIdCursor = null;
+                    try {
 
-                lastIdCursor.moveToFirst();
-                long observationId = lastIdCursor.getLong(0);
 
-                if (hasValue(provider)) {
-                    sqlDataMigrations.add(
-                            createObservationValuesQuery(observationId, provider, providerUid));
+                        long surveyId = obsActionPlanDBCursor.getLong(1);
+                        String provider = obsActionPlanDBCursor.getString(2);
+                        String gaps = obsActionPlanDBCursor.getString(3);
+                        String actionPlan = obsActionPlanDBCursor.getString(4);
+                        String action1 = obsActionPlanDBCursor.getString(5);
+                        String action2 = obsActionPlanDBCursor.getString(6);
+                        int status = obsActionPlanDBCursor.getInt(7);
+
+                        database.execSQL(
+                                String.format(
+                                        "INSERT INTO Observation(id_survey_observation_fk,"
+                                                + "status_observation)"
+                                                + " values(%d, %d)", surveyId, status));
+
+                        lastIdCursor = database.rawQuery("SELECT last_insert_rowid()", null);
+
+                        lastIdCursor.moveToFirst();
+                        long observationId = lastIdCursor.getLong(0);
+
+                        if (hasValue(provider)) {
+                            sqlDataMigrations.add(
+                                    createObservationValuesQuery(observationId, provider, providerUid));
+                        }
+
+                        if (hasValue(gaps)) {
+                            sqlDataMigrations.add(
+                                    createObservationValuesQuery(observationId, gaps, gapsUid));
+                        }
+
+                        if (hasValue(actionPlan)) {
+                            sqlDataMigrations.add(
+                                    createObservationValuesQuery(observationId, actionPlan, actionPlanUid));
+                        }
+
+                        if (hasValue(action1)) {
+                            sqlDataMigrations.add(
+                                    createObservationValuesQuery(observationId, action1, action1Uid));
+                        }
+
+                        if (hasValue(action2)) {
+                            sqlDataMigrations.add(
+                                    createObservationValuesQuery(observationId, action2, action2Uid));
+                        }
+
+                    } finally {
+                        if (lastIdCursor != null) {
+                            lastIdCursor.close();
+                        }
+                    }
+
+                } while (obsActionPlanDBCursor.moveToNext());
+
+                for (String dataMigration : sqlDataMigrations) {
+                    database.execSQL(dataMigration);
                 }
 
-                if (hasValue(gaps)) {
-                    sqlDataMigrations.add(
-                            createObservationValuesQuery(observationId, gaps, gapsUid));
-                }
-
-                if (hasValue(actionPlan)) {
-                    sqlDataMigrations.add(
-                            createObservationValuesQuery(observationId, actionPlan, actionPlanUid));
-                }
-
-                if (hasValue(action1)) {
-                    sqlDataMigrations.add(
-                            createObservationValuesQuery(observationId, action1, action1Uid));
-                }
-
-                if (hasValue(action2)) {
-                    sqlDataMigrations.add(
-                            createObservationValuesQuery(observationId, action2, action2Uid));
-                }
-
-            } while (obsActionPlanDBCursor.moveToNext());
-
-            for (String dataMigration : sqlDataMigrations) {
-                database.execSQL(dataMigration);
             }
 
-        }
+            database.execSQL("DROP TABLE IF EXISTS ObsActionPlan");
 
-        database.execSQL("DROP TABLE IF EXISTS ObsActionPlan");
+        } finally {
+            if (obsActionPlanDBCursor != null) {
+                obsActionPlanDBCursor.close();
+            }
+        }
     }
 
     private boolean hasValue(String observationValue) {
@@ -126,7 +146,7 @@ public class Migration17AddObservationValueTable extends BaseMigration {
 
 
     public static ServerMetadataDB findControlDataElementByCode(DatabaseWrapper database,
-            String code) {
+                                                                String code) {
         return new Select().from(ServerMetadataDB.class)
                 .where(ServerMetadataDB_Table.code.eq(code)).querySingle(database);
     }

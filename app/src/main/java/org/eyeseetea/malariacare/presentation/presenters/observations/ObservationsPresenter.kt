@@ -56,6 +56,8 @@ class ObservationsPresenter(
         this.view = view
         this.surveyUid = surveyUid
 
+        observationViewModel = ObservationViewModel(surveyUid)
+
         loadData()
     }
 
