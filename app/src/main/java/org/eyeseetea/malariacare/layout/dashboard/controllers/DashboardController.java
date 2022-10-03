@@ -267,7 +267,11 @@ public class DashboardController {
     public void onBackPressed() {
         navigatingBackwards = true;
         ModuleController moduleController = getCurrentModule();
-        moduleController.onBackPressed();
+
+        if (moduleController != null) {
+            moduleController.onBackPressed();
+        }
+
         navigatingBackwards = false;
     }
 
@@ -557,7 +561,7 @@ public class DashboardController {
     }
 
     public AlertDialog plannedModelDialog(final SurveyDB survey,
-            View.OnClickListener scheduleClickListener) {
+                                          View.OnClickListener scheduleClickListener) {
         AlertDialog.Builder builder = new AlertDialog.Builder(dashboardActivity);
 
         LayoutInflater inflater = dashboardActivity.getLayoutInflater();
