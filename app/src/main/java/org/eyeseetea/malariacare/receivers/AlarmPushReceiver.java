@@ -110,10 +110,12 @@ public class AlarmPushReceiver extends BroadcastReceiver {
     public static void cancelPushAlarm(Context context) {
         Log.d(TAG, "cancelPushAlarm");
 
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(context, AlarmPushReceiver.class);
-        PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
-        alarmManager.cancel(sender);
+        if (context != null){
+            AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+            Intent intent = new Intent(context, AlarmPushReceiver.class);
+            PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT);
+            alarmManager.cancel(sender);
+        }
     }
 }
