@@ -38,23 +38,31 @@ public class Migration19AddCompetencyScoreClassificationSurveyColumn extends Bas
     }
 
     private void assignUIdToPlanSurveys(DatabaseWrapper database) {
-        Cursor planSurveysCursor = database.rawQuery(
-                "Select id_survey from Survey where status = -1 and uid_event_fk is null", null);
+        Cursor planSurveysCursor = null;
 
-        if (planSurveysCursor.moveToFirst()) {
+        try {
+            planSurveysCursor = database.rawQuery(
+                    "Select id_survey from Survey where status = -1 and uid_event_fk is null", null);
 
-            do {
+            if (planSurveysCursor.moveToFirst()) {
 
-                long surveyId = planSurveysCursor.getLong(0);
+                do {
 
-                String surveyUid = CodeGenerator.generateCode();
+                    long surveyId = planSurveysCursor.getLong(0);
 
-                database.execSQL(
-                        "UPDATE Survey set uid_event_fk = '" + surveyUid +
-                                "' where id_survey = " + surveyId);
+                    String surveyUid = CodeGenerator.generateCode();
 
-            } while (planSurveysCursor.moveToNext());
+                    database.execSQL(
+                            "UPDATE Survey set uid_event_fk = '" + surveyUid +
+                                    "' where id_survey = " + surveyId);
 
+                } while (planSurveysCursor.moveToNext());
+
+            }
+        } finally {
+            if (planSurveysCursor != null) {
+                planSurveysCursor.close();
+            }
         }
     }
 
