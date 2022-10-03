@@ -346,7 +346,7 @@ public class ConvertToSDKVisitor implements
         dataValue.setStoredBy(getSafeUsername());
         dataValue.setValue(AUtils.round(
                 ScoreRegister.getCompositeScore(compositeScore, currentSurvey.getId_survey(),
-                        Constants.PUSH_MODULE_KEY)));
+                        Constants.PUSH_MODULE_KEY),2));
         dataValue.save();
     }
 

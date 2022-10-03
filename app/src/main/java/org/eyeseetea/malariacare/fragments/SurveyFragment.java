@@ -620,7 +620,7 @@ public class SurveyFragment extends Fragment implements DomainEventSubscriber<Va
         int viewId = IDS_SCORES_IN_GENERAL_TAB[tab.getOrder_pos()];
         if (viewId != 0) {
             CustomTextView customTextView = ((CustomTextView) llLayout.findViewById(viewId));
-            customTextView.setText(AUtils.round(score));
+            customTextView.setText(AUtils.round(score,2));
             LayoutUtils.trafficLight(customTextView, score, null);
         }
     }
@@ -678,7 +678,7 @@ public class SurveyFragment extends Fragment implements DomainEventSubscriber<Va
     }
 
     private void updateAvgInGeneralScores(int viewId, Float score) {
-        ((CustomTextView) llLayout.findViewById(viewId)).setText(AUtils.round(score));
+        ((CustomTextView) llLayout.findViewById(viewId)).setText(AUtils.round(score,2));
         LayoutUtils.trafficLight(llLayout.findViewById(viewId), score, null);
     }
 
