@@ -42,6 +42,7 @@ import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.domain.usecase.ISurveyAnsweredRatioCallback;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
+import org.eyeseetea.malariacare.presentation.viewmodels.SurveyViewModel;
 import org.eyeseetea.malariacare.views.CustomTextView;
 import org.eyeseetea.malariacare.views.DoublePieChart;
 
@@ -50,9 +51,9 @@ import java.util.List;
 
 public class AssessmentUnsentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    List<SurveyDB> surveys = new ArrayList<>();
+    List<SurveyViewModel> surveys = new ArrayList<>();
 
-    public void setSurveys(List<SurveyDB> surveys){
+    public void setSurveys(List<SurveyViewModel> surveys){
         this.surveys = surveys;
         this.notifyDataSetChanged();
     }
@@ -79,7 +80,7 @@ public class AssessmentUnsentAdapter extends RecyclerView.Adapter<RecyclerView.V
     class ViewHolder extends RecyclerView.ViewHolder {
         public static final String COMPLETED_SURVEY_MARK = "* ";
 
-        private SurveyDB survey;
+        private SurveyViewModel survey;
         private ImageView menuDots;
         private CustomTextView facilityName;
         private CustomTextView surveyType;
@@ -92,7 +93,13 @@ public class AssessmentUnsentAdapter extends RecyclerView.Adapter<RecyclerView.V
             menuDots = itemView.findViewById(R.id.menu_dots);
             facilityName = itemView.findViewById(R.id.facility);
             surveyType = itemView.findViewById(R.id.survey_type);
-            menuDots.setOnClickListener(view -> dashboardActivity.onAssessSelected(survey));
+
+
+            menuDots.setOnClickListener(view -> {
+                //TODO: Avoid to use model db here
+                SurveyDB surveyDB =  SurveyDB.getSurveyByUId(survey.getSurveyUid());
+                dashboardActivity.onAssessSelected(surveyDB);
+            });
 
             overall = itemView.findViewById(R.id.label_overall);
 
@@ -111,7 +118,7 @@ public class AssessmentUnsentAdapter extends RecyclerView.Adapter<RecyclerView.V
             decorateBackground(position);
         }
 
-        private void renderAnsweredRatio(final SurveyDB survey) {
+        private void renderAnsweredRatio(final SurveyViewModel survey) {
             ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
                     new SurveyAnsweredRatioRepository();
             IAsyncExecutor asyncExecutor = new AsyncExecutor();
@@ -120,7 +127,7 @@ public class AssessmentUnsentAdapter extends RecyclerView.Adapter<RecyclerView.V
                     new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository, mainExecutor,
                             asyncExecutor);
 
-            getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
+            getSurveyAnsweredRatioUseCase.execute(survey.getSurveyUid(),
                     new ISurveyAnsweredRatioCallback() {
                         @Override
                         public void nextProgressMessage() {
@@ -147,21 +154,19 @@ public class AssessmentUnsentAdapter extends RecyclerView.Adapter<RecyclerView.V
         }
 
         private void renderFacility(CustomTextView facilityName, CustomTextView surveyType,
-                SurveyDB survey) {
-            facilityName.setText(survey.getOrgUnit().getName());
+                SurveyViewModel survey) {
+            facilityName.setText(survey.getOrgUnit());
             facilityName.setLayoutParams(
                     new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0.5f));
             surveyType.setLayoutParams(
                     new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0.5f));
         }
 
-        private CustomTextView renderSurveyType(CustomTextView surveyType, SurveyDB survey) {
+        private CustomTextView renderSurveyType(CustomTextView surveyType, SurveyViewModel survey) {
             String surveyDescription;
-            if (survey.isCompleted()) {
-                surveyDescription = COMPLETED_SURVEY_MARK + survey.getProgram().getName();
-            } else {
-                surveyDescription = survey.getProgram().getName();
-            }
+
+            surveyDescription = survey.getProgram();
+
             surveyType.setText(surveyDescription);
             return surveyType;
         }

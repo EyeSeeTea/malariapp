@@ -27,6 +27,13 @@ public class SurveyAnsweredRatioRepository implements ISurveyAnsweredRatioReposi
     }
 
     @Override
+    public SurveyAnsweredRatio getSurveyAnsweredRatioBySurveyUId(String surveyUId) {
+        SurveyDB survey = SurveyDB.getSurveyByUId(surveyUId);
+
+        return getModelToEntity(getSurveyAnsweredRatio(survey.getId_survey()));
+    }
+
+    @Override
     public SurveyAnsweredRatio loadSurveyAnsweredRatio(ISurveyAnsweredRatioCallback callback, SurveyDB surveyDB) {
         SurveyAnsweredRatio surveyAnsweredRatio =null;
         ProgramDB surveyProgram = surveyDB.getProgram();

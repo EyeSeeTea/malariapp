@@ -7,21 +7,30 @@ import org.eyeseetea.malariacare.data.repositories.ObservationRepository
 import org.eyeseetea.malariacare.data.repositories.SurveyRepository
 import org.eyeseetea.malariacare.domain.boundary.repositories.IObservationRepository
 import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyRepository
-import org.eyeseetea.malariacare.domain.usecase.GetObservationBySurveyUidUseCase
-import org.eyeseetea.malariacare.domain.usecase.GetSentObservationsUseCase
-import org.eyeseetea.malariacare.domain.usecase.GetSurveyByUidUseCase
-import org.eyeseetea.malariacare.domain.usecase.GetSurveysUseCase
-import org.eyeseetea.malariacare.domain.usecase.SaveObservationUseCase
+import org.eyeseetea.malariacare.domain.usecase.*
+import org.eyeseetea.malariacare.presentation.executors.WrapperExecutor
+import org.eyeseetea.malariacare.presentation.presenters.surveys.SurveysPresenter
 
 object DataFactory {
 
     private var surveyLocalDataSource: ISurveyDataSource? = null
     private var observationLocalDataSource: ObservationLocalDataSource? = null
 
+    fun provideSurveysPresenter(): SurveysPresenter =
+        SurveysPresenter(
+            WrapperExecutor(),
+            this.provideSurveysUseCase(),
+            MetadataFactory.provideGetProgramsUseCase(),
+            MetadataFactory.provideGetOrgUnitsUseCase()
+        )
+
     fun provideGetSurveyByUidUseCase(): GetSurveyByUidUseCase =
         GetSurveyByUidUseCase(provideSurveyRepository())
 
-    fun provideSurveysUseCase(): GetSurveysUseCase = GetSurveysUseCase(provideSurveyRepository())
+    fun provideSurveysByUIdsUseCase(): GetSurveysByUIdsUseCase = GetSurveysByUIdsUseCase(provideSurveyRepository())
+
+    private fun provideSurveysUseCase(): GetSurveysUseCase =
+        GetSurveysUseCase(provideSurveyRepository())
 
     fun provideGetObservationBySurveyUidUseCase(): GetObservationBySurveyUidUseCase =
         GetObservationBySurveyUidUseCase(provideObservationRepository())

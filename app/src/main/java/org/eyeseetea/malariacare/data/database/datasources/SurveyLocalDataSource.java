@@ -22,6 +22,7 @@ import org.eyeseetea.malariacare.data.database.model.SurveyDB_Table;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.model.ValueDB;
 import org.eyeseetea.malariacare.data.database.model.ValueDB_Table;
+import org.eyeseetea.malariacare.domain.entity.Program;
 import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.entity.SurveyStatus;
 
@@ -39,12 +40,12 @@ public class SurveyLocalDataSource implements ISurveyDataSource {
     List<OptionDB> optionsDB;
     List<OrgUnitProgramRelationDB> orgUnitProgramRelationsDB;
 
-    public SurveyLocalDataSource(){
+    public SurveyLocalDataSource() {
         loadMetadata();
     }
 
     private void loadMetadata() {
-        orgUnitsDB =OrgUnitDB.list();
+        orgUnitsDB = OrgUnitDB.list();
         programsDB = ProgramDB.getAllPrograms();
         questionsDB = QuestionDB.list();
         optionsDB = OptionDB.list();
@@ -53,9 +54,11 @@ public class SurveyLocalDataSource implements ISurveyDataSource {
 
 
     @Override
-    public List<Survey> getSurveysByStatus(SurveyStatus status) {
+    public List<Survey> getSurveysByStatus(SurveyStatus status, String programUid, String orgUnitUid) {
+        Long programId = getProgramId(programUid);
+        Long orgUnitId = getOrgUnitId(orgUnitUid);
 
-        List<SurveyDB> surveyDBS = getSurveysDBByStatus(status);
+        List<SurveyDB> surveyDBS = getSurveysDB(status,programId,orgUnitId);
 
         List<Survey> surveys = mapSurveys(surveyDBS);
 
@@ -166,7 +169,7 @@ public class SurveyLocalDataSource implements ISurveyDataSource {
     private void deleteNonExistedValuesInModifiedSurvey(SurveyDB surveyDB) {
         List<Long> existedQuestionsInSurvey = new ArrayList<>();
 
-        for (ValueDB valueDB:surveyDB.getValues()) {
+        for (ValueDB valueDB : surveyDB.getValues()) {
             existedQuestionsInSurvey.add(valueDB.getId_question_fk());
         }
 
@@ -189,15 +192,23 @@ public class SurveyLocalDataSource implements ISurveyDataSource {
         }
     }
 
-    private List<SurveyDB> getSurveysDBByStatus(SurveyStatus status){
+    private List<SurveyDB> getSurveysDB(SurveyStatus status, Long program, Long orgUnit) {
         List<SurveyDB> surveyDBS = null;
 
         From from = new Select().from(SurveyDB.class);
 
         Where where = from.where(SurveyDB_Table.status.isNotNull());
 
-        if (status != null){
+        if (status != null) {
             where = from.where(SurveyDB_Table.status.in(status.getCode()));
+        }
+
+        if (program != null) {
+            where = where.and(SurveyDB_Table.id_program_fk.in(program));
+        }
+
+        if (orgUnit != null) {
+            where =  where.and(SurveyDB_Table.id_org_unit_fk.in(orgUnit));
         }
 
         surveyDBS = where.orderBy(OrderBy.fromProperty(SurveyDB_Table.completion_date))
@@ -209,7 +220,7 @@ public class SurveyLocalDataSource implements ISurveyDataSource {
         return surveyDBS;
     }
 
-    private List<SurveyDB> getSurveysDBByUids(List<String> uids){
+    private List<SurveyDB> getSurveysDBByUids(List<String> uids) {
         List<SurveyDB> surveyDBS = new Select().from(SurveyDB.class)
                 .where(SurveyDB_Table.uid_event_fk.in(uids)).queryList();
 
@@ -224,8 +235,8 @@ public class SurveyLocalDataSource implements ISurveyDataSource {
 
         List<ValueDB> allValues =
                 new Select().from(ValueDB.class)
-                .leftOuterJoin(SurveyDB.class).on(ValueDB_Table.id_survey_fk.eq(SurveyDB_Table.id_survey))
-                .where(SurveyDB_Table.uid_event_fk.in(surveysUid)).queryList();
+                        .leftOuterJoin(SurveyDB.class).on(ValueDB_Table.id_survey_fk.eq(SurveyDB_Table.id_survey))
+                        .where(SurveyDB_Table.uid_event_fk.in(surveysUid)).queryList();
 
 
         Map<Long, List<ValueDB>> valuesMap = new HashMap<>();
@@ -237,7 +248,7 @@ public class SurveyLocalDataSource implements ISurveyDataSource {
         }
 
         for (SurveyDB surveyDB : surveyDBS) {
-            if (valuesMap.containsKey(surveyDB.getId_survey())){
+            if (valuesMap.containsKey(surveyDB.getId_survey())) {
                 surveyDB.setValues(valuesMap.get(surveyDB.getId_survey()));
             }
         }
@@ -246,10 +257,34 @@ public class SurveyLocalDataSource implements ISurveyDataSource {
     private List<String> extractSurveyUIds(List<SurveyDB> surveyDBS) {
         List<String> surveysUIds = new ArrayList<>();
 
-        for (SurveyDB surveyDB:surveyDBS) {
+        for (SurveyDB surveyDB : surveyDBS) {
             surveysUIds.add(surveyDB.getEventUid());
         }
 
         return surveysUIds;
+    }
+
+    private Long getProgramId (String uid){
+        Long id = null;
+
+        for (ProgramDB programDB : programsDB) {
+            if (programDB.getUid().equals(uid)){
+                return programDB.getId_program();
+            }
+        }
+
+        return id;
+    }
+
+    private Long getOrgUnitId (String uid){
+        Long id = null;
+
+        for (OrgUnitDB orgUnitsDB : orgUnitsDB) {
+            if (orgUnitsDB.getUid().equals(uid)){
+                return orgUnitsDB.getId_org_unit();
+            }
+        }
+
+        return id;
     }
 }

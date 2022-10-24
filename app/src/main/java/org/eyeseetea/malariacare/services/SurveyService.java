@@ -60,10 +60,6 @@ public class SurveyService extends IntentService {
     public static final String RELOAD_SENT_FRAGMENT_ACTION ="org.eyeseetea.malariacare.services.SurveyService.RELOAD_SENT_FRAGMENT_ACTION";
 
     /**
-     * Name of 'list unsent or uncompleted' action
-     */
-    public static final String ALL_IN_PROGRESS_SURVEYS_ACTION ="org.eyeseetea.malariacare.services.SurveyService.ALL_IN_PROGRESS_SURVEYS_ACTION";
-    /**
      * Name of 'list completed (and unsent)' action
      */
     public static final String ALL_COMPLETED_SURVEYS_ACTION ="org.eyeseetea.malariacare.services.SurveyService.ALL_COMPLETED_SURVEYS_ACTION";
@@ -148,9 +144,6 @@ public class SurveyService extends IntentService {
             case PREPARE_SURVEY_ACTION:
                 Log.i(".SurveyService", "Active module: " + intent.getStringExtra(Constants.MODULE_KEY));
                 prepareSurveyInfo(intent.getStringExtra(Constants.MODULE_KEY));
-                break;
-            case ALL_IN_PROGRESS_SURVEYS_ACTION:
-                getAllInProgressSurveys();
                 break;
             case RELOAD_SENT_FRAGMENT_ACTION:
                 reloadSentFragment();
@@ -294,20 +287,6 @@ public class SurveyService extends IntentService {
         LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
     }
 
-    private void getAllInProgressSurveys() {
-        Log.d(TAG,"getAllUncompletedUnsentUnplanedSurveys (Thread:"+Thread.currentThread().getId()+")");
-
-        //Select surveys from sql
-        List<SurveyDB> surveys = SurveyDB.getAllInProgressSurveys();
-
-        //Since intents does NOT admit NON serializable as values we use Session instead
-        Session.putServiceValue(ALL_IN_PROGRESS_SURVEYS_ACTION,surveys);
-
-        //Returning result to anyone listening
-        Intent resultIntent= new Intent(ALL_IN_PROGRESS_SURVEYS_ACTION);
-        LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
-    }
-
     private void preLoadTabItems(Long tabID, String module){
         TabDB tab = TabDB.findById(tabID);
         if (tab !=null) {
@@ -321,7 +300,6 @@ public class SurveyService extends IntentService {
         reloadSentFragment();
         getAllCompletedSurveys();
         getAllCreateSurveyData();
-        getAllInProgressSurveys();
         getAllMonitorData();
         getAllPrograms();
     }

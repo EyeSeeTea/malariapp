@@ -4,20 +4,23 @@ import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
 
 import java.util.Date;
 
-public class SurveyViewModel {
+public class MonitorSurveyViewModel {
     private final String program;
     private final String orgUnit;
     private final Date date;
     private final CompetencyScoreClassification competency;
     private final String surveyUid;
+    private boolean visible = true;
+    private final String qualityOfCare;
 
-    public SurveyViewModel(String surveyUid, String program, String orgUnit, Date date,
-                           CompetencyScoreClassification competency) {
+    public MonitorSurveyViewModel(String surveyUid, String program, String orgUnit, Date date,
+                                  CompetencyScoreClassification competency, String qualityOfCare) {
         this.surveyUid = surveyUid;
         this.program = program;
         this.orgUnit = orgUnit;
         this.date = date;
         this.competency = competency;
+        this.qualityOfCare = qualityOfCare;
     }
 
     public String getProgram() {
@@ -32,6 +35,14 @@ public class SurveyViewModel {
         return date;
     }
 
+    public Boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean value) {
+        visible = value;
+    }
+
     public CompetencyScoreClassification getCompetency() {
         return competency;
     }
@@ -39,4 +50,9 @@ public class SurveyViewModel {
     public String getSurveyUid() {
         return surveyUid;
     }
+
+    public String getQualityOfCare() {
+        return qualityOfCare;
+    }
+
 }
