@@ -32,6 +32,7 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
 import org.eyeseetea.malariacare.domain.entity.ServerClassification;
+import org.eyeseetea.malariacare.presentation.viewmodels.SurveyViewModel;
 import org.eyeseetea.malariacare.utils.CompetencyUtils;
 import org.eyeseetea.malariacare.utils.DateParser;
 import org.eyeseetea.malariacare.views.CustomTextView;
@@ -44,14 +45,14 @@ public class AssessmentSentAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     public static final String SCORE_FORMAT = "%.1f %%";
 
-    List<SurveyDB> surveys = new ArrayList<>();
+    List<SurveyViewModel> surveys = new ArrayList<>();
     ServerClassification classification;
 
     public AssessmentSentAdapter(ServerClassification classification) {
         this.classification = classification;
     }
 
-    public void setSurveys(List<SurveyDB> surveys){
+    public void setSurveys(List<SurveyViewModel> surveys){
         this.surveys = surveys;
         this.notifyDataSetChanged();
     }
@@ -77,7 +78,7 @@ public class AssessmentSentAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     class ViewHolder extends RecyclerView.ViewHolder {
         public static final String COMPLETED_SURVEY_MARK = "* ";
 
-        private SurveyDB survey;
+        private SurveyViewModel survey;
         private ImageView menuDots;
         private CustomTextView facilityName;
         private CustomTextView surveyType;
@@ -92,7 +93,13 @@ public class AssessmentSentAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             menuDots = itemView.findViewById(R.id.menu_dots);
             facilityName = itemView.findViewById(R.id.facility);
             surveyType = itemView.findViewById(R.id.survey_type);
-            menuDots.setOnClickListener(view -> dashboardActivity.onFeedbackSelected(survey));
+
+
+            menuDots.setOnClickListener(view -> {
+                //TODO: Avoid to use model db here
+                SurveyDB surveyDB =  SurveyDB.getSurveyByUId(survey.getSurveyUid());
+                dashboardActivity.onFeedbackSelected(surveyDB);
+            });
             classificationTextView = itemView.findViewById(R.id.score);
         }
 
@@ -110,11 +117,11 @@ public class AssessmentSentAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
 
         private void renderFacility(CustomTextView facilityName, CustomTextView surveyType,
-                SurveyDB survey) {
-            facilityName.setText(survey.getOrgUnit().getName());
+                SurveyViewModel survey) {
+            facilityName.setText(survey.getOrgUnit());
         }
 
-        private void renderSentScore(SurveyDB survey) {
+        private void renderSentScore(SurveyViewModel survey) {
 
             String competencyText;
 
@@ -124,14 +131,12 @@ public class AssessmentSentAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 classificationTextView.setText(competencyText);
             } else {
                 if (serverClassification == ServerClassification.COMPETENCIES){
-                    CompetencyScoreClassification classification =
-                            CompetencyScoreClassification.get(
-                                    survey.getCompetencyScoreClassification());
+                    CompetencyScoreClassification classification =survey.getCompetency();
 
                     CompetencyUtils.setTextByCompetencyAbbreviation(classificationTextView, classification);
                 } else {
-                    if (survey.hasMainScore()){
-                        String value = Math.round(survey.getMainScoreValue()) + " %";
+                    if (survey.getScore() != null) {
+                        String value = Math.round(survey.getScore().getScore()) + " %";
                         classificationTextView.setText(value);
                     } else {
                         classificationTextView.setText("-");
@@ -140,23 +145,23 @@ public class AssessmentSentAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             }
     }
 
-        private void renderSentDate(SurveyDB survey) {
+        private void renderSentDate(SurveyViewModel survey) {
             CustomTextView sentDate = itemView.findViewById(R.id.sentDate);
             sentDate.setText(decorateCompletionDate(survey));
         }
 
-        private String decorateCompletionDate(SurveyDB survey) {
-            Date completionDate = survey.getCompletionDate();
+        private String decorateCompletionDate(SurveyViewModel survey) {
+            Date completionDate = survey.getDate();
             DateParser dateParser = new DateParser();
             return dateParser.getEuropeanFormattedDate(completionDate);
         }
 
-        private CustomTextView renderSurveyType(CustomTextView surveyType, SurveyDB survey) {
+        private CustomTextView renderSurveyType(CustomTextView surveyType, SurveyViewModel survey) {
             String surveyDescription;
             if (survey.isCompleted()) {
-                surveyDescription = COMPLETED_SURVEY_MARK + survey.getProgram().getName();
+                surveyDescription = COMPLETED_SURVEY_MARK + survey.getProgram();
             } else {
-                surveyDescription = survey.getProgram().getName();
+                surveyDescription = survey.getProgram();
             }
             surveyType.setText(surveyDescription);
             return surveyType;

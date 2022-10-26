@@ -25,6 +25,7 @@ import org.eyeseetea.malariacare.data.database.model.ValueDB_Table;
 import org.eyeseetea.malariacare.domain.entity.Program;
 import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.entity.SurveyStatus;
+import org.eyeseetea.malariacare.domain.entity.SurveyStatusFilter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -54,7 +55,7 @@ public class SurveyLocalDataSource implements ISurveyDataSource {
 
 
     @Override
-    public List<Survey> getSurveysByStatus(SurveyStatus status, String programUid, String orgUnitUid) {
+    public List<Survey> getSurveysByStatus(SurveyStatusFilter status, String programUid, String orgUnitUid) {
         Long programId = getProgramId(programUid);
         Long orgUnitId = getOrgUnitId(orgUnitUid);
 
@@ -192,15 +193,17 @@ public class SurveyLocalDataSource implements ISurveyDataSource {
         }
     }
 
-    private List<SurveyDB> getSurveysDB(SurveyStatus status, Long program, Long orgUnit) {
+    private List<SurveyDB> getSurveysDB(SurveyStatusFilter statusFilter, Long program, Long orgUnit) {
         List<SurveyDB> surveyDBS = null;
+
+        List<Integer> statuses = getFilterStatus(statusFilter);
 
         From from = new Select().from(SurveyDB.class);
 
         Where where = from.where(SurveyDB_Table.status.isNotNull());
 
-        if (status != null) {
-            where = from.where(SurveyDB_Table.status.in(status.getCode()));
+        if (statuses != null && statuses.size() > 0) {
+            where = from.where(SurveyDB_Table.status.in(statuses));
         }
 
         if (program != null) {
@@ -218,6 +221,25 @@ public class SurveyLocalDataSource implements ISurveyDataSource {
             loadValuesInSurveys(surveyDBS);
 
         return surveyDBS;
+    }
+
+    private List<Integer> getFilterStatus(SurveyStatusFilter statusFilter) {
+        List<Integer> statuses = new ArrayList<>();
+
+        if (statusFilter != null){
+            if (statusFilter == SurveyStatusFilter.IN_PROGRESS){
+                statuses.add(SurveyStatus.IN_PROGRESS.getCode());
+            } else {
+
+                statuses.add(SurveyStatus.SENT.getCode());
+                statuses.add(SurveyStatus.COMPLETED.getCode());
+                statuses.add(SurveyStatus.CONFLICT.getCode());
+                statuses.add(SurveyStatus.QUARANTINE.getCode());
+                statuses.add(SurveyStatus.SENDING.getCode());
+            }
+        }
+
+        return statuses;
     }
 
     private List<SurveyDB> getSurveysDBByUids(List<String> uids) {

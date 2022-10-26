@@ -55,11 +55,6 @@ public class SurveyService extends IntentService {
      */
     public static final String SERVICE_METHOD="serviceMethod";
     /**
-     * Name of the parameter that holds every survey and filters that goes into the feedback
-     */
-    public static final String RELOAD_SENT_FRAGMENT_ACTION ="org.eyeseetea.malariacare.services.SurveyService.RELOAD_SENT_FRAGMENT_ACTION";
-
-    /**
      * Name of 'list completed (and unsent)' action
      */
     public static final String ALL_COMPLETED_SURVEYS_ACTION ="org.eyeseetea.malariacare.services.SurveyService.ALL_COMPLETED_SURVEYS_ACTION";
@@ -145,9 +140,6 @@ public class SurveyService extends IntentService {
                 Log.i(".SurveyService", "Active module: " + intent.getStringExtra(Constants.MODULE_KEY));
                 prepareSurveyInfo(intent.getStringExtra(Constants.MODULE_KEY));
                 break;
-            case RELOAD_SENT_FRAGMENT_ACTION:
-                reloadSentFragment();
-                break;
             case ALL_COMPLETED_SURVEYS_ACTION:
                 getAllCompletedSurveys();
                 break;
@@ -173,52 +165,6 @@ public class SurveyService extends IntentService {
                 getAllPrograms();
                 break;
         }
-    }
-
-    private void reloadSentFragment() {
-        BaseServiceBundle sentDashboardBundle = new BaseServiceBundle();
-
-        Log.d(TAG,"getAllSentCompletedOrConflictSurveys (Thread:"+Thread.currentThread().getId()+")");
-
-        //Select surveys from sql
-        List<SurveyDB> sentSurveyList;
-        if(PreferencesState.getInstance().isLastForOrgUnit()) {
-            sentSurveyList = SurveyDB.getLastSentCompletedOrConflictSurveys();
-        }else{
-            sentSurveyList = SurveyDB.getAllSentCompletedOrConflictSurveys();
-        }
-        sentDashboardBundle.addModelList(SurveyDB.class.getName(),sentSurveyList);
-        sentDashboardBundle.addModelList(OrgUnitDB.class.getName(),OrgUnitDB.getAllOrgUnit());
-        sentDashboardBundle.addModelList(ProgramDB.class.getName(),ProgramDB.getAllPrograms());
-
-        //Since intents does NOT admit NON serializable as values we use Session instead
-        Session.putServiceValue(RELOAD_SENT_FRAGMENT_ACTION, sentDashboardBundle);
-
-        //Returning result to anyone listening
-        Intent resultIntent= new Intent(RELOAD_SENT_FRAGMENT_ACTION);
-        LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
-    }
-
-    private void reloadOnlyLastSentFragment() {
-        BaseServiceBundle sentDashboardBundle = new BaseServiceBundle();
-
-        Log.d(TAG,"getAllSentCompletedOrConflictSurveys (Thread:"+Thread.currentThread().getId()+")");
-
-        //Select surveys from sql
-        List<SurveyDB> sentSurveyList;
-
-        sentSurveyList = SurveyDB.getLastSentCompletedOrConflictSurveys();
-        sentDashboardBundle.addModelList(SurveyDB.class.getName(),sentSurveyList);
-        sentDashboardBundle.addModelList(OrgUnitDB.class.getName(),OrgUnitDB.getAllOrgUnit());
-        sentDashboardBundle.addModelList(ProgramDB.class.getName(),ProgramDB.getAllPrograms());
-
-        //Since intents does NOT admit NON serializable as values we use Session instead
-        Session.putServiceValue(RELOAD_SENT_FRAGMENT_ACTION, sentDashboardBundle);
-
-        //Returning result to anyone listening
-        Intent resultIntent= new Intent(RELOAD_SENT_FRAGMENT_ACTION);
-        LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
-
     }
 
     private void reloadPlannedSurveys() {
@@ -297,7 +243,6 @@ public class SurveyService extends IntentService {
     private void reloadDashboard(){
         Log.d(TAG, "reloadDashboard");
         reloadPlannedSurveys();
-        reloadSentFragment();
         getAllCompletedSurveys();
         getAllCreateSurveyData();
         getAllMonitorData();

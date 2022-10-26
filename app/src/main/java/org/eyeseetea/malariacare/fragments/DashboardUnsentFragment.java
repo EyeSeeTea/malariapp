@@ -35,6 +35,7 @@ import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitProgramRelationDB;
 import org.eyeseetea.malariacare.domain.entity.SurveyStatus;
+import org.eyeseetea.malariacare.domain.entity.SurveyStatusFilter;
 import org.eyeseetea.malariacare.factories.DataFactory;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentUnsentAdapter;
 import org.eyeseetea.malariacare.presentation.presenters.surveys.SurveysPresenter;
@@ -91,7 +92,7 @@ public class DashboardUnsentFragment extends FiltersFragment implements SurveysP
     private void initPresenter() {
         surveysPresenter = DataFactory.INSTANCE.provideSurveysPresenter();
 
-        surveysPresenter.attachView(this, SurveyStatus.IN_PROGRESS, getSelectedProgramUidFilter(), getSelectedOrgUnitUidFilter());
+        surveysPresenter.attachView(this, SurveyStatusFilter.IN_PROGRESS, getSelectedProgramUidFilter(), getSelectedOrgUnitUidFilter());
     }
 
     @Override

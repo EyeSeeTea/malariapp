@@ -1,9 +1,6 @@
 package org.eyeseetea.malariacare.presentation.presenters.surveys
 
-import org.eyeseetea.malariacare.domain.entity.OrgUnit
-import org.eyeseetea.malariacare.domain.entity.Program
-import org.eyeseetea.malariacare.domain.entity.Survey
-import org.eyeseetea.malariacare.domain.entity.SurveyStatus
+import org.eyeseetea.malariacare.domain.entity.*
 import org.eyeseetea.malariacare.domain.usecase.GetOrgUnitsUseCase
 import org.eyeseetea.malariacare.domain.usecase.GetProgramsUseCase
 import org.eyeseetea.malariacare.domain.usecase.GetSurveysUseCase
@@ -18,7 +15,7 @@ class SurveysPresenter(
     private val getOrgUnitsUseCase: GetOrgUnitsUseCase,
 ) {
     private var view: View? = null
-    private lateinit var surveyStatus: SurveyStatus
+    private lateinit var surveyStatusFilter: SurveyStatusFilter
     private lateinit var programsMap: Map<String, Program>
     private lateinit var orgUnitsMap: Map<String, OrgUnit>
 
@@ -33,9 +30,14 @@ class SurveysPresenter(
         }
     }
 
-    fun attachView(view: View, surveyStatus: SurveyStatus, programUid: String, orgUnitUid: String) {
+    fun attachView(
+        view: View,
+        surveyStatusFilter: SurveyStatusFilter,
+        programUid: String,
+        orgUnitUid: String
+    ) {
         this.view = view
-        this.surveyStatus = surveyStatus
+        this.surveyStatusFilter = surveyStatusFilter
 
         this.programUid = programUid
         this.orgUnitUid = orgUnitUid
@@ -66,7 +68,7 @@ class SurveysPresenter(
 
     private fun load() = executor.asyncExecute {
         try {
-            val surveys = getSurveysByStatus.execute(surveyStatus, programUid, orgUnitUid)
+            val surveys = getSurveysByStatus.execute(surveyStatusFilter, programUid, orgUnitUid)
 
             val surveyViewModels = surveys.map { mapToViewModel(it) }
 
@@ -109,8 +111,14 @@ class SurveysPresenter(
         val orgUnit = orgUnitsMap[survey.orgUnitUId]
 
         return SurveyViewModel(
-            survey.surveyUid, program?.name, orgUnit?.name,
-            survey.completionDate, survey.competency,
+            survey.surveyUid,
+            program?.name,
+            orgUnit?.name,
+            survey.completionDate,
+            survey.competency,
+            survey.score,
+            survey.status == SurveyStatus.COMPLETED,
+            survey.hasConflict()
         )
     }
 
