@@ -55,11 +55,6 @@ public class SurveyService extends IntentService {
      */
     public static final String SERVICE_METHOD="serviceMethod";
     /**
-     * Name of 'list completed (and unsent)' action
-     */
-    public static final String ALL_COMPLETED_SURVEYS_ACTION ="org.eyeseetea.malariacare.services.SurveyService.ALL_COMPLETED_SURVEYS_ACTION";
-
-    /**
      * Name of 'reload' action which returns both lists (unsent, sent)
      */
     public static final String RELOAD_DASHBOARD_ACTION ="org.eyeseetea.malariacare.services.SurveyService.RELOAD_DASHBOARD_ACTION";
@@ -83,10 +78,6 @@ public class SurveyService extends IntentService {
      * Name of 'All create survey data' action
      */
     public static final String ALL_CREATE_SURVEY_DATA_ACTION ="org.eyeseetea.malariacare.services.SurveyService.ALL_CREATE_SURVEY_DATA_ACTION";
-    /**
-     * Name of 'All programs' action
-     */
-    public static final String ALL_PROGRAMS_ACTION ="org.eyeseetea.malariacare.services.SurveyService.ALL_PROGRAMS_ACTION";
 
     /**
      * Key of composite scores entry in shared session
@@ -140,9 +131,6 @@ public class SurveyService extends IntentService {
                 Log.i(".SurveyService", "Active module: " + intent.getStringExtra(Constants.MODULE_KEY));
                 prepareSurveyInfo(intent.getStringExtra(Constants.MODULE_KEY));
                 break;
-            case ALL_COMPLETED_SURVEYS_ACTION:
-                getAllCompletedSurveys();
-                break;
             case RELOAD_DASHBOARD_ACTION:
                 reloadDashboard();
                 break;
@@ -161,25 +149,7 @@ public class SurveyService extends IntentService {
             case ALL_CREATE_SURVEY_DATA_ACTION:
                 getAllCreateSurveyData();
                 break;
-            case ALL_PROGRAMS_ACTION:
-                getAllPrograms();
-                break;
         }
-    }
-
-    private void reloadPlannedSurveys() {
-        Intent surveysIntent = new Intent(
-                PreferencesState.getInstance().getContext().getApplicationContext(),
-                PlannedSurveyService.class);
-        surveysIntent.putExtra(PlannedSurveyService.SERVICE_METHOD,
-                PlannedSurveyService.PLANNED_SURVEYS_ACTION);
-        PreferencesState.getInstance().getContext().getApplicationContext().startService(surveysIntent);
-        surveysIntent = new Intent(
-                PreferencesState.getInstance().getContext().getApplicationContext(),
-                PlannedSurveyService.class);
-        surveysIntent.putExtra(PlannedSurveyService.SERVICE_METHOD,
-                PlannedSurveyService.PLANNED_PER_ORG_UNIT_SURVEYS_ACTION);
-        PreferencesState.getInstance().getContext().getApplicationContext().startService(surveysIntent);
     }
 
     private void getAllCreateSurveyData() {
@@ -222,17 +192,6 @@ public class SurveyService extends IntentService {
         LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
     }
 
-    private void getAllPrograms() {
-        Log.d(TAG,"getAllPrograms (Thread:"+Thread.currentThread().getId()+")");
-        List<ProgramDB> programList= ProgramDB.getAllPrograms();
-        //Since intents does NOT admit NON serializable as values we use Session instead
-        Session.putServiceValue(ALL_PROGRAMS_ACTION, programList);
-
-        //Returning result to anyone listening
-        Intent resultIntent= new Intent(ALL_PROGRAMS_ACTION);
-        LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
-    }
-
     private void preLoadTabItems(Long tabID, String module){
         TabDB tab = TabDB.findById(tabID);
         if (tab !=null) {
@@ -242,11 +201,8 @@ public class SurveyService extends IntentService {
 
     private void reloadDashboard(){
         Log.d(TAG, "reloadDashboard");
-        reloadPlannedSurveys();
-        getAllCompletedSurveys();
         getAllCreateSurveyData();
         getAllMonitorData();
-        getAllPrograms();
     }
 
     /**
@@ -263,22 +219,6 @@ public class SurveyService extends IntentService {
 
         Session.putServiceValue(PREPARE_FEEDBACK_ACTION_ITEMS, feedbackList);
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(PREPARE_FEEDBACK_ACTION));
-    }
-
-
-    private void getAllCompletedSurveys(){
-        Log.d(TAG,"getCompletedSurveys (Thread:"+Thread.currentThread().getId()+")");
-
-        //Select surveys from sql
-        List<SurveyDB> surveys = SurveyDB.getAllCompletedSurveys();
-
-        //Since intents does NOT admit NON serializable as values we use Session instead
-        Session.putServiceValue(ALL_COMPLETED_SURVEYS_ACTION,surveys);
-
-        //Returning result to anyone listening
-        Intent resultIntent= new Intent(ALL_COMPLETED_SURVEYS_ACTION);
-        LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
-        //getAllSentDashboardData();
     }
 
     /**
