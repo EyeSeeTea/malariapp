@@ -1,21 +1,12 @@
 package org.eyeseetea.malariacare.factories
 
 import android.content.Context
+import org.eyeseetea.malariacare.data.database.datasources.OrgUnitLevelLocalDataSource
 import org.eyeseetea.malariacare.data.database.datasources.OrgUnitLocalDataSource
 import org.eyeseetea.malariacare.data.database.datasources.ProgramLocalDataSource
-import org.eyeseetea.malariacare.data.repositories.OrgUnitRepository
-import org.eyeseetea.malariacare.data.repositories.ProgramRepository
-import org.eyeseetea.malariacare.data.repositories.ServerMetadataRepository
-import org.eyeseetea.malariacare.data.repositories.UserAccountRepository
-import org.eyeseetea.malariacare.domain.boundary.repositories.IOrgUnitRepository
-import org.eyeseetea.malariacare.domain.boundary.repositories.IProgramRepository
-import org.eyeseetea.malariacare.domain.boundary.repositories.IServerMetadataRepository
-import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository
-import org.eyeseetea.malariacare.domain.usecase.GetOrgUnitByUidUseCase
-import org.eyeseetea.malariacare.domain.usecase.GetOrgUnitsUseCase
-import org.eyeseetea.malariacare.domain.usecase.GetProgramByUidUseCase
-import org.eyeseetea.malariacare.domain.usecase.GetProgramsUseCase
-import org.eyeseetea.malariacare.domain.usecase.GetServerMetadataUseCase
+import org.eyeseetea.malariacare.data.repositories.*
+import org.eyeseetea.malariacare.domain.boundary.repositories.*
+import org.eyeseetea.malariacare.domain.usecase.*
 
 object MetadataFactory {
 
@@ -31,6 +22,9 @@ object MetadataFactory {
     fun provideGetOrgUnitsUseCase(): GetOrgUnitsUseCase =
         GetOrgUnitsUseCase(provideOrgUnitRepository())
 
+    fun provideGetOrgUnitLevelsUseCase(): GetOrgUnitLevelsUseCase =
+        GetOrgUnitLevelsUseCase(provideOrgUnitLevelRepository())
+
     fun provideServerMetadataUseCase(context: Context): GetServerMetadataUseCase =
         GetServerMetadataUseCase(provideServerMetadataRepository(context))
 
@@ -40,8 +34,14 @@ object MetadataFactory {
     private fun provideOrgUnitRepository(): IOrgUnitRepository =
         OrgUnitRepository(provideOrgUnitLocalDataSource())
 
+    private fun provideOrgUnitLevelRepository(): IOrgUnitLevelRepository =
+        OrgUnitLevelRepository(provideOrgUnitLevelLocalDataSource())
+
     private fun provideOrgUnitLocalDataSource(): OrgUnitLocalDataSource =
         OrgUnitLocalDataSource()
+
+    private fun provideOrgUnitLevelLocalDataSource(): OrgUnitLevelLocalDataSource =
+        OrgUnitLevelLocalDataSource()
 
     fun provideUserAccountRepository(context: Context): IUserAccountRepository =
         UserAccountRepository(context)

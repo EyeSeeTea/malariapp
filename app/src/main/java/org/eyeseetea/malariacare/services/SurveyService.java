@@ -75,11 +75,6 @@ public class SurveyService extends IntentService {
     public static final String ALL_MONITOR_DATA_ACTION ="org.eyeseetea.malariacare.services.SurveyService.ALL_MONITOR_DATA_ACTION";
 
     /**
-     * Name of 'All create survey data' action
-     */
-    public static final String ALL_CREATE_SURVEY_DATA_ACTION ="org.eyeseetea.malariacare.services.SurveyService.ALL_CREATE_SURVEY_DATA_ACTION";
-
-    /**
      * Key of composite scores entry in shared session
      */
     public static final String PREPARE_SURVEY_ACTION_COMPOSITE_SCORES ="org.eyeseetea.malariacare.services.SurveyService.PREPARE_SURVEY_ACTION_COMPOSITE_SCORES";
@@ -146,39 +141,23 @@ public class SurveyService extends IntentService {
             case ALL_MONITOR_DATA_ACTION:
                 getAllMonitorData();
                 break;
-            case ALL_CREATE_SURVEY_DATA_ACTION:
-                getAllCreateSurveyData();
-                break;
         }
-    }
-
-    private void getAllCreateSurveyData() {
-        Log.d(TAG,"getAllCreateSurveyData (Thread:"+Thread.currentThread().getId()+")");
-
-        BaseServiceBundle orgCreateSurveyData=new BaseServiceBundle();
-        orgCreateSurveyData.addModelList(OrgUnitDB.class.getName(), OrgUnitDB.list());
-        orgCreateSurveyData.addModelList(OrgUnitLevelDB.class.getName(), OrgUnitLevelDB.list());
-        orgCreateSurveyData.addModelList(ProgramDB.class.getName(), ProgramDB.list());
-
-        //Since intents does NOT admit NON serializable as values we use Session instead
-        Session.putServiceValue(ALL_CREATE_SURVEY_DATA_ACTION, orgCreateSurveyData);
-
-        //Returning result to anyone listening
-        Intent resultIntent= new Intent(ALL_CREATE_SURVEY_DATA_ACTION);
-        LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
     }
 
     private void getAllMonitorData() {
         Log.d(TAG,"getAllMonitorData (Thread:"+Thread.currentThread().getId()+")");
-        List<ProgramDB> programList= ProgramDB.getAllPrograms();
+
         Date date = new Date();
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         cal.add(Calendar.MONTH, -5);
         cal.set(Calendar.DAY_OF_MONTH, 1);
+
         List<SurveyDB> sentSurveys = SurveyDB.getAllSentCompletedOrConflictSurveysAfterDate(
                 cal.getTime());
+
         List<OrgUnitDB> orgUnits= OrgUnitDB.list();
+        List<ProgramDB> programList= ProgramDB.getAllPrograms();
 
         BaseServiceBundle monitorMap=new BaseServiceBundle();
         monitorMap.addModelList(SurveyDB.class.getName(),sentSurveys);
@@ -201,7 +180,6 @@ public class SurveyService extends IntentService {
 
     private void reloadDashboard(){
         Log.d(TAG, "reloadDashboard");
-        getAllCreateSurveyData();
         getAllMonitorData();
     }
 

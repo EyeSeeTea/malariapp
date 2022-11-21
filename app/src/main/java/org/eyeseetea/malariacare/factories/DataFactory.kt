@@ -9,12 +9,21 @@ import org.eyeseetea.malariacare.domain.boundary.repositories.IObservationReposi
 import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyRepository
 import org.eyeseetea.malariacare.domain.usecase.*
 import org.eyeseetea.malariacare.presentation.executors.WrapperExecutor
+import org.eyeseetea.malariacare.presentation.presenters.surveys.CreateSurveyPresenter
 import org.eyeseetea.malariacare.presentation.presenters.surveys.SurveysPresenter
 
 object DataFactory {
 
     private var surveyLocalDataSource: ISurveyDataSource? = null
     private var observationLocalDataSource: ObservationLocalDataSource? = null
+
+    fun provideCreateSurveyPresenter(): CreateSurveyPresenter =
+        CreateSurveyPresenter(
+            WrapperExecutor(),
+            MetadataFactory.provideGetProgramsUseCase(),
+            MetadataFactory.provideGetOrgUnitsUseCase(),
+            MetadataFactory.provideGetOrgUnitLevelsUseCase()
+        )
 
     fun provideSurveysPresenter(): SurveysPresenter =
         SurveysPresenter(
