@@ -116,7 +116,7 @@ public class ProgramDB extends BaseModel{
                 .orderBy(ProgramDB_Table.name, true).queryList();
     }
 
-    public static List<ProgramDB> geByUIds(List<String> uids){
+    public static List<ProgramDB> getByUIds(List<String> uids){
         return new Select().from(ProgramDB.class).where(ProgramDB_Table.uid_program.in(uids))
                 .orderBy(ProgramDB_Table.name, true).queryList();
     }

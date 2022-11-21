@@ -283,9 +283,9 @@ public class CreateSurveyFragment extends Fragment implements CreateSurveyPresen
             orgUnitLevelIds.add(orgUnitLevel.getUid());
         }
 
-        orgUnitList = OrgUnitDB.geByUIds(orgUnitIds);
-        allProgramList =  ProgramDB.geByUIds(programIds);
-        orgUnitLevelList = OrgUnitLevelDB.geByUIds(orgUnitLevelIds);
+        orgUnitList = OrgUnitDB.getByUIds(orgUnitIds);
+        allProgramList =  ProgramDB.getByUIds(programIds);
+        orgUnitLevelList = OrgUnitLevelDB.getByUIds(orgUnitLevelIds);
 
         create();
     }

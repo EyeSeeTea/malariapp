@@ -226,7 +226,7 @@ public class OrgUnitDB extends BaseModel {
                 .orderBy(OrgUnitDB_Table.name, true).queryList();
     }
 
-    public static List<OrgUnitDB> geByUIds(List<String> uids) {
+    public static List<OrgUnitDB> getByUIds(List<String> uids) {
         return new Select().from(OrgUnitDB.class)
                 .where(OrgUnitDB_Table.uid_org_unit.in(uids))
                 .orderBy(OrgUnitDB_Table.name, true).queryList();
