@@ -4,6 +4,7 @@ import org.eyeseetea.malariacare.domain.entity.*
 import org.eyeseetea.malariacare.domain.usecase.GetOrgUnitsUseCase
 import org.eyeseetea.malariacare.domain.usecase.GetProgramsUseCase
 import org.eyeseetea.malariacare.domain.usecase.GetSurveysUseCase
+import org.eyeseetea.malariacare.domain.usecase.SurveysFilter
 import org.eyeseetea.malariacare.observables.ObservablePush
 import org.eyeseetea.malariacare.presentation.boundary.Executor
 import org.eyeseetea.malariacare.presentation.viewmodels.SurveyViewModel
@@ -68,7 +69,9 @@ class SurveysPresenter(
 
     private fun load() = executor.asyncExecute {
         try {
-            val surveys = getSurveysByStatus.execute(surveyStatusFilter, programUid, orgUnitUid)
+            val surveysFilter = SurveysFilter(surveyStatusFilter, programUid, orgUnitUid)
+
+            val surveys = getSurveysByStatus.execute(surveysFilter)
 
             val surveyViewModels = surveys.map { mapToViewModel(it) }
 

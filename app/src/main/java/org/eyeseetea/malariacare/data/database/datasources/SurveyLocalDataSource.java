@@ -26,6 +26,7 @@ import org.eyeseetea.malariacare.domain.entity.Program;
 import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.entity.SurveyStatus;
 import org.eyeseetea.malariacare.domain.entity.SurveyStatusFilter;
+import org.eyeseetea.malariacare.domain.usecase.SurveysFilter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,11 +56,11 @@ public class SurveyLocalDataSource implements ISurveyDataSource {
 
 
     @Override
-    public List<Survey> getSurveysByStatus(SurveyStatusFilter status, String programUid, String orgUnitUid) {
-        Long programId = getProgramId(programUid);
-        Long orgUnitId = getOrgUnitId(orgUnitUid);
+    public List<Survey> getSurveysByFilter(SurveysFilter filter) {
+        Long programId = getProgramId(filter.getProgramUid());
+        Long orgUnitId = getOrgUnitId(filter.getOrgUnitUid());
 
-        List<SurveyDB> surveyDBS = getSurveysDB(status,programId,orgUnitId);
+        List<SurveyDB> surveyDBS = getSurveysDB(filter.getStatus(),programId,orgUnitId);
 
         List<Survey> surveys = mapSurveys(surveyDBS);
 
