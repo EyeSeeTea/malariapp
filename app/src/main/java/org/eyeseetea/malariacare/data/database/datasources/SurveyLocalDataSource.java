@@ -22,12 +22,12 @@ import org.eyeseetea.malariacare.data.database.model.SurveyDB_Table;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.model.ValueDB;
 import org.eyeseetea.malariacare.data.database.model.ValueDB_Table;
-import org.eyeseetea.malariacare.domain.entity.Program;
 import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.entity.SurveyStatus;
 import org.eyeseetea.malariacare.domain.entity.SurveyStatusFilter;
 import org.eyeseetea.malariacare.domain.usecase.SurveysFilter;
 
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -60,7 +60,7 @@ public class SurveyLocalDataSource implements ISurveyDataSource {
         Long programId = getProgramId(filter.getProgramUid());
         Long orgUnitId = getOrgUnitId(filter.getOrgUnitUid());
 
-        List<SurveyDB> surveyDBS = getSurveysDB(filter.getStatus(),programId,orgUnitId);
+        List<SurveyDB> surveyDBS = getSurveysDB(filter.getStatus(), programId, orgUnitId, filter.getStartDate());
 
         List<Survey> surveys = mapSurveys(surveyDBS);
 
@@ -194,7 +194,7 @@ public class SurveyLocalDataSource implements ISurveyDataSource {
         }
     }
 
-    private List<SurveyDB> getSurveysDB(SurveyStatusFilter statusFilter, Long program, Long orgUnit) {
+    private List<SurveyDB> getSurveysDB(SurveyStatusFilter statusFilter, Long program, Long orgUnit, Date startDate) {
         List<SurveyDB> surveyDBS = null;
 
         List<Integer> statuses = getFilterStatus(statusFilter);
@@ -212,7 +212,11 @@ public class SurveyLocalDataSource implements ISurveyDataSource {
         }
 
         if (orgUnit != null) {
-            where =  where.and(SurveyDB_Table.id_org_unit_fk.in(orgUnit));
+            where = where.and(SurveyDB_Table.id_org_unit_fk.in(orgUnit));
+        }
+
+        if (startDate != null) {
+            where = where.and(SurveyDB_Table.completion_date.greaterThan(startDate));
         }
 
         surveyDBS = where.orderBy(OrderBy.fromProperty(SurveyDB_Table.completion_date))
@@ -227,8 +231,8 @@ public class SurveyLocalDataSource implements ISurveyDataSource {
     private List<Integer> getFilterStatus(SurveyStatusFilter statusFilter) {
         List<Integer> statuses = new ArrayList<>();
 
-        if (statusFilter != null){
-            if (statusFilter == SurveyStatusFilter.IN_PROGRESS){
+        if (statusFilter != null) {
+            if (statusFilter == SurveyStatusFilter.IN_PROGRESS) {
                 statuses.add(SurveyStatus.IN_PROGRESS.getCode());
             } else {
 
@@ -287,11 +291,11 @@ public class SurveyLocalDataSource implements ISurveyDataSource {
         return surveysUIds;
     }
 
-    private Long getProgramId (String uid){
+    private Long getProgramId(String uid) {
         Long id = null;
 
         for (ProgramDB programDB : programsDB) {
-            if (programDB.getUid().equals(uid)){
+            if (programDB.getUid().equals(uid)) {
                 return programDB.getId_program();
             }
         }
@@ -299,11 +303,11 @@ public class SurveyLocalDataSource implements ISurveyDataSource {
         return id;
     }
 
-    private Long getOrgUnitId (String uid){
+    private Long getOrgUnitId(String uid) {
         Long id = null;
 
         for (OrgUnitDB orgUnitsDB : orgUnitsDB) {
-            if (orgUnitsDB.getUid().equals(uid)){
+            if (orgUnitsDB.getUid().equals(uid)) {
                 return orgUnitsDB.getId_org_unit();
             }
         }
