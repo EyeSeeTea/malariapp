@@ -60,12 +60,9 @@ import java.util.Iterator;
 import java.util.List;
 
 public abstract class AUtils {
-
-    private static final int ZERO_DECIMALS = 0; // Number of decimals outputs will have
-
     public static String round(float base, int decimalPlace) {
         BigDecimal bd = new BigDecimal(Float.toString(base));
-        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
+        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_EVEN);
         if (decimalPlace == 0) return Integer.toString((int) bd.floatValue());
         return Float.toString(bd.floatValue());
     }
@@ -78,10 +75,6 @@ public abstract class AUtils {
                     String.format("Error when parsing string %s to float number", floatStr));
             return 0f;
         }
-    }
-
-    public static String round(float base) {
-        return round(base, AUtils.ZERO_DECIMALS);
     }
 
     public static List<BaseModel> convertTabToArrayCustom(TabDB tab) {

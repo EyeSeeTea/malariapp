@@ -32,6 +32,7 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
 import org.eyeseetea.malariacare.domain.entity.ServerClassification;
+import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.CompetencyUtils;
 import org.eyeseetea.malariacare.utils.DateParser;
 import org.eyeseetea.malariacare.views.CustomTextView;
@@ -41,9 +42,6 @@ import java.util.Date;
 import java.util.List;
 
 public class AssessmentSentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {
-
-    public static final String SCORE_FORMAT = "%.1f %%";
-
     List<SurveyDB> surveys = new ArrayList<>();
     ServerClassification classification;
 
@@ -131,7 +129,7 @@ public class AssessmentSentAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     CompetencyUtils.setTextByCompetencyAbbreviation(classificationTextView, classification);
                 } else {
                     if (survey.hasMainScore()){
-                        String value = Math.round(survey.getMainScoreValue()) + " %";
+                        String value = AUtils.round(survey.getMainScoreValue(),2) + " %";
                         classificationTextView.setText(value);
                     } else {
                         classificationTextView.setText("-");
