@@ -9,6 +9,7 @@ import org.eyeseetea.malariacare.domain.boundary.repositories.IObservationReposi
 import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyRepository
 import org.eyeseetea.malariacare.domain.usecase.*
 import org.eyeseetea.malariacare.presentation.executors.WrapperExecutor
+import org.eyeseetea.malariacare.presentation.presenters.monitoring.MonitorPresenter
 import org.eyeseetea.malariacare.presentation.presenters.surveys.CreateSurveyPresenter
 import org.eyeseetea.malariacare.presentation.presenters.surveys.SurveysPresenter
 
@@ -23,6 +24,14 @@ object DataFactory {
             MetadataFactory.provideGetProgramsUseCase(),
             MetadataFactory.provideGetOrgUnitsUseCase(),
             MetadataFactory.provideGetOrgUnitLevelsUseCase()
+        )
+
+    fun provideMonitorPresenter(): MonitorPresenter =
+        MonitorPresenter(
+            WrapperExecutor(),
+            this.provideSurveysUseCase(),
+            MetadataFactory.provideGetProgramsUseCase(),
+            MetadataFactory.provideGetOrgUnitsUseCase()
         )
 
     fun provideSurveysPresenter(): SurveysPresenter =

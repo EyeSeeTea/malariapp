@@ -1,15 +1,18 @@
-package org.eyeseetea.malariacare.presentation.presenters.surveys
+package org.eyeseetea.malariacare.presentation.presenters.monitoring
 
-import org.eyeseetea.malariacare.domain.entity.*
+import org.eyeseetea.malariacare.domain.entity.OrgUnit
+import org.eyeseetea.malariacare.domain.entity.Program
+import org.eyeseetea.malariacare.domain.entity.Survey
+import org.eyeseetea.malariacare.domain.entity.SurveyStatusFilter
 import org.eyeseetea.malariacare.domain.usecase.GetOrgUnitsUseCase
 import org.eyeseetea.malariacare.domain.usecase.GetProgramsUseCase
 import org.eyeseetea.malariacare.domain.usecase.GetSurveysUseCase
 import org.eyeseetea.malariacare.domain.usecase.SurveysFilter
 import org.eyeseetea.malariacare.observables.ObservablePush
 import org.eyeseetea.malariacare.presentation.boundary.Executor
-import org.eyeseetea.malariacare.presentation.viewmodels.SurveyViewModel
+import java.util.*
 
-open class SurveysPresenter(
+class MonitorPresenter(
     private val executor: Executor,
     private val getSurveysByStatus: GetSurveysUseCase,
     private val getProgramsUseCase: GetProgramsUseCase,
@@ -17,8 +20,6 @@ open class SurveysPresenter(
 ) {
     private var view: View? = null
     private lateinit var surveyStatusFilter: SurveyStatusFilter
-    private lateinit var programsMap: Map<String, Program>
-    private lateinit var orgUnitsMap: Map<String, OrgUnit>
 
     private lateinit var programUid: String
     private lateinit var orgUnitUid: String
@@ -43,21 +44,11 @@ open class SurveysPresenter(
         this.programUid = programUid
         this.orgUnitUid = orgUnitUid
 
-        loadMetadata()
         load()
     }
 
     fun detachView() {
         this.view = null
-    }
-
-    private fun loadMetadata() = executor.asyncExecute {
-        try {
-            loadPrograms()
-            loadOrgUnits()
-        } catch (e: java.lang.Exception) {
-            showNetworkError()
-        }
     }
 
     fun refresh(programUid: String, orgUnitUid: String) {
@@ -69,13 +60,21 @@ open class SurveysPresenter(
 
     private fun load() = executor.asyncExecute {
         try {
-            val surveysFilter = SurveysFilter(surveyStatusFilter, programUid, orgUnitUid)
+            val date = Date()
+            val cal = Calendar.getInstance()
+            cal.time = date
+            cal.add(Calendar.MONTH, -5)
+            cal[Calendar.DAY_OF_MONTH] = 1
+
+            val surveysFilter = SurveysFilter(surveyStatusFilter, programUid, orgUnitUid, cal.time)
 
             val surveys = getSurveysByStatus.execute(surveysFilter)
 
-            val surveyViewModels = surveys.map { mapToViewModel(it) }
+            val programs = getProgramsUseCase.execute().associateBy { it.uid }
 
-            showSurveys(surveyViewModels)
+            val orgUnits = getOrgUnitsUseCase.execute().associateBy { it.uid }
+
+            showSurveys(surveys,programs,orgUnits)
         } catch (e: Exception) {
             showNetworkError()
 
@@ -85,9 +84,13 @@ open class SurveysPresenter(
         }
     }
 
-    private fun showSurveys(surveys: List<SurveyViewModel>) = executor.uiExecute {
+    private fun showSurveys(
+        surveys: List<Survey>,
+        programs: Map<String, Program>,
+        orgUnits: Map<String, OrgUnit>
+    ) = executor.uiExecute {
         view?.let { view ->
-            view.showSurveys(surveys)
+            view.showData(surveys, programs, orgUnits)
         }
     }
 
@@ -97,37 +100,12 @@ open class SurveysPresenter(
         }
     }
 
-    private fun loadPrograms() {
-        val programs = getProgramsUseCase.execute()
-
-        programsMap = programs.associateBy { it.uid }
-    }
-
-    private fun loadOrgUnits() {
-        val orgUnits = getOrgUnitsUseCase.execute()
-
-        orgUnitsMap = orgUnits.associateBy { it.uid }
-    }
-
-    private fun mapToViewModel(survey: Survey): SurveyViewModel {
-        val program = programsMap[survey.programUId]
-        val orgUnit = orgUnitsMap[survey.orgUnitUId]
-
-        return SurveyViewModel(
-            survey.surveyUid,
-            program?.name,
-            orgUnit?.name,
-            survey.completionDate,
-            survey.competency,
-            survey.score,
-            survey.status == SurveyStatus.COMPLETED,
-            survey.hasConflict()
-        )
-    }
-
     interface View {
-        fun showSurveys(
-            surveys: List<@JvmSuppressWildcards SurveyViewModel>
+        fun showData(
+            surveys: List<@JvmSuppressWildcards Survey>,
+            programs: Map<String, @JvmSuppressWildcards Program>,
+            orgUnits: Map<String, @JvmSuppressWildcards OrgUnit>
+
         )
 
         fun showNetworkError()

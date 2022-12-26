@@ -19,18 +19,18 @@
 
 package org.eyeseetea.malariacare.data.database.utils.monitor.pies;
 
-import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
+import org.eyeseetea.malariacare.domain.entity.OrgUnit;
 import org.eyeseetea.malariacare.utils.AUtils;
 
 public class PieDataByOrgUnit extends PieDataBase {
-    private OrgUnitDB orgUnit;
+    private OrgUnit orgUnit;
 
-    public PieDataByOrgUnit(OrgUnitDB orgUnit) {
+    public PieDataByOrgUnit(OrgUnit orgUnit) {
         this.orgUnit=orgUnit;
     }
     public String toJSON(String tipChat){
-        String pieTitle = String.format("%s (%s)", AUtils.escapeQuotes(orgUnit.getName()), orgUnit.getId_org_unit());
-        String json = String.format(JSONFORMAT, pieTitle, tipChat, orgUnit.getId_org_unit(), this.numA, this.numB, this.numC, this.numNA, orgUnit.getUid(), orgUnit.getUid());
+        String pieTitle = String.format("%s (%s)", AUtils.escapeQuotes(orgUnit.getName()), orgUnit.getUid());
+        String json = String.format(JSONFORMAT, pieTitle, tipChat, orgUnit.getUid(), this.numA, this.numB, this.numC, this.numNA, orgUnit.getUid(), orgUnit.getUid());
         return json;
     }
 }

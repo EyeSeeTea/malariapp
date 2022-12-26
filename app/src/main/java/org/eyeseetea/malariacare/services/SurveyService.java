@@ -54,10 +54,6 @@ public class SurveyService extends IntentService {
      * Constant added to the intent in order to reuse the service for different 'methods'
      */
     public static final String SERVICE_METHOD="serviceMethod";
-    /**
-     * Name of 'reload' action which returns both lists (unsent, sent)
-     */
-    public static final String RELOAD_DASHBOARD_ACTION ="org.eyeseetea.malariacare.services.SurveyService.RELOAD_DASHBOARD_ACTION";
 
     /**
      * Name of 'show' action
@@ -68,11 +64,6 @@ public class SurveyService extends IntentService {
      * Name of 'feedback' action
      */
     public static final String PREPARE_FEEDBACK_ACTION="org.eyeseetea.malariacare.services.SurveyService.PREPARE_FEEDBACK_ACTION";
-
-    /**
-     * Name of 'All monitor data' action
-     */
-    public static final String ALL_MONITOR_DATA_ACTION ="org.eyeseetea.malariacare.services.SurveyService.ALL_MONITOR_DATA_ACTION";
 
     /**
      * Key of composite scores entry in shared session
@@ -126,9 +117,6 @@ public class SurveyService extends IntentService {
                 Log.i(".SurveyService", "Active module: " + intent.getStringExtra(Constants.MODULE_KEY));
                 prepareSurveyInfo(intent.getStringExtra(Constants.MODULE_KEY));
                 break;
-            case RELOAD_DASHBOARD_ACTION:
-                reloadDashboard();
-                break;
             case PRELOAD_TAB_ITEMS:
                 Log.i(".SurveyService", "Pre-loading tab: " + intent.getLongExtra("tab", 0));
                 Log.i(".SurveyService", "Active module: " + intent.getStringExtra(Constants.MODULE_KEY));
@@ -138,37 +126,7 @@ public class SurveyService extends IntentService {
                 Log.i(".SurveyService", "Active module: " + intent.getStringExtra(Constants.MODULE_KEY));
                 getFeedbackItems(intent.getStringExtra(Constants.MODULE_KEY));
                 break;
-            case ALL_MONITOR_DATA_ACTION:
-                getAllMonitorData();
-                break;
         }
-    }
-
-    private void getAllMonitorData() {
-        Log.d(TAG,"getAllMonitorData (Thread:"+Thread.currentThread().getId()+")");
-
-        Date date = new Date();
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        cal.add(Calendar.MONTH, -5);
-        cal.set(Calendar.DAY_OF_MONTH, 1);
-
-        List<SurveyDB> sentSurveys = SurveyDB.getAllSentCompletedOrConflictSurveysAfterDate(
-                cal.getTime());
-
-        List<OrgUnitDB> orgUnits= OrgUnitDB.list();
-        List<ProgramDB> programList= ProgramDB.getAllPrograms();
-
-        BaseServiceBundle monitorMap=new BaseServiceBundle();
-        monitorMap.addModelList(SurveyDB.class.getName(),sentSurveys);
-        monitorMap.addModelList(ProgramDB.class.getName(),programList);
-        monitorMap.addModelList(OrgUnitDB.class.getName(),orgUnits);
-        //Since intents does NOT admit NON serializable as values we use Session instead
-        Session.putServiceValue(ALL_MONITOR_DATA_ACTION, monitorMap);
-
-        //Returning result to anyone listening
-        Intent resultIntent= new Intent(ALL_MONITOR_DATA_ACTION);
-        LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
     }
 
     private void preLoadTabItems(Long tabID, String module){
@@ -176,11 +134,6 @@ public class SurveyService extends IntentService {
         if (tab !=null) {
             AUtils.preloadTabItems(tab, module);
         }
-    }
-
-    private void reloadDashboard(){
-        Log.d(TAG, "reloadDashboard");
-        getAllMonitorData();
     }
 
     /**

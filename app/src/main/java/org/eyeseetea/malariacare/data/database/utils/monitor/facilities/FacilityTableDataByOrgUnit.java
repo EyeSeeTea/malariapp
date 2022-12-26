@@ -19,11 +19,10 @@
 
 package org.eyeseetea.malariacare.data.database.utils.monitor.facilities;
 
-import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
-import org.eyeseetea.malariacare.data.database.model.ProgramDB;
-import org.eyeseetea.malariacare.data.database.model.SurveyDB;
-import org.eyeseetea.malariacare.domain.entity.Server;
+import org.eyeseetea.malariacare.domain.entity.OrgUnit;
+import org.eyeseetea.malariacare.domain.entity.Program;
 import org.eyeseetea.malariacare.domain.entity.ServerClassification;
+import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.utils.AUtils;
 
 import java.util.HashMap;
@@ -34,17 +33,17 @@ public class FacilityTableDataByOrgUnit extends FacilityTableDataBase {
     private static final String TAG = ".FacilityTableDataOU";
     Map<String, FacilityRowDataBase> rowData;
 
-    public FacilityTableDataByOrgUnit(ProgramDB program, OrgUnitDB orgUnit,
-            ServerClassification serverClassification) {
+    public FacilityTableDataByOrgUnit(Program program,
+                                      ServerClassification serverClassification) {
         super(serverClassification);
         this.title = AUtils.escapeQuotes(program.getName());
         this.uid = program.getUid();
-        this.id = String.valueOf(program.getId_program());
+        this.id = String.valueOf(program.getUid());
         rowData = new HashMap<>();
     }
 
-    public void addSurvey(SurveyDB survey) {
-        OrgUnitDB orgUnit = survey.getOrgUnit();
+    public void addSurvey(Survey survey, Map<String, OrgUnit> orgUnits) {
+        OrgUnit orgUnit =  orgUnits.get(survey.getOrgUnitUId());
         //Get facility row
         FacilityRowDataBase facilityRow = rowData.get(orgUnit.toString());
         //First time facility

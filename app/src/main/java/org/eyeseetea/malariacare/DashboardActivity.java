@@ -111,7 +111,7 @@ public class DashboardActivity extends BaseActivity {
             //Media: init drive credentials
             DriveRestController.getInstance().init(this);
         }
-        reloadDashboard();
+
     }
 
 
@@ -269,12 +269,6 @@ public class DashboardActivity extends BaseActivity {
             reloadOnResume = true;
             return;
         }
-    }
-
-    public static void reloadDashboard() {
-        Intent surveysIntent = new Intent(dashboardActivity, SurveyService.class);
-        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
-        dashboardActivity.startService(surveysIntent);
     }
 
     /**

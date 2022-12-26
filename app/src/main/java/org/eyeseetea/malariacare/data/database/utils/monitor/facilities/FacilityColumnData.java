@@ -19,14 +19,14 @@
 
 package org.eyeseetea.malariacare.data.database.utils.monitor.facilities;
 
-import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.domain.entity.ServerClassification;
+import org.eyeseetea.malariacare.domain.entity.Survey;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FacilityColumnData {
-    private List<SurveyDB> surveys;
+    private List<Survey> surveys;
     private ServerClassification serverClassification;
 
     public FacilityColumnData(ServerClassification serverClassification){
@@ -34,7 +34,7 @@ public class FacilityColumnData {
         surveys=new ArrayList<>();
     }
 
-    public void addSurvey(SurveyDB survey){
+    public void addSurvey(Survey survey){
         surveys.add(survey);
     }
 
@@ -43,11 +43,11 @@ public class FacilityColumnData {
             return "null";
         }
         String jsonObject="[";
-        for(SurveyDB survey:surveys){
+        for(Survey survey:surveys){
             if (serverClassification == ServerClassification.COMPETENCIES){
-                jsonObject+="{\"id\":"+survey.getId_survey() + ",\"competency\":" +  survey.getCompetencyScoreClassification()+"},";
+                jsonObject+="{\"id\":'"+survey.getSurveyUid() + "',\"competency\":" +  survey.getCompetency().getId()+"},";
             } else {
-                jsonObject+="{\"id\":"+survey.getId_survey() + ",\"score\":" +  survey.getMainScore().getScore()+"},";
+                jsonObject+="{\"id\":'"+survey.getSurveyUid() + "',\"score\":" +  survey.getScore().getScore()+"},";
             }
         }
         jsonObject=jsonObject.substring(0,jsonObject.lastIndexOf(","));

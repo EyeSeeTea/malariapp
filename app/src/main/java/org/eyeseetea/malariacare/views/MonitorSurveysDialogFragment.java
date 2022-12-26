@@ -64,7 +64,7 @@ public class MonitorSurveysDialogFragment extends DialogFragment {
         if (surveyIds != null && !surveyIds.isEmpty()) {
             String surveyIdsArray[] = surveyIds.split(";");
             for (String uid : surveyIdsArray) {
-                surveys.add(SurveyDB.findById(Long.parseLong(uid)));
+                surveys.add(SurveyDB.getSurveyByUId(uid));
             }
         }
 
