@@ -54,6 +54,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -61,10 +62,13 @@ import java.util.List;
 
 public abstract class AUtils {
     public static String round(float base, int decimalPlace) {
-        BigDecimal bd = new BigDecimal(Float.toString(base));
-        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_EVEN);
-        if (decimalPlace == 0) return Integer.toString((int) bd.floatValue());
-        return Float.toString(bd.floatValue());
+        String numberSigns = "";
+        for (int i = 0; i < decimalPlace; i++) {
+            numberSigns += "0";
+        }
+
+        DecimalFormat df = new DecimalFormat("0." + numberSigns);
+        return df.format(base);
     }
 
     public static float safeParseFloat(String floatStr) {
