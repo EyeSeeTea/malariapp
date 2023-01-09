@@ -43,10 +43,10 @@ allprojects {
 ext {
     configuration = [
             package          : "org.hisp.dhis.android.skeleton",
-            buildToolsVersion: "30.0.3",
+            buildToolsVersion: "31.0.0",
             minSdkVersion    : 16,
-            compileSdkVersion: 30,
-            targetSdkVersion : 30,
+            compileSdkVersion: 31,
+            targetSdkVersion : 31,
             versionCode      : 73,
             versionName      : "QAApp"
     ]
@@ -64,6 +64,7 @@ ext {
             multidex                : "2.0.0",
             gmsPlayVersion          : "18.0.0",
             MPAndroidChartVersion   : "3.0.3",
+            work_version            : "2.7.1",
 
             // java libs
             okhttpVersion           : "3.11.0",

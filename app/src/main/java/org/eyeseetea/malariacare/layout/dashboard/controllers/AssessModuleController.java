@@ -426,7 +426,6 @@ public class AssessModuleController extends ModuleController {
         if (isFragmentActive(SurveyFragment.class)) {
             surveyFragment.hideProgress();
             SurveyFragment surveyFragment = getSurveyFragment();
-            surveyFragment.unregisterReceiver();
         }
         //Reload Assess fragment
         if (DashboardOrientation.VERTICAL.equals(dashboardController.getOrientation())) {

@@ -59,6 +59,10 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
     compileSdkVersion cfg.compileSdkVersion
     buildToolsVersion cfg.buildToolsVersion
 
@@ -176,7 +180,7 @@ dependencies {
     implementation "androidx.multidex:multidex:${libs.multidex}"
     //3rd party dependencies
     implementation "com.opencsv:opencsv:${libs.opencsvVersion}"
-    implementation "com.google.guava:guava:${libs.guavaVersion}"
+    implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
 
     implementation "com.googlecode.libphonenumber:libphonenumber:${libs.libphonenumberVersion}"
     implementation "com.github.PhilJay:MPAndroidChart:v${libs.MPAndroidChartVersion}"
@@ -192,6 +196,8 @@ dependencies {
     }
 
     implementation "com.google.code.findbugs:jsr305:${libs.jsr305Version}"
+
+    implementation "androidx.work:work-runtime-ktx:${libs.work_version}"
 
 
     // Square

@@ -21,27 +21,18 @@ package org.eyeseetea.malariacare.services;
 
 import android.app.IntentService;
 import android.content.Intent;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import android.util.Log;
 
-import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
-import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
-import org.eyeseetea.malariacare.data.database.model.OrgUnitLevelDB;
-import org.eyeseetea.malariacare.data.database.model.ProgramDB;
-import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import org.eyeseetea.malariacare.data.database.model.TabDB;
-import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.data.database.utils.feedback.FeedbackBuilder;
-import org.eyeseetea.malariacare.data.database.utils.services.BaseServiceBundle;
-import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -56,29 +47,10 @@ public class SurveyService extends IntentService {
     public static final String SERVICE_METHOD="serviceMethod";
 
     /**
-     * Name of 'show' action
-     */
-    public static final String PREPARE_SURVEY_ACTION ="org.eyeseetea.malariacare.services.SurveyService.PREPARE_SURVEY_ACTION";
-
-    /**
      * Name of 'feedback' action
      */
     public static final String PREPARE_FEEDBACK_ACTION="org.eyeseetea.malariacare.services.SurveyService.PREPARE_FEEDBACK_ACTION";
 
-    /**
-     * Key of composite scores entry in shared session
-     */
-    public static final String PREPARE_SURVEY_ACTION_COMPOSITE_SCORES ="org.eyeseetea.malariacare.services.SurveyService.PREPARE_SURVEY_ACTION_COMPOSITE_SCORES";
-
-    /**
-     * Key of tabs entry in shared session
-     */
-    public static final String PREPARE_SURVEY_ACTION_TABS ="org.eyeseetea.malariacare.services.SurveyService.PREPARE_SURVEY_ACTION_TABS";
-
-    /**
-     * Key of tabs entry in shared session
-     */
-    public static final String PREPARE_ALL_TABS ="org.eyeseetea.malariacare.services.SurveyService.PREPARE_ALL_TABS";
     /**
      * Key of
      */
@@ -113,10 +85,6 @@ public class SurveyService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         //Take action to be done
         switch (intent.getStringExtra(SERVICE_METHOD)){
-            case PREPARE_SURVEY_ACTION:
-                Log.i(".SurveyService", "Active module: " + intent.getStringExtra(Constants.MODULE_KEY));
-                prepareSurveyInfo(intent.getStringExtra(Constants.MODULE_KEY));
-                break;
             case PRELOAD_TAB_ITEMS:
                 Log.i(".SurveyService", "Pre-loading tab: " + intent.getLongExtra("tab", 0));
                 Log.i(".SurveyService", "Active module: " + intent.getStringExtra(Constants.MODULE_KEY));
@@ -150,33 +118,5 @@ public class SurveyService extends IntentService {
 
         Session.putServiceValue(PREPARE_FEEDBACK_ACTION_ITEMS, feedbackList);
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(PREPARE_FEEDBACK_ACTION));
-    }
-
-    /**
-     * Prepares required data to show a survey completely (tabs and composite scores).
-     */
-    private void prepareSurveyInfo(String module){
-        Log.d(TAG, "prepareSurveyInfo (Thread:" + Thread.currentThread().getId() + ")");
-
-        //register composite scores for current survey and module
-        List<CompositeScoreDB> compositeScores = CompositeScoreDB.list();
-        SurveyDB survey = Session.getSurveyByModule(module);
-        ScoreRegister.registerCompositeScores(compositeScores,survey.getId_survey(),module);
-
-        //Get tabs for current program & register them (scores)
-        List<TabDB> tabs = TabDB.getTabsBySession(module);
-        //old List<Tab> allTabs = new Select().all().from(Tab.class).where(Condition.column(Tab$Table.ID_PROGRAM).eq(survey.getProgram().getId_program())).queryList();
-        List<TabDB> allTabs = TabDB.getAllTabsByProgram(survey.getProgram().getId_program());
-        //register tabs scores for current survey and module
-        ScoreRegister.registerTabScores(tabs, survey.getId_survey(), module);
-
-        //Since intents does NOT admit NON serializable as values we use Session instead
-        Session.putServiceValue(PREPARE_SURVEY_ACTION_COMPOSITE_SCORES, compositeScores);
-        Session.putServiceValue(PREPARE_SURVEY_ACTION_TABS, tabs);
-        Session.putServiceValue(PREPARE_ALL_TABS, allTabs);
-
-        //Returning result to anyone listening
-        Intent resultIntent = new Intent(PREPARE_SURVEY_ACTION);
-        LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
     }
 }
