@@ -7,6 +7,7 @@ import org.eyeseetea.malariacare.data.database.utils.Session
 import org.eyeseetea.malariacare.layout.score.ScoreRegister
 import org.eyeseetea.malariacare.presentation.boundary.Executor
 import org.eyeseetea.malariacare.services.SurveyService
+import org.eyeseetea.malariacare.utils.AUtils
 import org.eyeseetea.malariacare.utils.Constants
 
 open class SurveyPresenter(
@@ -27,6 +28,13 @@ open class SurveyPresenter(
 
     fun detachView() {
         this.view = null
+    }
+
+    fun preLoadTabItems(tabID: Long, module: String) {
+        val tab = TabDB.findById(tabID)
+        if (tab != null) {
+            AUtils.preloadTabItems(tab, module)
+        }
     }
 
     private fun load() = executor.asyncExecute {

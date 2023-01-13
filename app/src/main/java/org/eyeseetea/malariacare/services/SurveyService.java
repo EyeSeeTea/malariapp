@@ -52,11 +52,6 @@ public class SurveyService extends IntentService {
     public static final String PREPARE_FEEDBACK_ACTION="org.eyeseetea.malariacare.services.SurveyService.PREPARE_FEEDBACK_ACTION";
 
     /**
-     * Key of
-     */
-    public static final String PRELOAD_TAB_ITEMS ="org.eyeseetea.malariacare.services.SurveyService.PRELOAD_TAB_ITEMS";
-
-    /**
      * Key of 'feedback' items in shared session
      */
     public static final String PREPARE_FEEDBACK_ACTION_ITEMS="org.eyeseetea.malariacare.services.SurveyService.PREPARE_FEEDBACK_ACTION_ITEMS";
@@ -85,22 +80,10 @@ public class SurveyService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         //Take action to be done
         switch (intent.getStringExtra(SERVICE_METHOD)){
-            case PRELOAD_TAB_ITEMS:
-                Log.i(".SurveyService", "Pre-loading tab: " + intent.getLongExtra("tab", 0));
-                Log.i(".SurveyService", "Active module: " + intent.getStringExtra(Constants.MODULE_KEY));
-                preLoadTabItems(intent.getLongExtra("tab", 0),intent.getStringExtra(Constants.MODULE_KEY));
-                break;
             case PREPARE_FEEDBACK_ACTION:
                 Log.i(".SurveyService", "Active module: " + intent.getStringExtra(Constants.MODULE_KEY));
                 getFeedbackItems(intent.getStringExtra(Constants.MODULE_KEY));
                 break;
-        }
-    }
-
-    private void preLoadTabItems(Long tabID, String module){
-        TabDB tab = TabDB.findById(tabID);
-        if (tab !=null) {
-            AUtils.preloadTabItems(tab, module);
         }
     }
 

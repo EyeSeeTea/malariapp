@@ -72,7 +72,6 @@ import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.presentation.presenters.surveys.SurveyPresenter;
-import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomTextView;
@@ -379,12 +378,7 @@ public class SurveyFragment extends Fragment implements DomainEventSubscriber<Va
 
     private void preLoadItems() {
         for (TabDB tab : allTabs) {
-            Intent preLoadService = new Intent(getActivity().getApplicationContext(),
-                    SurveyService.class);
-            preLoadService.putExtra(Constants.MODULE_KEY, moduleName);
-            preLoadService.putExtra(SurveyService.SERVICE_METHOD, SurveyService.PRELOAD_TAB_ITEMS);
-            preLoadService.putExtra("tab", tab.getId_tab());
-            getActivity().getApplicationContext().startService(preLoadService);
+            surveyPresenter.preLoadTabItems( tab.getId_tab(), moduleName);
         }
     }
 
