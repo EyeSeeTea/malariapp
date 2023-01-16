@@ -6,7 +6,6 @@ import org.eyeseetea.malariacare.data.database.model.TabDB
 import org.eyeseetea.malariacare.data.database.utils.Session
 import org.eyeseetea.malariacare.layout.score.ScoreRegister
 import org.eyeseetea.malariacare.presentation.boundary.Executor
-import org.eyeseetea.malariacare.services.SurveyService
 import org.eyeseetea.malariacare.utils.AUtils
 import org.eyeseetea.malariacare.utils.Constants
 
@@ -41,7 +40,7 @@ open class SurveyPresenter(
         //TODO: First phase to bring code from old SurveyService
         // second phase uncouple from dbflow
         try {
-            Log.d(SurveyService.TAG, "prepareSurveyInfo (Thread:" + Thread.currentThread().id + ")")
+            Log.d("SurveyPresenter", "prepareSurveyInfo (Thread:" + Thread.currentThread().id + ")")
 
             //register composite scores for current survey and module
             val compositeScores = CompositeScoreDB.list()

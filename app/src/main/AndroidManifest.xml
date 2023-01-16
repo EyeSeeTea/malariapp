@@ -39,10 +39,6 @@
             android:label="@string/downloaded_media_menu"/>
 
         <service
-            android:name=".services.SurveyService"
-            android:exported="false" />
-
-        <service
             android:name=".services.PlannedSurveyService"
             android:exported="false" />
 

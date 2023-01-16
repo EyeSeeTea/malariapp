@@ -11,6 +11,7 @@ import org.eyeseetea.malariacare.domain.usecase.*
 import org.eyeseetea.malariacare.presentation.executors.WrapperExecutor
 import org.eyeseetea.malariacare.presentation.presenters.monitoring.MonitorPresenter
 import org.eyeseetea.malariacare.presentation.presenters.surveys.CreateSurveyPresenter
+import org.eyeseetea.malariacare.presentation.presenters.surveys.FeedbackPresenter
 import org.eyeseetea.malariacare.presentation.presenters.surveys.SurveyPresenter
 import org.eyeseetea.malariacare.presentation.presenters.surveys.SurveysPresenter
 
@@ -45,6 +46,9 @@ object DataFactory {
 
     fun provideSurveyPresenter(): SurveyPresenter =
         SurveyPresenter(WrapperExecutor())
+
+    fun provideFeedbackPresenter(): FeedbackPresenter =
+        FeedbackPresenter(WrapperExecutor())
 
     fun provideGetSurveyByUidUseCase(): GetSurveyByUidUseCase =
         GetSurveyByUidUseCase(provideSurveyRepository())

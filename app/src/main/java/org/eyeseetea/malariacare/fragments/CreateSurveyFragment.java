@@ -20,17 +20,13 @@
 package org.eyeseetea.malariacare.fragments;
 
 import android.app.AlertDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,31 +42,22 @@ import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitLevelDB;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
-import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.data.database.utils.Session;
-import org.eyeseetea.malariacare.data.database.utils.services.BaseServiceBundle;
 import org.eyeseetea.malariacare.domain.entity.OrgUnit;
 import org.eyeseetea.malariacare.domain.entity.OrgUnitLevel;
 import org.eyeseetea.malariacare.domain.entity.Program;
-import org.eyeseetea.malariacare.domain.entity.SurveyStatusFilter;
 import org.eyeseetea.malariacare.factories.DataFactory;
 import org.eyeseetea.malariacare.layout.adapters.general.OrgUnitArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.general.ProgramArrayAdapter;
 import org.eyeseetea.malariacare.presentation.presenters.surveys.CreateSurveyPresenter;
-import org.eyeseetea.malariacare.presentation.presenters.surveys.SurveysPresenter;
-import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomButton;
 import org.eyeseetea.malariacare.views.CustomTextView;
 import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import kotlin.jvm.JvmSuppressWildcards;
 
 public class CreateSurveyFragment extends Fragment implements CreateSurveyPresenter.View {
 
