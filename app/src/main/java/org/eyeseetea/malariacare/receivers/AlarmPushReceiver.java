@@ -101,7 +101,7 @@ public class AlarmPushReceiver extends BroadcastReceiver {
         Intent intent = new Intent(context, AlarmPushReceiver.class);
         //Note FLAG_UPDATE_CURRENT
         PendingIntent pi = PendingIntent.getBroadcast(context, 0, intent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE);
         am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), pushPeriod * SECONDS,
                 pi);
 
