@@ -55,7 +55,8 @@
             android:name=".LoginActivity"
             android:finishOnTaskLaunch="true"
             android:label="@string/app_name"
-            android:windowSoftInputMode="adjustResize|stateHidden">
+            android:windowSoftInputMode="adjustResize|stateHidden"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
