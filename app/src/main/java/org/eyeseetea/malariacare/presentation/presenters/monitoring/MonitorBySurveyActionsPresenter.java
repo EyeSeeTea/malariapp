@@ -153,7 +153,7 @@ public class MonitorBySurveyActionsPresenter {
         String qualityOfCare = "-";
 
         if (survey.getScore() != null) {
-            qualityOfCare = AUtils.round(survey.getScore().getScore()) + " %";
+            qualityOfCare = AUtils.round(survey.getScore().getScore(), 2) + " %";
         }
 
         return new SurveyViewModel(survey.getSurveyUid(), programName, orgUnitName,

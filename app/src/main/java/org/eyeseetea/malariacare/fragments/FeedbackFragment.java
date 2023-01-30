@@ -49,6 +49,7 @@ import org.eyeseetea.malariacare.fragments.strategies.FeedbackFragmentStrategy;
 import org.eyeseetea.malariacare.layout.adapters.survey.FeedbackAdapter;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.services.SurveyService;
+import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.CompetencyUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomButton;
@@ -224,7 +225,7 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
         if (survey.hasMainScore()) {
             float average = survey.getMainScoreValue();
             CustomTextView item = llLayout.findViewById(R.id.feedback_total_score);
-            item.setText(String.format("%.1f%%", average));
+            item.setText(AUtils.round(average,2));
             int colorId = LayoutUtils.trafficColor(average);
             mFeedbackFragmentStrategy.setTotalPercentColor(item, colorId, getActivity());
         } else {

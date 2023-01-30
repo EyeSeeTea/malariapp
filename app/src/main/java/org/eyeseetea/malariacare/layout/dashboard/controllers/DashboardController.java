@@ -618,7 +618,7 @@ public class DashboardController {
             String qoC = dashboardActivity.getString(R.string.overall_quality_of_care) + ": ";
 
             if (survey.hasMainScore()) {
-                qoC = qoC + AUtils.round(survey.getMainScore().getScore()) + " %";
+                qoC = qoC + AUtils.round(survey.getMainScore().getScore(),2) + " %";
             } else {
                 qoC = qoC + "-";
             }

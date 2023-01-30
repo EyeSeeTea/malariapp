@@ -13,6 +13,7 @@ import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
 import org.eyeseetea.malariacare.domain.entity.ScoreType;
 import org.eyeseetea.malariacare.domain.entity.ServerClassification;
+import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.CompetencyUtils;
 import org.eyeseetea.malariacare.utils.DateParser;
 
@@ -89,7 +90,7 @@ public class SurveysMonitorAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             DateParser dateParser = new DateParser();
             completionDateView.setText(
                     dateParser.getEuropeanFormattedDate(survey.getCompletionDate()));
-            scoreView.setText(Math.round(survey.getMainScoreValue()) + "");
+            scoreView.setText(AUtils.round(survey.getMainScoreValue(), 2) + "");
             Resources resources = itemView.getContext().getResources();
 
             ScoreType scoreType = new ScoreType(survey.getMainScoreValue());

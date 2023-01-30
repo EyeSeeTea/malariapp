@@ -57,6 +57,7 @@ import org.eyeseetea.malariacare.presentation.viewmodels.observations.Observatio
 import org.eyeseetea.malariacare.presentation.viewmodels.observations.ActionViewModel;
 import org.eyeseetea.malariacare.presentation.views.CustomTextWatcher;
 import org.eyeseetea.malariacare.presentation.views.observations.ActionView;
+import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.CompetencyUtils;
 import org.eyeseetea.malariacare.utils.DateParser;
 import org.eyeseetea.malariacare.views.CustomEditText;
@@ -313,7 +314,7 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
         renderLabelHeaderByServerClassification(serverClassification, classification);
 
         if (mainScore > 0f) {
-            mTotalScoreTextView.setText(String.format("%.1f%%", mainScore));
+            mTotalScoreTextView.setText(AUtils.round(mainScore,2));
             int colorId = LayoutUtils.trafficColor(mainScore);
             mTotalScoreTextView.setBackgroundColor(getResources().getColor(colorId));
         } else {
@@ -450,7 +451,7 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
                     + competencyText + "\n";
         }
 
-        int roundedScore = Math.round(survey.getMainScoreValue());
+        float roundedScore = Float.parseFloat(AUtils.round(survey.getMainScoreValue(),2));
         data += getString(R.string.quality_of_care).toUpperCase() + ": " + roundedScore + "% \n";
 
         data += String.format(getString(R.string.plan_action_next_date), formattedNextScheduleDate);
