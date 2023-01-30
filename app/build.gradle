@@ -59,6 +59,10 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
     compileSdkVersion cfg.compileSdkVersion
     buildToolsVersion cfg.buildToolsVersion
 
@@ -123,7 +127,7 @@ android {
         }
         hnqis {
             applicationId "org.eyeseetea.malariacare.hnqis_ng"
-            versionName "1.6.12"
+            versionName "1.6.14"
             buildConfigField "boolean", "translations", "true"
             buildConfigField "String", "defaultLocale", "\"en\""
             resValue "string", "authority", applicationId+versionName+"_DHIS2_DEFAULT_AUTHORITY"
@@ -176,7 +180,7 @@ dependencies {
     implementation "androidx.multidex:multidex:${libs.multidex}"
     //3rd party dependencies
     implementation "com.opencsv:opencsv:${libs.opencsvVersion}"
-    implementation "com.google.guava:guava:${libs.guavaVersion}"
+    implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
 
     implementation "com.googlecode.libphonenumber:libphonenumber:${libs.libphonenumberVersion}"
     implementation "com.github.PhilJay:MPAndroidChart:v${libs.MPAndroidChartVersion}"
@@ -192,7 +196,6 @@ dependencies {
     }
 
     implementation "com.google.code.findbugs:jsr305:${libs.jsr305Version}"
-
 
     // Square
     implementation "com.squareup.okhttp3:okhttp:${libs.okhttpVersion}"
