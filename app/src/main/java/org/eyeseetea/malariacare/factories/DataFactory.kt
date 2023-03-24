@@ -10,10 +10,7 @@ import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyRepository
 import org.eyeseetea.malariacare.domain.usecase.*
 import org.eyeseetea.malariacare.presentation.executors.WrapperExecutor
 import org.eyeseetea.malariacare.presentation.presenters.monitoring.MonitorPresenter
-import org.eyeseetea.malariacare.presentation.presenters.surveys.CreateSurveyPresenter
-import org.eyeseetea.malariacare.presentation.presenters.surveys.FeedbackPresenter
-import org.eyeseetea.malariacare.presentation.presenters.surveys.SurveyPresenter
-import org.eyeseetea.malariacare.presentation.presenters.surveys.SurveysPresenter
+import org.eyeseetea.malariacare.presentation.presenters.surveys.*
 
 object DataFactory {
 
@@ -44,6 +41,9 @@ object DataFactory {
             MetadataFactory.provideGetOrgUnitsUseCase()
         )
 
+    fun providePlannedSurveysPresenter(): PlannedSurveysPresenter =
+        PlannedSurveysPresenter(WrapperExecutor())
+
     fun provideSurveyPresenter(): SurveyPresenter =
         SurveyPresenter(WrapperExecutor())
 
@@ -53,7 +53,8 @@ object DataFactory {
     fun provideGetSurveyByUidUseCase(): GetSurveyByUidUseCase =
         GetSurveyByUidUseCase(provideSurveyRepository())
 
-    fun provideSurveysByUIdsUseCase(): GetSurveysByUIdsUseCase = GetSurveysByUIdsUseCase(provideSurveyRepository())
+    fun provideSurveysByUIdsUseCase(): GetSurveysByUIdsUseCase =
+        GetSurveysByUIdsUseCase(provideSurveyRepository())
 
     private fun provideSurveysUseCase(): GetSurveysUseCase =
         GetSurveysUseCase(provideSurveyRepository())
