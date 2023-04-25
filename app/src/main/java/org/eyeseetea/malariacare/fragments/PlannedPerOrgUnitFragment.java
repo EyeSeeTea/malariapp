@@ -19,46 +19,41 @@
 
 package org.eyeseetea.malariacare.fragments;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
-
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedItem;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedSurvey;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedSurveyByOrgUnit;
 import org.eyeseetea.malariacare.data.database.utils.planning.ScheduleListener;
-import org.eyeseetea.malariacare.data.database.utils.services.PlannedServiceBundle;
+import org.eyeseetea.malariacare.factories.DataFactory;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.PlanningPerOrgUnitAdapter;
-import org.eyeseetea.malariacare.services.PlannedSurveyService;
+import org.eyeseetea.malariacare.presentation.presenters.surveys.PlannedSurveysPresenter;
 import org.eyeseetea.malariacare.views.CustomCheckBox;
 import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlannedPerOrgUnitFragment extends FiltersFragment implements IModuleFragment {
+public class PlannedPerOrgUnitFragment extends FiltersFragment implements IModuleFragment,PlannedSurveysPresenter.View  {
     public static final String TAG = ".PlannedOrgUnitsF";
+
 
     public interface Callback {
         void onItemCheckboxChanged();
     }
 
-    private PlannedItemsReceiver plannedItemsReceiver;
     private PlanningPerOrgUnitAdapter adapter;
     private List<PlannedSurveyByOrgUnit> plannedSurveys = new ArrayList<>();
     private ImageButton scheduleButton;
@@ -66,6 +61,8 @@ public class PlannedPerOrgUnitFragment extends FiltersFragment implements IModul
 
     private View rootView;
     private RecyclerView recyclerView;
+
+    private PlannedSurveysPresenter presenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -86,8 +83,15 @@ public class PlannedPerOrgUnitFragment extends FiltersFragment implements IModul
         initScheduleButton();
         initSelectAllCheckbox();
         initRecyclerView();
+        initPresenter();
 
         return rootView;
+    }
+
+    private void initPresenter() {
+        presenter = DataFactory.INSTANCE.providePlannedSurveysPresenter();
+
+        presenter.attachView(this);
     }
 
     @Override
@@ -107,6 +111,24 @@ public class PlannedPerOrgUnitFragment extends FiltersFragment implements IModul
     @Override
     protected int getOrgUnitProgramFilterViewId() {
         return R.id.plan_org_unit_program_filter_view;
+    }
+
+    @Override
+    public void showData(@NonNull List<PlannedItem> plannedItems) {
+        List<PlannedSurveyByOrgUnit> items = new ArrayList<>();
+        for (PlannedItem item : plannedItems) {
+            if (item instanceof PlannedSurvey && isNotFiltered(item)) {
+                items.add(new PlannedSurveyByOrgUnit(((PlannedSurvey) item).getSurvey(),
+                        ((PlannedSurvey) item).getHeader()));
+            }
+        }
+
+        refreshItems(items);
+    }
+
+    @Override
+    public void showNetworkError() {
+        Log.e(this.getClass().getSimpleName(), "Network Error");
     }
 
     private void refreshItems(List<PlannedSurveyByOrgUnit> plannedItems) {
@@ -182,7 +204,9 @@ public class PlannedPerOrgUnitFragment extends FiltersFragment implements IModul
                 if (scheduleSurveys.size() == 0) return;
 
 
-                new ScheduleListener(scheduleSurveys, getActivity());
+                new ScheduleListener(scheduleSurveys, getActivity(), () -> {
+                    reloadData();
+                });
             }
         });
         disableScheduleButton();
@@ -223,78 +247,20 @@ public class PlannedPerOrgUnitFragment extends FiltersFragment implements IModul
     }
 
 
-    private void initRecyclerView() {
-        recyclerView = rootView.findViewById(R.id.planByOrgUnitList);
-
-        this.adapter = new PlanningPerOrgUnitAdapter(getActivity(),
-                () -> {
-                    resetList();
-                    reloadButtonState();
-                });
-
-        recyclerView.setAdapter(adapter);
-    }
-
     @Override
-    public void onResume() {
-        Log.d(TAG, "onResume");
-        registerPlannedItemsReceiver();
-        super.onResume();
-    }
+    public void onDestroy() {
+        presenter.detachView();
 
-    @Override
-    public void onStop() {
-        Log.d(TAG, "onStop");
-        unregisterPlannedItemsReceiver();
-        super.onStop();
-    }
-
-    @Override
-    public void onPause() {
-        Log.d(TAG, "onPause");
-        unregisterPlannedItemsReceiver();
-
-        super.onPause();
-    }
-
-    /**
-     * Register a survey receiver to load plannedItems into the listadapter
-     */
-    private void registerPlannedItemsReceiver() {
-        Log.d(TAG, "registerPlannedItemsReceiver");
-
-        if (plannedItemsReceiver == null) {
-            plannedItemsReceiver = new PlannedItemsReceiver();
-            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(plannedItemsReceiver,
-                    new IntentFilter(PlannedSurveyService.PLANNED_PER_ORG_UNIT_SURVEYS_ACTION));
-        }
-    }
-
-    /**
-     * Unregisters the survey receiver.
-     * It really important to do this, otherwise each receiver will invoke its code.
-     */
-    public void unregisterPlannedItemsReceiver() {
-        Log.d(TAG, "unregisterPlannedItemsReceiver");
-        if (plannedItemsReceiver != null) {
-            LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(
-                    plannedItemsReceiver);
-            plannedItemsReceiver = null;
-        }
+        super.onDestroy();
     }
 
     @Override
     public void reloadData() {
         super.reloadData();
 
-        //Reload data using service
-        Intent surveysIntent = new Intent(
-                PreferencesState.getInstance().getContext().getApplicationContext(),
-                PlannedSurveyService.class);
-        surveysIntent.putExtra(PlannedSurveyService.SERVICE_METHOD,
-                PlannedSurveyService.PLANNED_PER_ORG_UNIT_SURVEYS_ACTION);
-        PreferencesState.getInstance().getContext().getApplicationContext().startService(
-                surveysIntent);
+        if (presenter != null) {
+            presenter.reload();
+        }
     }
 
     public void reloadButtonState() {
@@ -307,37 +273,22 @@ public class PlannedPerOrgUnitFragment extends FiltersFragment implements IModul
         disableScheduleButton();
     }
 
-    /**
-     * Inner private class that receives the result from the service
-     */
-    private class PlannedItemsReceiver extends BroadcastReceiver {
-        private PlannedItemsReceiver() {
-        }
+    private void initRecyclerView() {
+        recyclerView = rootView.findViewById(R.id.planByOrgUnitList);
 
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Log.d(TAG, "onReceive");
-            //Listening only intents from this method
-            if (PlannedSurveyService.PLANNED_PER_ORG_UNIT_SURVEYS_ACTION.equals(
-                    intent.getAction())) {
-                PlannedServiceBundle plannedServiceBundle =
-                        (PlannedServiceBundle) Session.popServiceValue(
-                                PlannedSurveyService.PLANNED_PER_ORG_UNIT_SURVEYS_ACTION);
-                List<PlannedSurveyByOrgUnit> items = new ArrayList<>();
-                for (PlannedItem item : plannedServiceBundle.getPlannedItems()) {
-                    if (item instanceof PlannedSurvey && isNotFiltered(item)) {
-                        items.add(new PlannedSurveyByOrgUnit(((PlannedSurvey) item).getSurvey(),
-                                ((PlannedSurvey) item).getHeader()));
-                    }
-                }
+        this.adapter = new PlanningPerOrgUnitAdapter(getActivity(),
+                () -> {
+                    resetList();
+                    reloadButtonState();
+                }, () -> {
+                    reloadData();
+        });
 
-                refreshItems(items);
-            }
-        }
+        recyclerView.setAdapter(adapter);
+    }
 
-        private boolean isNotFiltered(PlannedItem item) {
-            return ((PlannedSurvey) item).getSurvey().getOrgUnit().getUid().equals(
-                    getSelectedOrgUnitUidFilter());
-        }
+    private boolean isNotFiltered(PlannedItem item) {
+        return ((PlannedSurvey) item).getSurvey().getOrgUnit().getUid().equals(
+                getSelectedOrgUnitUidFilter());
     }
 }

@@ -93,7 +93,10 @@ public class PlannedFragment extends FiltersFragment implements IModuleFragment,
     private void initializeRecyclerView() {
         plannedRecyclerView = rootView.findViewById(R.id.planList);
 
-        plannedAdapter = new PlannedAdapter(getActivity(), serverClassification);
+        plannedAdapter = new PlannedAdapter(getActivity(), serverClassification,  () -> {
+            reloadData();
+        });
+
         plannedRecyclerView.setAdapter(plannedAdapter);
     }
 

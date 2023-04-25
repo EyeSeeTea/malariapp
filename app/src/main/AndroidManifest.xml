@@ -38,10 +38,6 @@
             android:name=".DownloadedMediaActivity"
             android:label="@string/downloaded_media_menu"/>
 
-        <service
-            android:name=".services.PlannedSurveyService"
-            android:exported="false" />
-
         <activity
             android:name=".LoginActivity"
             android:finishOnTaskLaunch="true"

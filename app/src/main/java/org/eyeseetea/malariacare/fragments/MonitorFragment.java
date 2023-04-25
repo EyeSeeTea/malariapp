@@ -266,7 +266,7 @@ public class MonitorFragment extends FiltersFragment implements IModuleFragment,
                     @Override
                     public void run() {
                         DashboardActivity.dashboardActivity.openFeedback(
-                                SurveyDB.findById(Long.parseLong(uid)), false);
+                                SurveyDB.getSurveyByUId(uid), false);
                     }
                 });
             }

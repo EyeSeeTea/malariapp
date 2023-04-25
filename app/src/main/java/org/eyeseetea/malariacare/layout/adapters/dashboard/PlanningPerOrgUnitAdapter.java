@@ -27,14 +27,17 @@ import java.util.List;
 public class PlanningPerOrgUnitAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private PlannedPerOrgUnitFragment.Callback callback;
+    private OnReloadListener onReloadListener;
 
     private Context context;
 
     List<PlannedSurveyByOrgUnit> items = new ArrayList<>();
 
-    public PlanningPerOrgUnitAdapter(Context context, PlannedPerOrgUnitFragment.Callback callback) {
+    public PlanningPerOrgUnitAdapter(Context context, PlannedPerOrgUnitFragment.Callback callback,
+                                     OnReloadListener onReloadListener) {
         this.context = context;
         this.callback = callback;
+        this.onReloadListener = onReloadListener;
     }
 
     @NonNull
@@ -125,7 +128,11 @@ public class PlanningPerOrgUnitAdapter extends RecyclerView.Adapter<RecyclerView
                     // TODO : review after merge questmark cosmetics and remove or create a
                     //  strategy if is necessary
                     dashboardActivity.onPlannedSurvey(plannedSurvey.getSurvey(),
-                            new ScheduleListener(plannedSurvey.getSurvey(), context));
+                            new ScheduleListener(plannedSurvey.getSurvey(), context, () -> {
+                                if (onReloadListener != null){
+                                    onReloadListener.onReload();
+                                }
+                            }));
                 });
             }
 
@@ -142,6 +149,10 @@ public class PlanningPerOrgUnitAdapter extends RecyclerView.Adapter<RecyclerView
                                 R.color.white));
             }
         }
+    }
+
+    public interface OnReloadListener {
+        void onReload();
     }
 
 }
