@@ -80,7 +80,7 @@ public class CompositeScoreAdapter extends ATabAdapter {
         if (compositeScoreValue == null)
             ((CustomTextView)rowView.findViewById(R.id.score)).setText(getContext().getString(R.string.number_zero));
         else
-            ((CustomTextView)rowView.findViewById(R.id.score)).setText(AUtils.round(compositeScoreValue));
+            ((CustomTextView)rowView.findViewById(R.id.score)).setText(AUtils.round(compositeScoreValue,2));
 
         rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(position));
 

@@ -49,7 +49,7 @@ import org.eyeseetea.malariacare.utils.CompetencyUtils;
 import org.eyeseetea.malariacare.views.CustomButton;
 import org.eyeseetea.malariacare.views.CustomRadioButton;
 import org.eyeseetea.malariacare.views.CustomTextView;
-
+import org.eyeseetea.malariacare.utils.AUtils;
 import java.util.List;
 
 
@@ -200,7 +200,7 @@ public class FeedbackFragment extends Fragment implements IModuleFragment, Feedb
         if (survey.hasMainScore()) {
             float average = survey.getMainScoreValue();
             CustomTextView item = llLayout.findViewById(R.id.feedback_total_score);
-            item.setText(String.format("%.1f%%", average));
+            item.setText(AUtils.round(average,2));
             int colorId = LayoutUtils.trafficColor(average);
             mFeedbackFragmentStrategy.setTotalPercentColor(item, colorId, getActivity());
         } else {

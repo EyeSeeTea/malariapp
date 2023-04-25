@@ -21,6 +21,7 @@ package org.eyeseetea.malariacare.data.database.utils.feedback;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
+import org.eyeseetea.malariacare.utils.AUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,7 +81,7 @@ public class CompositeScoreFeedback implements Feedback {
      * @return The percentage as a String
      */
     public String getPercentageAsString(float idSurvey, String module){
-        return String.format("%.1f %%", getScore(idSurvey, module));
+        return AUtils.round(getScore(idSurvey, module),2);
     }
 
     /**
