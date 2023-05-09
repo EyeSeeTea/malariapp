@@ -120,6 +120,11 @@ public class OrgUnitLevelDB extends BaseModel {
                 '}';
     }
 
+    public static List<OrgUnitLevelDB> getByUIds(List<String> uids){
+        return new Select().from(OrgUnitLevelDB.class).where(OrgUnitLevelDB_Table.uid_org_unit_level.in(uids))
+                .orderBy(OrgUnitLevelDB_Table.name, true).queryList();
+    }
+
     public static List<OrgUnitLevelDB> list() {
         return new Select().from(OrgUnitLevelDB.class).queryList();
     }

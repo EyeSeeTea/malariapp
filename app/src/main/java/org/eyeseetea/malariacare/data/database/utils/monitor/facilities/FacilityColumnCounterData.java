@@ -19,19 +19,19 @@
 
 package org.eyeseetea.malariacare.data.database.utils.monitor.facilities;
 
-import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.domain.entity.Survey;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FacilityColumnCounterData {
-    private List<SurveyDB> surveys;
+    private List<Survey> surveys;
 
     public FacilityColumnCounterData() {
         surveys = new ArrayList<>();
     }
 
-    public void addSurvey(SurveyDB survey) {
+    public void addSurvey(Survey survey) {
         surveys.add(survey);
     }
 

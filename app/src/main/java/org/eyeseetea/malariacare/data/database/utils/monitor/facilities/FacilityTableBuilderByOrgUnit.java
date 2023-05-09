@@ -21,43 +21,48 @@ package org.eyeseetea.malariacare.data.database.utils.monitor.facilities;
 
 import static org.eyeseetea.malariacare.data.database.utils.monitor.JavascriptInvokerKt.invokeSetDataTablesPerOrgUnit;
 
-import android.util.Log;
 import android.webkit.WebView;
 
-import org.eyeseetea.malariacare.data.database.model.ProgramDB;
-import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.domain.entity.OrgUnit;
+import org.eyeseetea.malariacare.domain.entity.Program;
 import org.eyeseetea.malariacare.domain.entity.ServerClassification;
+import org.eyeseetea.malariacare.domain.entity.Survey;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class FacilityTableBuilderByOrgUnit {
-    private List<SurveyDB> surveys;
-    private Map<ProgramDB, FacilityTableDataByOrgUnit> facilityTableDataMap;
+    private final Map<String, OrgUnit> orgUnits;
+    private final Map<String, Program> programs;
+    private List<Survey> surveys;
+    private Map<String, FacilityTableDataByOrgUnit> facilityTableDataMap;
 
-    public FacilityTableBuilderByOrgUnit(List<SurveyDB> surveys) {
+    public FacilityTableBuilderByOrgUnit(List<Survey> surveys, Map<String, OrgUnit> orgUnits, Map<String, Program> programs) {
         this.surveys = surveys;
+        this.orgUnits = orgUnits;
+        this.programs = programs;
         this.facilityTableDataMap = new HashMap<>();
     }
 
-    private void build(List<SurveyDB> surveys, ServerClassification serverClassification) {
-        for (SurveyDB survey : surveys) {
+    private void build(List<Survey> surveys, ServerClassification serverClassification) {
+        for (Survey survey : surveys) {
 
             //Get right table
             FacilityTableDataByOrgUnit facilityTableDataByOrgUnit = facilityTableDataMap.get(
-                    survey.getProgram());
+                    survey.getProgramUId());
 
             //Init entry first time of a program
             if (facilityTableDataByOrgUnit == null) {
-                facilityTableDataByOrgUnit = new FacilityTableDataByOrgUnit(survey.getProgram(),
-                        survey.getOrgUnit(), serverClassification);
-                facilityTableDataMap.put(survey.getProgram(), facilityTableDataByOrgUnit);
+                Program program = programs.get( survey.getProgramUId());
+
+                facilityTableDataByOrgUnit = new FacilityTableDataByOrgUnit(program, serverClassification);
+                facilityTableDataMap.put(survey.getProgramUId(), facilityTableDataByOrgUnit);
             }
 
 
             //Add survey to that table
-            facilityTableDataByOrgUnit.addSurvey(survey);
+            facilityTableDataByOrgUnit.addSurvey(survey, orgUnits);
         }
     }
 
@@ -66,11 +71,11 @@ public class FacilityTableBuilderByOrgUnit {
         //Build tables
         build(surveys, serverClassification);
         //Inject tables in view
-        for (Map.Entry<ProgramDB, FacilityTableDataByOrgUnit> tableEntry :
+        for (Map.Entry<String, FacilityTableDataByOrgUnit> tableEntry :
                 facilityTableDataMap.entrySet()) {
-            ProgramDB program = tableEntry.getKey();
+            String program = tableEntry.getKey();
             FacilityTableDataByOrgUnit facilityTableData = tableEntry.getValue();
-            invokeSetDataTablesPerOrgUnit(webView, String.valueOf(program.getUid()),
+            invokeSetDataTablesPerOrgUnit(webView, String.valueOf(program),
                     facilityTableData.getAsJSON());
         }
 

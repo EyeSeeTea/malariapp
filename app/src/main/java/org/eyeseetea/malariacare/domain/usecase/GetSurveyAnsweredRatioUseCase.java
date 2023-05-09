@@ -16,6 +16,7 @@ public class GetSurveyAnsweredRatioUseCase implements UseCase{
     private IAsyncExecutor mAsyncExecutor;
     private ISurveyAnsweredRatioCallback mCallback;
     private long idSurvey;
+    private String surveyUid;
 
     public GetSurveyAnsweredRatioUseCase(
             ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository,
@@ -36,24 +37,36 @@ public class GetSurveyAnsweredRatioUseCase implements UseCase{
         mAsyncExecutor.run(this);
     }
 
+    public void execute(String surveyUId, ISurveyAnsweredRatioCallback callback) {
+        this.surveyUid=surveyUId;
+        mCallback = callback;
+        mAsyncExecutor.run(this);
+    }
+
     @Override
     public void run() {
-        SurveyAnsweredRatio surveyAnsweredRatio = getSurveyWithStatusAndAnsweredRatio(idSurvey, mCallback);
+        SurveyAnsweredRatio surveyAnsweredRatio = getSurveyWithStatusAndAnsweredRatio(mCallback);
         onGetSurveyComplete(surveyAnsweredRatio);
     }
 
-    private SurveyAnsweredRatio getSurveyWithStatusAndAnsweredRatio(long idSurvey,
+    private SurveyAnsweredRatio getSurveyWithStatusAndAnsweredRatio(
             ISurveyAnsweredRatioCallback callback) {
         surveyDB = SurveyDB.findById(idSurvey);
-        mSurveyAnsweredRatio = getAnsweredQuestionRatio(idSurvey, callback);
+        mSurveyAnsweredRatio = getAnsweredQuestionRatio( callback);
         return mSurveyAnsweredRatio;
     }
 
     /**
      * Ratio of completion is cached into answeredQuestionRatio in order to speed up loading
      */
-    public SurveyAnsweredRatio getAnsweredQuestionRatio(Long idSurvey, ISurveyAnsweredRatioCallback callback) {
-        answeredQuestionRatio = mSurveyAnsweredRatioRepository.getSurveyAnsweredRatioBySurveyId(idSurvey);
+    private SurveyAnsweredRatio getAnsweredQuestionRatio( ISurveyAnsweredRatioCallback callback) {
+
+        if (surveyUid != null){
+            answeredQuestionRatio = mSurveyAnsweredRatioRepository.getSurveyAnsweredRatioBySurveyUId(surveyUid);
+        } else {
+            answeredQuestionRatio = mSurveyAnsweredRatioRepository.getSurveyAnsweredRatioBySurveyId(idSurvey);
+        }
+
         if (answeredQuestionRatio == null) {
             answeredQuestionRatio = reloadSurveyAnsweredRatio(callback);
         }

@@ -61,11 +61,8 @@ import org.eyeseetea.malariacare.layout.dashboard.controllers.DashboardControlle
 import org.eyeseetea.malariacare.layout.dashboard.controllers.ImproveModuleController;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
-import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
-
-import java.util.Date;
 
 
 public class DashboardActivity extends BaseActivity {
@@ -111,7 +108,7 @@ public class DashboardActivity extends BaseActivity {
             //Media: init drive credentials
             DriveRestController.getInstance().init(this);
         }
-        reloadDashboard();
+
     }
 
 
@@ -269,12 +266,6 @@ public class DashboardActivity extends BaseActivity {
             reloadOnResume = true;
             return;
         }
-    }
-
-    public static void reloadDashboard() {
-        Intent surveysIntent = new Intent(dashboardActivity, SurveyService.class);
-        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
-        dashboardActivity.startService(surveysIntent);
     }
 
     /**

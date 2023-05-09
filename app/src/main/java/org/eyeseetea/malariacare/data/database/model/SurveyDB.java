@@ -681,33 +681,6 @@ public class SurveyDB extends BaseModel implements VisitableToSDK, IData {
                 .orderBy(OrderBy.fromProperty(SurveyDB_Table.id_org_unit_fk)).queryList();
     }
 
-    /**
-     * Returns the last surveys (by date) without status Completed or sent
-     */
-    public static List<SurveyDB> getAllInProgressSurveys() {
-        return new Select().from(SurveyDB.class)
-                .where(SurveyDB_Table.status.is(Constants.SURVEY_IN_PROGRESS))
-                .orderBy(OrderBy.fromProperty(SurveyDB_Table.completion_date))
-                .orderBy(OrderBy.fromProperty(SurveyDB_Table.id_org_unit_fk)).queryList();
-    }
-
-    /**
-     * Returns the last survey by each program and orgunit combination ordered by completiondate
-     */
-    public static List<SurveyDB> getLastSentCompletedOrConflictSurveys() {
-        return new Select().from(SurveyDB.class)
-                .where(SurveyDB_Table.status.eq(SURVEY_SENT))
-                .or(SurveyDB_Table.status.eq(Constants.SURVEY_COMPLETED))
-                .or(SurveyDB_Table.status.eq(SURVEY_CONFLICT))
-                .or(SurveyDB_Table.status.eq(SURVEY_QUARANTINE))
-                .or(SurveyDB_Table.status.eq(Constants.SURVEY_SENDING))
-                .orderBy(OrderBy.fromProperty(SurveyDB_Table.completion_date))
-                .groupBy(SurveyDB_Table.id_org_unit_fk, SurveyDB_Table.id_program_fk)
-                .having(SurveyDB_Table.completion_date.eq(
-                        Method.max(SurveyDB_Table.completion_date)))
-                .queryList();
-    }
-
     public static List<SurveyDB> getAllSentCompletedOrConflictSurveysAfterDate(Date afterDate) {
         return new Select().from(SurveyDB.class)
                 .where(SurveyDB_Table.status.isNot(Constants.SURVEY_HIDE))

@@ -2,6 +2,8 @@ package org.eyeseetea.malariacare.domain.entity;
 
 import static org.eyeseetea.malariacare.domain.common.RequiredChecker.required;
 
+import org.eyeseetea.malariacare.data.database.model.ValueDB;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -55,6 +57,15 @@ public class Survey {
         survey.assignScore(score);
         survey.assignCompetency(competency);
         return survey;
+    }
+
+    public boolean hasConflict(){
+        for (QuestionValue value : values) {
+            if (value.isConflict()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public String getUId() {

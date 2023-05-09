@@ -17,14 +17,14 @@ import org.eyeseetea.malariacare.domain.usecase.GetOrgUnitsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.GetProgramsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.GetSentObservationsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.GetServerMetadataUseCase;
-import org.eyeseetea.malariacare.domain.usecase.GetSurveysUseCase;
+import org.eyeseetea.malariacare.domain.usecase.GetSurveysByUIdsUseCase;
 import org.eyeseetea.malariacare.factories.DataFactory;
 import org.eyeseetea.malariacare.factories.MetadataFactory;
 import org.eyeseetea.malariacare.layout.adapters.monitor.MonitorBySurveyActionsAdapter;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.presentation.presenters.monitoring.MonitorBySurveyActionsPresenter;
-import org.eyeseetea.malariacare.presentation.viewmodels.SurveyViewModel;
+import org.eyeseetea.malariacare.presentation.viewmodels.MonitorSurveyViewModel;
 import org.eyeseetea.malariacare.presentation.views.MonitorActionsDialogFragment;
 import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
 
@@ -109,8 +109,8 @@ public class MonitorBySurveyActionsFragment extends FiltersFragment implements
 
 
     @Override
-    public void showSurveysByActions(List<SurveyViewModel> incompleteSurveys,
-            List<SurveyViewModel> completeSurveys) {
+    public void showSurveysByActions(List<MonitorSurveyViewModel> incompleteSurveys,
+            List<MonitorSurveyViewModel> completeSurveys) {
         adapter.setSurveys(incompleteSurveys, completeSurveys, serverClassification);
     }
 
@@ -134,12 +134,12 @@ public class MonitorBySurveyActionsFragment extends FiltersFragment implements
         adapter = new MonitorBySurveyActionsAdapter(getActivity());
 
         adapter.setOnItemMenuClickListener(
-                surveyViewModel -> openSurveyActionsDialog(surveyViewModel));
+                monitorSurveyViewModel -> openSurveyActionsDialog(monitorSurveyViewModel));
 
         surveysByActionsView.setAdapter(adapter);
     }
 
-    private void openSurveyActionsDialog(SurveyViewModel surveyViewModel) {
+    private void openSurveyActionsDialog(MonitorSurveyViewModel surveyViewModel) {
         FragmentManager fm = getActivity().getSupportFragmentManager();
 
         MonitorActionsDialogFragment monitorActionsDialogFragment =
@@ -169,11 +169,11 @@ public class MonitorBySurveyActionsFragment extends FiltersFragment implements
         GetSentObservationsUseCase getSentObservationsUseCase =
                 DataFactory.INSTANCE.provideSentObservationsUseCase();
 
-        GetSurveysUseCase getSurveysUseCase = DataFactory.INSTANCE.provideSurveysUseCase();
+        GetSurveysByUIdsUseCase getSurveysByUIdsUseCase = DataFactory.INSTANCE.provideSurveysByUIdsUseCase();
 
         presenter = new MonitorBySurveyActionsPresenter(asyncExecutor, mainExecutor,
                 getProgramsUseCase, getOrgUnitsUseCase, getServerMetadataUseCase,
-                getSentObservationsUseCase, getSurveysUseCase);
+                getSentObservationsUseCase, getSurveysByUIdsUseCase);
 
         presenter.attachView(this, getSelectedProgramUidFilter(), getSelectedOrgUnitUidFilter());
     }

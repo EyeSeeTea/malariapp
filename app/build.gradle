@@ -197,6 +197,9 @@ dependencies {
 
     implementation "com.google.code.findbugs:jsr305:${libs.jsr305Version}"
 
+    implementation "androidx.work:work-runtime-ktx:${libs.work_version}"
+
+
     // Square
     implementation "com.squareup.okhttp3:okhttp:${libs.okhttpVersion}"
     implementation "com.squareup.retrofit2:retrofit:${libs.retrofitVersion}"

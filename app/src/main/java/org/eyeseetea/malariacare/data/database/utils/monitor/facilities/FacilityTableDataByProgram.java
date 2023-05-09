@@ -19,9 +19,10 @@
 
 package org.eyeseetea.malariacare.data.database.utils.monitor.facilities;
 
-import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
-import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.domain.entity.OrgUnit;
+import org.eyeseetea.malariacare.domain.entity.Program;
 import org.eyeseetea.malariacare.domain.entity.ServerClassification;
+import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.utils.AUtils;
 
 import java.util.HashMap;
@@ -32,25 +33,26 @@ public class FacilityTableDataByProgram extends FacilityTableDataBase {
     private static final String TAG = ".FacilityTableDataP";
     Map<String, FacilityRowDataBase> rowData;
 
-    public FacilityTableDataByProgram(OrgUnitDB orgUnit,
-            ServerClassification serverClassification) {
+    public FacilityTableDataByProgram(OrgUnit orgUnit,
+                                      ServerClassification serverClassification) {
         super(serverClassification);
         this.title = AUtils.escapeQuotes(orgUnit.getName());
         this.uid = orgUnit.getUid();
-        this.id = String.valueOf(orgUnit.getId_org_unit());
+        this.id = String.valueOf(orgUnit.getUid());
         rowData = new HashMap<>();
     }
 
-    public void addSurvey(SurveyDB survey) {
-        OrgUnitDB orgUnit = survey.getOrgUnit();
+    public void addSurvey(Survey survey, Map<String, Program> programs) {
+        Program program = programs.get(survey.getProgramUId());
+
         //Get facility row
         FacilityRowDataBase facilityRow = rowData.get(
-                orgUnit.toString() + survey.getProgram().getUid());
+                survey.getOrgUnitUId() + survey.getProgramUId());
         //First time facility
         if (facilityRow == null) {
             facilityRow = new FacilityRowDataBase(
-                    AUtils.escapeQuotes(survey.getProgram().getName()), this.serverClassification);
-            rowData.put(orgUnit.toString() + survey.getProgram().getUid(), facilityRow);
+                    AUtils.escapeQuotes(program.getName()), this.serverClassification);
+            rowData.put(survey.getOrgUnitUId() + survey.getProgramUId(), facilityRow);
         }
         //Add survey
         facilityRow.addSurvey(survey);

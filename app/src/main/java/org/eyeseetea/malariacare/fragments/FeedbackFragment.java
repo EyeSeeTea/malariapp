@@ -19,16 +19,8 @@
 
 package org.eyeseetea.malariacare.fragments;
 
-import static org.eyeseetea.malariacare.services.SurveyService.PREPARE_FEEDBACK_ACTION_ITEMS;
-
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +29,9 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
@@ -44,30 +39,23 @@ import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
 import org.eyeseetea.malariacare.domain.entity.ServerClassification;
+import org.eyeseetea.malariacare.factories.DataFactory;
 import org.eyeseetea.malariacare.fragments.strategies.AFeedbackFragmentStrategy;
 import org.eyeseetea.malariacare.fragments.strategies.FeedbackFragmentStrategy;
 import org.eyeseetea.malariacare.layout.adapters.survey.FeedbackAdapter;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
-import org.eyeseetea.malariacare.services.SurveyService;
-import org.eyeseetea.malariacare.utils.AUtils;
+import org.eyeseetea.malariacare.presentation.presenters.surveys.FeedbackPresenter;
 import org.eyeseetea.malariacare.utils.CompetencyUtils;
-import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomButton;
 import org.eyeseetea.malariacare.views.CustomRadioButton;
 import org.eyeseetea.malariacare.views.CustomTextView;
-
-import java.util.ArrayList;
+import org.eyeseetea.malariacare.utils.AUtils;
 import java.util.List;
 
 
-public class FeedbackFragment extends Fragment implements IModuleFragment {
+public class FeedbackFragment extends Fragment implements IModuleFragment, FeedbackPresenter.View {
 
     public static final String TAG = ".FeedbackActivity";
-
-    /**
-     * Receiver of data from SurveyService
-     */
-    private SurveyReceiver surveyReceiver;
 
     /**
      * Progress dialog shown while loading
@@ -111,6 +99,8 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
     private static String SERVER_CLASSIFICATION = "ServerClassification";
     private ServerClassification serverClassification;
 
+    private FeedbackPresenter feedbackPresenter;
+
     public static FeedbackFragment newInstance(ServerClassification serverClassification) {
         FeedbackFragment fragment = new FeedbackFragment();
 
@@ -134,17 +124,21 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
         prepareUI(moduleName);
         //Starts the background service only one time
         startProgress();
-        registerReceiver();
-        prepareFeedbackInfo();
+        initPresenter();
         return llLayout; // We must return the loaded Layout
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "onCreate");
-        super.onCreate(savedInstanceState);
-        List<Feedback> feedbackList = new ArrayList<>();
-        Session.putServiceValue(PREPARE_FEEDBACK_ACTION_ITEMS, feedbackList);
+    public void onDestroy() {
+        feedbackPresenter.detachView();
+
+        super.onDestroy();
+    }
+
+    private void initPresenter() {
+        feedbackPresenter = DataFactory.INSTANCE.provideFeedbackPresenter();
+
+        feedbackPresenter.attachView(this, moduleName);
     }
 
     @Override
@@ -158,25 +152,6 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
         Log.d(TAG, "onResume");
         super.onResume();
         startProgress();
-        registerReceiver();
-        loadDataIfExistsInMemory();
-    }
-
-    //If the feedback service finish on background all the necessary data is in memory
-    private void loadDataIfExistsInMemory() {
-        if (feedbackAdapter != null) {
-            List<Feedback> feedbackList = (List<Feedback>) Session.popServiceValue(
-                    PREPARE_FEEDBACK_ACTION_ITEMS);
-            if (feedbackList != null && feedbackList.size() > 0) {
-                loadItems(feedbackList);
-            }
-        }
-    }
-
-    @Override
-    public void onPause() {
-        unregisterReceiver();
-        super.onPause();
     }
 
     /**
@@ -278,73 +253,24 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
         this.progressBarContainer.setVisibility(View.VISIBLE);
     }
 
-    /**
-     * Register a survey receiver to load surveys into the listadapter
-     */
-    public void registerReceiver() {
-        Log.d(TAG, "registerReceiver");
-
-        if (surveyReceiver == null) {
-            surveyReceiver = new SurveyReceiver();
-            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver,
-                    new IntentFilter(SurveyService.PREPARE_FEEDBACK_ACTION));
-        }
-    }
-
-    /**
-     * Unregisters the survey receiver.
-     * It really important to do this, otherwise each receiver will invoke its code.
-     */
-    public void unregisterReceiver() {
-        Log.d(TAG, "unregisterReceiver");
-        if (surveyReceiver != null) {
-            LocalBroadcastManager.getInstance(
-                    getActivity().getApplicationContext()).unregisterReceiver(surveyReceiver);
-            surveyReceiver = null;
-        }
-    }
-
-    /**
-     * Asks SurveyService for the current list of surveys
-     */
-    public void prepareFeedbackInfo() {
-        Log.d(TAG, "prepareFeedbackInfo");
-        Intent surveysIntent = new Intent(getActivity().getApplicationContext(),
-                SurveyService.class);
-        surveysIntent.putExtra(Constants.MODULE_KEY, moduleName);
-        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.PREPARE_FEEDBACK_ACTION);
-        getActivity().getApplicationContext().startService(surveysIntent);
-    }
-
     public void setModuleName(String simpleName) {
         this.moduleName = simpleName;
     }
 
     @Override
     public void reloadData() {
-        if (feedbackAdapter != null) {
-            List<Feedback> feedbackList = (List<Feedback>) Session.popServiceValue(
-                    PREPARE_FEEDBACK_ACTION_ITEMS);
-            loadItems(feedbackList);
+        if (feedbackAdapter != null && feedbackPresenter != null) {
+            feedbackPresenter.reload();
         }
     }
 
-    /**
-     * Inner private class that receives the result from the service
-     */
-    private class SurveyReceiver extends BroadcastReceiver {
-        private SurveyReceiver() {
-        }
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Log.d(TAG, "onReceive");
-            if (SurveyService.PREPARE_FEEDBACK_ACTION.equals(intent.getAction())) {
-                List<Feedback> feedbackList = (List<Feedback>) Session.popServiceValue(
-                        PREPARE_FEEDBACK_ACTION_ITEMS);
-                loadItems(feedbackList);
-            }
-        }
+    @Override
+    public void showData(@NonNull List<Feedback> feedbackList) {
+        loadItems(feedbackList);
     }
 
+    @Override
+    public void showNetworkError() {
+        Log.e(this.getClass().getSimpleName(), "Network Error");
+    }
 }

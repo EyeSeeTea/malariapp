@@ -20,15 +20,15 @@
 package org.eyeseetea.malariacare.data.database.utils.monitor.pies;
 
 import static org.eyeseetea.malariacare.data.database.utils.monitor.JavascriptInvokerKt.invokeSetOrgUnitPieData;
-import static org.eyeseetea.malariacare.data.database.utils.monitor.JavascriptInvokerKt.invokeSetProgramPieData;
 
 import android.webkit.WebView;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
-import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.domain.entity.OrgUnit;
 import org.eyeseetea.malariacare.domain.entity.ServerClassification;
+import org.eyeseetea.malariacare.domain.entity.Survey;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,13 +36,15 @@ import java.util.List;
 import java.util.Map;
 
 public class PieBuilderByOrgUnit {
-    private Map<OrgUnitDB, PieDataByOrgUnit> pieTabGroupDataMap;
-    private List<SurveyDB> surveys;
+    private final Map<String, OrgUnit> orgUnits;
+    private Map<String, PieDataByOrgUnit> pieTabGroupDataMap;
+    private List<Survey> surveys;
     private ServerClassification serverClassification;
 
-    public PieBuilderByOrgUnit(List<SurveyDB> surveys, ServerClassification serverClassification) {
+    public PieBuilderByOrgUnit(List<Survey> surveys, ServerClassification serverClassification, Map<String, OrgUnit> orgUnits) {
         this.surveys = surveys;
         this.serverClassification = serverClassification;
+        this.orgUnits = orgUnits;
         pieTabGroupDataMap = new HashMap<>();
     }
 
@@ -54,31 +56,31 @@ public class PieBuilderByOrgUnit {
         entries.clear();
     }
 
-    private List<PieDataByOrgUnit> build(List<SurveyDB> surveys) {
-        for (SurveyDB survey : surveys) {
+    private List<PieDataByOrgUnit> build(List<Survey> surveys) {
+        for (Survey survey : surveys) {
             build(survey);
         }
 
         return new ArrayList(pieTabGroupDataMap.values());
     }
 
-    private void build(SurveyDB survey) {
+    private void build(Survey survey) {
         //Get the program
-        OrgUnitDB orgUnit = survey.getOrgUnit();
+        OrgUnit orgUnit = orgUnits.get(survey.getOrgUnitUId());
 
         //Get the entry for that program
-        PieDataByOrgUnit pieTabGroupData = pieTabGroupDataMap.get(orgUnit);
+        PieDataByOrgUnit pieTabGroupData = pieTabGroupDataMap.get(survey.getOrgUnitUId());
 
         //First time no entry
         if (pieTabGroupData == null) {
             pieTabGroupData = new PieDataByOrgUnit(orgUnit);
-            pieTabGroupDataMap.put(orgUnit, pieTabGroupData);
+            pieTabGroupDataMap.put(survey.getOrgUnitUId(), pieTabGroupData);
         }
 
         if (serverClassification == ServerClassification.COMPETENCIES) {
-            pieTabGroupData.incCounterByCompetency(survey.getCompetencyScoreClassification());
+            pieTabGroupData.incCounterByCompetency(survey.getCompetency().getId());
         } else {
-            pieTabGroupData.incCounterByScoring(survey.getMainScore().getScore());
+            pieTabGroupData.incCounterByScoring(survey.getScore().getScore());
         }
     }
 

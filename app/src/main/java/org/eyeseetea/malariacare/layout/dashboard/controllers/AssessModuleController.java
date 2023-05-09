@@ -426,7 +426,6 @@ public class AssessModuleController extends ModuleController {
         if (isFragmentActive(SurveyFragment.class)) {
             surveyFragment.hideProgress();
             SurveyFragment surveyFragment = getSurveyFragment();
-            surveyFragment.unregisterReceiver();
         }
         //Reload Assess fragment
         if (DashboardOrientation.VERTICAL.equals(dashboardController.getOrientation())) {
@@ -549,7 +548,6 @@ public class AssessModuleController extends ModuleController {
                     //this method create a new survey getting the getScheduledDate date of the
                     // oldsurvey, and remove it.
                     SurveyPlanner.getInstance().deleteSurveyAndBuildNext(survey);
-                    DashboardActivity.reloadDashboard();
                 }
             };
 

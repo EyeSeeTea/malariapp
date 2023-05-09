@@ -225,6 +225,12 @@ public class OrgUnitDB extends BaseModel {
         return new Select().from(OrgUnitDB.class)
                 .orderBy(OrgUnitDB_Table.name, true).queryList();
     }
+
+    public static List<OrgUnitDB> getByUIds(List<String> uids) {
+        return new Select().from(OrgUnitDB.class)
+                .where(OrgUnitDB_Table.uid_org_unit.in(uids))
+                .orderBy(OrgUnitDB_Table.name, true).queryList();
+    }
     /**
      * Returns the UID of an orgUnit with the given name
      *

@@ -19,8 +19,8 @@
 
 package org.eyeseetea.malariacare.data.database.utils.monitor.facilities;
 
-import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.domain.entity.ServerClassification;
+import org.eyeseetea.malariacare.domain.entity.Survey;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -72,7 +72,7 @@ public class FacilityRowDataBase {
         }
     }
 
-    public void addSurvey(SurveyDB survey){
+    public void addSurvey(Survey survey){
         //Calculate the index
         int i=calculateIndex(survey);
 
@@ -100,7 +100,7 @@ public class FacilityRowDataBase {
      * @param survey
      * @return
      */
-    private int calculateIndex(SurveyDB survey){
+    private int calculateIndex(Survey survey){
         String keyMonth=KEY_MONTH_FORMATTER.format(survey.getCompletionDate());
         Integer index=monthsIndex.get(keyMonth);
         if(index==null){

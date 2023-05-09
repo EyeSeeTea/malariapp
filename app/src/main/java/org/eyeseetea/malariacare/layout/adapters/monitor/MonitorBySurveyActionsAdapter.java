@@ -14,7 +14,7 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.domain.entity.ServerClassification;
 import org.eyeseetea.malariacare.layout.adapters.sectionDetail.SectionDetailAdapter;
 import org.eyeseetea.malariacare.presentation.viewmodels.SectionViewModel;
-import org.eyeseetea.malariacare.presentation.viewmodels.SurveyViewModel;
+import org.eyeseetea.malariacare.presentation.viewmodels.MonitorSurveyViewModel;
 import org.eyeseetea.malariacare.utils.CompetencyUtils;
 import org.eyeseetea.malariacare.utils.DateParser;
 
@@ -25,7 +25,7 @@ import java.util.Map;
 public class MonitorBySurveyActionsAdapter extends SectionDetailAdapter {
 
     public interface OnItemMenuClickListener {
-        void itemMenuClick(SurveyViewModel surveyViewModel);
+        void itemMenuClick(MonitorSurveyViewModel surveyViewModel);
     }
 
     private OnItemMenuClickListener onItemMenuClickListener;
@@ -33,7 +33,7 @@ public class MonitorBySurveyActionsAdapter extends SectionDetailAdapter {
     private SectionViewModel incompleteSection;
     private SectionViewModel completeSection;
 
-    private Map<SectionViewModel, List<SurveyViewModel>> surveysMap = new HashMap<>();
+    private Map<SectionViewModel, List<MonitorSurveyViewModel>> surveysMap = new HashMap<>();
     private Context context;
 
     private int numSections = 0;
@@ -44,8 +44,8 @@ public class MonitorBySurveyActionsAdapter extends SectionDetailAdapter {
     }
 
     public void setSurveys(
-            List<SurveyViewModel> incompleteSurveys,
-            List<SurveyViewModel> completedSurveys,
+            List<MonitorSurveyViewModel> incompleteSurveys,
+            List<MonitorSurveyViewModel> completedSurveys,
             ServerClassification serverClassification) {
 
         surveysMap = new HashMap<>();
@@ -82,7 +82,7 @@ public class MonitorBySurveyActionsAdapter extends SectionDetailAdapter {
 
     @Override
     protected int getItemsCountInSection(int section) {
-        List<SurveyViewModel> surveysBySection;
+        List<MonitorSurveyViewModel> surveysBySection;
 
         if (section == 0) {
             surveysBySection = surveysMap.get(incompleteSection);
@@ -129,7 +129,7 @@ public class MonitorBySurveyActionsAdapter extends SectionDetailAdapter {
     private void expandOrCollapse(SectionViewModel sectionViewModel) {
         sectionViewModel.setExpanded(!sectionViewModel.isExpanded());
 
-        for (SurveyViewModel surveyViewModel : surveysMap.get(sectionViewModel)) {
+        for (MonitorSurveyViewModel surveyViewModel : surveysMap.get(sectionViewModel)) {
             surveyViewModel.setVisible(sectionViewModel.isExpanded());
         }
 
@@ -197,9 +197,9 @@ public class MonitorBySurveyActionsAdapter extends SectionDetailAdapter {
             dotsMenu = itemView.findViewById(R.id.menu_dots);
         }
 
-        void bindView(List<SurveyViewModel> surveys, int position,
-                ServerClassification serverClassification) {
-            SurveyViewModel survey = surveys.get(position);
+        void bindView(List<MonitorSurveyViewModel> surveys, int position,
+                      ServerClassification serverClassification) {
+            MonitorSurveyViewModel survey = surveys.get(position);
             itemOrder = position;
 
             orgUnitTextView.setText(survey.getOrgUnit());
@@ -229,8 +229,8 @@ public class MonitorBySurveyActionsAdapter extends SectionDetailAdapter {
             }
         }
 
-        private void assignClassificationValue(SurveyViewModel survey,
-                ServerClassification serverClassification) {
+        private void assignClassificationValue(MonitorSurveyViewModel survey,
+                                               ServerClassification serverClassification) {
             if (serverClassification == ServerClassification.COMPETENCIES) {
                 classificationLabelView.setText(itemView.getContext().getText(
                         R.string.competency_title));

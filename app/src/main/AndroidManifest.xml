@@ -38,19 +38,6 @@
             android:name=".DownloadedMediaActivity"
             android:label="@string/downloaded_media_menu"/>
 
-        <service
-            android:name=".services.SurveyService"
-            android:exported="false" />
-
-        <service
-            android:name=".services.PushService"
-            android:permission="android.permission.BIND_JOB_SERVICE"
-            android:exported="false" />
-
-        <service
-            android:name=".services.PlannedSurveyService"
-            android:exported="false" />
-
         <activity
             android:name=".LoginActivity"
             android:finishOnTaskLaunch="true"

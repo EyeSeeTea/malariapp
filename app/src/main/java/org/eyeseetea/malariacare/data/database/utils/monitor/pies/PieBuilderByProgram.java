@@ -24,10 +24,10 @@ import static org.eyeseetea.malariacare.data.database.utils.monitor.JavascriptIn
 import android.webkit.WebView;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.ProgramDB;
-import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.domain.entity.Program;
 import org.eyeseetea.malariacare.domain.entity.ServerClassification;
+import org.eyeseetea.malariacare.domain.entity.Survey;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,15 +35,19 @@ import java.util.List;
 import java.util.Map;
 
 public class PieBuilderByProgram {
-    private Map<ProgramDB, PieDataByProgram> pieTabGroupDataMap;
-    private List<SurveyDB> surveys;
+    private final Map<String, Program> programs;
+    private Map<String, PieDataByProgram> pieTabGroupDataMap;
+    private List<Survey> surveys;
     private ServerClassification serverClassification;
 
-    public PieBuilderByProgram(List<SurveyDB> surveys, ServerClassification serverClassification) {
+    public PieBuilderByProgram(List<Survey> surveys, ServerClassification serverClassification,Map<String, Program> programs) {
         this.surveys = surveys;
         this.serverClassification = serverClassification;
+        this.programs = programs;
+
         pieTabGroupDataMap = new HashMap<>();
     }
+
 
     /**
      * Adds calculated entries to the given webView
@@ -56,31 +60,31 @@ public class PieBuilderByProgram {
         entries.clear();
     }
 
-    private List<PieDataByProgram> build(List<SurveyDB> surveys) {
-        for (SurveyDB survey : surveys) {
+    private List<PieDataByProgram> build(List<Survey> surveys) {
+        for (Survey survey : surveys) {
             build(survey);
         }
 
         return new ArrayList(pieTabGroupDataMap.values());
     }
 
-    private void build(SurveyDB survey) {
+    private void build(Survey survey) {
         //Get the program
-        ProgramDB program = survey.getProgram();
+        Program program = programs.get(survey.getProgramUId()) ;
 
         //Get the entry for that program
-        PieDataByProgram pieTabGroupData = pieTabGroupDataMap.get(program);
+        PieDataByProgram pieTabGroupData = pieTabGroupDataMap.get(survey.getProgramUId());
 
         //First time no entry
         if (pieTabGroupData == null) {
             pieTabGroupData = new PieDataByProgram(program);
-            pieTabGroupDataMap.put(program, pieTabGroupData);
+            pieTabGroupDataMap.put(survey.getProgramUId(), pieTabGroupData);
         }
 
         if (serverClassification == ServerClassification.COMPETENCIES) {
-            pieTabGroupData.incCounterByCompetency(survey.getCompetencyScoreClassification());
+            pieTabGroupData.incCounterByCompetency(survey.getCompetency().getId());
         } else {
-            pieTabGroupData.incCounterByScoring(survey.getMainScore().getScore());
+            pieTabGroupData.incCounterByScoring(survey.getScore().getScore());
         }
     }
 
