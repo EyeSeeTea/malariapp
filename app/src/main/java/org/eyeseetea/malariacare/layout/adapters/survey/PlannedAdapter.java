@@ -40,6 +40,7 @@ import org.eyeseetea.malariacare.data.database.utils.planning.PlannedSurvey;
 import org.eyeseetea.malariacare.data.database.utils.planning.ScheduleListener;
 import org.eyeseetea.malariacare.domain.entity.CompetencyScoreClassification;
 import org.eyeseetea.malariacare.domain.entity.ServerClassification;
+import org.eyeseetea.malariacare.layout.adapters.dashboard.PlanningPerOrgUnitAdapter;
 import org.eyeseetea.malariacare.utils.CompetencyUtils;
 import org.eyeseetea.malariacare.utils.DateParser;
 
@@ -57,6 +58,7 @@ public class PlannedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     private Context context;
 
+    private OnReloadListener onReloadListener;
     /**
      * Items filtered by this program
      */
@@ -72,9 +74,11 @@ public class PlannedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     int numShown;
 
     public PlannedAdapter(Context context,
-            ServerClassification classification) {
+            ServerClassification classification,
+                          OnReloadListener onReloadListener) {
         this.context = context;
         this.classification = classification;
+        this.onReloadListener = onReloadListener;
     }
 
     @Override
@@ -261,13 +265,21 @@ public class PlannedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             scheduledDateTextView.setText(
                     dateParser.getEuropeanFormattedDate(plannedSurvey.getNextAssesment()));
             scheduledDateTextView.setOnClickListener(
-                    new ScheduleListener(plannedSurvey.getSurvey(), context));
+                    new ScheduleListener(plannedSurvey.getSurvey(), context, () -> {
+                        if (onReloadListener != null){
+                            onReloadListener.onReload();
+                        }
+                    }));
 
             ImageView dotsMenu = itemView.findViewById(R.id.menu_dots);
 
             dotsMenu.setOnClickListener(view -> DashboardActivity.dashboardActivity.onPlannedSurvey(
                     plannedSurvey.getSurvey(),
-                    new ScheduleListener(plannedSurvey.getSurvey(), context)));
+                    new ScheduleListener(plannedSurvey.getSurvey(), context, () -> {
+                        if (onReloadListener != null){
+                            onReloadListener.onReload();
+                        }
+                    })));
 
             assignBackgroundColor();
             setUpActionButton(plannedSurvey);
@@ -406,5 +418,7 @@ public class PlannedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
-
+    public interface OnReloadListener {
+        void onReload();
+    }
 }

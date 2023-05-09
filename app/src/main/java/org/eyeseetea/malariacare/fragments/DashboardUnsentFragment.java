@@ -19,41 +19,40 @@
 
 package org.eyeseetea.malariacare.fragments;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitProgramRelationDB;
-import org.eyeseetea.malariacare.data.database.model.SurveyDB;
-import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.domain.entity.SurveyStatus;
+import org.eyeseetea.malariacare.domain.entity.SurveyStatusFilter;
+import org.eyeseetea.malariacare.factories.DataFactory;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentUnsentAdapter;
-import org.eyeseetea.malariacare.services.SurveyService;
+import org.eyeseetea.malariacare.presentation.presenters.surveys.SurveysPresenter;
+import org.eyeseetea.malariacare.presentation.viewmodels.SurveyViewModel;
 import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class DashboardUnsentFragment extends FiltersFragment{
+public class DashboardUnsentFragment extends FiltersFragment implements SurveysPresenter.View {
 
     public static final String TAG = ".UnsentFragment";
-    private SurveyReceiver surveyReceiver;
+    //private SurveyReceiver surveyReceiver;
+    private SurveysPresenter surveysPresenter;
 
     private AssessmentUnsentAdapter adapter;
 
-    private FloatingActionButton startButton;
+    private FloatingActionButton createSurveyButton;
     private TextView noSurveysText;
 
     private RecyclerView recyclerView;
@@ -61,7 +60,7 @@ public class DashboardUnsentFragment extends FiltersFragment{
 
     @Override
     protected void onFiltersChanged() {
-        reloadInProgressSurveys();
+        reloadData();
     }
 
     @Override
@@ -75,47 +74,47 @@ public class DashboardUnsentFragment extends FiltersFragment{
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "onCreate");
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView");
 
-        rootView =  inflater.inflate(R.layout.assess_listview, null);
+        rootView = inflater.inflate(R.layout.assess_listview, null);
 
         noSurveysText = rootView.findViewById(R.id.no_surveys);
-        startButton = rootView.findViewById(R.id.start_button);
+        createSurveyButton = rootView.findViewById(R.id.start_button);
 
         initRecyclerView();
+        initPresenter();
 
         return rootView;
     }
 
-    @Override
-    public void onResume() {
-        Log.d(TAG, "onResume");
-        //Listen for data
-        registerSurveysReceiver();
-        super.onResume();
+    private void initPresenter() {
+        surveysPresenter = DataFactory.INSTANCE.provideSurveysPresenter();
+
+        surveysPresenter.attachView(this, SurveyStatusFilter.IN_PROGRESS, getSelectedProgramUidFilter(), getSelectedOrgUnitUidFilter());
     }
 
-    private void showOrHiddenButton(SurveyDB survey) {
+    @Override
+    public void onDestroy() {
+        surveysPresenter.detachView();
+
+        super.onDestroy();
+    }
+
+    private void showOrHiddenButton(SurveyViewModel survey) {
         String orgUnitFilter = getSelectedOrgUnitUidFilter();
         String programFilter = getSelectedProgramUidFilter();
 
-        if(orgUnitFilter == "" || programFilter == ""){
-            startButton.setVisibility(View.VISIBLE);
+        if (orgUnitFilter.equals("") || programFilter.equals("")) {
+            createSurveyButton.show();
             noSurveysText.setText(R.string.assess_no_surveys);
-        }else if (survey != null ||
-                !OrgUnitProgramRelationDB.existProgramAndOrgUnitRelation(programFilter, orgUnitFilter)){
-            startButton.setVisibility(View.INVISIBLE);
+        } else if (survey != null ||
+                !OrgUnitProgramRelationDB.existProgramAndOrgUnitRelation(programFilter, orgUnitFilter)) {
+            createSurveyButton.hide();
             noSurveysText.setText(R.string.survey_not_assigned_facility);
-        }else{
-            startButton.setVisibility(View.VISIBLE);
+        } else {
+            createSurveyButton.show();
             noSurveysText.setText(R.string.assess_no_surveys);
         }
     }
@@ -131,126 +130,36 @@ public class DashboardUnsentFragment extends FiltersFragment{
     public void reloadData() {
         super.reloadData();
 
-        //Reload data using service
-        Intent surveysIntent = new Intent(
-                PreferencesState.getInstance().getContext().getApplicationContext(),
-                SurveyService.class);
-        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.ALL_IN_PROGRESS_SURVEYS_ACTION);
-        PreferencesState.getInstance().getContext().getApplicationContext().startService(
-                surveysIntent);
-    }
-
-    public void reloadToSend() {
-        //Reload data using service
-        Intent surveysIntent = new Intent(PreferencesState.getInstance().getContext().getApplicationContext()
-                , SurveyService.class);
-        surveysIntent.putExtra(SurveyService.SERVICE_METHOD,
-                SurveyService.ALL_COMPLETED_SURVEYS_ACTION);
-        PreferencesState.getInstance().getContext().getApplicationContext().startService(
-                surveysIntent);
-    }
-
-    @Override
-    public void onPause() {
-        Log.d(TAG, "onPause");
-        unregisterSurveysReceiver();
-
-        super.onPause();
-    }
-
-    private void registerSurveysReceiver() {
-        Log.d(TAG, "registerSurveysReceiver");
-
-        if (surveyReceiver == null) {
-            surveyReceiver = new SurveyReceiver();
-            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver,
-                    new IntentFilter(SurveyService.ALL_IN_PROGRESS_SURVEYS_ACTION));
-        }
-    }
-
-    public void unregisterSurveysReceiver() {
-        Log.d(TAG, "unregisterSurveysReceiver");
-        if (surveyReceiver != null) {
-            LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(surveyReceiver);
-            surveyReceiver = null;
-        }
-    }
-
-    public void reloadInProgressSurveys() {
-        List<SurveyDB> surveysInProgressFromService = (List<SurveyDB>) Session.popServiceValue(
-                SurveyService.ALL_IN_PROGRESS_SURVEYS_ACTION);
-        if(surveysInProgressFromService==null){
-            return;
-        }
-        reloadSurveys(getSurveysByOrgUnitAndProgram(surveysInProgressFromService));
-    }
-
-    private List<SurveyDB> getSurveysByOrgUnitAndProgram(
-            List<SurveyDB> surveysInProgressFromService) {
-        List<SurveyDB> filteredSurveys = new ArrayList<>();
-
-        for (SurveyDB survey : surveysInProgressFromService) {
-            if (surveyHasOrgUnitFilter(survey) && surveyHasProgramFilter(survey)) {
-                filteredSurveys.add(survey);
-            }
-        }
-
-        return filteredSurveys;
-    }
-
-    private boolean surveyHasOrgUnitFilter(SurveyDB survey){
-        String orgUnitFilter = getSelectedOrgUnitUidFilter();
-
-        return (orgUnitFilter.equals("") || survey.getOrgUnit().getUid().equals(orgUnitFilter));
-    }
-
-    private boolean surveyHasProgramFilter(SurveyDB survey){
-        String programFilter = getSelectedProgramUidFilter();
-
-        return (programFilter.equals("") || survey.getProgram().getUid().equals(programFilter));
-    }
-
-
-    public void reloadSurveys(List<SurveyDB> newListSurveys) {
-        if (newListSurveys != null && this.adapter != null) {
-            Log.d(TAG, "refreshScreen (Thread: " + Thread.currentThread().getId() + "): "
-                    + newListSurveys.size());
-            this.adapter.setSurveys(newListSurveys);
-            SurveyDB surveyDB=null;
-            if(newListSurveys.size()>0) {
-                surveyDB =newListSurveys.get(0);
-            }
-            showOrHiddenButton(surveyDB);
-            showOrHiddenList(newListSurveys.isEmpty());
+        if (surveysPresenter != null){
+            surveysPresenter.refresh( getSelectedProgramUidFilter(), getSelectedOrgUnitUidFilter());
         }
     }
 
     private void showOrHiddenList(boolean hasSurveys) {
-        if(hasSurveys){
+        if (hasSurveys) {
             noSurveysText.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
-        }else {
+        } else {
             recyclerView.setVisibility(View.VISIBLE);
             noSurveysText.setVisibility(View.GONE);
         }
     }
 
-    /**
-     * Inner private class that receives the result from the service
-     */
-    private class SurveyReceiver extends BroadcastReceiver {
-        private SurveyReceiver() {
-        }
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Log.d(TAG, "onReceive");
-            //Listening only intents from this method
-            if (SurveyService.ALL_IN_PROGRESS_SURVEYS_ACTION.equals(intent.getAction())) {
-                reloadInProgressSurveys();
+    @Override
+    public void showSurveys(@NonNull List<SurveyViewModel> surveys) {
+        if (this.adapter != null) {
+            this.adapter.setSurveys(surveys);
+            SurveyViewModel survey = null;
+            if (surveys.size() > 0) {
+                survey = surveys.get(0);
             }
+            showOrHiddenButton(survey);
+            showOrHiddenList(surveys.isEmpty());
         }
     }
 
-
+    @Override
+    public void showNetworkError() {
+        Log.e(this.getClass().getSimpleName(), "Network Error");
+    }
 }

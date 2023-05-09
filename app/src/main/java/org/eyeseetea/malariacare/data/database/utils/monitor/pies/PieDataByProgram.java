@@ -19,19 +19,19 @@
 
 package org.eyeseetea.malariacare.data.database.utils.monitor.pies;
 
-import org.eyeseetea.malariacare.data.database.model.ProgramDB;
+import org.eyeseetea.malariacare.domain.entity.Program;
 import org.eyeseetea.malariacare.utils.AUtils;
 
 public class PieDataByProgram extends PieDataBase {
-    private ProgramDB program;
+    private Program program;
 
-    public PieDataByProgram(ProgramDB program) {
+    public PieDataByProgram(Program program) {
         this.program = program;
     }
 
     public String toJSON(String tipChat){
         String pieTitle = String.format("%s (%s)", AUtils.escapeQuotes(program.getName()), AUtils.escapeQuotes(program.getName()));
-        String json = String.format(JSONFORMAT, pieTitle, tipChat, program.getId_program(), this.numA, this.numB, this.numC,this.numNA, program.getUid(), program.getUid());
+        String json = String.format(JSONFORMAT, pieTitle, tipChat, program.getUid(), this.numA, this.numB, this.numC,this.numNA, program.getUid(), program.getUid());
         return json;
     }
 }

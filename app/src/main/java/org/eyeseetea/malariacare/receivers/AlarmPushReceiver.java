@@ -27,13 +27,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import androidx.work.ExistingWorkPolicy;
+import androidx.work.WorkManager;
+
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushDataController;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.DashboardController;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.ImproveModuleController;
 import org.eyeseetea.malariacare.observables.ObservablePush;
 import org.eyeseetea.malariacare.services.PushService;
-import org.eyeseetea.malariacare.services.SurveyService;
 
 public class AlarmPushReceiver extends BroadcastReceiver {
 
@@ -57,7 +59,7 @@ public class AlarmPushReceiver extends BroadcastReceiver {
         Log.i(TAG, "isDoneSuccess");
         setFail(false);
 
-        if (DashboardActivity.dashboardActivity != null){
+        if (DashboardActivity.dashboardActivity != null) {
             DashboardController dashboardController =
                     DashboardActivity.dashboardActivity.dashboardController;
 
@@ -87,10 +89,10 @@ public class AlarmPushReceiver extends BroadcastReceiver {
         Log.d(TAG, "onReceive");
 
         Log.d(TAG, "onReceive asking for push");
-        Intent pushIntent = new Intent(context, PushService.class);
-        pushIntent.putExtra(SurveyService.SERVICE_METHOD, PushService.PENDING_SURVEYS_ACTION);
 
-        PushService.enqueueWork(context, pushIntent);
+        WorkManager
+                .getInstance(context)
+                .enqueueUniqueWork(PushService.UNIQUE_WORK_NAME, ExistingWorkPolicy.KEEP, PushService.Companion.buildWorkRequest());
     }
 
     public void setPushAlarm(Context context) {
@@ -110,7 +112,7 @@ public class AlarmPushReceiver extends BroadcastReceiver {
     public static void cancelPushAlarm(Context context) {
         Log.d(TAG, "cancelPushAlarm");
 
-        if (context != null){
+        if (context != null) {
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             Intent intent = new Intent(context, AlarmPushReceiver.class);
             PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent,

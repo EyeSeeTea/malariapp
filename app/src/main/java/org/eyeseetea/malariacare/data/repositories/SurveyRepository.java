@@ -1,8 +1,12 @@
 package org.eyeseetea.malariacare.data.repositories;
 
+import androidx.annotation.NonNull;
+
 import org.eyeseetea.malariacare.data.boundaries.ISurveyDataSource;
 import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyRepository;
 import org.eyeseetea.malariacare.domain.entity.Survey;
+import org.eyeseetea.malariacare.domain.entity.SurveyStatusFilter;
+import org.eyeseetea.malariacare.domain.usecase.SurveysFilter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -32,7 +36,9 @@ public class SurveyRepository implements ISurveyRepository{
         return localDataSource.getSurveyByUid(uid);
     }
 
-
-
-
+    @NonNull
+    @Override
+    public List<Survey> getSurveysByFilter(SurveysFilter filter) throws Exception {
+        return localDataSource.getSurveysByFilter(filter);
+    }
 }

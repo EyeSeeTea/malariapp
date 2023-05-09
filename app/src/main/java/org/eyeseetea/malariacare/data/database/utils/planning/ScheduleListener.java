@@ -14,7 +14,6 @@ import android.widget.TextView;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.services.PlannedSurveyService;
 import org.eyeseetea.malariacare.utils.DateParser;
 import org.eyeseetea.sdk.presentation.views.CustomEditText;
 
@@ -28,13 +27,20 @@ public class ScheduleListener implements View.OnClickListener {
     SurveyDB survey;
     Date newScheduledDate;
     Context context;
+    OnReloadListener onReloadListener;
     List<SurveyDB> plannedSurveys;
-    public ScheduleListener(SurveyDB survey, Context context){this.survey=survey; this.context=context;}
 
-    public ScheduleListener(List<SurveyDB> plannedSurveys, Context applicationContext) {
+    public ScheduleListener(SurveyDB survey, Context context, OnReloadListener onReloadListener) {
+        this.survey=survey;
+        this.context=context;
+        this.onReloadListener=onReloadListener;
+    }
+
+    public ScheduleListener(List<SurveyDB> plannedSurveys, Context applicationContext,OnReloadListener onReloadListener) {
         this.context=applicationContext;
         this.plannedSurveys=plannedSurveys;
         survey=plannedSurveys.get(0);
+        this.onReloadListener=onReloadListener;
         createScheduleDialog();
     }
 
@@ -125,7 +131,9 @@ public class ScheduleListener implements View.OnClickListener {
                     }
                 }
                 //Recalculate items
-                reloadData();
+                if (onReloadListener != null){
+                    onReloadListener.onReload();
+                }
                 dialog.dismiss();
             }
         });
@@ -145,16 +153,7 @@ public class ScheduleListener implements View.OnClickListener {
         return dateFormatted;
     }
 
-    private void reloadData() {
-        //Reload data using service
-        Intent surveysIntent=new Intent(PreferencesState.getInstance().getContext().getApplicationContext(), PlannedSurveyService.class);
-        surveysIntent.putExtra(PlannedSurveyService.SERVICE_METHOD, PlannedSurveyService.PLANNED_PER_ORG_UNIT_SURVEYS_ACTION);
-        PreferencesState.getInstance().getContext().getApplicationContext().startService(surveysIntent);
-        surveysIntent=new Intent(PreferencesState.getInstance().getContext().getApplicationContext(), PlannedSurveyService.class);
-        surveysIntent.putExtra(PlannedSurveyService.SERVICE_METHOD, PlannedSurveyService.PLANNED_SURVEYS_ACTION);
-        PreferencesState.getInstance().getContext().getApplicationContext().startService(surveysIntent);
-
+    public interface OnReloadListener {
+        void onReload();
     }
-
-
 }

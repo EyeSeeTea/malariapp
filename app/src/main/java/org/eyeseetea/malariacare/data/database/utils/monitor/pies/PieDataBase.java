@@ -27,7 +27,7 @@ import org.eyeseetea.malariacare.utils.Constants;
 public class PieDataBase {
 
     static final String JSONFORMAT =
-            "{title:'%s',tip:'%s',idTabGroup: %d,valueA:%d,valueB:%d,valueC:%d,valueNA:%d,"
+            "{title:'%s',tip:'%s',idTabGroup: '%s',valueA:%d,valueB:%d,valueC:%d,valueNA:%d,"
                     + "uidprogram:'%s',"
                     + "uidorgunit:'%s'}";
 

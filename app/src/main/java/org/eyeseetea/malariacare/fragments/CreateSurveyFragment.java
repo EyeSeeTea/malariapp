@@ -20,15 +20,13 @@
 package org.eyeseetea.malariacare.fragments;
 
 import android.app.AlertDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,12 +42,13 @@ import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitLevelDB;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
-import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.data.database.utils.Session;
-import org.eyeseetea.malariacare.data.database.utils.services.BaseServiceBundle;
+import org.eyeseetea.malariacare.domain.entity.OrgUnit;
+import org.eyeseetea.malariacare.domain.entity.OrgUnitLevel;
+import org.eyeseetea.malariacare.domain.entity.Program;
+import org.eyeseetea.malariacare.factories.DataFactory;
 import org.eyeseetea.malariacare.layout.adapters.general.OrgUnitArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.general.ProgramArrayAdapter;
-import org.eyeseetea.malariacare.services.SurveyService;
+import org.eyeseetea.malariacare.presentation.presenters.surveys.CreateSurveyPresenter;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomButton;
 import org.eyeseetea.malariacare.views.CustomTextView;
@@ -60,9 +59,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CreateSurveyFragment extends Fragment {
+public class CreateSurveyFragment extends Fragment implements CreateSurveyPresenter.View {
 
     private static String TAG = ".CreateSurveyFragment";
+
+    private CreateSurveyPresenter presenter;
 
     // UI references.
     private Spinner orgUnitView;
@@ -79,8 +80,6 @@ public class CreateSurveyFragment extends Fragment {
     }
 
     private LinkedHashMap<OrgUnitLevelDB, View> orgUnitHierarchyView;
-
-    private SurveyReceiver surveyReceiver;
 
     private Spinner programView;
 
@@ -112,26 +111,14 @@ public class CreateSurveyFragment extends Fragment {
                 R.id.assess_org_unit_program_filter_view);
         super.onCreate(savedInstanceState);
     }
-    @Override
-    public void onStop(){
-        Log.d(TAG, "onStop");
-        unregisterReceiver();
 
-        super.onStop();
-    }
     @Override
-    public void onPause(){
-        Log.d(TAG, "onPause");
-        unregisterReceiver();
+    public void onDestroy() {
+        presenter.detachView();
 
-        super.onPause();
+        super.onDestroy();
     }
-    @Override
-    public void onResume() {
-        Log.d(TAG, "onResume");
-        registerReceiver();
-        super.onResume();
-    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView");
@@ -140,17 +127,16 @@ public class CreateSurveyFragment extends Fragment {
             return null;
         }
         llLayout = (LinearLayout) inflater.inflate(R.layout.create_survey_fragment, container, false);
-        registerReceiver();
-        getData();
+
+        initPresenter();
+
         return llLayout; // We must return the loaded Layout
     }
 
+    private void initPresenter() {
+        presenter = DataFactory.INSTANCE.provideCreateSurveyPresenter();
 
-    public void getData(){
-        //get data using service
-        Intent surveysIntent=new Intent(PreferencesState.getInstance().getContext().getApplicationContext(), SurveyService.class);
-        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.ALL_CREATE_SURVEY_DATA_ACTION);
-        PreferencesState.getInstance().getContext().getApplicationContext().startService(surveysIntent);
+        presenter.attachView(this);
     }
 
     public void create(){
@@ -261,6 +247,39 @@ public class CreateSurveyFragment extends Fragment {
         Log.d(TAG, "onActivityCreated");
         super.onActivityCreated(savedInstanceState);
 
+    }
+
+    @Override
+    public void showData(@NonNull List<Program> programs, @NonNull List<OrgUnit> orgUnits, @NonNull List<OrgUnitLevel> orgUnitLevels) {
+        //TODO: refactor create to use domain entities
+        List<String> programIds = new ArrayList<>();
+
+        for (Program program:programs) {
+            programIds.add(program.getUid());
+        }
+
+        List<String> orgUnitIds = new ArrayList<>();
+
+        for (OrgUnit orgUnit:orgUnits) {
+            orgUnitIds.add(orgUnit.getUid());
+        }
+
+        List<String> orgUnitLevelIds = new ArrayList<>();
+
+        for (OrgUnitLevel orgUnitLevel:orgUnitLevels) {
+            orgUnitLevelIds.add(orgUnitLevel.getUid());
+        }
+
+        orgUnitList = OrgUnitDB.getByUIds(orgUnitIds);
+        allProgramList =  ProgramDB.getByUIds(programIds);
+        orgUnitLevelList = OrgUnitLevelDB.getByUIds(orgUnitLevelIds);
+
+        create();
+    }
+
+    @Override
+    public void showNetworkError() {
+        Log.e(this.getClass().getSimpleName(), "Network Error");
     }
 
     //select the default item.
@@ -525,51 +544,6 @@ public class CreateSurveyFragment extends Fragment {
             SharedPreferences.Editor editor = getEditor();
             editor.putString(getString(R.string.default_program), uid);
             editor.commit();
-    }
-
-    /**
-     * Register a survey receiver to load surveys into the listadapter
-     */
-    public void registerReceiver() {
-        Log.d(TAG, "registerReceiver");
-
-        if(surveyReceiver==null){
-            surveyReceiver=new SurveyReceiver();
-            LocalBroadcastManager.getInstance( getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_CREATE_SURVEY_DATA_ACTION));
-        }
-    }
-
-    /**
-     * Unregisters the survey receiver.
-     * It really important to do this, otherwise each receiver will invoke its code.
-     */
-    public void  unregisterReceiver(){
-        Log.d(TAG, "unregisterReceiver");
-        if(surveyReceiver!=null){
-            LocalBroadcastManager.getInstance( getActivity()).unregisterReceiver(surveyReceiver);
-            surveyReceiver=null;
-        }
-    }
-    /**
-     * Inner private class that receives the result from the service
-     */
-    private class SurveyReceiver extends BroadcastReceiver {
-        private SurveyReceiver() {
-        }
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Log.d(TAG, "onReceive");
-            //Listening only intents from this method
-            if(loadHierarchy)
-                if (SurveyService.ALL_CREATE_SURVEY_DATA_ACTION.equals(intent.getAction())) {
-                    BaseServiceBundle data=(BaseServiceBundle) Session.popServiceValue(SurveyService.ALL_CREATE_SURVEY_DATA_ACTION);
-                    orgUnitList=(List<OrgUnitDB>)data.getModelList(OrgUnitDB.class.getName());
-                    orgUnitLevelList=(List<OrgUnitLevelDB>)data.getModelList(OrgUnitLevelDB.class.getName());
-                    allProgramList=(List<ProgramDB>)data.getModelList(ProgramDB.class.getName());
-                    create();
-                }
-        }
     }
 
     public class OrgUnitHierarchy {

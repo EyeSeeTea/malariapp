@@ -30,17 +30,13 @@ import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.usecase.MockedPushSurveysUseCase;
 import org.eyeseetea.malariacare.domain.usecase.PushUseCase;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
-import org.eyeseetea.malariacare.services.PushService;
 
 public class PushServiceStrategy {
     public static final String TAG = ".PushServiceStrategy";
 
-    protected PushService mPushService;
-
     PushUseCase pushUseCase;
 
-    public PushServiceStrategy(PushService pushService) {
-        mPushService = pushService;
+    public PushServiceStrategy() {
     }
 
     public void push(PushUseCase pushUseCase) {
@@ -68,7 +64,6 @@ public class PushServiceStrategy {
             @Override
             public void onPushFinished() {
                 Log.d(TAG, "onPushMockFinished");
-                mPushService.onPushFinished();
             }
         });
     }

@@ -24,7 +24,10 @@ import org.eyeseetea.malariacare.data.database.model.ValueDB;
 import org.eyeseetea.malariacare.data.database.model.ValueDB_Table;
 import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.entity.SurveyStatus;
+import org.eyeseetea.malariacare.domain.entity.SurveyStatusFilter;
+import org.eyeseetea.malariacare.domain.usecase.SurveysFilter;
 
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,12 +42,12 @@ public class SurveyLocalDataSource implements ISurveyDataSource {
     List<OptionDB> optionsDB;
     List<OrgUnitProgramRelationDB> orgUnitProgramRelationsDB;
 
-    public SurveyLocalDataSource(){
+    public SurveyLocalDataSource() {
         loadMetadata();
     }
 
     private void loadMetadata() {
-        orgUnitsDB =OrgUnitDB.list();
+        orgUnitsDB = OrgUnitDB.list();
         programsDB = ProgramDB.getAllPrograms();
         questionsDB = QuestionDB.list();
         optionsDB = OptionDB.list();
@@ -53,9 +56,11 @@ public class SurveyLocalDataSource implements ISurveyDataSource {
 
 
     @Override
-    public List<Survey> getSurveysByStatus(SurveyStatus status) {
+    public List<Survey> getSurveysByFilter(SurveysFilter filter) {
+        Long programId = getProgramId(filter.getProgramUid());
+        Long orgUnitId = getOrgUnitId(filter.getOrgUnitUid());
 
-        List<SurveyDB> surveyDBS = getSurveysDBByStatus(status);
+        List<SurveyDB> surveyDBS = getSurveysDB(filter.getStatus(), programId, orgUnitId, filter.getStartDate());
 
         List<Survey> surveys = mapSurveys(surveyDBS);
 
@@ -166,7 +171,7 @@ public class SurveyLocalDataSource implements ISurveyDataSource {
     private void deleteNonExistedValuesInModifiedSurvey(SurveyDB surveyDB) {
         List<Long> existedQuestionsInSurvey = new ArrayList<>();
 
-        for (ValueDB valueDB:surveyDB.getValues()) {
+        for (ValueDB valueDB : surveyDB.getValues()) {
             existedQuestionsInSurvey.add(valueDB.getId_question_fk());
         }
 
@@ -189,15 +194,29 @@ public class SurveyLocalDataSource implements ISurveyDataSource {
         }
     }
 
-    private List<SurveyDB> getSurveysDBByStatus(SurveyStatus status){
+    private List<SurveyDB> getSurveysDB(SurveyStatusFilter statusFilter, Long program, Long orgUnit, Date startDate) {
         List<SurveyDB> surveyDBS = null;
+
+        List<Integer> statuses = getFilterStatus(statusFilter);
 
         From from = new Select().from(SurveyDB.class);
 
         Where where = from.where(SurveyDB_Table.status.isNotNull());
 
-        if (status != null){
-            where = from.where(SurveyDB_Table.status.in(status.getCode()));
+        if (statuses != null && statuses.size() > 0) {
+            where = from.where(SurveyDB_Table.status.in(statuses));
+        }
+
+        if (program != null) {
+            where = where.and(SurveyDB_Table.id_program_fk.in(program));
+        }
+
+        if (orgUnit != null) {
+            where = where.and(SurveyDB_Table.id_org_unit_fk.in(orgUnit));
+        }
+
+        if (startDate != null) {
+            where = where.and(SurveyDB_Table.completion_date.greaterThan(startDate));
         }
 
         surveyDBS = where.orderBy(OrderBy.fromProperty(SurveyDB_Table.completion_date))
@@ -209,7 +228,26 @@ public class SurveyLocalDataSource implements ISurveyDataSource {
         return surveyDBS;
     }
 
-    private List<SurveyDB> getSurveysDBByUids(List<String> uids){
+    private List<Integer> getFilterStatus(SurveyStatusFilter statusFilter) {
+        List<Integer> statuses = new ArrayList<>();
+
+        if (statusFilter != null) {
+            if (statusFilter == SurveyStatusFilter.IN_PROGRESS) {
+                statuses.add(SurveyStatus.IN_PROGRESS.getCode());
+            } else {
+
+                statuses.add(SurveyStatus.SENT.getCode());
+                statuses.add(SurveyStatus.COMPLETED.getCode());
+                statuses.add(SurveyStatus.CONFLICT.getCode());
+                statuses.add(SurveyStatus.QUARANTINE.getCode());
+                statuses.add(SurveyStatus.SENDING.getCode());
+            }
+        }
+
+        return statuses;
+    }
+
+    private List<SurveyDB> getSurveysDBByUids(List<String> uids) {
         List<SurveyDB> surveyDBS = new Select().from(SurveyDB.class)
                 .where(SurveyDB_Table.uid_event_fk.in(uids)).queryList();
 
@@ -224,8 +262,8 @@ public class SurveyLocalDataSource implements ISurveyDataSource {
 
         List<ValueDB> allValues =
                 new Select().from(ValueDB.class)
-                .leftOuterJoin(SurveyDB.class).on(ValueDB_Table.id_survey_fk.eq(SurveyDB_Table.id_survey))
-                .where(SurveyDB_Table.uid_event_fk.in(surveysUid)).queryList();
+                        .leftOuterJoin(SurveyDB.class).on(ValueDB_Table.id_survey_fk.eq(SurveyDB_Table.id_survey))
+                        .where(SurveyDB_Table.uid_event_fk.in(surveysUid)).queryList();
 
 
         Map<Long, List<ValueDB>> valuesMap = new HashMap<>();
@@ -237,7 +275,7 @@ public class SurveyLocalDataSource implements ISurveyDataSource {
         }
 
         for (SurveyDB surveyDB : surveyDBS) {
-            if (valuesMap.containsKey(surveyDB.getId_survey())){
+            if (valuesMap.containsKey(surveyDB.getId_survey())) {
                 surveyDB.setValues(valuesMap.get(surveyDB.getId_survey()));
             }
         }
@@ -246,10 +284,34 @@ public class SurveyLocalDataSource implements ISurveyDataSource {
     private List<String> extractSurveyUIds(List<SurveyDB> surveyDBS) {
         List<String> surveysUIds = new ArrayList<>();
 
-        for (SurveyDB surveyDB:surveyDBS) {
+        for (SurveyDB surveyDB : surveyDBS) {
             surveysUIds.add(surveyDB.getEventUid());
         }
 
         return surveysUIds;
+    }
+
+    private Long getProgramId(String uid) {
+        Long id = null;
+
+        for (ProgramDB programDB : programsDB) {
+            if (programDB.getUid().equals(uid)) {
+                return programDB.getId_program();
+            }
+        }
+
+        return id;
+    }
+
+    private Long getOrgUnitId(String uid) {
+        Long id = null;
+
+        for (OrgUnitDB orgUnitsDB : orgUnitsDB) {
+            if (orgUnitsDB.getUid().equals(uid)) {
+                return orgUnitsDB.getId_org_unit();
+            }
+        }
+
+        return id;
     }
 }

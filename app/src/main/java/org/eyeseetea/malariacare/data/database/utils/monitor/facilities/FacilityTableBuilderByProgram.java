@@ -23,44 +23,52 @@ import static org.eyeseetea.malariacare.data.database.utils.monitor.JavascriptIn
 
 import android.webkit.WebView;
 
-import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.domain.entity.OrgUnit;
+import org.eyeseetea.malariacare.domain.entity.Program;
 import org.eyeseetea.malariacare.domain.entity.ServerClassification;
+import org.eyeseetea.malariacare.domain.entity.Survey;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class FacilityTableBuilderByProgram {
-    private List<SurveyDB> surveys;
+    private final Map<String, OrgUnit> orgUnits;
+    private final Map<String, Program> programs;
+    private List<Survey> surveys;
     private Map<String, FacilityTableDataByProgram> facilityTableDataMap;
 
-    public FacilityTableBuilderByProgram(List<SurveyDB> surveys) {
+    public FacilityTableBuilderByProgram(List<Survey> surveys, Map<String, OrgUnit> orgUnits, Map<String, Program> programs) {
         this.surveys = surveys;
+        this.orgUnits = orgUnits;
+        this.programs = programs;
         this.facilityTableDataMap = new HashMap<>();
     }
 
-    private void build(List<SurveyDB> surveys,
-            ServerClassification serverClassification) {
-        for (SurveyDB survey : surveys) {
+    private void build(List<Survey> surveys,
+                       ServerClassification serverClassification) {
+        for (Survey survey : surveys) {
 
             //Get right table
             FacilityTableDataByProgram facilityTableData = facilityTableDataMap.get(
-                    survey.getOrgUnit().getUid());
+                    survey.getOrgUnitUId());
+
+            OrgUnit orgUnit = orgUnits.get(survey.getOrgUnitUId());
 
             //Init entry first time of a program
             if (facilityTableData == null) {
-                facilityTableData = new FacilityTableDataByProgram(survey.getOrgUnit(),
+                facilityTableData = new FacilityTableDataByProgram(orgUnit,
                         serverClassification);
-                facilityTableDataMap.put(survey.getOrgUnit().getUid(), facilityTableData);
+                facilityTableDataMap.put(survey.getOrgUnitUId(), facilityTableData);
             }
 
             //Add survey to that table
-            facilityTableData.addSurvey(survey);
+            facilityTableData.addSurvey(survey, programs);
         }
     }
 
     public void addDataInChart(WebView webView,
-            ServerClassification serverClassification) {
+                               ServerClassification serverClassification) {
         //Build tables
         build(surveys, serverClassification);
         //Inject tables in view

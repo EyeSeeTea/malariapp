@@ -20,16 +20,10 @@
 package org.eyeseetea.malariacare.fragments;
 
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,6 +38,8 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+
+import androidx.fragment.app.Fragment;
 
 import com.google.common.collect.Iterables;
 
@@ -67,6 +63,7 @@ import org.eyeseetea.malariacare.domain.subscriber.event.ValueChangedEvent;
 import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.domain.usecase.ISurveyAnsweredRatioCallback;
 import org.eyeseetea.malariacare.domain.usecase.SaveSurveyAnsweredRatioUseCase;
+import org.eyeseetea.malariacare.factories.DataFactory;
 import org.eyeseetea.malariacare.layout.adapters.general.TabArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.ITabAdapter;
@@ -74,7 +71,7 @@ import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
-import org.eyeseetea.malariacare.services.SurveyService;
+import org.eyeseetea.malariacare.presentation.presenters.surveys.SurveyPresenter;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomTextView;
@@ -90,7 +87,7 @@ import java.util.Set;
 /**
  * Created by ignac on 05/01/2016.
  */
-public class SurveyFragment extends Fragment implements DomainEventSubscriber<ValueChangedEvent> {
+public class SurveyFragment extends Fragment implements DomainEventSubscriber<ValueChangedEvent>, SurveyPresenter.View {
     private String TAG = ".SurveyFragment";
 
 
@@ -149,11 +146,6 @@ public class SurveyFragment extends Fragment implements DomainEventSubscriber<Va
     private TabArrayAdapter tabAdapter;
 
     /**
-     * Receiver of data from SurveyService
-     */
-    private SurveyReceiver surveyReceiver;
-
-    /**
      * Progress text shown while loading
      */
     public static CustomTextView progressText;
@@ -180,6 +172,8 @@ public class SurveyFragment extends Fragment implements DomainEventSubscriber<Va
 
     String moduleName = Constants.FRAGMENT_FEEDBACK_KEY;
 
+    SurveyPresenter surveyPresenter;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
@@ -197,16 +191,23 @@ public class SurveyFragment extends Fragment implements DomainEventSubscriber<Va
         }
 
         llLayout = (RelativeLayout) inflater.inflate(R.layout.survey, container, false);
-        registerReceiver();
+
         createMenu(moduleName);
         createProgress();
         createBackButton();
-        prepareSurveyInfo();
         DomainEventPublisher.instance().subscribe(this);
 
         initializeSurvey();
 
+        initPresenter();
+
         return llLayout;
+    }
+
+    private void initPresenter() {
+        surveyPresenter = DataFactory.INSTANCE.provideSurveyPresenter();
+
+        surveyPresenter.attachView(this,moduleName);
     }
 
     private void initializeSurvey() {
@@ -254,6 +255,8 @@ public class SurveyFragment extends Fragment implements DomainEventSubscriber<Va
         super.onDestroy();
         Log.d(TAG, "Subscriber onDestroy");
         DomainEventPublisher.instance().unSubscribe(this);
+
+        surveyPresenter.detachView();
     }
 
     @Override
@@ -289,22 +292,8 @@ public class SurveyFragment extends Fragment implements DomainEventSubscriber<Va
         messageIterator = Iterables.cycle(messagesList).iterator();
     }
 
-    @Override
-    public void onPause() {
-        unregisterReceiver();
-        super.onPause();
-    }
-
-    @Override
-    public void onStop() {
-        Log.d(TAG, "onStop");
-        unregisterReceiver();
-        super.onStop();
-    }
-
     public void setModuleName(String simpleName) {
         this.moduleName = simpleName;
-
     }
 
     /**
@@ -389,12 +378,7 @@ public class SurveyFragment extends Fragment implements DomainEventSubscriber<Va
 
     private void preLoadItems() {
         for (TabDB tab : allTabs) {
-            Intent preLoadService = new Intent(getActivity().getApplicationContext(),
-                    SurveyService.class);
-            preLoadService.putExtra(Constants.MODULE_KEY, moduleName);
-            preLoadService.putExtra(SurveyService.SERVICE_METHOD, SurveyService.PRELOAD_TAB_ITEMS);
-            preLoadService.putExtra("tab", tab.getId_tab());
-            getActivity().getApplicationContext().startService(preLoadService);
+            surveyPresenter.preLoadTabItems( tab.getId_tab(), moduleName);
         }
     }
 
@@ -458,6 +442,24 @@ public class SurveyFragment extends Fragment implements DomainEventSubscriber<Va
     @Override
     public Class<ValueChangedEvent> subscribedToEventType() {
         return ValueChangedEvent.class;
+    }
+
+    @Override
+    public void showData( List<CompositeScoreDB> compositeScores, List<TabDB> tabs) {
+        tabAdaptersCache.reloadAdapters(tabs, compositeScores);
+        reloadTabs(tabs);
+        stopProgress();
+
+        allTabs = tabs;
+
+        // After loading first tab we start the individual services that preload the items
+        // for the rest of tabs
+        preLoadItems();
+    }
+
+    @Override
+    public void showNetworkError() {
+        Log.e(this.getClass().getSimpleName(), "Network Error");
     }
 
     public class AsyncChangeTab extends AsyncTask<Void, Integer, View> {
@@ -701,43 +703,6 @@ public class SurveyFragment extends Fragment implements DomainEventSubscriber<Va
     }
 
     /**
-     * Register a survey receiver to load surveys into the listadapter
-     */
-    public void registerReceiver() {
-        Log.d(TAG, "registerReceiver");
-
-        if (surveyReceiver == null) {
-            surveyReceiver = new SurveyReceiver();
-            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver,
-                    new IntentFilter(SurveyService.PREPARE_SURVEY_ACTION));
-        }
-    }
-
-    /**
-     * Unregisters the survey receiver.
-     * It really important to do this, otherwise each receiver will invoke its code.
-     */
-    public void unregisterReceiver() {
-        Log.d(TAG, "unregisterReceiver");
-        if (surveyReceiver != null) {
-            LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(surveyReceiver);
-            surveyReceiver = null;
-        }
-    }
-
-    /**
-     * Asks SurveyService for the current list of surveys
-     */
-    public void prepareSurveyInfo() {
-        Log.d(TAG, "prepareSurveyInfo");
-        Intent surveysIntent = new Intent(getActivity().getApplicationContext(),
-                SurveyService.class);
-        surveysIntent.putExtra(Constants.MODULE_KEY, moduleName);
-        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.PREPARE_SURVEY_ACTION);
-        getActivity().getApplicationContext().startService(surveysIntent);
-    }
-
-    /**
      * Reloads tabs info and notifies its adapter
      */
     private void reloadTabs(List<TabDB> tabs) {
@@ -781,32 +746,6 @@ public class SurveyFragment extends Fragment implements DomainEventSubscriber<Va
             }
         }
 
-    }
-
-    /**
-     * Inner private class that receives the result from the service
-     */
-    private class SurveyReceiver extends BroadcastReceiver {
-        private SurveyReceiver() {
-        }
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Log.d(TAG, "onReceive");
-            List<CompositeScoreDB> compositeScores =
-                    (List<CompositeScoreDB>) Session.popServiceValue(
-                            SurveyService.PREPARE_SURVEY_ACTION_COMPOSITE_SCORES);
-            List<TabDB> tabs = (List<TabDB>) Session.popServiceValue(
-                    SurveyService.PREPARE_SURVEY_ACTION_TABS);
-
-            tabAdaptersCache.reloadAdapters(tabs, compositeScores);
-            reloadTabs(tabs);
-            stopProgress();
-            allTabs = (List<TabDB>) Session.popServiceValue(SurveyService.PREPARE_ALL_TABS);
-            // After loading first tab we start the individual services that preload the items
-            // for the rest of tabs
-            preLoadItems();
-        }
     }
 
     /**

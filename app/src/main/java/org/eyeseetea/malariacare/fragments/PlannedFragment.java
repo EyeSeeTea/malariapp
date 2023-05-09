@@ -19,36 +19,29 @@
 
 package org.eyeseetea.malariacare.fragments;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
-
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedItem;
-import org.eyeseetea.malariacare.data.database.utils.services.PlannedServiceBundle;
 import org.eyeseetea.malariacare.domain.entity.ServerClassification;
+import org.eyeseetea.malariacare.factories.DataFactory;
 import org.eyeseetea.malariacare.layout.adapters.survey.PlannedAdapter;
-import org.eyeseetea.malariacare.services.PlannedSurveyService;
+import org.eyeseetea.malariacare.presentation.presenters.surveys.PlannedSurveysPresenter;
 import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
 
 import java.util.List;
 
-public class PlannedFragment extends FiltersFragment implements IModuleFragment {
+public class PlannedFragment extends FiltersFragment implements IModuleFragment, PlannedSurveysPresenter.View {
     public static final String TAG = ".PlannedFragment";
 
-    private PlannedItemsReceiver plannedItemsReceiver;
 
     private String programUidFilter;
 
@@ -58,6 +51,8 @@ public class PlannedFragment extends FiltersFragment implements IModuleFragment 
 
     private static String SERVER_CLASSIFICATION = "ServerClassification";
     private ServerClassification serverClassification;
+
+    private PlannedSurveysPresenter presenter;
 
     public static PlannedFragment newInstance(ServerClassification serverClassification) {
         PlannedFragment fragment = new PlannedFragment();
@@ -78,14 +73,15 @@ public class PlannedFragment extends FiltersFragment implements IModuleFragment 
                 getArguments().getInt(SERVER_CLASSIFICATION));
 
         initializeRecyclerView();
+        initPresenter();
 
         return rootView;
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        Log.d(TAG, "onActivityCreated");
-        super.onActivityCreated(savedInstanceState);
+    private void initPresenter() {
+        presenter = DataFactory.INSTANCE.providePlannedSurveysPresenter();
+
+        presenter.attachView(this);
     }
 
     private void refreshPlannedItems(List<PlannedItem> plannedItemList) {
@@ -97,7 +93,10 @@ public class PlannedFragment extends FiltersFragment implements IModuleFragment 
     private void initializeRecyclerView() {
         plannedRecyclerView = rootView.findViewById(R.id.planList);
 
-        plannedAdapter = new PlannedAdapter(getActivity(), serverClassification);
+        plannedAdapter = new PlannedAdapter(getActivity(), serverClassification,  () -> {
+            reloadData();
+        });
+
         plannedRecyclerView.setAdapter(plannedAdapter);
     }
 
@@ -111,52 +110,10 @@ public class PlannedFragment extends FiltersFragment implements IModuleFragment 
     }
 
     @Override
-    public void onResume() {
-        Log.d(TAG, "onResume");
-        //Listen for data
-        registerPlannedItemsReceiver();
-        super.onResume();
-    }
+    public void onDestroy() {
+        presenter.detachView();
 
-    @Override
-    public void onStop() {
-        Log.d(TAG, "onStop");
-        unregisterPlannedItemsReceiver();
-        super.onStop();
-    }
-
-    @Override
-    public void onPause() {
-        Log.d(TAG, "onPause");
-        unregisterPlannedItemsReceiver();
-
-        super.onPause();
-    }
-
-    /**
-     * Register a survey receiver to load plannedItems into the listadapter
-     */
-    private void registerPlannedItemsReceiver() {
-        Log.d(TAG, "registerPlannedItemsReceiver");
-
-        if (plannedItemsReceiver == null) {
-            plannedItemsReceiver = new PlannedItemsReceiver();
-            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(plannedItemsReceiver,
-                    new IntentFilter(PlannedSurveyService.PLANNED_SURVEYS_ACTION));
-        }
-    }
-
-    /**
-     * Unregisters the survey receiver.
-     * It really important to do this, otherwise each receiver will invoke its code.
-     */
-    public void unregisterPlannedItemsReceiver() {
-        Log.d(TAG, "unregisterPlannedItemsReceiver");
-        if (plannedItemsReceiver != null) {
-            LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(
-                    plannedItemsReceiver);
-            plannedItemsReceiver = null;
-        }
+        super.onDestroy();
     }
 
     @Override
@@ -182,14 +139,9 @@ public class PlannedFragment extends FiltersFragment implements IModuleFragment 
     public void reloadData() {
         super.reloadData();
 
-        //Reload data using service
-        Intent surveysIntent = new Intent(
-                PreferencesState.getInstance().getContext().getApplicationContext(),
-                PlannedSurveyService.class);
-        surveysIntent.putExtra(PlannedSurveyService.SERVICE_METHOD,
-                PlannedSurveyService.PLANNED_SURVEYS_ACTION);
-        PreferencesState.getInstance().getContext().getApplicationContext().startService(
-                surveysIntent);
+        if (presenter != null) {
+            presenter.reload();
+        }
     }
 
     public void loadProgram(String programUid) {
@@ -203,24 +155,13 @@ public class PlannedFragment extends FiltersFragment implements IModuleFragment 
         }
     }
 
-    /**
-     * Inner private class that receives the result from the service
-     */
-    private class PlannedItemsReceiver extends BroadcastReceiver {
-        private PlannedItemsReceiver() {
-        }
+    @Override
+    public void showData(@NonNull List<PlannedItem> plannedItems) {
+        refreshPlannedItems(plannedItems);
+    }
 
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Log.d(TAG, "onReceive");
-            //Listening only intents from this method
-            if (PlannedSurveyService.PLANNED_SURVEYS_ACTION.equals(intent.getAction())) {
-                PlannedServiceBundle plannedServiceBundle =
-                        (PlannedServiceBundle) Session.popServiceValue(
-                                PlannedSurveyService.PLANNED_SURVEYS_ACTION);
-
-                refreshPlannedItems(plannedServiceBundle.getPlannedItems());
-            }
-        }
+    @Override
+    public void showNetworkError() {
+        Log.e(this.getClass().getSimpleName(), "Network Error");
     }
 }
