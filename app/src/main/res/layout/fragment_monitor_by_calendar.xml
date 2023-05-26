@@ -10,12 +10,4 @@
         android:focusable="true"
         >
     </WebView>
-
-    <TextView
-        android:id="@+id/monitor_no_surveys_message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/monitor_no_surveys_to_show"
-        android:visibility="gone" />
 </RelativeLayout>

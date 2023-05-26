@@ -163,11 +163,6 @@ public class MonitorFragment extends FiltersFragment implements IModuleFragment,
         this.filterType = monitorFilter;
     }
 
-    private void showMessageNoAddedSurveys(boolean show) {
-        getActivity().findViewById(R.id.monitor_no_surveys_message).setVisibility(
-                show ? View.VISIBLE : View.GONE);
-    }
-
     public void reloadMonitor(List<Survey> surveys, Map<String, Program> programs, Map<String, OrgUnit> orgUnits) {
         webView = initMonitor();
         //onPageFinish load data
@@ -320,12 +315,6 @@ public class MonitorFragment extends FiltersFragment implements IModuleFragment,
     public void showData(@NotNull List<Survey> surveys,
                          @NotNull Map<String, Program> programs,
                          @NotNull Map<String, OrgUnit> orgUnits) {
-        if (surveys.size() == 0) {
-            showMessageNoAddedSurveys(true);
-        } else {
-            showMessageNoAddedSurveys(false);
-
             reloadMonitor(surveys, programs, orgUnits);
-        }
     }
 }
