@@ -451,7 +451,7 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
                     + competencyText + "\n";
         }
 
-        float roundedScore = Float.parseFloat(AUtils.round(survey.getMainScoreValue(),2));
+        String roundedScore = AUtils.round(survey.getMainScoreValue(),2);
         data += getString(R.string.quality_of_care).toUpperCase() + ": " + roundedScore + "% \n";
 
         data += String.format(getString(R.string.plan_action_next_date), formattedNextScheduleDate);
