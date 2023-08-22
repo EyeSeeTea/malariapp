@@ -63,8 +63,7 @@ android {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
 
-    compileSdkVersion cfg.compileSdkVersion
-    buildToolsVersion cfg.buildToolsVersion
+    compileSdk cfg.compileSdkVersion
 
     defaultConfig {
         applicationId 'org.eyeseetea.malariacare'
