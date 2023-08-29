@@ -111,7 +111,7 @@ public class DashboardUnsentFragment extends FiltersFragment implements SurveysP
             noSurveysText.setText(R.string.assess_no_surveys);
         } else if (survey != null ||
                 !OrgUnitProgramRelationDB.existProgramAndOrgUnitRelation(programFilter, orgUnitFilter)) {
-            createSurveyButton.hide();
+            ((View)createSurveyButton).setVisibility(View.INVISIBLE);
             noSurveysText.setText(R.string.survey_not_assigned_facility);
         } else {
             createSurveyButton.show();
