@@ -43,11 +43,13 @@ allprojects {
 ext {
     configuration = [
             package          : "org.hisp.dhis.android.skeleton",
-            buildToolsVersion: "31.0.0",
+            // used only for SDK, app use compileSdk instead of
+            // compileSdkVersion and buildToolsVersion
+            buildToolsVersion: "33.0.2",
             minSdkVersion    : 16,
-            compileSdkVersion: 31,
-            targetSdkVersion : 31,
-            versionCode      : 79,
+            compileSdkVersion: 33,
+            targetSdkVersion : 33,
+            versionCode      : 80,
             versionName      : "QAApp"
     ]
     libraries = [

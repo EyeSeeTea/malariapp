@@ -63,8 +63,7 @@ android {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
 
-    compileSdkVersion cfg.compileSdkVersion
-    buildToolsVersion cfg.buildToolsVersion
+    compileSdk cfg.compileSdkVersion
 
     defaultConfig {
         applicationId 'org.eyeseetea.malariacare'
@@ -127,7 +126,7 @@ android {
         }
         hnqis {
             applicationId "org.eyeseetea.malariacare.hnqis_ng"
-            versionName "1.7.1"
+            versionName "1.7.2"
             buildConfigField "boolean", "translations", "true"
             buildConfigField "String", "defaultLocale", "\"en\""
             resValue "string", "authority", applicationId+versionName+"_DHIS2_DEFAULT_AUTHORITY"
