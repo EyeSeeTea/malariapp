@@ -548,6 +548,7 @@ public class AssessModuleController extends ModuleController {
                     //this method create a new survey getting the getScheduledDate date of the
                     // oldsurvey, and remove it.
                     SurveyPlanner.getInstance().deleteSurveyAndBuildNext(survey);
+                    reloadData();
                 }
             };
 
